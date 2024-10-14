@@ -326,11 +326,20 @@ extern "C" {
 		if (target == nullptr)
 			return nullptr;
 
-		bool isHiddenParam = ValueUtils::IsHiddenParam(ret.type);
-		asmjit::FuncSignature sig(asmjit::CallConvId::kHost, asmjit::FuncSignature::kNoVarArgs, JitUtils::GetRetTypeId(isHiddenParam ? ValueType::Pointer : ret.type));
-		if (isHiddenParam) {
+#if NETLM_ARCH_ARM
+		ValueType typeHidden = ValueType::Void;
+#else
+		ValueType typeHidden = ValueType::Pointer;
+#endif
+
+		bool retHidden = ValueUtils::IsHiddenParam(ret.type);
+		asmjit::FuncSignature sig(asmjit::CallConvId::kHost, asmjit::FuncSignature::kNoVarArgs, JitUtils::GetRetTypeId(retHidden ? typeHidden : ret.type));
+
+#if !NETLM_ARCH_ARM
+		if (retHidden) {
 			sig.addArg(JitUtils::GetValueTypeId(ret.type));
 		}
+#endif
 
 		for (int i = 0; i < count; ++i) {
 			const auto& [type, ref] = params[i];
@@ -338,7 +347,7 @@ extern "C" {
 		}
 
 		JitCall* call = new JitCall(g_netlm.GetRuntime());
-		call->GetJitFunc(sig, target);
+		call->GetJitFunc(sig, target, JitCall::WaitType::None, retHidden);
 		++g_numberOfAllocs[type_id<JitCall>];
 		return call;
 	}
