@@ -56,6 +56,20 @@ static std::vector<plg::string>* CreateVector(T* arr, int len) requires(std::is_
 	return vector;
 }
 
+static std::vector<char>* CreateVector2(char16_t* arr, int len) {
+	auto vector = new std::vector<char>();
+	if (len != 0) {
+		size_t N = static_cast<size_t>(len);
+		vector->reserve(N);
+		for (size_t i = 0; i < N; ++i) {
+			vector->emplace_back(static_cast<char>(arr[i]));
+		}
+	}
+	assert(vector);
+	++g_numberOfAllocs[type_id<std::vector<char>>];
+	return vector;
+}
+
 template<typename T>
 static std::vector<T>* AllocateVector() requires(!std::is_same_v<T, char*>) {
 	auto vector = static_cast<std::vector<T>*>(std::malloc(sizeof(std::vector<T>)));
@@ -108,6 +122,19 @@ static void AssignVector(std::vector<plg::string>* vector, T* arr, int len) requ
 		vector->assign(arr, arr + len);
 }
 
+static void AssignVector2(std::vector<char>* vector, char16_t* arr, int len) {
+	if (arr == nullptr || len == 0)
+		vector->clear();
+	else {
+		size_t N = static_cast<size_t>(len);
+		vector->resize(N);
+		for (size_t i = 0; i < N; ++i) {
+			(*vector)[i] = static_cast<char>(arr[i]);
+		}
+	}
+}
+
+
 template<typename T>
 static void GetVectorData(std::vector<T>* vector, T* arr) requires(!std::is_same_v<T, char*>) {
 	for (size_t i = 0; i < vector->size(); ++i) {
@@ -123,6 +150,12 @@ static void GetVectorData(std::vector<plg::string>* vector, T* arr) requires(std
 	}
 }
 
+static void GetVectorData2(std::vector<char>* vector, char16_t* arr) {
+	for (size_t i = 0; i < vector->size(); ++i) {
+		arr[i] = static_cast<char16_t>((*vector)[i]);
+	}
+}
+
 template<typename T>
 static void ConstructVector(std::vector<T>* vector, T* arr, int len) requires(!std::is_same_v<T, char*>) {
 	std::construct_at(vector, len == 0 ? std::vector<T>() : std::vector<T>(arr, arr + len));
@@ -131,6 +164,15 @@ static void ConstructVector(std::vector<T>* vector, T* arr, int len) requires(!s
 template<typename T>
 static void ConstructVector(std::vector<plg::string>* vector, T* arr, int len) requires(std::is_same_v<T, char*>) {
 	std::construct_at(vector, len == 0 ? std::vector<plg::string>() : std::vector<plg::string>(arr, arr + len));
+}
+
+static void ConstructVector2(std::vector<char>* vector, char16_t* arr, int len) {
+	std::construct_at(vector, std::vector<char>());
+	size_t N = static_cast<size_t>(len);
+	vector->reserve(N);
+	for (size_t i = 0; i < N; ++i) {
+		vector->emplace_back(static_cast<char>(arr[i]));
+	}
 }
 
 extern "C" {
@@ -178,7 +220,7 @@ extern "C" {
 
 	// CreateVector Functions
 	NETLM_EXPORT std::vector<bool>* CreateVectorBool(bool* arr, int len) { return CreateVector(arr, len); }
-	NETLM_EXPORT std::vector<char>* CreateVectorChar8(char* arr, int len)  { return CreateVector(arr, len); }
+	NETLM_EXPORT std::vector<char>* CreateVectorChar8(char16_t* arr, int len)  { return CreateVector2(arr, len); }
 	NETLM_EXPORT std::vector<char16_t>* CreateVectorChar16(char16_t* arr, int len)  { return CreateVector(arr, len); }
 	NETLM_EXPORT std::vector<int8_t>* CreateVectorInt8(int8_t* arr, int len) { return CreateVector(arr, len); }
 	NETLM_EXPORT std::vector<int16_t>* CreateVectorInt16(int16_t* arr, int len) { return CreateVector(arr, len); }
@@ -231,7 +273,7 @@ extern "C" {
 	// GetVectorData Functions
 
 	NETLM_EXPORT void GetVectorDataBool(std::vector<bool>* vector, bool* arr) { GetVectorData(vector, arr); }
-	NETLM_EXPORT void GetVectorDataChar8(std::vector<char>* vector, char* arr) { GetVectorData(vector, arr); }
+	NETLM_EXPORT void GetVectorDataChar8(std::vector<char>* vector, char16_t* arr) { GetVectorData2(vector, arr); }
 	NETLM_EXPORT void GetVectorDataChar16(std::vector<char16_t>* vector, char16_t* arr) { GetVectorData(vector, arr); }
 	NETLM_EXPORT void GetVectorDataInt8(std::vector<int8_t>* vector, int8_t* arr) { GetVectorData(vector, arr); }
 	NETLM_EXPORT void GetVectorDataInt16(std::vector<int16_t>* vector, int16_t* arr) { GetVectorData(vector, arr); }
@@ -249,7 +291,7 @@ extern "C" {
 	// Construct Functions
 
 	NETLM_EXPORT void ConstructVectorBool(std::vector<bool>* vector, bool* arr, int len) { ConstructVector(vector, arr, len); }
-	NETLM_EXPORT void ConstructVectorChar8(std::vector<char>* vector, char* arr, int len) { ConstructVector(vector, arr, len); }
+	NETLM_EXPORT void ConstructVectorChar8(std::vector<char>* vector, char16_t* arr, int len) { ConstructVector2(vector, arr, len); }
 	NETLM_EXPORT void ConstructVectorChar16(std::vector<char16_t>* vector, char16_t* arr, int len) { ConstructVector(vector, arr, len); }
 	NETLM_EXPORT void ConstructVectorInt8(std::vector<int8_t>* vector, int8_t* arr, int len) { ConstructVector(vector, arr, len); }
 	NETLM_EXPORT void ConstructVectorInt16(std::vector<int16_t>* vector, int16_t* arr, int len) { ConstructVector(vector, arr, len); }
@@ -267,7 +309,7 @@ extern "C" {
 	// AssignVector Functions
 
 	NETLM_EXPORT void AssignVectorBool(std::vector<bool>* vector, bool* arr, int len) { AssignVector(vector, arr, len); }
-	NETLM_EXPORT void AssignVectorChar8(std::vector<char>* vector, char* arr, int len) { AssignVector(vector, arr, len); }
+	NETLM_EXPORT void AssignVectorChar8(std::vector<char>* vector, char16_t* arr, int len) { AssignVector2(vector, arr, len); }
 	NETLM_EXPORT void AssignVectorChar16(std::vector<char16_t>* vector, char16_t* arr, int len) { AssignVector(vector, arr, len); }
 	NETLM_EXPORT void AssignVectorInt8(std::vector<int8_t>* vector, int8_t* arr, int len) { AssignVector(vector, arr, len); }
 	NETLM_EXPORT void AssignVectorInt16(std::vector<int16_t>* vector, int16_t* arr, int len) { AssignVector(vector, arr, len); }
