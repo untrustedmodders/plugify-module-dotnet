@@ -2,38 +2,35 @@
 
 namespace Plugify;
 
-public class JitCall : SafeHandle
+public partial class JitCall : SafeHandle
 {
 	public JitCall(nint target, ManagedType[] parameters, ManagedType ret) : base(nint.Zero, true)
 	{
-		handle = CallMethods.NewCall(target, parameters, parameters.Length, ret);
+		handle = NewCall(target, parameters, parameters.Length, ret);
 	}
 
 	public override bool IsInvalid => handle == nint.Zero;
 
-	public unsafe delegate*<nint*, nint*, void> Function => (delegate*<nint*, nint*, void>) CallMethods.GetCallFunction(handle);
+	public unsafe delegate*<nint*, nint*, void> Function => (delegate*<nint*, nint*, void>) GetCallFunction(handle);
 	
-	public string Error => CallMethods.GetCallError(handle);
+	public string Error => GetCallError(handle);
 
 	protected override bool ReleaseHandle()
 	{
-		CallMethods.DeleteCall(handle);
+		DeleteCall(handle);
 		return true;
 	}
-}
+	
+	[LibraryImport(NativeMethods.DllName)]
+	private static partial nint NewCall(nint target, [In] ManagedType[] parameters, int count, ManagedType ret);
 
-internal static class CallMethods
-{
-	[DllImport(NativeMethods.DllName)]
-	public static extern nint NewCall(nint target, [In] ManagedType[] parameters, int count, ManagedType ret);
+	[LibraryImport(NativeMethods.DllName)]
+	private static partial void DeleteCall(nint call);
 
-	[DllImport(NativeMethods.DllName)]
-	public static extern void DeleteCall(nint call);
+	[LibraryImport(NativeMethods.DllName)]
+	private static partial nint GetCallFunction(nint call);
 
-	[DllImport(NativeMethods.DllName)]
-	public static extern nint GetCallFunction(nint call);
-
-	[DllImport(NativeMethods.DllName)]
+	[LibraryImport(NativeMethods.DllName)]
 	[return: MarshalAs(UnmanagedType.LPStr)]
-	public static extern string GetCallError(nint call);
+	private static partial string GetCallError(nint call);
 }
