@@ -14,8 +14,8 @@ internal enum AssemblyLoadStatus
 
 internal class AssemblyInstance(Assembly assembly)
 {
-	public Assembly Assembly { get; } = assembly;
-	public Guid Id { get; } = Guid.NewGuid();
+	internal Assembly Assembly { get; } = assembly;
+	internal Guid Id { get; } = Guid.NewGuid();
 }
 
 internal static class AssemblyLoader

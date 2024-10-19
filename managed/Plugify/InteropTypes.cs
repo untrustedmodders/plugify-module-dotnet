@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 namespace Plugify;
 
 [StructLayout(LayoutKind.Sequential)]
-internal struct NativeString : IDisposable
+public struct NativeString : IDisposable
 {
 	internal nint _string;
 	private int _length;
@@ -34,11 +34,35 @@ internal struct NativeString : IDisposable
 	public static implicit operator string?(NativeString value) => Marshal.PtrToStringAuto(value._string, value._length);
 }
 
+/*public readonly struct Bool8
+{
+	public byte Value { get; init; }
+
+	public static implicit operator bool(Bool8 value) => value.Value != 0;
+	public static implicit operator Bool8(bool value) => new() { Value = value ? (byte)1 : (byte)0 };
+}*/
+
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
-internal struct Bool32
+public struct Bool32
 {
 	public uint Value { get; init; }
 
 	public static implicit operator Bool32(bool value) => new() { Value = value ? 1u : 0u };
 	public static implicit operator bool(Bool32 value) => value.Value > 0;
 }
+
+/*public readonly struct Char8
+{
+	public byte Value { get; init; }
+
+	public static implicit operator Char8(char value) => new() { Value = (byte)value };
+	public static implicit operator char(Char8 c) => (char)c.Value;
+}
+
+public readonly struct Char16
+{
+	public ushort Value { get; init; }
+
+	public static implicit operator Char16(char value) => new() { Value = (ushort)value };
+	public static implicit operator char(Char16 c) => (char)c.Value;
+}*/

@@ -9,9 +9,9 @@ using static ManagedHost;
 internal readonly struct InternalCall
 {
 	private readonly nint namePtr;
-	public readonly nint NativeFunctionPtr;
+	internal readonly nint NativeFunctionPtr;
 
-	public string? Name => Marshal.PtrToStringAuto(namePtr);
+	internal string? Name => Marshal.PtrToStringAuto(namePtr);
 }
 
 internal static class InternalCallsManager
