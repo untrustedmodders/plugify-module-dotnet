@@ -682,7 +682,7 @@ def gen_paramscast(method, tabs):
         if 'CreateVector' in type:
             return f'var __{name} = {type}({name}, {name}.Length)'
         elif type != '':
-            if 'GetDelegate' in type and not is_need_marshal(param['prototype']):
+            if 'GetFunctionPointerForDelegate' in type and not is_need_marshal(param['prototype']):
                 return ''
             else:
                 return f'var __{name} = {type}({name})'

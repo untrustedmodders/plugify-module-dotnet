@@ -26,7 +26,7 @@ namespace cross_call_master
 	public delegate float FuncFloat();
 	public delegate double FuncDouble();
 	public delegate string FuncString();
-	public delegate nint FuncFunction();
+	public delegate delegate FuncFunction();
 	public delegate Bool8[] FuncBoolVector();
 	public delegate Char8[] FuncChar8Vector();
 	public delegate Char16[] FuncChar16Vector();
@@ -1085,7 +1085,7 @@ namespace cross_call_master
 		{
 			string __retVal;
 			var __retVal_native = NativeMethods.AllocateString();
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__CallFuncStringCallback(__retVal_native, __func);
@@ -1111,7 +1111,7 @@ namespace cross_call_master
 		{
 			Bool8[] __retVal;
 			var __retVal_native = NativeMethods.AllocateVectorBool();
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__CallFuncBoolVectorCallback(__retVal_native, __func);
@@ -1131,7 +1131,7 @@ namespace cross_call_master
 		{
 			Char8[] __retVal;
 			var __retVal_native = NativeMethods.AllocateVectorChar8();
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__CallFuncChar8VectorCallback(__retVal_native, __func);
@@ -1151,7 +1151,7 @@ namespace cross_call_master
 		{
 			Char16[] __retVal;
 			var __retVal_native = NativeMethods.AllocateVectorChar16();
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__CallFuncChar16VectorCallback(__retVal_native, __func);
@@ -1171,7 +1171,7 @@ namespace cross_call_master
 		{
 			sbyte[] __retVal;
 			var __retVal_native = NativeMethods.AllocateVectorInt8();
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__CallFuncInt8VectorCallback(__retVal_native, __func);
@@ -1191,7 +1191,7 @@ namespace cross_call_master
 		{
 			short[] __retVal;
 			var __retVal_native = NativeMethods.AllocateVectorInt16();
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__CallFuncInt16VectorCallback(__retVal_native, __func);
@@ -1211,7 +1211,7 @@ namespace cross_call_master
 		{
 			int[] __retVal;
 			var __retVal_native = NativeMethods.AllocateVectorInt32();
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__CallFuncInt32VectorCallback(__retVal_native, __func);
@@ -1231,7 +1231,7 @@ namespace cross_call_master
 		{
 			long[] __retVal;
 			var __retVal_native = NativeMethods.AllocateVectorInt64();
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__CallFuncInt64VectorCallback(__retVal_native, __func);
@@ -1251,7 +1251,7 @@ namespace cross_call_master
 		{
 			byte[] __retVal;
 			var __retVal_native = NativeMethods.AllocateVectorUInt8();
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__CallFuncUInt8VectorCallback(__retVal_native, __func);
@@ -1271,7 +1271,7 @@ namespace cross_call_master
 		{
 			ushort[] __retVal;
 			var __retVal_native = NativeMethods.AllocateVectorUInt16();
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__CallFuncUInt16VectorCallback(__retVal_native, __func);
@@ -1291,7 +1291,7 @@ namespace cross_call_master
 		{
 			uint[] __retVal;
 			var __retVal_native = NativeMethods.AllocateVectorUInt32();
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__CallFuncUInt32VectorCallback(__retVal_native, __func);
@@ -1311,7 +1311,7 @@ namespace cross_call_master
 		{
 			ulong[] __retVal;
 			var __retVal_native = NativeMethods.AllocateVectorUInt64();
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__CallFuncUInt64VectorCallback(__retVal_native, __func);
@@ -1331,7 +1331,7 @@ namespace cross_call_master
 		{
 			nint[] __retVal;
 			var __retVal_native = NativeMethods.AllocateVectorIntPtr();
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__CallFuncPtrVectorCallback(__retVal_native, __func);
@@ -1351,7 +1351,7 @@ namespace cross_call_master
 		{
 			float[] __retVal;
 			var __retVal_native = NativeMethods.AllocateVectorFloat();
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__CallFuncFloatVectorCallback(__retVal_native, __func);
@@ -1371,7 +1371,7 @@ namespace cross_call_master
 		{
 			string[] __retVal;
 			var __retVal_native = NativeMethods.AllocateVectorString();
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__CallFuncStringVectorCallback(__retVal_native, __func);
@@ -1391,7 +1391,7 @@ namespace cross_call_master
 		{
 			double[] __retVal;
 			var __retVal_native = NativeMethods.AllocateVectorDouble();
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__CallFuncDoubleVectorCallback(__retVal_native, __func);
@@ -1451,7 +1451,7 @@ namespace cross_call_master
 		internal static delegate* unmanaged[Cdecl]<nint, void> __CallFunc3Callback;
 		private static void ___CallFunc3Callback(Func3 func)
 		{
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			__CallFunc3Callback(__func);
 		}
@@ -1466,7 +1466,7 @@ namespace cross_call_master
 		internal static delegate* unmanaged[Cdecl]<nint, Bool8> __CallFunc5Callback;
 		private static Bool8 ___CallFunc5Callback(Func5 func)
 		{
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			Bool8 __retVal;
 			__retVal = __CallFunc5Callback(__func);
@@ -1476,7 +1476,7 @@ namespace cross_call_master
 		internal static delegate* unmanaged[Cdecl]<nint, long> __CallFunc6Callback;
 		private static long ___CallFunc6Callback(Func6 func)
 		{
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			long __retVal;
 			__retVal = __CallFunc6Callback(__func);
@@ -1486,7 +1486,7 @@ namespace cross_call_master
 		internal static delegate* unmanaged[Cdecl]<nint, double> __CallFunc7Callback;
 		private static double ___CallFunc7Callback(Func7 func)
 		{
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			double __retVal;
 			__retVal = __CallFunc7Callback(__func);
@@ -1496,7 +1496,7 @@ namespace cross_call_master
 		internal static delegate* unmanaged[Cdecl]<nint, Matrix4x4> __CallFunc8Callback;
 		private static Matrix4x4 ___CallFunc8Callback(Func8 func)
 		{
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			Matrix4x4 __retVal;
 			__retVal = __CallFunc8Callback(__func);
@@ -1506,7 +1506,7 @@ namespace cross_call_master
 		internal static delegate* unmanaged[Cdecl]<nint, void> __CallFunc9Callback;
 		private static void ___CallFunc9Callback(Func9 func)
 		{
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			__CallFunc9Callback(__func);
 		}
@@ -1514,7 +1514,7 @@ namespace cross_call_master
 		internal static delegate* unmanaged[Cdecl]<nint, uint> __CallFunc10Callback;
 		private static uint ___CallFunc10Callback(Func10 func)
 		{
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			uint __retVal;
 			__retVal = __CallFunc10Callback(__func);
@@ -1524,7 +1524,7 @@ namespace cross_call_master
 		internal static delegate* unmanaged[Cdecl]<nint, nint> __CallFunc11Callback;
 		private static nint ___CallFunc11Callback(Func11 func)
 		{
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			nint __retVal;
 			__retVal = __CallFunc11Callback(__func);
@@ -1534,7 +1534,7 @@ namespace cross_call_master
 		internal static delegate* unmanaged[Cdecl]<nint, Bool8> __CallFunc12Callback;
 		private static Bool8 ___CallFunc12Callback(Func12 func)
 		{
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			Bool8 __retVal;
 			__retVal = __CallFunc12Callback(__func);
@@ -1546,7 +1546,7 @@ namespace cross_call_master
 		{
 			string __retVal;
 			var __retVal_native = NativeMethods.AllocateString();
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__CallFunc13Callback(__retVal_native, __func);
@@ -1565,7 +1565,7 @@ namespace cross_call_master
 		{
 			string[] __retVal;
 			var __retVal_native = NativeMethods.AllocateVectorString();
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__CallFunc14Callback(__retVal_native, __func);
@@ -1583,7 +1583,7 @@ namespace cross_call_master
 		internal static delegate* unmanaged[Cdecl]<nint, short> __CallFunc15Callback;
 		private static short ___CallFunc15Callback(Func15 func)
 		{
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			short __retVal;
 			__retVal = __CallFunc15Callback(__func);
@@ -1593,7 +1593,7 @@ namespace cross_call_master
 		internal static delegate* unmanaged[Cdecl]<nint, nint> __CallFunc16Callback;
 		private static nint ___CallFunc16Callback(Func16 func)
 		{
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			nint __retVal;
 			__retVal = __CallFunc16Callback(__func);
@@ -1641,7 +1641,7 @@ namespace cross_call_master
 		{
 			string __retVal;
 			var __retVal_native = NativeMethods.AllocateString();
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__CallFunc19Callback(__retVal_native, __func);
@@ -1660,7 +1660,7 @@ namespace cross_call_master
 		{
 			string __retVal;
 			var __retVal_native = NativeMethods.AllocateString();
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__CallFunc20Callback(__retVal_native, __func);
@@ -1679,7 +1679,7 @@ namespace cross_call_master
 		{
 			string __retVal;
 			var __retVal_native = NativeMethods.AllocateString();
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__CallFunc21Callback(__retVal_native, __func);
@@ -1698,7 +1698,7 @@ namespace cross_call_master
 		{
 			string __retVal;
 			var __retVal_native = NativeMethods.AllocateString();
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__CallFunc22Callback(__retVal_native, __func);
@@ -1717,7 +1717,7 @@ namespace cross_call_master
 		{
 			string __retVal;
 			var __retVal_native = NativeMethods.AllocateString();
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__CallFunc23Callback(__retVal_native, __func);
@@ -1736,7 +1736,7 @@ namespace cross_call_master
 		{
 			string __retVal;
 			var __retVal_native = NativeMethods.AllocateString();
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__CallFunc24Callback(__retVal_native, __func);
@@ -1755,7 +1755,7 @@ namespace cross_call_master
 		{
 			string __retVal;
 			var __retVal_native = NativeMethods.AllocateString();
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__CallFunc25Callback(__retVal_native, __func);
@@ -1774,7 +1774,7 @@ namespace cross_call_master
 		{
 			string __retVal;
 			var __retVal_native = NativeMethods.AllocateString();
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__CallFunc26Callback(__retVal_native, __func);
@@ -1793,7 +1793,7 @@ namespace cross_call_master
 		{
 			string __retVal;
 			var __retVal_native = NativeMethods.AllocateString();
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__CallFunc27Callback(__retVal_native, __func);
@@ -1812,7 +1812,7 @@ namespace cross_call_master
 		{
 			string __retVal;
 			var __retVal_native = NativeMethods.AllocateString();
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__CallFunc28Callback(__retVal_native, __func);
@@ -1831,7 +1831,7 @@ namespace cross_call_master
 		{
 			string __retVal;
 			var __retVal_native = NativeMethods.AllocateString();
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__CallFunc29Callback(__retVal_native, __func);
@@ -1850,7 +1850,7 @@ namespace cross_call_master
 		{
 			string __retVal;
 			var __retVal_native = NativeMethods.AllocateString();
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__CallFunc30Callback(__retVal_native, __func);
@@ -1869,7 +1869,7 @@ namespace cross_call_master
 		{
 			string __retVal;
 			var __retVal_native = NativeMethods.AllocateString();
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__CallFunc31Callback(__retVal_native, __func);
@@ -1888,7 +1888,7 @@ namespace cross_call_master
 		{
 			string __retVal;
 			var __retVal_native = NativeMethods.AllocateString();
-			var __func = Marshalling.GetDelegateForMarshalling(func);
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__CallFunc32Callback(__retVal_native, __func);
