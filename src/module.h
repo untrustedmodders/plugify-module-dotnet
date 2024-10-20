@@ -37,6 +37,7 @@ namespace netlm {
 	using ScriptMap = std::map<plugify::UniqueId, ScriptInstance>;
 	using HandleData = std::pair<ManagedHandle, ManagedHandle>;
 	using FunctionList = std::vector<std::pair<plugify::JitCallback, std::unique_ptr<HandleData>>>;
+	using ArgumentList = std::vector<const void*>;
 
 	class DotnetLanguageModule final : public plugify::ILanguageModule {
 	public:
@@ -53,16 +54,18 @@ namespace netlm {
 
 		const ScriptMap& GetScripts() const { return _scripts; }
 		ScriptInstance* FindScript(plugify::UniqueId pluginId);
+		plugify::MethodRef FindMethod(ManagedGuid assemblyId, std::string_view name);
 
 		const std::shared_ptr<plugify::IPlugifyProvider>& GetProvider() { return _provider; }
 		const std::shared_ptr<asmjit::JitRuntime>& GetRuntime() { return _rt; }
+
+		static void InternalCall(plugify::MethodRef method, plugify::MemAddr data, const plugify::JitCallback::Parameters* p, uint8_t count, const plugify::JitCallback::Return* ret);
+		static void DelegateCall(plugify::MethodRef method, plugify::MemAddr data, const plugify::JitCallback::Parameters* p, uint8_t count, const plugify::JitCallback::Return* ret);
 
 	private:
 		static void ExceptionCallback(std::string_view message);
 		static void MessageCallback(std::string_view message, MessageLevel level);
 		static void DetectLeaks();
-
-		static void InternalCall(plugify::MethodRef method, plugify::MemAddr data, const plugify::JitCallback::Parameters* p, uint8_t count, const plugify::JitCallback::Return* ret);
 
 	private:
 		std::shared_ptr<plugify::IPlugifyProvider> _provider;

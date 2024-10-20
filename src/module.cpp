@@ -3,7 +3,6 @@
 #include "managed_functions.h"
 #include "method_info.h"
 #include "attribute.h"
-#include "char_set.h"
 #include "type.h"
 #include "memory.h"
 #include "utils.h"
@@ -243,17 +242,30 @@ ScriptInstance* DotnetLanguageModule::FindScript(UniqueId pluginId) {
 	return nullptr;
 }
 
-// C++ to C#
-void DotnetLanguageModule::InternalCall(MethodRef method, MemAddr data, const JitCallback::Parameters* p, uint8_t count, const JitCallback::Return* ret) {
-	const auto& [typeHandle, methodHandle] = *data.CCast<HandleData*>();
+MethodRef DotnetLanguageModule::FindMethod(ManagedGuid assemblyId, std::string_view name) {
+	for (const auto & [_, script] : _scripts) {
+		if (script.GetAssemblyId() == assemblyId) {
+			for (const auto& method : script.GetPlugin().GetDescriptor().GetExportedMethods()) {
+				auto prototype = method.FindPrototype(name);
+				if (prototype.has_value()) {
+					return *prototype;
+				}
+			}
+			return {};
+		}
+	}
+	return {};
+}
 
+template<typename TFunc>
+static void ManagedCall(MethodRef method, MemAddr data, const JitCallback::Parameters* p, uint8_t count, const JitCallback::Return* ret, TFunc&& func) {
 	PropertyRef retProp = method.GetReturnType();
 	ValueType retType = retProp.GetType();
 	std::span<const PropertyRef> paramProps = method.GetParamTypes();
 
 	bool hasRet = ValueUtils::IsHiddenParam(retType);
 
-	std::vector<const void*> args;
+	ArgumentList args;
 	args.reserve(hasRet ? count - 1 : count);
 
 	for (uint8_t i = hasRet, j = 0; i < count; ++i, ++j) {
@@ -368,17 +380,40 @@ void DotnetLanguageModule::InternalCall(MethodRef method, MemAddr data, const Ji
 		}
 	}
 
-	Type type(typeHandle);
-
 	if (retType != ValueType::Void) {
-		type.InvokeStaticMethodRetInternal(methodHandle, args.data(), args.size(), retPtr);
+		func(data, args, retPtr);
 	} else {
-		type.InvokeStaticMethodInternal(methodHandle, args.data(), args.size());
+		func(data, args, std::nullopt);
 	}
 
 	if (hasRet) {
 		ret->SetReturn(retPtr);
 	}
+}
+
+// C++ to C#
+void DotnetLanguageModule::InternalCall(MethodRef method, MemAddr data, const JitCallback::Parameters* p, uint8_t count, const JitCallback::Return* ret) {
+	ManagedCall(method, data, p, count, ret, [](MemAddr dt, ArgumentList& args, std::optional<void*> retPtr) {
+		const auto& [typeHandle, methodHandle] = *dt.CCast<HandleData*>();
+		Type type(typeHandle);
+		if (retPtr.has_value()) {
+			type.InvokeStaticMethodRetInternal(methodHandle, args.data(), args.size(), *retPtr);
+		} else {
+			type.InvokeStaticMethodInternal(methodHandle, args.data(), args.size());
+		}
+	});
+}
+
+// C++ to C#
+void DotnetLanguageModule::DelegateCall(MethodRef method, MemAddr data, const JitCallback::Parameters* p, uint8_t count, const JitCallback::Return* ret) {
+	ManagedCall(method, data, p, count, ret, [](MemAddr dt, ArgumentList& args, std::optional<void*> retPtr) {
+		ManagedHandle delegateHandle = dt.CCast<ManagedHandle>();
+		if (retPtr.has_value()) {
+			ManagedObject::InvokeDelegateRetInternal(delegateHandle, args.data(), args.size(), *retPtr);
+		} else {
+			ManagedObject::InvokeDelegateInternal(delegateHandle, args.data(), args.size());
+		}
+	});
 }
 
 /*_________________________________________________*/
