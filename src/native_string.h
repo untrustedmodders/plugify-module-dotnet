@@ -37,6 +37,6 @@ namespace netlm {
 	private:
 		char_t* _string = nullptr;
 		int32_t _length = 0;
-		Bool32 _disposed = false; // unused in C++
+		[[maybe_unused]] Bool32 _disposed = false; // unused in C++
 	};
 }
