@@ -24,6 +24,8 @@ namespace netlm {
 	using InvokeMethodRetFn = void(*)(void*, ManagedHandle, const void**, int32_t, void*);
 	using InvokeStaticMethodFn = void (*)(ManagedHandle, ManagedHandle, const void**, int32_t);
 	using InvokeStaticMethodRetFn = void (*)(ManagedHandle, ManagedHandle, const void**, int32_t, void*);
+	using InvokeDelegateFn = void (*)(ManagedHandle, const void**, int32_t);
+	using InvokeDelegateRetFn = void (*)(ManagedHandle, const void**, int32_t, void*);
 	using SetFieldValueFn = void(*)(void*, String, void*);
 	using GetFieldValueFn = void(*)(void*, String, void*);
 	using GetFieldPointerFn = void(*)(void*, String, void**);
@@ -108,6 +110,8 @@ namespace netlm {
 		InvokeMethodRetFn InvokeMethodRetFptr;
 		InvokeStaticMethodFn InvokeStaticMethodFptr;
 		InvokeStaticMethodRetFn InvokeStaticMethodRetFptr;
+		InvokeDelegateFn InvokeDelegateFptr;
+		InvokeDelegateRetFn InvokeDelegateRetFptr;
 		SetFieldValueFn SetFieldValueFptr;
 		GetFieldValueFn GetFieldValueFptr;
 		GetFieldPointerFn GetFieldPointerFptr;

@@ -100,6 +100,8 @@ namespace netlm {
 	//private:
 		void InvokeMethodInternal(ManagedHandle methodHandle, const void** parameters, size_t length) const;
 		void InvokeMethodRetInternal(ManagedHandle methodHandle, const void** parameters, size_t length, void* resultStorage) const;
+		static void InvokeDelegateInternal(ManagedHandle delegateHandle, const void** parameters, size_t length);
+		static void InvokeDelegateRetInternal(ManagedHandle delegateHandle, const void** parameters, size_t length, void* resultStorage);
 
 	private:
 		void* _handle = nullptr;

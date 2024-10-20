@@ -32,6 +32,7 @@ std::string_view GetTypeName(type_index type) {
 		{type_id<std::vector<double>>, "VectorDouble"},
 		{type_id<std::vector<plg::string>>, "VectorString"},
 		{type_id<JitCall>, "JitCall"},
+		{type_id<JitCallback>, "JitCallback"},
 	};
 	auto it = typeNameMap.find(type);
 	if (it != typeNameMap.end()) {
@@ -53,20 +54,6 @@ static std::vector<plg::string>* CreateVector(T* arr, int len) requires(std::is_
 	auto vector = len == 0 ? new std::vector<plg::string>() : new std::vector<plg::string>(arr, arr + len);
 	assert(vector);
 	++g_numberOfAllocs[type_id<std::vector<plg::string>>];
-	return vector;
-}
-
-static std::vector<char>* CreateVector2(char16_t* arr, int len) {
-	auto vector = new std::vector<char>();
-	if (len != 0) {
-		size_t N = static_cast<size_t>(len);
-		vector->reserve(N);
-		for (size_t i = 0; i < N; ++i) {
-			vector->emplace_back(static_cast<char>(arr[i]));
-		}
-	}
-	assert(vector);
-	++g_numberOfAllocs[type_id<std::vector<char>>];
 	return vector;
 }
 
@@ -122,19 +109,6 @@ static void AssignVector(std::vector<plg::string>* vector, T* arr, int len) requ
 		vector->assign(arr, arr + len);
 }
 
-static void AssignVector2(std::vector<char>* vector, char16_t* arr, int len) {
-	if (arr == nullptr || len == 0)
-		vector->clear();
-	else {
-		size_t N = static_cast<size_t>(len);
-		vector->resize(N);
-		for (size_t i = 0; i < N; ++i) {
-			(*vector)[i] = static_cast<char>(arr[i]);
-		}
-	}
-}
-
-
 template<typename T>
 static void GetVectorData(std::vector<T>* vector, T* arr) requires(!std::is_same_v<T, char*>) {
 	for (size_t i = 0; i < vector->size(); ++i) {
@@ -150,12 +124,6 @@ static void GetVectorData(std::vector<plg::string>* vector, T* arr) requires(std
 	}
 }
 
-static void GetVectorData2(std::vector<char>* vector, char16_t* arr) {
-	for (size_t i = 0; i < vector->size(); ++i) {
-		arr[i] = static_cast<char16_t>((*vector)[i]);
-	}
-}
-
 template<typename T>
 static void ConstructVector(std::vector<T>* vector, T* arr, int len) requires(!std::is_same_v<T, char*>) {
 	std::construct_at(vector, len == 0 ? std::vector<T>() : std::vector<T>(arr, arr + len));
@@ -164,15 +132,6 @@ static void ConstructVector(std::vector<T>* vector, T* arr, int len) requires(!s
 template<typename T>
 static void ConstructVector(std::vector<plg::string>* vector, T* arr, int len) requires(std::is_same_v<T, char*>) {
 	std::construct_at(vector, len == 0 ? std::vector<plg::string>() : std::vector<plg::string>(arr, arr + len));
-}
-
-static void ConstructVector2(std::vector<char>* vector, char16_t* arr, int len) {
-	std::construct_at(vector, std::vector<char>());
-	size_t N = static_cast<size_t>(len);
-	vector->reserve(N);
-	for (size_t i = 0; i < N; ++i) {
-		vector->emplace_back(static_cast<char>(arr[i]));
-	}
 }
 
 extern "C" {
@@ -220,7 +179,7 @@ extern "C" {
 
 	// CreateVector Functions
 	NETLM_EXPORT std::vector<bool>* CreateVectorBool(bool* arr, int len) { return CreateVector(arr, len); }
-	NETLM_EXPORT std::vector<char>* CreateVectorChar8(char16_t* arr, int len)  { return CreateVector2(arr, len); }
+	NETLM_EXPORT std::vector<char>* CreateVectorChar8(char* arr, int len)  { return CreateVector(arr, len); }
 	NETLM_EXPORT std::vector<char16_t>* CreateVectorChar16(char16_t* arr, int len)  { return CreateVector(arr, len); }
 	NETLM_EXPORT std::vector<int8_t>* CreateVectorInt8(int8_t* arr, int len) { return CreateVector(arr, len); }
 	NETLM_EXPORT std::vector<int16_t>* CreateVectorInt16(int16_t* arr, int len) { return CreateVector(arr, len); }
@@ -273,7 +232,7 @@ extern "C" {
 	// GetVectorData Functions
 
 	NETLM_EXPORT void GetVectorDataBool(std::vector<bool>* vector, bool* arr) { GetVectorData(vector, arr); }
-	NETLM_EXPORT void GetVectorDataChar8(std::vector<char>* vector, char16_t* arr) { GetVectorData2(vector, arr); }
+	NETLM_EXPORT void GetVectorDataChar8(std::vector<char>* vector, char* arr) { GetVectorData(vector, arr); }
 	NETLM_EXPORT void GetVectorDataChar16(std::vector<char16_t>* vector, char16_t* arr) { GetVectorData(vector, arr); }
 	NETLM_EXPORT void GetVectorDataInt8(std::vector<int8_t>* vector, int8_t* arr) { GetVectorData(vector, arr); }
 	NETLM_EXPORT void GetVectorDataInt16(std::vector<int16_t>* vector, int16_t* arr) { GetVectorData(vector, arr); }
@@ -291,7 +250,7 @@ extern "C" {
 	// Construct Functions
 
 	NETLM_EXPORT void ConstructVectorBool(std::vector<bool>* vector, bool* arr, int len) { ConstructVector(vector, arr, len); }
-	NETLM_EXPORT void ConstructVectorChar8(std::vector<char>* vector, char16_t* arr, int len) { ConstructVector2(vector, arr, len); }
+	NETLM_EXPORT void ConstructVectorChar8(std::vector<char>* vector, char* arr, int len) { ConstructVector(vector, arr, len); }
 	NETLM_EXPORT void ConstructVectorChar16(std::vector<char16_t>* vector, char16_t* arr, int len) { ConstructVector(vector, arr, len); }
 	NETLM_EXPORT void ConstructVectorInt8(std::vector<int8_t>* vector, int8_t* arr, int len) { ConstructVector(vector, arr, len); }
 	NETLM_EXPORT void ConstructVectorInt16(std::vector<int16_t>* vector, int16_t* arr, int len) { ConstructVector(vector, arr, len); }
@@ -309,7 +268,7 @@ extern "C" {
 	// AssignVector Functions
 
 	NETLM_EXPORT void AssignVectorBool(std::vector<bool>* vector, bool* arr, int len) { AssignVector(vector, arr, len); }
-	NETLM_EXPORT void AssignVectorChar8(std::vector<char>* vector, char16_t* arr, int len) { AssignVector2(vector, arr, len); }
+	NETLM_EXPORT void AssignVectorChar8(std::vector<char>* vector, char* arr, int len) { AssignVector(vector, arr, len); }
 	NETLM_EXPORT void AssignVectorChar16(std::vector<char16_t>* vector, char16_t* arr, int len) { AssignVector(vector, arr, len); }
 	NETLM_EXPORT void AssignVectorInt8(std::vector<int8_t>* vector, int8_t* arr, int len) { AssignVector(vector, arr, len); }
 	NETLM_EXPORT void AssignVectorInt16(std::vector<int16_t>* vector, int16_t* arr, int len) { AssignVector(vector, arr, len); }
@@ -362,7 +321,7 @@ extern "C" {
 }
 
 extern "C" {
-	// Dyncall Functions
+	// Jit Functions
 
 	NETLM_EXPORT JitCall* NewCall(void* target, ManagedType* params, int count, ManagedType ret) {
 		if (target == nullptr)
@@ -401,10 +360,35 @@ extern "C" {
 	}
 
 	NETLM_EXPORT void* GetCallFunction(JitCall* call) {
-		return call->GetFunction();
+		return call ? call->GetFunction() : nullptr;
 	}
 
 	NETLM_EXPORT char* GetCallError(JitCall* call) {
-		return Memory::StringToHGlobalAnsi(call->GetError().data());
+		return Memory::StringToHGlobalAnsi(call ? call->GetError().data() : "Target invalid");
+	}
+
+	NETLM_EXPORT JitCallback* NewCallback(ManagedGuid guid, const char* name, void* delegate) {
+		MethodRef method = g_netlm.FindMethod(guid, name);
+		if (method == nullptr || delegate == nullptr)
+			return nullptr;
+
+		JitCallback* callback = new JitCallback(g_netlm.GetRuntime());
+		callback->GetJitFunc(method, &DotnetLanguageModule::DelegateCall, delegate);
+		++g_numberOfAllocs[type_id<JitCallback>];
+		return callback;
+	}
+
+	NETLM_EXPORT void DeleteCallback(JitCallback* callback) {
+		delete callback;
+		--g_numberOfAllocs[type_id<JitCallback>];
+		assert(g_numberOfAllocs[type_id<JitCallback>] != -1);
+	}
+
+	NETLM_EXPORT void* GetCallbackFunction(JitCallback* callback) {
+		return callback ? callback->GetFunction() : nullptr;
+	}
+
+	NETLM_EXPORT char* GetCallbackError(JitCallback* callback) {
+		return Memory::StringToHGlobalAnsi(callback ? callback->GetError().data() : "Method invalid");
 	}
 }

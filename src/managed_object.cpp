@@ -18,6 +18,14 @@ void ManagedObject::InvokeMethodRetInternal(ManagedHandle methodHandle, const vo
 	Managed.InvokeMethodRetFptr(_handle, methodHandle, parameters, static_cast<int32_t>(length), resultStorage);
 }
 
+void ManagedObject::InvokeDelegateInternal(ManagedHandle delegateHandle, const void** parameters, size_t length) {
+	Managed.InvokeDelegateFptr(delegateHandle, parameters, static_cast<int32_t>(length));
+}
+
+void ManagedObject::InvokeDelegateRetInternal(ManagedHandle delegateHandle, const void** parameters, size_t length, void* resultStorage) {
+	Managed.InvokeDelegateRetFptr(delegateHandle, parameters, static_cast<int32_t>(length), resultStorage);
+}
+
 void ManagedObject::SetFieldValueRaw(std::string_view fieldName, void* inValue) const {
 	auto name = String::New(fieldName);
 	Managed.SetFieldValueFptr(_handle, name, inValue);

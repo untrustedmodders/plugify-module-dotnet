@@ -3,13 +3,15 @@
 #include <type_traits>
 
 namespace netlm {
-	struct ManagedGuid {
-		uint64_t low;
-		uint64_t high;
+	extern "C" {
+		struct ManagedGuid {
+			uint64_t low;
+			uint64_t high;
 
-		bool operator==(const ManagedGuid&) const = default;
-		operator bool() const { return low || high; }
-	};
+			bool operator==(const ManagedGuid&) const = default;
+			operator bool() const { return low || high; }
+		};
+	}
 
 	static_assert(sizeof(ManagedGuid) == 16, "ManagedGuid size mismatch with C#");
 	static_assert(std::is_standard_layout_v<ManagedGuid>, "ManagedGuid is not standard layout");

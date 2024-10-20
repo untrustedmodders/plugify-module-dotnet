@@ -151,5 +151,10 @@
         GetCallFunction;
         GetCallError;
 
+        NewCallback;
+        DeleteCallback;
+        GetCallbackFunction;
+        GetCallbackError;
+
     local: *;
 };

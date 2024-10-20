@@ -299,6 +299,8 @@ void HostInstance::LoadManagedFunctions(const fs::path& assemblyPath) {
 	Managed.CreateObjectFptr = GetDelegate<CreateObjectFn>(path, NETLM_NSTR("Plugify.ManagedObject, Plugify"), NETLM_NSTR("CreateObject"));
 	Managed.InvokeMethodFptr = GetDelegate<InvokeMethodFn>(path, NETLM_NSTR("Plugify.ManagedObject, Plugify"), NETLM_NSTR("InvokeMethod"));
 	Managed.InvokeMethodRetFptr = GetDelegate<InvokeMethodRetFn>(path, NETLM_NSTR("Plugify.ManagedObject, Plugify"), NETLM_NSTR("InvokeMethodRet"));
+	Managed.InvokeDelegateFptr = GetDelegate<InvokeDelegateFn>(path, NETLM_NSTR("Plugify.ManagedObject, Plugify"), NETLM_NSTR("InvokeDelegate"));
+	Managed.InvokeDelegateRetFptr = GetDelegate<InvokeDelegateRetFn>(path, NETLM_NSTR("Plugify.ManagedObject, Plugify"), NETLM_NSTR("InvokeDelegateRet"));
 	Managed.SetFieldValueFptr = GetDelegate<SetFieldValueFn>(path, NETLM_NSTR("Plugify.ManagedObject, Plugify"), NETLM_NSTR("SetFieldValue"));
 	Managed.GetFieldValueFptr = GetDelegate<GetFieldValueFn>(path, NETLM_NSTR("Plugify.ManagedObject, Plugify"), NETLM_NSTR("GetFieldValue"));
 	Managed.GetFieldPointerFptr = GetDelegate<GetFieldPointerFn>(path, NETLM_NSTR("Plugify.ManagedObject, Plugify"), NETLM_NSTR("GetFieldPointer"));

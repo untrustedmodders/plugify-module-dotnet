@@ -148,3 +148,8 @@ NewCall
 DeleteCall
 GetCallFunction
 GetCallError
+
+NewCallback
+DeleteCallback
+GetCallbackFunction
+GetCallbackError
