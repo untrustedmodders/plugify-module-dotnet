@@ -7,7 +7,7 @@ internal class UniqueIdList<T>
 {
 	private readonly Dictionary<nint, T> _objects = new();
 
-	public nint Add(T? obj)
+	internal nint Add(T? obj)
 	{
 		if (obj == null)
 		{
@@ -19,12 +19,12 @@ internal class UniqueIdList<T>
 		return handle;
 	}
 
-	public bool TryGetValue(nint handle, [MaybeNullWhen(false)] out T obj)
+	internal bool TryGetValue(nint handle, [MaybeNullWhen(false)] out T obj)
 	{
 		return _objects.TryGetValue(handle, out obj);
 	}
 
-	public void Clear()
+	internal void Clear()
 	{
 		_objects.Clear();
 	}

@@ -124,7 +124,7 @@ internal static class ManagedObject
 	}
 
 	[UnmanagedCallersOnly]
-	public static void DestroyObject(nint objectHandle)
+	private static void DestroyObject(nint objectHandle)
 	{
 		try
 		{
@@ -238,10 +238,8 @@ internal static class ManagedObject
 			}*/
 
 			Type returnType = methodInfo.ReturnType;
-			
-			bool useAnsi = returnType.IsChar() && TypeUtils.IsUseAnsi(methodInfo.ReturnTypeCustomAttributes.GetCustomAttributes(false));
 
-			Marshalling.MarshalReturnValue(returnValue, returnType, resultStorage, useAnsi);
+			Marshalling.MarshalReturnValue(returnValue, returnType, resultStorage);
 		}
 		catch (Exception e)
 		{
@@ -264,7 +262,7 @@ internal static class ManagedObject
 			
 			if (target == null)
 			{
-				LogMessage($"Cannot invoke method {methodInfo.Name} on a null type.", MessageLevel.Error);
+				LogMessage($"Cannot invoke method {methodInfo.Name} on object with handle {objectHandle}. Target was null.", MessageLevel.Error);
 				return;
 			}
 
@@ -315,10 +313,8 @@ internal static class ManagedObject
 			}*/
 			
 			Type returnType = methodInfo.ReturnType;
-			
-			bool useAnsi = returnType.IsChar() && TypeUtils.IsUseAnsi(methodInfo.ReturnTypeCustomAttributes.GetCustomAttributes(false));
 
-			Marshalling.MarshalReturnValue(returnValue, returnType, resultStorage, useAnsi);
+			Marshalling.MarshalReturnValue(returnValue, returnType, resultStorage);
 		}
 		catch (Exception e)
 		{
@@ -326,6 +322,69 @@ internal static class ManagedObject
 		}
 	}
 
+	[UnmanagedCallersOnly]
+	private static void InvokeDelegate(nint delegateHandle, nint parameterPtr, int parameterCount)
+	{
+		try
+		{
+			if (GCHandle.FromIntPtr(delegateHandle).Target is not Delegate target)
+			{
+				LogMessage($"Cannot invoke delegate with handle {delegateHandle}.", MessageLevel.Error);
+				return;
+			}
+
+			MethodInfo methodInfo = target.Method;
+			
+			//var targetType = target.GetType();
+			//var methodInfo = TryGetMethodInfo(targetType, methodName, parameterTypes, parameterCount, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+			var parameters = Marshalling.MarshalParameterArray(parameterPtr, parameterCount, methodInfo);
+
+			target.DynamicInvoke(parameters);
+			
+			Marshalling.MarshalParameterRefs(parameterPtr, parameterCount, methodInfo, parameters);
+		}
+		catch (Exception e)
+		{
+			HandleException(e);
+		}
+	}
+
+	[UnmanagedCallersOnly]
+	private static void InvokeDelegateRet(nint delegateHandle, nint parameterPtr, int parameterCount, nint resultStorage)
+	{
+		try
+		{
+			if (GCHandle.FromIntPtr(delegateHandle).Target is not Delegate target)
+			{
+				LogMessage($"Cannot invoke delegate with handle {delegateHandle}.", MessageLevel.Error);
+				return;
+			}
+
+			MethodInfo methodInfo = target.Method;
+            
+			//var targetType = target.GetType();
+			//var methodInfo = TryGetMethodInfo(targetType, methodName, parameterTypes, parameterCount, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+			var parameters = Marshalling.MarshalParameterArray(parameterPtr, parameterCount, methodInfo);
+			
+			object? returnValue = target.DynamicInvoke(parameters);
+
+			Marshalling.MarshalParameterRefs(parameterPtr, parameterCount, methodInfo, parameters);
+			
+			/*if (returnValue == null)
+			{
+				return;
+			}*/
+			
+			Type returnType = methodInfo.ReturnType;
+			
+			Marshalling.MarshalReturnValue(returnValue, returnType, resultStorage);
+		}
+		catch (Exception e)
+		{
+			HandleException(e);
+		}
+	}
+	
 	[UnmanagedCallersOnly]
 	private static void SetFieldValue(nint targetPtr, NativeString fieldName, nint inValue)
 	{

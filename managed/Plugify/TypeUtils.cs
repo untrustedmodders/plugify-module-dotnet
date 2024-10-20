@@ -66,9 +66,9 @@ internal static class TypeUtils
 	private static readonly Dictionary<Type, ValueType> TypeSwitcher = new()
 	{
 		[typeof(void)] = ValueType.Void,
-		[typeof(bool)] = ValueType.Bool,
-		//[typeof(char)] = ValueType.Char8,
-		[typeof(char)] = ValueType.Char16,
+		[typeof(Bool8)] = ValueType.Bool,
+		[typeof(Char8)] = ValueType.Char8,
+		[typeof(Char16)] = ValueType.Char16,
 		[typeof(sbyte)] = ValueType.Int8,
 		[typeof(short)] = ValueType.Int16,
 		[typeof(int)] = ValueType.Int32,
@@ -86,9 +86,9 @@ internal static class TypeUtils
 		// std::string
 		[typeof(string)] = ValueType.String,
 		// std::vector
-		[typeof(bool[])] = ValueType.ArrayBool,
-		//[typeof(char[])] = ValueType.ArrayChar8,
-		[typeof(char[])] = ValueType.ArrayChar16,
+		[typeof(Bool8[])] = ValueType.ArrayBool,
+		[typeof(Char8[])] = ValueType.ArrayChar8,
+		[typeof(Char16[])] = ValueType.ArrayChar16,
 		[typeof(sbyte[])] = ValueType.ArrayInt8,
 		[typeof(short[])] = ValueType.ArrayInt16,
 		[typeof(int[])] = ValueType.ArrayInt32,
@@ -119,18 +119,5 @@ internal static class TypeUtils
 		}
 
 		return type.IsDelegate() ? ValueType.Function : ValueType.Invalid;
-	}
-
-	internal static bool IsUseAnsi(object[] customAttributes)
-	{
-		foreach (var attribute in customAttributes)
-		{
-			if (attribute is CharSetAttribute a)
-			{
-				return a.Value is CharSet.Ansi;
-			}
-		}
-
-		return false;
 	}
 }

@@ -2,16 +2,16 @@
 
 internal class TypeNotFoundException : Exception
 {
-	public TypeNotFoundException()
+	internal TypeNotFoundException()
 	{
 	}
 
-	public TypeNotFoundException(string message)
+	internal TypeNotFoundException(string message)
 		: base(message)
 	{
 	}
 
-	public TypeNotFoundException(string message, Exception inner)
+	internal TypeNotFoundException(string message, Exception inner)
 		: base(message, inner)
 	{
 	}

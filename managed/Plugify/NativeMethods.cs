@@ -65,15 +65,15 @@ public static partial class NativeMethods
 
 	[LibraryImport(DllName)]
 	[SuppressGCTransition]
-	public static partial nint CreateVectorBool([MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.I1)] [In] bool[] arr, int len);
+	public static partial nint CreateVectorBool([In] Bool8[] arr, int len);
 
 	[LibraryImport(DllName)]
 	[SuppressGCTransition]
-	public static partial nint CreateVectorChar8([MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U2)] [In] char[] arr, int len);
+	public static partial nint CreateVectorChar8([In] Char8[] arr, int len);
 
 	[LibraryImport(DllName)]
 	[SuppressGCTransition]
-	public static partial nint CreateVectorChar16([MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U2)] [In] char[] arr, int len);
+	public static partial nint CreateVectorChar16([In] Char16[] arr, int len);
 
 	[LibraryImport(DllName)]
 	[SuppressGCTransition]
@@ -257,15 +257,15 @@ public static partial class NativeMethods
 
 	[LibraryImport(DllName)]
 	[SuppressGCTransition]
-	public static partial void GetVectorDataBool(nint ptr, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.I1)] [In, Out] bool[] arr);
+	public static partial void GetVectorDataBool(nint ptr, [In, Out] Bool8[] arr);
 
 	[LibraryImport(DllName)]
 	[SuppressGCTransition]
-	public static partial void GetVectorDataChar8(nint ptr, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U2)] [In, Out] char[] arr);
+	public static partial void GetVectorDataChar8(nint ptr, [In, Out] Char8[] arr);
 
 	[LibraryImport(DllName)]
 	[SuppressGCTransition]
-	public static partial void GetVectorDataChar16(nint ptr, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U2)] [In, Out] char[] arr);
+	public static partial void GetVectorDataChar16(nint ptr, [In, Out] Char16[] arr);
 
 	[LibraryImport(DllName)]
 	[SuppressGCTransition]
@@ -321,15 +321,15 @@ public static partial class NativeMethods
 	
 	[LibraryImport(DllName)]
 	[SuppressGCTransition]
-	public static partial void ConstructVectorBool(nint ptr, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.I1)] [In] bool[] arr, int len);
+	public static partial void ConstructVectorBool(nint ptr, [In] Bool8[] arr, int len);
 
 	[LibraryImport(DllName)]
 	[SuppressGCTransition]
-	public static partial void ConstructVectorChar8(nint ptr, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U2)] [In] char[] arr, int len);
+	public static partial void ConstructVectorChar8(nint ptr, [In] Char8[] arr, int len);
 
 	[LibraryImport(DllName)]
 	[SuppressGCTransition]
-	public static partial void ConstructVectorChar16(nint ptr, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U2)] [In] char[] arr, int len);
+	public static partial void ConstructVectorChar16(nint ptr, [In] Char16[] arr, int len);
 
 	[LibraryImport(DllName)]
 	[SuppressGCTransition]
@@ -385,15 +385,15 @@ public static partial class NativeMethods
 	
 	[LibraryImport(DllName)]
 	[SuppressGCTransition]
-	public static partial void AssignVectorBool(nint ptr, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.I1)] [In] bool[] arr, int len);
+	public static partial void AssignVectorBool(nint ptr, [In] Bool8[] arr, int len);
 
 	[LibraryImport(DllName)]
 	[SuppressGCTransition]
-	public static partial void AssignVectorChar8(nint ptr, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U2)] [In] char[] arr, int len);
+	public static partial void AssignVectorChar8(nint ptr, [In] Char8[] arr, int len);
 
 	[LibraryImport(DllName)]
 	[SuppressGCTransition]
-	public static partial void AssignVectorChar16(nint ptr, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U2)] [In] char[] arr, int len);
+	public static partial void AssignVectorChar16(nint ptr, [In] Char16[] arr, int len);
 
 	[LibraryImport(DllName)]
 	[SuppressGCTransition]

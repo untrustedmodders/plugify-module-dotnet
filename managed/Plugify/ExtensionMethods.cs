@@ -6,10 +6,4 @@ internal static class ExtensionMethods
 	{
 		return typeof(MulticastDelegate).IsAssignableFrom(type.BaseType);
 	}
-	
-	internal static bool IsChar(this Type type)
-	{
-		var elementType = type.IsByRef ? type.GetElementType() : type;
-		return elementType == typeof(char) || elementType == typeof(char[]);
-	}
 }

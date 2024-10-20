@@ -541,7 +541,7 @@ internal static class TypeInterface
 			if (!CachedTypes.TryGetValue(typeHandle, out var type))
 				return ManagedType.Invalid;
 
-			return new ManagedType(type, type.GetCustomAttributes(false));
+			return new ManagedType(type);
 		}
 		catch (Exception e)
 		{
