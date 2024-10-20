@@ -138,7 +138,7 @@ VAL_TYPESCAST_MAP = {
     'ptr64': '',
     'float': '',
     'double': '',
-    'function': 'Marshalling.GetDelegateForMarshalling',
+    'function': 'Marshalling.GetFunctionPointerForDelegate',
     'string': 'NativeMethods.CreateString',
     'bool*': 'NativeMethods.CreateVectorBool',
     'char8*': 'NativeMethods.CreateVectorChar8',

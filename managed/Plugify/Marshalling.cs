@@ -144,7 +144,7 @@ public static class Marshalling
 			case ValueType.Function:
 				if (paramValue != null)
 				{
-					*(nint*)outValue = GetDelegateForMarshalling((Delegate)paramValue);
+					*(nint*)outValue = GetFunctionPointerForDelegate((Delegate)paramValue);
 				}
 				else
 				{
@@ -624,7 +624,7 @@ public static class Marshalling
 							break;
 						case ValueType.Function:
 						{
-							object ptr = GetDelegateForMarshalling((Delegate)paramValue);
+							object ptr = GetFunctionPointerForDelegate((Delegate)paramValue);
 							p[index++] = Pin(ref ptr, pins);
 							break;
 						}
@@ -820,7 +820,7 @@ public static class Marshalling
 
 						case ValueType.Function:
 						{
-							object ptr = GetDelegateForMarshalling((Delegate)paramValue);
+							object ptr = GetFunctionPointerForDelegate((Delegate)paramValue);
 							p[index++] = Pin(ref ptr, pins);
 							break;
 						}
@@ -1491,7 +1491,7 @@ public static class Marshalling
 		}
 	}
 
-	public static nint GetDelegateForMarshalling(Delegate d)
+	public static nint GetFunctionPointerForDelegate(Delegate d)
 	{
 		if (CachedDelegates.TryGetValue(d, out var callback))
 		{
