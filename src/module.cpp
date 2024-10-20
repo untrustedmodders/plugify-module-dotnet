@@ -112,25 +112,10 @@ LoadResult DotnetLanguageModule::OnPluginLoad(PluginRef plugin) {
 		ValueType returnType = methodInfo.GetReturnType().GetManagedType().type;
 		ValueType methodReturnType = method.GetReturnType().GetType();
 		if (returnType != methodReturnType) {
-			// Adjust char return
-			if (returnType == plugify::ValueType::Char16)
-				for (auto& attributes: methodInfo.GetReturnAttributes()) {
-					if (attributes.GetFieldValue<CharSet>("Value") == CharSet::Ansi) {
-						goto good_return;
-					}
-				}
-			else if (returnType == plugify::ValueType::ArrayChar16)
-				for (auto& attributes: methodInfo.GetReturnAttributes()) {
-					if (attributes.GetFieldValue<CharSet>("Value") == CharSet::Ansi) {
-						goto good_return;
-					}
-				}
-
 			methodErrors.emplace_back(std::format("Method '{}' has invalid return type '{}' when it should have '{}'", method.GetFunctionName(), ValueUtils::ToString(methodReturnType), ValueUtils::ToString(returnType)));
 			continue;
 		}
 
-	good_return:
 		const auto& parameterTypes = methodInfo.GetParameterTypes();
 
 		size_t paramCount = parameterTypes.size();
@@ -146,25 +131,8 @@ LoadResult DotnetLanguageModule::OnPluginLoad(PluginRef plugin) {
 			ValueType paramType = parameterTypes[i].GetManagedType().type;
 			ValueType methodParamType = paramTypes[i].GetType();
 			if (paramType != methodParamType) {
-				// Adjust char param
-				if (paramType == plugify::ValueType::Char16)
-					for (auto& attributes: methodInfo.GetParameterAttributes(i)) {
-						if (attributes.GetFieldValue<CharSet>("Value") == CharSet::Ansi) {
-							goto good_param;
-						}
-					}
-				else if (paramType == plugify::ValueType::ArrayChar16)
-					for (auto& attributes:  methodInfo.GetParameterAttributes(i)) {
-						if (attributes.GetFieldValue<CharSet>("Value") == CharSet::Ansi) {
-							goto good_param;
-						}
-					}
-
-
 				methodFail = true;
 				methodErrors.emplace_back(std::format("Method '{}' has invalid param type '{}' at index {} when it should have '{}'", method.GetFunctionName(), ValueUtils::ToString(methodParamType), i, ValueUtils::ToString(paramType)));
-
-			good_param:
 				continue;
 			}
 		}
