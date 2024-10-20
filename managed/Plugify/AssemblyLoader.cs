@@ -67,6 +67,19 @@ internal static class AssemblyLoader
 		return false;
 	}
 	
+	internal static bool TryGetGuid(Assembly assembly, out Guid guid)
+	{
+		var assemblyName = assembly.GetName();
+		if (AssemblyCache.TryGetValue(assemblyName.Name!, out var assemblyInstance))
+		{
+			guid = assemblyInstance.Id;
+			return true;
+		}
+
+		guid = Guid.Empty;
+		return false;
+	}
+	
 	internal static Assembly? ResolveAssembly(AssemblyLoadContext? assemblyLoadContext, AssemblyName assemblyName)
 	{
 		try
