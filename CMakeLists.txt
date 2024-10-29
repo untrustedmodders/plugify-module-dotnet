@@ -45,7 +45,7 @@ add_subdirectory(external/plugify)
 # C# Language Module for Plugify
 #
 file(GLOB_RECURSE NETLM_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "src/*.cpp")
-set(NETLM_PCH_FILE "src/pch.h")
+set(NETLM_PCH_FILE "src/pch.hpp")
 
 add_library(${PROJECT_NAME} SHARED ${NETLM_SOURCES})
 
