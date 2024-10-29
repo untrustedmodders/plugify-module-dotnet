@@ -1,7 +1,7 @@
-#include "property_info.h"
-#include "attribute.h"
-#include "type.h"
-#include "managed_functions.h"
+#include "property_info.hpp"
+#include "attribute.hpp"
+#include "managed_functions.hpp"
+#include "type.hpp"
 
 using namespace netlm;
 

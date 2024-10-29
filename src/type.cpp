@@ -1,6 +1,6 @@
-#include "type.h"
-#include "attribute.h"
-#include "managed_functions.h"
+#include "type.hpp"
+#include "attribute.hpp"
+#include "managed_functions.hpp"
 
 using namespace netlm;
 

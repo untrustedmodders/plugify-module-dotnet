@@ -1,7 +1,7 @@
 #include "method_info.h"
-#include "type.h"
-#include "attribute.h"
-#include "managed_functions.h"
+#include "attribute.hpp"
+#include "managed_functions.hpp"
+#include "type.hpp"
 
 using namespace netlm;
 

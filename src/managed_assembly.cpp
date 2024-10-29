@@ -1,6 +1,6 @@
 #include "managed_assembly.h"
-#include "managed_functions.h"
-#include "utils.h"
+#include "managed_functions.hpp"
+#include "utils.hpp"
 
 using namespace netlm;
 

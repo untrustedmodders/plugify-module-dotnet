@@ -1,12 +1,12 @@
 #pragma once
 
-#include "core.h"
-#include "field_info.h"
-#include "managed_object.h"
-#include "managed_type.h"
+#include "core.hpp"
+#include "field_info.hpp"
+#include "managed_object.hpp"
+#include "managed_type.hpp"
 #include "method_info.h"
-#include "native_string.h"
-#include "property_info.h"
+#include "native_string.hpp"
+#include "property_info.hpp"
 
 namespace netlm {
 	class Type {

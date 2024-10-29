@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core.h"
+#include "core.hpp"
 #include "managed_assembly.h"
 
 namespace plugify {

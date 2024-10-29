@@ -1,6 +1,6 @@
-#include "memory.h"
-#include "native_string.h"
-#include "utils.h"
+#include "native_string.hpp"
+#include "memory.hpp"
+#include "utils.hpp"
 
 using namespace netlm;
 

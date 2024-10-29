@@ -1,6 +1,6 @@
 #pragma once
 
-#include <plugify/method.h>
+#include <plugify/method.hpp>
 
 namespace netlm {
 	struct ManagedType {

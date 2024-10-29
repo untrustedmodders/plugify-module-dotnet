@@ -17,6 +17,7 @@
         AssignString;
         FreeString;
         DeleteString;
+        DestroyString;
 
         CreateVectorBool;
         CreateVectorChar8;
@@ -145,6 +146,22 @@
         FreeVectorFloat;
         FreeVectorDouble;
         FreeVectorString;
+
+        DestroyVectorBool;
+        DestroyVectorChar8;
+        DestroyVectorChar16;
+        DestroyVectorInt8;
+        DestroyVectorInt16;
+        DestroyVectorInt32;
+        DestroyVectorInt64;
+        DestroyVectorUInt8;
+        DestroyVectorUInt16;
+        DestroyVectorUInt32;
+        DestroyVectorUInt64;
+        DestroyVectorIntPtr;
+        DestroyVectorFloat;
+        DestroyVectorDouble;
+        DestroyVectorString;
 
         NewCall;
         DeleteCall;

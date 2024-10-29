@@ -1,5 +1,5 @@
-#include "memory.h"
-#include "utils.h"
+#include "memory.hpp"
+#include "utils.hpp"
 
 #if NETLM_PLATFORM_WINDOWS
 #include <strsafe.h>

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core.h"
+#include "core.hpp"
 #include "method_info.h"
 
 namespace netlm {

@@ -1,5 +1,5 @@
-#include "gc.h"
-#include "managed_functions.h"
+#include "gc.hpp"
+#include "managed_functions.hpp"
 
 using namespace netlm;
 

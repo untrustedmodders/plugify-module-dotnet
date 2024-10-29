@@ -1,10 +1,10 @@
-#include <plugify/language_module.h>
-#include <plugify/method.h>
-#include <plugify/plugin.h>
-#include <plugify/jit/call.h>
-#include <plugify/jit/callback.h>
+#include <plugify/language_module.hpp>
+#include <plugify/method.hpp>
+#include <plugify/plugin.hpp>
+#include <plugify/jit/call.hpp>
+#include <plugify/jit/callback.hpp>
 
-#include "host_instance.h"
+#include "host_instance.hpp"
 
 #include <asmjit/asmjit.h>
 #include <cpptrace/cpptrace.hpp>

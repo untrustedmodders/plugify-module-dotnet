@@ -1,11 +1,23 @@
-#include "core.h"
-#include "memory.h"
-#include "module.h"
-#include "managed_type.h"
+#include "core.hpp"
+#include "managed_type.hpp"
+#include "memory.hpp"
+#include "module.hpp"
 #include <module_export.h>
-#include <plugify/jit/call.h>
-#include <plugify/jit/helpers.h>
-#include <plugify/string.h>
+#include <plugify/jit/call.hpp>
+#include <plugify/jit/helpers.hpp>
+#include <plugify/string.hpp>
+#include <plugify/vector.hpp>
+
+#if defined(__clang__)
+#define NETLM_FORCE_INLINE [[gnu::always_inline]] [[gnu::gnu_inline]] extern inline
+#elif defined(__GNUC__)
+#define NETLM_FORCE_INLINE [[gnu::always_inline]] inline
+#elif defined(_MSC_VER)
+#pragma warning(error: 4714)
+#define NETLM_FORCE_INLINE __forceinline
+#else
+#define NETLM_FORCE_INLINE inline
+#endif
 
 using namespace netlm;
 using namespace plugify;
@@ -16,21 +28,21 @@ std::map<type_index, int32_t> g_numberOfAllocs = { };
 std::string_view GetTypeName(type_index type) {
 	static std::map<type_index, std::string_view> typeNameMap = {
 		{type_id<plg::string>, "String"},
-		{type_id<std::vector<bool>>, "VectorBool"},
-		{type_id<std::vector<char>>, "VectorChar8"},
-		{type_id<std::vector<char16_t>>, "VectorChar16"},
-		{type_id<std::vector<int8_t>>, "VectorInt8"},
-		{type_id<std::vector<int16_t>>, "VectorInt16"},
-		{type_id<std::vector<int32_t>>, "VectorInt32"},
-		{type_id<std::vector<int64_t>>, "VectorInt64"},
-		{type_id<std::vector<uint8_t>>, "VectorUInt8"},
-		{type_id<std::vector<uint16_t>>, "VectorUInt16"},
-		{type_id<std::vector<uint32_t>>, "VectorUInt32"},
-		{type_id<std::vector<uint64_t>>, "VectorUInt64"},
-		{type_id<std::vector<uintptr_t>>, "VectorUIntPtr"},
-		{type_id<std::vector<float>>, "VectorFloat"},
-		{type_id<std::vector<double>>, "VectorDouble"},
-		{type_id<std::vector<plg::string>>, "VectorString"},
+		{type_id<plg::vector<bool>>, "VectorBool"},
+		{type_id<plg::vector<char>>, "VectorChar8"},
+		{type_id<plg::vector<char16_t>>, "VectorChar16"},
+		{type_id<plg::vector<int8_t>>, "VectorInt8"},
+		{type_id<plg::vector<int16_t>>, "VectorInt16"},
+		{type_id<plg::vector<int32_t>>, "VectorInt32"},
+		{type_id<plg::vector<int64_t>>, "VectorInt64"},
+		{type_id<plg::vector<uint8_t>>, "VectorUInt8"},
+		{type_id<plg::vector<uint16_t>>, "VectorUInt16"},
+		{type_id<plg::vector<uint32_t>>, "VectorUInt32"},
+		{type_id<plg::vector<uint64_t>>, "VectorUInt64"},
+		{type_id<plg::vector<uintptr_t>>, "VectorUIntPtr"},
+		{type_id<plg::vector<float>>, "VectorFloat"},
+		{type_id<plg::vector<double>>, "VectorDouble"},
+		{type_id<plg::vector<plg::string>>, "VectorString"},
 		{type_id<JitCall>, "JitCall"},
 		{type_id<JitCallback>, "JitCallback"},
 	};
@@ -42,59 +54,64 @@ std::string_view GetTypeName(type_index type) {
 }
 
 template<typename T>
-static std::vector<T>* CreateVector(T* arr, int len) requires(!std::is_same_v<T, char*>) {
-	auto vector = len == 0 ? new std::vector<T>() : new std::vector<T>(arr, arr + len);
+NETLM_FORCE_INLINE plg::vector<T>* CreateVector(T* arr, int len) requires(!std::is_same_v<T, char*>) {
+	auto vector = len == 0 ? new plg::vector<T>() : new plg::vector<T>(arr, arr + len);
 	assert(vector);
-	++g_numberOfAllocs[type_id<std::vector<T>>];
+	++g_numberOfAllocs[type_id<plg::vector<T>>];
 	return vector;
 }
 
 template<typename T>
-static std::vector<plg::string>* CreateVector(T* arr, int len) requires(std::is_same_v<T, char*>) {
-	auto vector = len == 0 ? new std::vector<plg::string>() : new std::vector<plg::string>(arr, arr + len);
+NETLM_FORCE_INLINE plg::vector<plg::string>* CreateVector(T* arr, int len) requires(std::is_same_v<T, char*>) {
+	auto vector = len == 0 ? new plg::vector<plg::string>() : new plg::vector<plg::string>(arr, arr + len);
 	assert(vector);
-	++g_numberOfAllocs[type_id<std::vector<plg::string>>];
+	++g_numberOfAllocs[type_id<plg::vector<plg::string>>];
 	return vector;
 }
 
 template<typename T>
-static std::vector<T>* AllocateVector() requires(!std::is_same_v<T, char*>) {
-	auto vector = static_cast<std::vector<T>*>(std::malloc(sizeof(std::vector<T>)));
+NETLM_FORCE_INLINE plg::vector<T>* AllocateVector() requires(!std::is_same_v<T, char*>) {
+	auto vector = static_cast<plg::vector<T>*>(std::malloc(sizeof(plg::vector<T>)));
 	assert(vector);
-	++g_numberOfMalloc[type_id<std::vector<T>>];
+	++g_numberOfMalloc[type_id<plg::vector<T>>];
 	return vector;
 }
 
 template<typename T>
-static std::vector<plg::string>* AllocateVector() requires(std::is_same_v<T, char*>) {
-	auto vector = static_cast<std::vector<plg::string>*>(std::malloc(sizeof(std::vector<plg::string>)));
+NETLM_FORCE_INLINE plg::vector<plg::string>* AllocateVector() requires(std::is_same_v<T, char*>) {
+	auto vector = static_cast<plg::vector<plg::string>*>(std::malloc(sizeof(plg::vector<plg::string>)));
 	assert(vector);
-	++g_numberOfMalloc[type_id<std::vector<plg::string>>];
+	++g_numberOfMalloc[type_id<plg::vector<plg::string>>];
 	return vector;
 }
 
 template<typename T>
-static void DeleteVector(std::vector<T>* vector) {
+NETLM_FORCE_INLINE void DeleteVector(plg::vector<T>* vector) {
 	delete vector;
-	--g_numberOfAllocs[type_id<std::vector<T>>];
-	assert(g_numberOfAllocs[type_id<std::vector<T>>] != -1);
+	--g_numberOfAllocs[type_id<plg::vector<T>>];
+	assert(g_numberOfAllocs[type_id<plg::vector<T>>] != -1);
 }
 
 template<typename T>
-static void FreeVector(std::vector<T>* vector) {
-	vector->~vector();
+NETLM_FORCE_INLINE void FreeVector(plg::vector<T>* vector) {
+	vector->~vector_base();
 	std::free(vector);
-	--g_numberOfMalloc[type_id<std::vector<T>>];
-	assert(g_numberOfMalloc[type_id<std::vector<T>>] != -1);
+	--g_numberOfMalloc[type_id<plg::vector<T>>];
+	assert(g_numberOfMalloc[type_id<plg::vector<T>>] != -1);
 }
 
 template<typename T>
-static int GetVectorSize(std::vector<T>* vector) {
+NETLM_FORCE_INLINE void DestroyVector(plg::vector<T>* vector) {
+	vector->~vector_base();
+}
+
+template<typename T>
+NETLM_FORCE_INLINE int GetVectorSize(plg::vector<T>* vector) {
 	return static_cast<int>(vector->size());
 }
 
 template<typename T>
-static void AssignVector(std::vector<T>* vector, T* arr, int len) requires(!std::is_same_v<T, char*>) {
+NETLM_FORCE_INLINE void AssignVector(plg::vector<T>* vector, T* arr, int len) requires(!std::is_same_v<T, char*>) {
 	if (arr == nullptr || len == 0)
 		vector->clear();
 	else
@@ -102,7 +119,7 @@ static void AssignVector(std::vector<T>* vector, T* arr, int len) requires(!std:
 }
 
 template<typename T>
-static void AssignVector(std::vector<plg::string>* vector, T* arr, int len) requires(std::is_same_v<T, char*>) {
+NETLM_FORCE_INLINE void AssignVector(plg::vector<plg::string>* vector, T* arr, int len) requires(std::is_same_v<T, char*>) {
 	if (arr == nullptr || len == 0)
 		vector->clear();
 	else
@@ -110,14 +127,14 @@ static void AssignVector(std::vector<plg::string>* vector, T* arr, int len) requ
 }
 
 template<typename T>
-static void GetVectorData(std::vector<T>* vector, T* arr) requires(!std::is_same_v<T, char*>) {
+NETLM_FORCE_INLINE void GetVectorData(plg::vector<T>* vector, T* arr) requires(!std::is_same_v<T, char*>) {
 	for (size_t i = 0; i < vector->size(); ++i) {
 		arr[i] = (*vector)[i];
 	}
 }
 
 template<typename T>
-static void GetVectorData(std::vector<plg::string>* vector, T* arr) requires(std::is_same_v<T, char*>) {
+NETLM_FORCE_INLINE void GetVectorData(plg::vector<plg::string>* vector, T* arr) requires(std::is_same_v<T, char*>) {
 	for (size_t i = 0; i < vector->size(); ++i) {
 		Memory::FreeCoTaskMem(arr[i]);
 		arr[i] = Memory::StringToHGlobalAnsi((*vector)[i]);
@@ -125,13 +142,13 @@ static void GetVectorData(std::vector<plg::string>* vector, T* arr) requires(std
 }
 
 template<typename T>
-static void ConstructVector(std::vector<T>* vector, T* arr, int len) requires(!std::is_same_v<T, char*>) {
-	std::construct_at(vector, len == 0 ? std::vector<T>() : std::vector<T>(arr, arr + len));
+NETLM_FORCE_INLINE void ConstructVector(plg::vector<T>* vector, T* arr, int len) requires(!std::is_same_v<T, char*>) {
+	std::construct_at(vector, len == 0 ? plg::vector<T>() : plg::vector<T>(arr, arr + len));
 }
 
 template<typename T>
-static void ConstructVector(std::vector<plg::string>* vector, T* arr, int len) requires(std::is_same_v<T, char*>) {
-	std::construct_at(vector, len == 0 ? std::vector<plg::string>() : std::vector<plg::string>(arr, arr + len));
+NETLM_FORCE_INLINE void ConstructVector(plg::vector<plg::string>* vector, T* arr, int len) requires(std::is_same_v<T, char*>) {
+	std::construct_at(vector, len == 0 ? plg::vector<plg::string>() : plg::vector<plg::string>(arr, arr + len));
 }
 
 extern "C" {
@@ -176,148 +193,169 @@ extern "C" {
 		--g_numberOfAllocs[type_id<plg::string>];
 		assert(g_numberOfAllocs[type_id<plg::string>] != -1);
 	}
+	NETLM_EXPORT void DestroyString(plg::string* string) {
+		string->~basic_string();
+	}
 
 	// CreateVector Functions
-	NETLM_EXPORT std::vector<bool>* CreateVectorBool(bool* arr, int len) { return CreateVector(arr, len); }
-	NETLM_EXPORT std::vector<char>* CreateVectorChar8(char* arr, int len)  { return CreateVector(arr, len); }
-	NETLM_EXPORT std::vector<char16_t>* CreateVectorChar16(char16_t* arr, int len)  { return CreateVector(arr, len); }
-	NETLM_EXPORT std::vector<int8_t>* CreateVectorInt8(int8_t* arr, int len) { return CreateVector(arr, len); }
-	NETLM_EXPORT std::vector<int16_t>* CreateVectorInt16(int16_t* arr, int len) { return CreateVector(arr, len); }
-	NETLM_EXPORT std::vector<int32_t>* CreateVectorInt32(int32_t* arr, int len) { return CreateVector(arr, len); }
-	NETLM_EXPORT std::vector<int64_t>* CreateVectorInt64(int64_t* arr, int len) { return CreateVector(arr, len); }
-	NETLM_EXPORT std::vector<uint8_t>* CreateVectorUInt8(uint8_t* arr, int len) { return CreateVector(arr, len); }
-	NETLM_EXPORT std::vector<uint16_t>* CreateVectorUInt16(uint16_t* arr, int len) { return CreateVector(arr, len); }
-	NETLM_EXPORT std::vector<uint32_t>* CreateVectorUInt32(uint32_t* arr, int len) { return CreateVector(arr, len); }
-	NETLM_EXPORT std::vector<uint64_t>* CreateVectorUInt64(uint64_t* arr, int len) { return CreateVector(arr, len); }
-	NETLM_EXPORT std::vector<uintptr_t>* CreateVectorIntPtr(uintptr_t* arr, int len) { return CreateVector(arr, len); }
-	NETLM_EXPORT std::vector<float>* CreateVectorFloat(float* arr, int len) { return CreateVector(arr, len); }
-	NETLM_EXPORT std::vector<double>* CreateVectorDouble(double* arr, int len) { return CreateVector(arr, len); }
-	NETLM_EXPORT std::vector<plg::string>* CreateVectorString(char* arr[], int len) { return CreateVector(arr, len); }
+	NETLM_EXPORT plg::vector<bool>* CreateVectorBool(bool* arr, int len) { return CreateVector(arr, len); }
+	NETLM_EXPORT plg::vector<char>* CreateVectorChar8(char* arr, int len)  { return CreateVector(arr, len); }
+	NETLM_EXPORT plg::vector<char16_t>* CreateVectorChar16(char16_t* arr, int len)  { return CreateVector(arr, len); }
+	NETLM_EXPORT plg::vector<int8_t>* CreateVectorInt8(int8_t* arr, int len) { return CreateVector(arr, len); }
+	NETLM_EXPORT plg::vector<int16_t>* CreateVectorInt16(int16_t* arr, int len) { return CreateVector(arr, len); }
+	NETLM_EXPORT plg::vector<int32_t>* CreateVectorInt32(int32_t* arr, int len) { return CreateVector(arr, len); }
+	NETLM_EXPORT plg::vector<int64_t>* CreateVectorInt64(int64_t* arr, int len) { return CreateVector(arr, len); }
+	NETLM_EXPORT plg::vector<uint8_t>* CreateVectorUInt8(uint8_t* arr, int len) { return CreateVector(arr, len); }
+	NETLM_EXPORT plg::vector<uint16_t>* CreateVectorUInt16(uint16_t* arr, int len) { return CreateVector(arr, len); }
+	NETLM_EXPORT plg::vector<uint32_t>* CreateVectorUInt32(uint32_t* arr, int len) { return CreateVector(arr, len); }
+	NETLM_EXPORT plg::vector<uint64_t>* CreateVectorUInt64(uint64_t* arr, int len) { return CreateVector(arr, len); }
+	NETLM_EXPORT plg::vector<uintptr_t>* CreateVectorIntPtr(uintptr_t* arr, int len) { return CreateVector(arr, len); }
+	NETLM_EXPORT plg::vector<float>* CreateVectorFloat(float* arr, int len) { return CreateVector(arr, len); }
+	NETLM_EXPORT plg::vector<double>* CreateVectorDouble(double* arr, int len) { return CreateVector(arr, len); }
+	NETLM_EXPORT plg::vector<plg::string>* CreateVectorString(char* arr[], int len) { return CreateVector(arr, len); }
 
 	// AllocateVector Functions
-	NETLM_EXPORT std::vector<bool>* AllocateVectorBool() { return AllocateVector<bool>(); }
-	NETLM_EXPORT std::vector<char>* AllocateVectorChar8() { return AllocateVector<char>(); }
-	NETLM_EXPORT std::vector<char16_t>* AllocateVectorChar16() { return AllocateVector<char16_t>(); }
-	NETLM_EXPORT std::vector<int8_t>* AllocateVectorInt8() { return AllocateVector<int8_t>(); }
-	NETLM_EXPORT std::vector<int16_t>* AllocateVectorInt16() { return AllocateVector<int16_t>(); }
-	NETLM_EXPORT std::vector<int32_t>* AllocateVectorInt32() { return AllocateVector<int32_t>(); }
-	NETLM_EXPORT std::vector<int64_t>* AllocateVectorInt64() { return AllocateVector<int64_t>(); }
-	NETLM_EXPORT std::vector<uint8_t>* AllocateVectorUInt8() { return AllocateVector<uint8_t>(); }
-	NETLM_EXPORT std::vector<uint16_t>* AllocateVectorUInt16() { return AllocateVector<uint16_t>(); }
-	NETLM_EXPORT std::vector<uint32_t>* AllocateVectorUInt32() { return AllocateVector<uint32_t>(); }
-	NETLM_EXPORT std::vector<uint64_t>* AllocateVectorUInt64()  { return AllocateVector<uint64_t>(); }
-	NETLM_EXPORT std::vector<uintptr_t>* AllocateVectorIntPtr() { return AllocateVector<uintptr_t>(); }
-	NETLM_EXPORT std::vector<float>* AllocateVectorFloat() { return AllocateVector<float>(); }
-	NETLM_EXPORT std::vector<double>* AllocateVectorDouble() { return AllocateVector<double>(); }
-	NETLM_EXPORT std::vector<plg::string>* AllocateVectorString() { return AllocateVector<char*>(); }
+	NETLM_EXPORT plg::vector<bool>* AllocateVectorBool() { return AllocateVector<bool>(); }
+	NETLM_EXPORT plg::vector<char>* AllocateVectorChar8() { return AllocateVector<char>(); }
+	NETLM_EXPORT plg::vector<char16_t>* AllocateVectorChar16() { return AllocateVector<char16_t>(); }
+	NETLM_EXPORT plg::vector<int8_t>* AllocateVectorInt8() { return AllocateVector<int8_t>(); }
+	NETLM_EXPORT plg::vector<int16_t>* AllocateVectorInt16() { return AllocateVector<int16_t>(); }
+	NETLM_EXPORT plg::vector<int32_t>* AllocateVectorInt32() { return AllocateVector<int32_t>(); }
+	NETLM_EXPORT plg::vector<int64_t>* AllocateVectorInt64() { return AllocateVector<int64_t>(); }
+	NETLM_EXPORT plg::vector<uint8_t>* AllocateVectorUInt8() { return AllocateVector<uint8_t>(); }
+	NETLM_EXPORT plg::vector<uint16_t>* AllocateVectorUInt16() { return AllocateVector<uint16_t>(); }
+	NETLM_EXPORT plg::vector<uint32_t>* AllocateVectorUInt32() { return AllocateVector<uint32_t>(); }
+	NETLM_EXPORT plg::vector<uint64_t>* AllocateVectorUInt64()  { return AllocateVector<uint64_t>(); }
+	NETLM_EXPORT plg::vector<uintptr_t>* AllocateVectorIntPtr() { return AllocateVector<uintptr_t>(); }
+	NETLM_EXPORT plg::vector<float>* AllocateVectorFloat() { return AllocateVector<float>(); }
+	NETLM_EXPORT plg::vector<double>* AllocateVectorDouble() { return AllocateVector<double>(); }
+	NETLM_EXPORT plg::vector<plg::string>* AllocateVectorString() { return AllocateVector<char*>(); }
 
 
 	// GetVectorSize Functions
-	NETLM_EXPORT int GetVectorSizeBool(std::vector<bool>* vector) { return GetVectorSize(vector); }
-	NETLM_EXPORT int GetVectorSizeChar8(std::vector<char>* vector) { return GetVectorSize(vector); }
-	NETLM_EXPORT int GetVectorSizeChar16(std::vector<char16_t>* vector) { return GetVectorSize(vector); }
-	NETLM_EXPORT int GetVectorSizeInt8(std::vector<int8_t>* vector) { return GetVectorSize(vector); }
-	NETLM_EXPORT int GetVectorSizeInt16(std::vector<int16_t>* vector) { return GetVectorSize(vector); }
-	NETLM_EXPORT int GetVectorSizeInt32(std::vector<int32_t>* vector) { return GetVectorSize(vector); }
-	NETLM_EXPORT int GetVectorSizeInt64(std::vector<int64_t>* vector) { return GetVectorSize(vector); }
-	NETLM_EXPORT int GetVectorSizeUInt8(std::vector<uint8_t>* vector) { return GetVectorSize(vector); }
-	NETLM_EXPORT int GetVectorSizeUInt16(std::vector<uint16_t>* vector) { return GetVectorSize(vector); }
-	NETLM_EXPORT int GetVectorSizeUInt32(std::vector<uint32_t>* vector) { return GetVectorSize(vector); }
-	NETLM_EXPORT int GetVectorSizeUInt64(std::vector<uint64_t>* vector) { return GetVectorSize(vector); }
-	NETLM_EXPORT int GetVectorSizeIntPtr(std::vector<uintptr_t>* vector) { return GetVectorSize(vector); }
-	NETLM_EXPORT int GetVectorSizeFloat(std::vector<float>* vector) { return GetVectorSize(vector); }
-	NETLM_EXPORT int GetVectorSizeDouble(std::vector<double>* vector) { return GetVectorSize(vector); }
-	NETLM_EXPORT int GetVectorSizeString(std::vector<plg::string>* vector) { return GetVectorSize(vector); }
+	NETLM_EXPORT int GetVectorSizeBool(plg::vector<bool>* vector) { return GetVectorSize(vector); }
+	NETLM_EXPORT int GetVectorSizeChar8(plg::vector<char>* vector) { return GetVectorSize(vector); }
+	NETLM_EXPORT int GetVectorSizeChar16(plg::vector<char16_t>* vector) { return GetVectorSize(vector); }
+	NETLM_EXPORT int GetVectorSizeInt8(plg::vector<int8_t>* vector) { return GetVectorSize(vector); }
+	NETLM_EXPORT int GetVectorSizeInt16(plg::vector<int16_t>* vector) { return GetVectorSize(vector); }
+	NETLM_EXPORT int GetVectorSizeInt32(plg::vector<int32_t>* vector) { return GetVectorSize(vector); }
+	NETLM_EXPORT int GetVectorSizeInt64(plg::vector<int64_t>* vector) { return GetVectorSize(vector); }
+	NETLM_EXPORT int GetVectorSizeUInt8(plg::vector<uint8_t>* vector) { return GetVectorSize(vector); }
+	NETLM_EXPORT int GetVectorSizeUInt16(plg::vector<uint16_t>* vector) { return GetVectorSize(vector); }
+	NETLM_EXPORT int GetVectorSizeUInt32(plg::vector<uint32_t>* vector) { return GetVectorSize(vector); }
+	NETLM_EXPORT int GetVectorSizeUInt64(plg::vector<uint64_t>* vector) { return GetVectorSize(vector); }
+	NETLM_EXPORT int GetVectorSizeIntPtr(plg::vector<uintptr_t>* vector) { return GetVectorSize(vector); }
+	NETLM_EXPORT int GetVectorSizeFloat(plg::vector<float>* vector) { return GetVectorSize(vector); }
+	NETLM_EXPORT int GetVectorSizeDouble(plg::vector<double>* vector) { return GetVectorSize(vector); }
+	NETLM_EXPORT int GetVectorSizeString(plg::vector<plg::string>* vector) { return GetVectorSize(vector); }
 
 	// GetVectorData Functions
 
-	NETLM_EXPORT void GetVectorDataBool(std::vector<bool>* vector, bool* arr) { GetVectorData(vector, arr); }
-	NETLM_EXPORT void GetVectorDataChar8(std::vector<char>* vector, char* arr) { GetVectorData(vector, arr); }
-	NETLM_EXPORT void GetVectorDataChar16(std::vector<char16_t>* vector, char16_t* arr) { GetVectorData(vector, arr); }
-	NETLM_EXPORT void GetVectorDataInt8(std::vector<int8_t>* vector, int8_t* arr) { GetVectorData(vector, arr); }
-	NETLM_EXPORT void GetVectorDataInt16(std::vector<int16_t>* vector, int16_t* arr) { GetVectorData(vector, arr); }
-	NETLM_EXPORT void GetVectorDataInt32(std::vector<int32_t>* vector, int32_t* arr) { GetVectorData(vector, arr); }
-	NETLM_EXPORT void GetVectorDataInt64(std::vector<int64_t>* vector, int64_t* arr) { GetVectorData(vector, arr); }
-	NETLM_EXPORT void GetVectorDataUInt8(std::vector<uint8_t>* vector, uint8_t* arr) { GetVectorData(vector, arr); }
-	NETLM_EXPORT void GetVectorDataUInt16(std::vector<uint16_t>* vector, uint16_t* arr) { GetVectorData(vector, arr); }
-	NETLM_EXPORT void GetVectorDataUInt32(std::vector<uint32_t>* vector, uint32_t* arr) { GetVectorData(vector, arr); }
-	NETLM_EXPORT void GetVectorDataUInt64(std::vector<uint64_t>* vector, uint64_t* arr) { GetVectorData(vector, arr); }
-	NETLM_EXPORT void GetVectorDataIntPtr(std::vector<uintptr_t>* vector, uintptr_t* arr) { GetVectorData(vector, arr); }
-	NETLM_EXPORT void GetVectorDataFloat(std::vector<float>* vector, float* arr) { GetVectorData(vector, arr); }
-	NETLM_EXPORT void GetVectorDataDouble(std::vector<double>* vector, double* arr) { GetVectorData(vector, arr); }
-	NETLM_EXPORT void GetVectorDataString(std::vector<plg::string>* vector, char* arr[]) { GetVectorData(vector, arr); }
+	NETLM_EXPORT void GetVectorDataBool(plg::vector<bool>* vector, bool* arr) { GetVectorData(vector, arr); }
+	NETLM_EXPORT void GetVectorDataChar8(plg::vector<char>* vector, char* arr) { GetVectorData(vector, arr); }
+	NETLM_EXPORT void GetVectorDataChar16(plg::vector<char16_t>* vector, char16_t* arr) { GetVectorData(vector, arr); }
+	NETLM_EXPORT void GetVectorDataInt8(plg::vector<int8_t>* vector, int8_t* arr) { GetVectorData(vector, arr); }
+	NETLM_EXPORT void GetVectorDataInt16(plg::vector<int16_t>* vector, int16_t* arr) { GetVectorData(vector, arr); }
+	NETLM_EXPORT void GetVectorDataInt32(plg::vector<int32_t>* vector, int32_t* arr) { GetVectorData(vector, arr); }
+	NETLM_EXPORT void GetVectorDataInt64(plg::vector<int64_t>* vector, int64_t* arr) { GetVectorData(vector, arr); }
+	NETLM_EXPORT void GetVectorDataUInt8(plg::vector<uint8_t>* vector, uint8_t* arr) { GetVectorData(vector, arr); }
+	NETLM_EXPORT void GetVectorDataUInt16(plg::vector<uint16_t>* vector, uint16_t* arr) { GetVectorData(vector, arr); }
+	NETLM_EXPORT void GetVectorDataUInt32(plg::vector<uint32_t>* vector, uint32_t* arr) { GetVectorData(vector, arr); }
+	NETLM_EXPORT void GetVectorDataUInt64(plg::vector<uint64_t>* vector, uint64_t* arr) { GetVectorData(vector, arr); }
+	NETLM_EXPORT void GetVectorDataIntPtr(plg::vector<uintptr_t>* vector, uintptr_t* arr) { GetVectorData(vector, arr); }
+	NETLM_EXPORT void GetVectorDataFloat(plg::vector<float>* vector, float* arr) { GetVectorData(vector, arr); }
+	NETLM_EXPORT void GetVectorDataDouble(plg::vector<double>* vector, double* arr) { GetVectorData(vector, arr); }
+	NETLM_EXPORT void GetVectorDataString(plg::vector<plg::string>* vector, char* arr[]) { GetVectorData(vector, arr); }
 
 	// Construct Functions
 
-	NETLM_EXPORT void ConstructVectorBool(std::vector<bool>* vector, bool* arr, int len) { ConstructVector(vector, arr, len); }
-	NETLM_EXPORT void ConstructVectorChar8(std::vector<char>* vector, char* arr, int len) { ConstructVector(vector, arr, len); }
-	NETLM_EXPORT void ConstructVectorChar16(std::vector<char16_t>* vector, char16_t* arr, int len) { ConstructVector(vector, arr, len); }
-	NETLM_EXPORT void ConstructVectorInt8(std::vector<int8_t>* vector, int8_t* arr, int len) { ConstructVector(vector, arr, len); }
-	NETLM_EXPORT void ConstructVectorInt16(std::vector<int16_t>* vector, int16_t* arr, int len) { ConstructVector(vector, arr, len); }
-	NETLM_EXPORT void ConstructVectorInt32(std::vector<int32_t>* vector, int32_t* arr, int len) { ConstructVector(vector, arr, len); }
-	NETLM_EXPORT void ConstructVectorInt64(std::vector<int64_t>* vector, int64_t* arr, int len) { ConstructVector(vector, arr, len); }
-	NETLM_EXPORT void ConstructVectorUInt8(std::vector<uint8_t>* vector, uint8_t* arr, int len) { ConstructVector(vector, arr, len); }
-	NETLM_EXPORT void ConstructVectorUInt16(std::vector<uint16_t>* vector, uint16_t* arr, int len) { ConstructVector(vector, arr, len); }
-	NETLM_EXPORT void ConstructVectorUInt32(std::vector<uint32_t>* vector, uint32_t* arr, int len) { ConstructVector(vector, arr, len); }
-	NETLM_EXPORT void ConstructVectorUInt64(std::vector<uint64_t>* vector, uint64_t* arr, int len) { ConstructVector(vector, arr, len); }
-	NETLM_EXPORT void ConstructVectorIntPtr(std::vector<uintptr_t>* vector, uintptr_t* arr, int len) { ConstructVector(vector, arr, len); }
-	NETLM_EXPORT void ConstructVectorFloat(std::vector<float>* vector, float* arr, int len) { ConstructVector(vector, arr, len); }
-	NETLM_EXPORT void ConstructVectorDouble(std::vector<double>* vector, double* arr, int len) { ConstructVector(vector, arr, len); }
-	NETLM_EXPORT void ConstructVectorString(std::vector<plg::string>* vector, char* arr[], int len)  { ConstructVector(vector, arr, len); }
+	NETLM_EXPORT void ConstructVectorBool(plg::vector<bool>* vector, bool* arr, int len) { ConstructVector(vector, arr, len); }
+	NETLM_EXPORT void ConstructVectorChar8(plg::vector<char>* vector, char* arr, int len) { ConstructVector(vector, arr, len); }
+	NETLM_EXPORT void ConstructVectorChar16(plg::vector<char16_t>* vector, char16_t* arr, int len) { ConstructVector(vector, arr, len); }
+	NETLM_EXPORT void ConstructVectorInt8(plg::vector<int8_t>* vector, int8_t* arr, int len) { ConstructVector(vector, arr, len); }
+	NETLM_EXPORT void ConstructVectorInt16(plg::vector<int16_t>* vector, int16_t* arr, int len) { ConstructVector(vector, arr, len); }
+	NETLM_EXPORT void ConstructVectorInt32(plg::vector<int32_t>* vector, int32_t* arr, int len) { ConstructVector(vector, arr, len); }
+	NETLM_EXPORT void ConstructVectorInt64(plg::vector<int64_t>* vector, int64_t* arr, int len) { ConstructVector(vector, arr, len); }
+	NETLM_EXPORT void ConstructVectorUInt8(plg::vector<uint8_t>* vector, uint8_t* arr, int len) { ConstructVector(vector, arr, len); }
+	NETLM_EXPORT void ConstructVectorUInt16(plg::vector<uint16_t>* vector, uint16_t* arr, int len) { ConstructVector(vector, arr, len); }
+	NETLM_EXPORT void ConstructVectorUInt32(plg::vector<uint32_t>* vector, uint32_t* arr, int len) { ConstructVector(vector, arr, len); }
+	NETLM_EXPORT void ConstructVectorUInt64(plg::vector<uint64_t>* vector, uint64_t* arr, int len) { ConstructVector(vector, arr, len); }
+	NETLM_EXPORT void ConstructVectorIntPtr(plg::vector<uintptr_t>* vector, uintptr_t* arr, int len) { ConstructVector(vector, arr, len); }
+	NETLM_EXPORT void ConstructVectorFloat(plg::vector<float>* vector, float* arr, int len) { ConstructVector(vector, arr, len); }
+	NETLM_EXPORT void ConstructVectorDouble(plg::vector<double>* vector, double* arr, int len) { ConstructVector(vector, arr, len); }
+	NETLM_EXPORT void ConstructVectorString(plg::vector<plg::string>* vector, char* arr[], int len)  { ConstructVector(vector, arr, len); }
 
 	// AssignVector Functions
 
-	NETLM_EXPORT void AssignVectorBool(std::vector<bool>* vector, bool* arr, int len) { AssignVector(vector, arr, len); }
-	NETLM_EXPORT void AssignVectorChar8(std::vector<char>* vector, char* arr, int len) { AssignVector(vector, arr, len); }
-	NETLM_EXPORT void AssignVectorChar16(std::vector<char16_t>* vector, char16_t* arr, int len) { AssignVector(vector, arr, len); }
-	NETLM_EXPORT void AssignVectorInt8(std::vector<int8_t>* vector, int8_t* arr, int len) { AssignVector(vector, arr, len); }
-	NETLM_EXPORT void AssignVectorInt16(std::vector<int16_t>* vector, int16_t* arr, int len) { AssignVector(vector, arr, len); }
-	NETLM_EXPORT void AssignVectorInt32(std::vector<int32_t>* vector, int32_t* arr, int len) { AssignVector(vector, arr, len); }
-	NETLM_EXPORT void AssignVectorInt64(std::vector<int64_t>* vector, int64_t* arr, int len) { AssignVector(vector, arr, len); }
-	NETLM_EXPORT void AssignVectorUInt8(std::vector<uint8_t>* vector, uint8_t* arr, int len) { AssignVector(vector, arr, len); }
-	NETLM_EXPORT void AssignVectorUInt16(std::vector<uint16_t>* vector, uint16_t* arr, int len) { AssignVector(vector, arr, len); }
-	NETLM_EXPORT void AssignVectorUInt32(std::vector<uint32_t>* vector, uint32_t* arr, int len) { AssignVector(vector, arr, len); }
-	NETLM_EXPORT void AssignVectorUInt64(std::vector<uint64_t>* vector, uint64_t* arr, int len) { AssignVector(vector, arr, len); }
-	NETLM_EXPORT void AssignVectorIntPtr(std::vector<uintptr_t>* vector, uintptr_t* arr, int len) { AssignVector(vector, arr, len); }
-	NETLM_EXPORT void AssignVectorFloat(std::vector<float>* vector, float* arr, int len) { AssignVector(vector, arr, len); }
-	NETLM_EXPORT void AssignVectorDouble(std::vector<double>* vector, double* arr, int len) { AssignVector(vector, arr, len); }
-	NETLM_EXPORT void AssignVectorString(std::vector<plg::string>* vector, char* arr[], int len) { AssignVector(vector, arr, len); }
+	NETLM_EXPORT void AssignVectorBool(plg::vector<bool>* vector, bool* arr, int len) { AssignVector(vector, arr, len); }
+	NETLM_EXPORT void AssignVectorChar8(plg::vector<char>* vector, char* arr, int len) { AssignVector(vector, arr, len); }
+	NETLM_EXPORT void AssignVectorChar16(plg::vector<char16_t>* vector, char16_t* arr, int len) { AssignVector(vector, arr, len); }
+	NETLM_EXPORT void AssignVectorInt8(plg::vector<int8_t>* vector, int8_t* arr, int len) { AssignVector(vector, arr, len); }
+	NETLM_EXPORT void AssignVectorInt16(plg::vector<int16_t>* vector, int16_t* arr, int len) { AssignVector(vector, arr, len); }
+	NETLM_EXPORT void AssignVectorInt32(plg::vector<int32_t>* vector, int32_t* arr, int len) { AssignVector(vector, arr, len); }
+	NETLM_EXPORT void AssignVectorInt64(plg::vector<int64_t>* vector, int64_t* arr, int len) { AssignVector(vector, arr, len); }
+	NETLM_EXPORT void AssignVectorUInt8(plg::vector<uint8_t>* vector, uint8_t* arr, int len) { AssignVector(vector, arr, len); }
+	NETLM_EXPORT void AssignVectorUInt16(plg::vector<uint16_t>* vector, uint16_t* arr, int len) { AssignVector(vector, arr, len); }
+	NETLM_EXPORT void AssignVectorUInt32(plg::vector<uint32_t>* vector, uint32_t* arr, int len) { AssignVector(vector, arr, len); }
+	NETLM_EXPORT void AssignVectorUInt64(plg::vector<uint64_t>* vector, uint64_t* arr, int len) { AssignVector(vector, arr, len); }
+	NETLM_EXPORT void AssignVectorIntPtr(plg::vector<uintptr_t>* vector, uintptr_t* arr, int len) { AssignVector(vector, arr, len); }
+	NETLM_EXPORT void AssignVectorFloat(plg::vector<float>* vector, float* arr, int len) { AssignVector(vector, arr, len); }
+	NETLM_EXPORT void AssignVectorDouble(plg::vector<double>* vector, double* arr, int len) { AssignVector(vector, arr, len); }
+	NETLM_EXPORT void AssignVectorString(plg::vector<plg::string>* vector, char* arr[], int len) { AssignVector(vector, arr, len); }
 
 	// DeleteVector Functions
 
-	NETLM_EXPORT void DeleteVectorBool(std::vector<bool>* vector) { DeleteVector(vector); }
-	NETLM_EXPORT void DeleteVectorChar8(std::vector<char>* vector) { DeleteVector(vector); }
-	NETLM_EXPORT void DeleteVectorChar16(std::vector<char16_t>* vector) { DeleteVector(vector); }
-	NETLM_EXPORT void DeleteVectorInt8(std::vector<int8_t>* vector) { DeleteVector(vector); }
-	NETLM_EXPORT void DeleteVectorInt16(std::vector<int16_t>* vector) { DeleteVector(vector); }
-	NETLM_EXPORT void DeleteVectorInt32(std::vector<int32_t>* vector) { DeleteVector(vector); }
-	NETLM_EXPORT void DeleteVectorInt64(std::vector<int64_t>* vector) { DeleteVector(vector); }
-	NETLM_EXPORT void DeleteVectorUInt8(std::vector<uint8_t>* vector) { DeleteVector(vector); }
-	NETLM_EXPORT void DeleteVectorUInt16(std::vector<uint16_t>* vector) { DeleteVector(vector); }
-	NETLM_EXPORT void DeleteVectorUInt32(std::vector<uint32_t>* vector) { DeleteVector(vector); }
-	NETLM_EXPORT void DeleteVectorUInt64(std::vector<uint64_t>* vector) { DeleteVector(vector); }
-	NETLM_EXPORT void DeleteVectorIntPtr(std::vector<uintptr_t>* vector) { DeleteVector(vector); }
-	NETLM_EXPORT void DeleteVectorFloat(std::vector<float>* vector) { DeleteVector(vector); }
-	NETLM_EXPORT void DeleteVectorDouble(std::vector<double>* vector) { DeleteVector(vector); }
-	NETLM_EXPORT void DeleteVectorString(std::vector<plg::string>* vector) { DeleteVector(vector); }
+	NETLM_EXPORT void DeleteVectorBool(plg::vector<bool>* vector) { DeleteVector(vector); }
+	NETLM_EXPORT void DeleteVectorChar8(plg::vector<char>* vector) { DeleteVector(vector); }
+	NETLM_EXPORT void DeleteVectorChar16(plg::vector<char16_t>* vector) { DeleteVector(vector); }
+	NETLM_EXPORT void DeleteVectorInt8(plg::vector<int8_t>* vector) { DeleteVector(vector); }
+	NETLM_EXPORT void DeleteVectorInt16(plg::vector<int16_t>* vector) { DeleteVector(vector); }
+	NETLM_EXPORT void DeleteVectorInt32(plg::vector<int32_t>* vector) { DeleteVector(vector); }
+	NETLM_EXPORT void DeleteVectorInt64(plg::vector<int64_t>* vector) { DeleteVector(vector); }
+	NETLM_EXPORT void DeleteVectorUInt8(plg::vector<uint8_t>* vector) { DeleteVector(vector); }
+	NETLM_EXPORT void DeleteVectorUInt16(plg::vector<uint16_t>* vector) { DeleteVector(vector); }
+	NETLM_EXPORT void DeleteVectorUInt32(plg::vector<uint32_t>* vector) { DeleteVector(vector); }
+	NETLM_EXPORT void DeleteVectorUInt64(plg::vector<uint64_t>* vector) { DeleteVector(vector); }
+	NETLM_EXPORT void DeleteVectorIntPtr(plg::vector<uintptr_t>* vector) { DeleteVector(vector); }
+	NETLM_EXPORT void DeleteVectorFloat(plg::vector<float>* vector) { DeleteVector(vector); }
+	NETLM_EXPORT void DeleteVectorDouble(plg::vector<double>* vector) { DeleteVector(vector); }
+	NETLM_EXPORT void DeleteVectorString(plg::vector<plg::string>* vector) { DeleteVector(vector); }
 
 	// FreeVector functions
 
-	NETLM_EXPORT void FreeVectorBool(std::vector<bool>* vector) { FreeVector(vector); }
-	NETLM_EXPORT void FreeVectorChar8(std::vector<char>* vector) { FreeVector(vector); }
-	NETLM_EXPORT void FreeVectorChar16(std::vector<char16_t>* vector) { FreeVector(vector); }
-	NETLM_EXPORT void FreeVectorInt8(std::vector<int8_t>* vector) { FreeVector(vector); }
-	NETLM_EXPORT void FreeVectorInt16(std::vector<int16_t>* vector) { FreeVector(vector); }
-	NETLM_EXPORT void FreeVectorInt32(std::vector<int32_t>* vector) { FreeVector(vector); }
-	NETLM_EXPORT void FreeVectorInt64(std::vector<int64_t>* vector) { FreeVector(vector); }
-	NETLM_EXPORT void FreeVectorUInt8(std::vector<uint8_t>* vector) { FreeVector(vector); }
-	NETLM_EXPORT void FreeVectorUInt16(std::vector<uint16_t>* vector) { FreeVector(vector); }
-	NETLM_EXPORT void FreeVectorUInt32(std::vector<uint32_t>* vector) { FreeVector(vector); }
-	NETLM_EXPORT void FreeVectorUInt64(std::vector<uint64_t>* vector) { FreeVector(vector); }
-	NETLM_EXPORT void FreeVectorIntPtr(std::vector<uintptr_t>* vector) { FreeVector(vector); }
-	NETLM_EXPORT void FreeVectorFloat(std::vector<float>* vector) { FreeVector(vector); }
-	NETLM_EXPORT void FreeVectorDouble(std::vector<double>* vector) { FreeVector(vector); }
-	NETLM_EXPORT void FreeVectorString(std::vector<plg::string>* vector) { FreeVector(vector); }
+	NETLM_EXPORT void FreeVectorBool(plg::vector<bool>* vector) { FreeVector(vector); }
+	NETLM_EXPORT void FreeVectorChar8(plg::vector<char>* vector) { FreeVector(vector); }
+	NETLM_EXPORT void FreeVectorChar16(plg::vector<char16_t>* vector) { FreeVector(vector); }
+	NETLM_EXPORT void FreeVectorInt8(plg::vector<int8_t>* vector) { FreeVector(vector); }
+	NETLM_EXPORT void FreeVectorInt16(plg::vector<int16_t>* vector) { FreeVector(vector); }
+	NETLM_EXPORT void FreeVectorInt32(plg::vector<int32_t>* vector) { FreeVector(vector); }
+	NETLM_EXPORT void FreeVectorInt64(plg::vector<int64_t>* vector) { FreeVector(vector); }
+	NETLM_EXPORT void FreeVectorUInt8(plg::vector<uint8_t>* vector) { FreeVector(vector); }
+	NETLM_EXPORT void FreeVectorUInt16(plg::vector<uint16_t>* vector) { FreeVector(vector); }
+	NETLM_EXPORT void FreeVectorUInt32(plg::vector<uint32_t>* vector) { FreeVector(vector); }
+	NETLM_EXPORT void FreeVectorUInt64(plg::vector<uint64_t>* vector) { FreeVector(vector); }
+	NETLM_EXPORT void FreeVectorIntPtr(plg::vector<uintptr_t>* vector) { FreeVector(vector); }
+	NETLM_EXPORT void FreeVectorFloat(plg::vector<float>* vector) { FreeVector(vector); }
+	NETLM_EXPORT void FreeVectorDouble(plg::vector<double>* vector) { FreeVector(vector); }
+	NETLM_EXPORT void FreeVectorString(plg::vector<plg::string>* vector) { FreeVector(vector); }
+
+	// DestroyVector functions
+
+	NETLM_EXPORT void DestroyVectorBool(plg::vector<bool>* vector) { DestroyVector(vector); }
+	NETLM_EXPORT void DestroyVectorChar8(plg::vector<char>* vector) { DestroyVector(vector); }
+	NETLM_EXPORT void DestroyVectorChar16(plg::vector<char16_t>* vector) { DestroyVector(vector); }
+	NETLM_EXPORT void DestroyVectorInt8(plg::vector<int8_t>* vector) { DestroyVector(vector); }
+	NETLM_EXPORT void DestroyVectorInt16(plg::vector<int16_t>* vector) { DestroyVector(vector); }
+	NETLM_EXPORT void DestroyVectorInt32(plg::vector<int32_t>* vector) { DestroyVector(vector); }
+	NETLM_EXPORT void DestroyVectorInt64(plg::vector<int64_t>* vector) { DestroyVector(vector); }
+	NETLM_EXPORT void DestroyVectorUInt8(plg::vector<uint8_t>* vector) { DestroyVector(vector); }
+	NETLM_EXPORT void DestroyVectorUInt16(plg::vector<uint16_t>* vector) { DestroyVector(vector); }
+	NETLM_EXPORT void DestroyVectorUInt32(plg::vector<uint32_t>* vector) { DestroyVector(vector); }
+	NETLM_EXPORT void DestroyVectorUInt64(plg::vector<uint64_t>* vector) { DestroyVector(vector); }
+	NETLM_EXPORT void DestroyVectorIntPtr(plg::vector<uintptr_t>* vector) { DestroyVector(vector); }
+	NETLM_EXPORT void DestroyVectorFloat(plg::vector<float>* vector) { DestroyVector(vector); }
+	NETLM_EXPORT void DestroyVectorDouble(plg::vector<double>* vector) { DestroyVector(vector); }
+	NETLM_EXPORT void DestroyVectorString(plg::vector<plg::string>* vector) { DestroyVector(vector); }
 }
 
 extern "C" {

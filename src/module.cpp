@@ -1,23 +1,24 @@
-#include "module.h"
+#include "module.hpp"
+#include "attribute.hpp"
 #include "managed_assembly.h"
-#include "managed_functions.h"
+#include "managed_functions.hpp"
+#include "memory.hpp"
 #include "method_info.h"
-#include "attribute.h"
-#include "type.h"
-#include "memory.h"
-#include "utils.h"
+#include "type.hpp"
+#include "utils.hpp"
 
 #include <module_export.h>
 
-#include <plugify/compat_format.h>
-#include <plugify/language_module.h>
-#include <plugify/log.h>
-#include <plugify/module.h>
-#include <plugify/string.h>
-#include <plugify/plugify_provider.h>
-#include <plugify/plugin.h>
-#include <plugify/plugin_descriptor.h>
-#include <plugify/plugin_reference_descriptor.h>
+#include <plugify/compat_format.hpp>
+#include <plugify/language_module.hpp>
+#include <plugify/log.hpp>
+#include <plugify/module.hpp>
+#include <plugify/string.hpp>
+#include <plugify/vector.hpp>
+#include <plugify/plugify_provider.hpp>
+#include <plugify/plugin.hpp>
+#include <plugify/plugin_descriptor.hpp>
+#include <plugify/plugin_reference_descriptor.hpp>
 #include <thread>
 
 #if NETLM_PLATFORM_WINDOWS
@@ -331,49 +332,49 @@ static void ManagedCall(MethodRef method, MemAddr data, const JitCallback::Param
 				std::construct_at(reinterpret_cast<plg::string*>(retPtr), plg::string());
 				break;
 			case ValueType::ArrayBool:
-				std::construct_at(reinterpret_cast<std::vector<bool>*>(retPtr), std::vector<bool>());
+				std::construct_at(reinterpret_cast<plg::vector<bool>*>(retPtr), plg::vector<bool>());
 				break;
 			case ValueType::ArrayChar8:
-				std::construct_at(reinterpret_cast<std::vector<char>*>(retPtr), std::vector<char>());
+				std::construct_at(reinterpret_cast<plg::vector<char>*>(retPtr), plg::vector<char>());
 				break;
 			case ValueType::ArrayChar16:
-				std::construct_at(reinterpret_cast<std::vector<char16_t>*>(retPtr), std::vector<char16_t>());
+				std::construct_at(reinterpret_cast<plg::vector<char16_t>*>(retPtr), plg::vector<char16_t>());
 				break;
 			case ValueType::ArrayInt8:
-				std::construct_at(reinterpret_cast<std::vector<int8_t>*>(retPtr), std::vector<int8_t>());
+				std::construct_at(reinterpret_cast<plg::vector<int8_t>*>(retPtr), plg::vector<int8_t>());
 				break;
 			case ValueType::ArrayInt16:
-				std::construct_at(reinterpret_cast<std::vector<int16_t>*>(retPtr), std::vector<int16_t>());
+				std::construct_at(reinterpret_cast<plg::vector<int16_t>*>(retPtr), plg::vector<int16_t>());
 				break;
 			case ValueType::ArrayInt32:
-				std::construct_at(reinterpret_cast<std::vector<int32_t>*>(retPtr), std::vector<int32_t>());
+				std::construct_at(reinterpret_cast<plg::vector<int32_t>*>(retPtr), plg::vector<int32_t>());
 				break;
 			case ValueType::ArrayInt64:
-				std::construct_at(reinterpret_cast<std::vector<int64_t>*>(retPtr), std::vector<int64_t>());
+				std::construct_at(reinterpret_cast<plg::vector<int64_t>*>(retPtr), plg::vector<int64_t>());
 				break;
 			case ValueType::ArrayUInt8:
-				std::construct_at(reinterpret_cast<std::vector<uint8_t>*>(retPtr), std::vector<uint8_t>());
+				std::construct_at(reinterpret_cast<plg::vector<uint8_t>*>(retPtr), plg::vector<uint8_t>());
 				break;
 			case ValueType::ArrayUInt16:
-				std::construct_at(reinterpret_cast<std::vector<uint16_t>*>(retPtr), std::vector<uint16_t>());
+				std::construct_at(reinterpret_cast<plg::vector<uint16_t>*>(retPtr), plg::vector<uint16_t>());
 				break;
 			case ValueType::ArrayUInt32:
-				std::construct_at(reinterpret_cast<std::vector<uint32_t>*>(retPtr), std::vector<uint32_t>());
+				std::construct_at(reinterpret_cast<plg::vector<uint32_t>*>(retPtr), plg::vector<uint32_t>());
 				break;
 			case ValueType::ArrayUInt64:
-				std::construct_at(reinterpret_cast<std::vector<uint64_t>*>(retPtr), std::vector<uint64_t>());
+				std::construct_at(reinterpret_cast<plg::vector<uint64_t>*>(retPtr), plg::vector<uint64_t>());
 				break;
 			case ValueType::ArrayPointer:
-				std::construct_at(reinterpret_cast<std::vector<uintptr_t>*>(retPtr), std::vector<uintptr_t>());
+				std::construct_at(reinterpret_cast<plg::vector<uintptr_t>*>(retPtr), plg::vector<uintptr_t>());
 				break;
 			case ValueType::ArrayFloat:
-				std::construct_at(reinterpret_cast<std::vector<float>*>(retPtr), std::vector<float>());
+				std::construct_at(reinterpret_cast<plg::vector<float>*>(retPtr), plg::vector<float>());
 				break;
 			case ValueType::ArrayDouble:
-				std::construct_at(reinterpret_cast<std::vector<double>*>(retPtr), std::vector<double>());
+				std::construct_at(reinterpret_cast<plg::vector<double>*>(retPtr), plg::vector<double>());
 				break;
 			case ValueType::ArrayString:
-				std::construct_at(reinterpret_cast<std::vector<plg::string>*>(retPtr), std::vector<plg::string>());
+				std::construct_at(reinterpret_cast<plg::vector<plg::string>*>(retPtr), plg::vector<plg::string>());
 				break;
 			default:
 				break;
@@ -480,7 +481,7 @@ ScriptInstance::ScriptInstance(PluginRef plugin, ManagedGuid assembly, Type& typ
 
 	// use plg::string as currently plugify use custom string implementation
 
-	std::vector<plg::string> deps;
+	plg::vector<plg::string> deps;
 	deps.reserve(dependencies.size());
 	for (const auto& dependency : dependencies) {
 		deps.emplace_back(dependency.GetName());

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "managed_guid.h"
+#include "managed_guid.hpp"
 
 namespace netlm {
 #if NETLM_PLATFORM_WINDOWS

@@ -1,9 +1,9 @@
-#include "host_instance.h"
-#include "gc.h"
-#include "managed_functions.h"
-#include "utils.h"
+#include "host_instance.hpp"
+#include "gc.hpp"
+#include "managed_functions.hpp"
+#include "utils.hpp"
 
-#include <plugify/assembly.h>
+#include <plugify/assembly.hpp>
 
 #include <dotnet/coreclr_delegates.h>
 #include <dotnet/error_codes.h>
