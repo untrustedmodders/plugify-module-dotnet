@@ -59,6 +59,10 @@ public static partial class NativeMethods
 	[SuppressGCTransition]
 	public static partial void DeleteString(nint ptr);
 
+	[LibraryImport(DllName)]
+	[SuppressGCTransition]
+	public static partial void DestroyString(nint ptr);
+
 	#endregion
 
 	#region CreateVector functions
@@ -570,6 +574,70 @@ public static partial class NativeMethods
 	[LibraryImport(DllName)]
 	[SuppressGCTransition]
 	public static partial void FreeVectorString(nint ptr);
+
+	#endregion
+	
+	#region DestroyVectorData functions
+
+	[LibraryImport(DllName)]
+	[SuppressGCTransition]
+	public static partial void DestroyVectorBool(nint ptr);
+
+	[LibraryImport(DllName)]
+	[SuppressGCTransition]
+	public static partial void DestroyVectorChar8(nint ptr);
+
+	[LibraryImport(DllName)]
+	[SuppressGCTransition]
+	public static partial void DestroyVectorChar16(nint ptr);
+
+	[LibraryImport(DllName)]
+	[SuppressGCTransition]
+	public static partial void DestroyVectorInt8(nint ptr);
+
+	[LibraryImport(DllName)]
+	[SuppressGCTransition]
+	public static partial void DestroyVectorInt16(nint ptr);
+
+	[LibraryImport(DllName)]
+	[SuppressGCTransition]
+	public static partial void DestroyVectorInt32(nint ptr);
+
+	[LibraryImport(DllName)]
+	[SuppressGCTransition]
+	public static partial void DestroyVectorInt64(nint ptr);
+
+	[LibraryImport(DllName)]
+	[SuppressGCTransition]
+	public static partial void DestroyVectorUInt8(nint ptr);
+
+	[LibraryImport(DllName)]
+	[SuppressGCTransition]
+	public static partial void DestroyVectorUInt16(nint ptr);
+
+	[LibraryImport(DllName)]
+	[SuppressGCTransition]
+	public static partial void DestroyVectorUInt32(nint ptr);
+
+	[LibraryImport(DllName)]
+	[SuppressGCTransition]
+	public static partial void DestroyVectorUInt64(nint ptr);
+
+	[LibraryImport(DllName)]
+	[SuppressGCTransition]
+	public static partial void DestroyVectorIntPtr(nint ptr);
+
+	[LibraryImport(DllName)]
+	[SuppressGCTransition]
+	public static partial void DestroyVectorFloat(nint ptr);
+
+	[LibraryImport(DllName)]
+	[SuppressGCTransition]
+	public static partial void DestroyVectorDouble(nint ptr);
+
+	[LibraryImport(DllName)]
+	[SuppressGCTransition]
+	public static partial void DestroyVectorString(nint ptr);
 
 	#endregion
 }
