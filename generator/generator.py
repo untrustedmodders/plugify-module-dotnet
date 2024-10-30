@@ -61,22 +61,22 @@ CTYPES_MAP = {
     'float': 'float',
     'double': 'double',
     'function': 'nint',
-    'string': '*',
-    'bool*': '*',
-    'char8*': '*',
-    'char16*': '*',
-    'int8*': '*',
-    'int16*': '*',
-    'int32*': '*',
-    'int64*': '*',
-    'uint8*': '*',
-    'uint16*': '*',
-    'uint32*': '*',
-    'uint64*': '*',
-    'ptr64*': '*',
-    'float*': '*',
-    'double*': '*',
-    'string*': '*',
+    'string': '*String192',
+    'bool*': '*Vector192',
+    'char8*': '*Vector192',
+    'char16*': '*Vector192',
+    'int8*': '*Vector192',
+    'int16*': '*Vector192',
+    'int32*': '*Vector192',
+    'int64*': '*Vector192',
+    'uint8*': '*Vector192',
+    'uint16*': '*Vector192',
+    'uint32*': '*Vector192',
+    'uint64*': '*Vector192',
+    'ptr64*': '*Vector192',
+    'float*': '*Vector192',
+    'double*': '*Vector192',
+    'string*': '*Vector192',
     'vec2': 'Vector2*',
     'vec3': 'Vector3*',
     'vec4': 'Vector4*',
@@ -100,22 +100,22 @@ VAL_TYPESCAST_MAP = {
     'float': '',
     'double': '',
     'function': 'Marshalling.GetFunctionPointerForDelegate',
-    'string': 'NativeMethods.CreateString',
-    'bool*': 'NativeMethods.CreateVectorBool',
-    'char8*': 'NativeMethods.CreateVectorChar8',
-    'char16*': 'NativeMethods.CreateVectorChar16',
-    'int8*': 'NativeMethods.CreateVectorInt8',
-    'int16*': 'NativeMethods.CreateVectorInt16',
-    'int32*': 'NativeMethods.CreateVectorInt32',
-    'int64*': 'NativeMethods.CreateVectorInt64',
-    'uint8*': 'NativeMethods.CreateVectorUInt8',
-    'uint16*': 'NativeMethods.CreateVectorUInt16',
-    'uint32*': 'NativeMethods.CreateVectorUInt32',
-    'uint64*': 'NativeMethods.CreateVectorUInt64',
-    'ptr64*': 'NativeMethods.CreateVectorIntPtr',
-    'float*': 'NativeMethods.CreateVectorFloat',
-    'double*': 'NativeMethods.CreateVectorDouble',
-    'string*': 'NativeMethods.CreateVectorString',
+    'string': 'NativeMethods.ConstructString',
+    'bool*': 'NativeMethods.ConstructVectorBool',
+    'char8*': 'NativeMethods.ConstructVectorChar8',
+    'char16*': 'NativeMethods.ConstructVectorChar16',
+    'int8*': 'NativeMethods.ConstructVectorInt8',
+    'int16*': 'NativeMethods.ConstructVectorInt16',
+    'int32*': 'NativeMethods.ConstructVectorInt32',
+    'int64*': 'NativeMethods.ConstructVectorInt64',
+    'uint8*': 'NativeMethods.ConstructVectorUInt8',
+    'uint16*': 'NativeMethods.ConstructVectorUInt16',
+    'uint32*': 'NativeMethods.ConstructVectorUInt32',
+    'uint64*': 'NativeMethods.ConstructVectorUInt64',
+    'ptr64*': 'NativeMethods.ConstructVectorIntPtr',
+    'float*': 'NativeMethods.ConstructVectorFloat',
+    'double*': 'NativeMethods.ConstructVectorDouble',
+    'string*': 'NativeMethods.ConstructVectorString',
     'vec2': '',
     'vec3': '',
     'vec4': '',
@@ -139,22 +139,22 @@ RET_TYPESCAST_MAP = {
     'float': '',
     'double': '',
     'function': '',
-    'string': 'Container',
-    'bool*': 'Container',
-    'char8*': 'Container',
-    'char16*': 'Container',
-    'int8*': 'Container',
-    'int16*': 'Container',
-    'int32*': 'Container',
-    'int64*': 'Container',
-    'uint8*': 'Container',
-    'uint16*': 'Container',
-    'uint32*': 'Container',
-    'uint64*': 'Container',
-    'ptr64*': 'Container',
-    'float*': 'Container',
-    'double*': 'Container',
-    'string*': 'Container',
+    'string': 'String192',
+    'bool*': 'Vector192',
+    'char8*': 'Vector192',
+    'char16*': 'Vector192',
+    'int8*': 'Vector192',
+    'int16*': 'Vector192',
+    'int32*': 'Vector192',
+    'int64*': 'Vector192',
+    'uint8*': 'Vector192',
+    'uint16*': 'Vector192',
+    'uint32*': 'Vector192',
+    'uint64*': 'Vector192',
+    'ptr64*': 'Vector192',
+    'float*': 'Vector192',
+    'double*': 'Vector192',
+    'string*': 'Vector192',
     'vec2': 'Vector2',
     'vec3': 'Vector3',
     'vec4': 'Vector4',
@@ -240,45 +240,6 @@ SIZ_TYPESCAST_MAP = {
 }
 
 DEL_TYPESCAST_MAP = {
-    'void': '',
-    'bool': '',
-    'char8': '',
-    'char16': '',
-    'int8': '',
-    'int16': '',
-    'int32': '',
-    'int64': '',
-    'uint8': '',
-    'uint16': '',
-    'uint32': '',
-    'uint64': '',
-    'ptr64': '',
-    'float': '',
-    'double': '',
-    'function': '',
-    'string': 'NativeMethods.DeleteString',
-    'bool*': 'NativeMethods.DeleteVectorBool',
-    'char8*': 'NativeMethods.DeleteVectorChar8',
-    'char16*': 'NativeMethods.DeleteVectorChar16',
-    'int8*': 'NativeMethods.DeleteVectorInt8',
-    'int16*': 'NativeMethods.DeleteVectorInt16',
-    'int32*': 'NativeMethods.DeleteVectorInt32',
-    'int64*': 'NativeMethods.DeleteVectorInt64',
-    'uint8*': 'NativeMethods.DeleteVectorUInt8',
-    'uint16*': 'NativeMethods.DeleteVectorUInt16',
-    'uint32*': 'NativeMethods.DeleteVectorUInt32',
-    'uint64*': 'NativeMethods.DeleteVectorUInt64',
-    'ptr64*': 'NativeMethods.DeleteVectorIntPtr',
-    'float*': 'NativeMethods.DeleteVectorFloat',
-    'double*': 'NativeMethods.DeleteVectorDouble',
-    'string*': 'NativeMethods.DeleteVectorString',
-    'vec2': '',
-    'vec3': '',
-    'vec4': '',
-    'mat4x4': ''
-}
-
-FRE_TYPESCAST_MAP = {
     'void': '',
     'bool': '',
     'char8': '',
@@ -487,21 +448,21 @@ def convert_dtype(type_name, is_ref=False, is_ret=False):
 def convert_ctype(type_name, is_ref=False, is_ret=False):
     type = CTYPES_MAP.get(type_name, 'int')
     if is_ref:
-        if type == '*':
+        if type[0] == '*':
             if is_ret:
-                return 'Container'
+                return type[1:]
             else:
-                return 'nint'
+                return type[1:] + '*'
         elif '*' in type:
-            return type[:-1] + '*'
+            return type
         else:
             return type + '*'
     else:
-        if type == '*':
+        if type[0] == '*':
             if is_ret:
-                return 'Container'
+                return type[1:]
             else:
-                return 'nint'
+                return type[1:] + '*'
         elif is_ret and '*' in type:
             return type[:-1]
         else:
@@ -558,7 +519,7 @@ def gen_params(method, param_gen: ParamGen):
                 else:
                     return f'Marshal.GetFunctionPointerForDelegate({generate_name(param["name"])})'
             elif is_obj_return(param['type']):
-                return '__' + generate_name(param['name'])
+                return '&__' + generate_name(param['name'])
             elif 'vec' in param['type'] or 'mat' in param['type']:
                 if 'ref' in param and param['ref'] is True:
                     return '__' + generate_name(param['name'])
@@ -579,8 +540,6 @@ def gen_params(method, param_gen: ParamGen):
             type = generate_name(param['prototype']['name'])
         return f'{type} {generate_name(param["name"])}'
 
-    def gen_return(param):
-        return ''#'__retVal_native'
     output_string = ''
     if method['paramTypes']:
         it = iter(method['paramTypes'])
@@ -630,7 +589,7 @@ def gen_paramscast(method, tabs):
     def gen_param(param):
         type = VAL_TYPESCAST_MAP.get(param['type'], 'int')
         name = generate_name(param['name'])
-        if 'CreateVector' in type:
+        if 'ConstructVector' in type:
             return f'var __{name} = {type}({name}, {name}.Length)'
         elif type != '':
             if 'GetFunctionPointerForDelegate' in type and not is_need_marshal(param['prototype']):
@@ -646,7 +605,7 @@ def gen_paramscast(method, tabs):
 
     def gen_return(param):
         type = RET_TYPESCAST_MAP.get(param['type'], 'int')
-        return f'var __retVal_native = new {type}();\n{tabs}var __retVal_ptr = (nint)(&__retVal_native)'
+        return f'{type} __retVal_native'
 
     output_string = ''
     ret_type = method['retType']
@@ -682,11 +641,11 @@ def gen_paramscast_assign(method, tabs):
             name = generate_name(param['name'])
             if 'VectorData' in type:
                 size = SIZ_TYPESCAST_MAP.get(param['type'], 'int')
-                output = f'Array.Resize(ref {name}, {size}(__{name}));\n'
-                output += f'{tabs}{type}(__{name}, {name})'
+                output = f'Array.Resize(ref {name}, {size}(&__{name}));\n'
+                output += f'{tabs}{type}(&__{name}, {name})'
                 return output
             elif type != '':
-                return f'{name} = {type}(__{name})'
+                return f'{name} = {type}(&__{name})'
             else:
                 return ''
         else:
@@ -696,23 +655,23 @@ def gen_paramscast_assign(method, tabs):
         if 'VectorData' in type:
             size = SIZ_TYPESCAST_MAP.get(param['type'], 'int')
             return_type = convert_type(param['type'], False)
-            output = f'__retVal = new {return_type[:-1]}{size}(__retVal_ptr)];\n'
-            output += f'{tabs}{type}(__retVal_ptr, __retVal)'
+            output = f'__retVal = new {return_type[:-1]}{size}(&__retVal_native)];\n'
+            output += f'{tabs}{type}(&__retVal_native, __retVal)'
             return output
         elif type != '':
-            return f'__retVal = {type}(__retVal_ptr)'
+            return f'__retVal = {type}(&__retVal_native)'
         else:
             return ''
 
     output_string = ''
     ret_type = method['retType']
-    is_obj_ret = is_obj_return(ret_type["type"])
+    is_obj_ret = is_obj_return(ret_type['type'])
     if is_obj_ret:
         ret = gen_return(ret_type)
         if ret != '':
             output_string += f'{tabs}{ret};\n'
-    if method["paramTypes"]:
-        it = iter(method["paramTypes"])
+    if method['paramTypes']:
+        it = iter(method['paramTypes'])
         param = gen_param(next(it))
         if param != '':
             output_string += f'{tabs}{param};\n'
@@ -727,10 +686,7 @@ def gen_paramscast_assign_end(method, tabs):
     def gen_param(param):
         if 'ref' in param and param['ref'] is True:
             type = ASS_TYPESCAST_MAP.get(param['type'], 'int')
-            name = generate_name(param['name'])
-            if 'VectorData' in type:
-                return ''
-            elif type != '':
+            if type != '':
                 return ''
             else:
                 return '}'
@@ -738,8 +694,8 @@ def gen_paramscast_assign_end(method, tabs):
             return ''
 
     output_string = ''
-    if method["paramTypes"]:
-        it = iter(method["paramTypes"])
+    if method['paramTypes']:
+        it = iter(method['paramTypes'])
         param = gen_param(next(it))
         if param != '':
             output_string += f'{tabs}{param}\n'
@@ -756,14 +712,14 @@ def gen_paramscast_cleanup(method, tabs):
         if type == '':
             return ''
         else:
-            return f'{type}(__{generate_name(param["name"])})'
+            return f'{type}(&__{generate_name(param["name"])})'
 
     def gen_return(param):
-        type = FRE_TYPESCAST_MAP.get(param['type'], 'int')
+        type = DEL_TYPESCAST_MAP.get(param['type'], 'int')
         if type == '':
             return ''
         else:
-            return f'{type}(__retVal_ptr)'
+            return f'{type}(&__retVal_native)'
 
     output_string = ''
     ret_type = method['retType']
@@ -834,8 +790,6 @@ def main(manifest_path, output_dir, override):
                 f'namespace {plugin_name}\n{{'
                 '\n'
                 '#pragma warning disable CS0649\n'
-                '\t[StructLayout(LayoutKind.Sequential, Size = 24)]\n'
-                '\tinternal struct Container {}\n'
                 '\n'
                 )
 
@@ -844,10 +798,10 @@ def main(manifest_path, output_dir, override):
     # Declare delegates
     for method in pplugin['exportedMethods']:
         ret_type = method['retType']
-        if "prototype" in ret_type:
+        if 'prototype' in ret_type:
             content += gen_wrapper(ret_type, delegates)
         for param_type in method['paramTypes']:
-            if "prototype" in param_type:
+            if 'prototype' in param_type:
                 content += gen_wrapper(param_type, delegates)
 
     content += f'\n\tinternal static unsafe class {plugin_name}\n\t{{\n'

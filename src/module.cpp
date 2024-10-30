@@ -62,8 +62,6 @@ void DotnetLanguageModule::Shutdown() {
 	_host.UnloadAssemblyLoadContext(_alc);
 	_host.Shutdown();
 
-	DetectLeaks();
-
 	_rt.reset();
 	_provider.reset();
 }
@@ -265,11 +263,12 @@ static void ManagedCall(MethodRef method, MemAddr data, const JitCallback::Param
 	std::span<const PropertyRef> paramProps = method.GetParamTypes();
 
 	bool hasRet = ValueUtils::IsHiddenParam(retType);
+	bool hasHidden = hasRet && !NETLM_ARCH_ARM;
 
 	ArgumentList args;
-	args.reserve(hasRet ? count - 1 : count);
+	args.reserve(hasHidden ? count - 1 : count);
 
-	for (uint8_t i = hasRet, j = 0; i < count; ++i, ++j) {
+	for (uint8_t i = hasHidden, j = 0; i < count; ++i, ++j) {
 		const auto& param = paramProps[j];
 		if (param.IsReference()) {
 			args.emplace_back(p->GetArgument<void*>(i));
@@ -324,7 +323,7 @@ static void ManagedCall(MethodRef method, MemAddr data, const JitCallback::Param
 		}
 	}
 
-	void* retPtr = hasRet ? p->GetArgument<void*>(0) : ret->GetReturnPtr();
+	void* retPtr = hasHidden ? p->GetArgument<void*>(0) : ret->GetReturnPtr();
 
 	if (hasRet) {
 		switch (retType) {
@@ -387,7 +386,7 @@ static void ManagedCall(MethodRef method, MemAddr data, const JitCallback::Param
 		func(data, args, std::nullopt);
 	}
 
-	if (hasRet) {
+	if (hasHidden) {
 		ret->SetReturn(retPtr);
 	}
 }
@@ -450,27 +449,6 @@ void DotnetLanguageModule::MessageCallback(std::string_view message, MessageLeve
 	}
 
 	g_netlm._provider->Log(std::format(LOG_PREFIX "{}", message), severity);
-}
-
-extern std::map<type_index, int32_t> g_numberOfMalloc;
-extern std::map<type_index, int32_t> g_numberOfAllocs;
-extern std::string_view GetTypeName(type_index type);
-
-void DotnetLanguageModule::DetectLeaks() {
-	for (const auto& [type, count] : g_numberOfMalloc) {
-		if (count > 0) {
-			g_netlm._provider->Log(std::format(LOG_PREFIX "Memory leaks detected: {} allocations. Related to {}!", count, GetTypeName(type)), Severity::Error);
-		}
-	}
-
-	for (const auto& [type, count] : g_numberOfAllocs) {
-		if (count > 0) {
-			g_netlm._provider->Log(std::format(LOG_PREFIX "Memory leaks detected: {} allocations. Related to {}!", count, GetTypeName(type)), Severity::Error);
-		}
-	}
-
-	g_numberOfMalloc.clear();
-	g_numberOfAllocs.clear();
 }
 
 /*_________________________________________________*/

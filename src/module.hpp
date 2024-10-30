@@ -65,7 +65,6 @@ namespace netlm {
 	private:
 		static void ExceptionCallback(std::string_view message);
 		static void MessageCallback(std::string_view message, MessageLevel level);
-		static void DetectLeaks();
 
 	private:
 		std::shared_ptr<plugify::IPlugifyProvider> _provider;

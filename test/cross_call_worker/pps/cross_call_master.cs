@@ -9,8 +9,6 @@ using Plugify;
 namespace cross_call_master
 {
 #pragma warning disable CS0649
-	[StructLayout(LayoutKind.Sequential, Size = 24)]
-	internal struct Container {}
 
 	public delegate int NoParamReturnFunctionCallbackFunc();
 	public delegate void FuncVoid();
@@ -85,17 +83,17 @@ namespace cross_call_master
 	internal static unsafe class cross_call_master
 	{
 		internal static delegate* <string, void> ReverseReturn = &___ReverseReturn;
-		internal static delegate* unmanaged[Cdecl]<nint, void> __ReverseReturn;
+		internal static delegate* unmanaged[Cdecl]<String192*, void> __ReverseReturn;
 		private static void ___ReverseReturn(string returnString)
 		{
-			var __returnString = NativeMethods.CreateString(returnString);
+			var __returnString = NativeMethods.ConstructString(returnString);
 
 			try {
-				__ReverseReturn(__returnString);
+				__ReverseReturn(&__returnString);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DeleteString(__returnString);
+				NativeMethods.DestroyString(&__returnString);
 			}
 		}
 		internal static delegate* <void> NoParamReturnVoidCallback = &___NoParamReturnVoidCallback;
@@ -210,321 +208,305 @@ namespace cross_call_master
 			return Marshal.GetDelegateForFunctionPointer<NoParamReturnFunctionCallbackFunc>(__retVal);
 		}
 		internal static delegate* <string> NoParamReturnStringCallback = &___NoParamReturnStringCallback;
-		internal static delegate* unmanaged[Cdecl]<Container> __NoParamReturnStringCallback;
+		internal static delegate* unmanaged[Cdecl]<String192> __NoParamReturnStringCallback;
 		private static string ___NoParamReturnStringCallback()
 		{
 			string __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			String192 __retVal_native;
 
 			try {
 				__retVal_native = __NoParamReturnStringCallback();
 				// Unmarshal - Convert native data to managed data.
-				__retVal = NativeMethods.GetStringData(__retVal_ptr);
+				__retVal = NativeMethods.GetStringData(&__retVal_native);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyString(__retVal_ptr);
+				NativeMethods.DestroyString(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <Bool8[]> NoParamReturnArrayBoolCallback = &___NoParamReturnArrayBoolCallback;
-		internal static delegate* unmanaged[Cdecl]<Container> __NoParamReturnArrayBoolCallback;
+		internal static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayBoolCallback;
 		private static Bool8[] ___NoParamReturnArrayBoolCallback()
 		{
 			Bool8[] __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			Vector192 __retVal_native;
 
 			try {
 				__retVal_native = __NoParamReturnArrayBoolCallback();
 				// Unmarshal - Convert native data to managed data.
-				__retVal = new Bool8[NativeMethods.GetVectorSizeBool(__retVal_ptr)];
-				NativeMethods.GetVectorDataBool(__retVal_ptr, __retVal);
+				__retVal = new Bool8[NativeMethods.GetVectorSizeBool(&__retVal_native)];
+				NativeMethods.GetVectorDataBool(&__retVal_native, __retVal);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyVectorBool(__retVal_ptr);
+				NativeMethods.DestroyVectorBool(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <Char8[]> NoParamReturnArrayChar8Callback = &___NoParamReturnArrayChar8Callback;
-		internal static delegate* unmanaged[Cdecl]<Container> __NoParamReturnArrayChar8Callback;
+		internal static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayChar8Callback;
 		private static Char8[] ___NoParamReturnArrayChar8Callback()
 		{
 			Char8[] __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			Vector192 __retVal_native;
 
 			try {
 				__retVal_native = __NoParamReturnArrayChar8Callback();
 				// Unmarshal - Convert native data to managed data.
-				__retVal = new Char8[NativeMethods.GetVectorSizeChar8(__retVal_ptr)];
-				NativeMethods.GetVectorDataChar8(__retVal_ptr, __retVal);
+				__retVal = new Char8[NativeMethods.GetVectorSizeChar8(&__retVal_native)];
+				NativeMethods.GetVectorDataChar8(&__retVal_native, __retVal);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyVectorChar8(__retVal_ptr);
+				NativeMethods.DestroyVectorChar8(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <Char16[]> NoParamReturnArrayChar16Callback = &___NoParamReturnArrayChar16Callback;
-		internal static delegate* unmanaged[Cdecl]<Container> __NoParamReturnArrayChar16Callback;
+		internal static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayChar16Callback;
 		private static Char16[] ___NoParamReturnArrayChar16Callback()
 		{
 			Char16[] __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			Vector192 __retVal_native;
 
 			try {
 				__retVal_native = __NoParamReturnArrayChar16Callback();
 				// Unmarshal - Convert native data to managed data.
-				__retVal = new Char16[NativeMethods.GetVectorSizeChar16(__retVal_ptr)];
-				NativeMethods.GetVectorDataChar16(__retVal_ptr, __retVal);
+				__retVal = new Char16[NativeMethods.GetVectorSizeChar16(&__retVal_native)];
+				NativeMethods.GetVectorDataChar16(&__retVal_native, __retVal);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyVectorChar16(__retVal_ptr);
+				NativeMethods.DestroyVectorChar16(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <sbyte[]> NoParamReturnArrayInt8Callback = &___NoParamReturnArrayInt8Callback;
-		internal static delegate* unmanaged[Cdecl]<Container> __NoParamReturnArrayInt8Callback;
+		internal static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayInt8Callback;
 		private static sbyte[] ___NoParamReturnArrayInt8Callback()
 		{
 			sbyte[] __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			Vector192 __retVal_native;
 
 			try {
 				__retVal_native = __NoParamReturnArrayInt8Callback();
 				// Unmarshal - Convert native data to managed data.
-				__retVal = new sbyte[NativeMethods.GetVectorSizeInt8(__retVal_ptr)];
-				NativeMethods.GetVectorDataInt8(__retVal_ptr, __retVal);
+				__retVal = new sbyte[NativeMethods.GetVectorSizeInt8(&__retVal_native)];
+				NativeMethods.GetVectorDataInt8(&__retVal_native, __retVal);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyVectorInt8(__retVal_ptr);
+				NativeMethods.DestroyVectorInt8(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <short[]> NoParamReturnArrayInt16Callback = &___NoParamReturnArrayInt16Callback;
-		internal static delegate* unmanaged[Cdecl]<Container> __NoParamReturnArrayInt16Callback;
+		internal static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayInt16Callback;
 		private static short[] ___NoParamReturnArrayInt16Callback()
 		{
 			short[] __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			Vector192 __retVal_native;
 
 			try {
 				__retVal_native = __NoParamReturnArrayInt16Callback();
 				// Unmarshal - Convert native data to managed data.
-				__retVal = new short[NativeMethods.GetVectorSizeInt16(__retVal_ptr)];
-				NativeMethods.GetVectorDataInt16(__retVal_ptr, __retVal);
+				__retVal = new short[NativeMethods.GetVectorSizeInt16(&__retVal_native)];
+				NativeMethods.GetVectorDataInt16(&__retVal_native, __retVal);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyVectorInt16(__retVal_ptr);
+				NativeMethods.DestroyVectorInt16(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <int[]> NoParamReturnArrayInt32Callback = &___NoParamReturnArrayInt32Callback;
-		internal static delegate* unmanaged[Cdecl]<Container> __NoParamReturnArrayInt32Callback;
+		internal static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayInt32Callback;
 		private static int[] ___NoParamReturnArrayInt32Callback()
 		{
 			int[] __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			Vector192 __retVal_native;
 
 			try {
 				__retVal_native = __NoParamReturnArrayInt32Callback();
 				// Unmarshal - Convert native data to managed data.
-				__retVal = new int[NativeMethods.GetVectorSizeInt32(__retVal_ptr)];
-				NativeMethods.GetVectorDataInt32(__retVal_ptr, __retVal);
+				__retVal = new int[NativeMethods.GetVectorSizeInt32(&__retVal_native)];
+				NativeMethods.GetVectorDataInt32(&__retVal_native, __retVal);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyVectorInt32(__retVal_ptr);
+				NativeMethods.DestroyVectorInt32(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <long[]> NoParamReturnArrayInt64Callback = &___NoParamReturnArrayInt64Callback;
-		internal static delegate* unmanaged[Cdecl]<Container> __NoParamReturnArrayInt64Callback;
+		internal static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayInt64Callback;
 		private static long[] ___NoParamReturnArrayInt64Callback()
 		{
 			long[] __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			Vector192 __retVal_native;
 
 			try {
 				__retVal_native = __NoParamReturnArrayInt64Callback();
 				// Unmarshal - Convert native data to managed data.
-				__retVal = new long[NativeMethods.GetVectorSizeInt64(__retVal_ptr)];
-				NativeMethods.GetVectorDataInt64(__retVal_ptr, __retVal);
+				__retVal = new long[NativeMethods.GetVectorSizeInt64(&__retVal_native)];
+				NativeMethods.GetVectorDataInt64(&__retVal_native, __retVal);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyVectorInt64(__retVal_ptr);
+				NativeMethods.DestroyVectorInt64(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <byte[]> NoParamReturnArrayUInt8Callback = &___NoParamReturnArrayUInt8Callback;
-		internal static delegate* unmanaged[Cdecl]<Container> __NoParamReturnArrayUInt8Callback;
+		internal static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayUInt8Callback;
 		private static byte[] ___NoParamReturnArrayUInt8Callback()
 		{
 			byte[] __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			Vector192 __retVal_native;
 
 			try {
 				__retVal_native = __NoParamReturnArrayUInt8Callback();
 				// Unmarshal - Convert native data to managed data.
-				__retVal = new byte[NativeMethods.GetVectorSizeUInt8(__retVal_ptr)];
-				NativeMethods.GetVectorDataUInt8(__retVal_ptr, __retVal);
+				__retVal = new byte[NativeMethods.GetVectorSizeUInt8(&__retVal_native)];
+				NativeMethods.GetVectorDataUInt8(&__retVal_native, __retVal);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyVectorUInt8(__retVal_ptr);
+				NativeMethods.DestroyVectorUInt8(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <ushort[]> NoParamReturnArrayUInt16Callback = &___NoParamReturnArrayUInt16Callback;
-		internal static delegate* unmanaged[Cdecl]<Container> __NoParamReturnArrayUInt16Callback;
+		internal static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayUInt16Callback;
 		private static ushort[] ___NoParamReturnArrayUInt16Callback()
 		{
 			ushort[] __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			Vector192 __retVal_native;
 
 			try {
 				__retVal_native = __NoParamReturnArrayUInt16Callback();
 				// Unmarshal - Convert native data to managed data.
-				__retVal = new ushort[NativeMethods.GetVectorSizeUInt16(__retVal_ptr)];
-				NativeMethods.GetVectorDataUInt16(__retVal_ptr, __retVal);
+				__retVal = new ushort[NativeMethods.GetVectorSizeUInt16(&__retVal_native)];
+				NativeMethods.GetVectorDataUInt16(&__retVal_native, __retVal);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyVectorUInt16(__retVal_ptr);
+				NativeMethods.DestroyVectorUInt16(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <uint[]> NoParamReturnArrayUInt32Callback = &___NoParamReturnArrayUInt32Callback;
-		internal static delegate* unmanaged[Cdecl]<Container> __NoParamReturnArrayUInt32Callback;
+		internal static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayUInt32Callback;
 		private static uint[] ___NoParamReturnArrayUInt32Callback()
 		{
 			uint[] __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			Vector192 __retVal_native;
 
 			try {
 				__retVal_native = __NoParamReturnArrayUInt32Callback();
 				// Unmarshal - Convert native data to managed data.
-				__retVal = new uint[NativeMethods.GetVectorSizeUInt32(__retVal_ptr)];
-				NativeMethods.GetVectorDataUInt32(__retVal_ptr, __retVal);
+				__retVal = new uint[NativeMethods.GetVectorSizeUInt32(&__retVal_native)];
+				NativeMethods.GetVectorDataUInt32(&__retVal_native, __retVal);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyVectorUInt32(__retVal_ptr);
+				NativeMethods.DestroyVectorUInt32(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <ulong[]> NoParamReturnArrayUInt64Callback = &___NoParamReturnArrayUInt64Callback;
-		internal static delegate* unmanaged[Cdecl]<Container> __NoParamReturnArrayUInt64Callback;
+		internal static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayUInt64Callback;
 		private static ulong[] ___NoParamReturnArrayUInt64Callback()
 		{
 			ulong[] __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			Vector192 __retVal_native;
 
 			try {
 				__retVal_native = __NoParamReturnArrayUInt64Callback();
 				// Unmarshal - Convert native data to managed data.
-				__retVal = new ulong[NativeMethods.GetVectorSizeUInt64(__retVal_ptr)];
-				NativeMethods.GetVectorDataUInt64(__retVal_ptr, __retVal);
+				__retVal = new ulong[NativeMethods.GetVectorSizeUInt64(&__retVal_native)];
+				NativeMethods.GetVectorDataUInt64(&__retVal_native, __retVal);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyVectorUInt64(__retVal_ptr);
+				NativeMethods.DestroyVectorUInt64(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <nint[]> NoParamReturnArrayPointerCallback = &___NoParamReturnArrayPointerCallback;
-		internal static delegate* unmanaged[Cdecl]<Container> __NoParamReturnArrayPointerCallback;
+		internal static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayPointerCallback;
 		private static nint[] ___NoParamReturnArrayPointerCallback()
 		{
 			nint[] __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			Vector192 __retVal_native;
 
 			try {
 				__retVal_native = __NoParamReturnArrayPointerCallback();
 				// Unmarshal - Convert native data to managed data.
-				__retVal = new nint[NativeMethods.GetVectorSizeIntPtr(__retVal_ptr)];
-				NativeMethods.GetVectorDataIntPtr(__retVal_ptr, __retVal);
+				__retVal = new nint[NativeMethods.GetVectorSizeIntPtr(&__retVal_native)];
+				NativeMethods.GetVectorDataIntPtr(&__retVal_native, __retVal);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyVectorIntPtr(__retVal_ptr);
+				NativeMethods.DestroyVectorIntPtr(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <float[]> NoParamReturnArrayFloatCallback = &___NoParamReturnArrayFloatCallback;
-		internal static delegate* unmanaged[Cdecl]<Container> __NoParamReturnArrayFloatCallback;
+		internal static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayFloatCallback;
 		private static float[] ___NoParamReturnArrayFloatCallback()
 		{
 			float[] __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			Vector192 __retVal_native;
 
 			try {
 				__retVal_native = __NoParamReturnArrayFloatCallback();
 				// Unmarshal - Convert native data to managed data.
-				__retVal = new float[NativeMethods.GetVectorSizeFloat(__retVal_ptr)];
-				NativeMethods.GetVectorDataFloat(__retVal_ptr, __retVal);
+				__retVal = new float[NativeMethods.GetVectorSizeFloat(&__retVal_native)];
+				NativeMethods.GetVectorDataFloat(&__retVal_native, __retVal);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyVectorFloat(__retVal_ptr);
+				NativeMethods.DestroyVectorFloat(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <double[]> NoParamReturnArrayDoubleCallback = &___NoParamReturnArrayDoubleCallback;
-		internal static delegate* unmanaged[Cdecl]<Container> __NoParamReturnArrayDoubleCallback;
+		internal static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayDoubleCallback;
 		private static double[] ___NoParamReturnArrayDoubleCallback()
 		{
 			double[] __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			Vector192 __retVal_native;
 
 			try {
 				__retVal_native = __NoParamReturnArrayDoubleCallback();
 				// Unmarshal - Convert native data to managed data.
-				__retVal = new double[NativeMethods.GetVectorSizeDouble(__retVal_ptr)];
-				NativeMethods.GetVectorDataDouble(__retVal_ptr, __retVal);
+				__retVal = new double[NativeMethods.GetVectorSizeDouble(&__retVal_native)];
+				NativeMethods.GetVectorDataDouble(&__retVal_native, __retVal);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyVectorDouble(__retVal_ptr);
+				NativeMethods.DestroyVectorDouble(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <string[]> NoParamReturnArrayStringCallback = &___NoParamReturnArrayStringCallback;
-		internal static delegate* unmanaged[Cdecl]<Container> __NoParamReturnArrayStringCallback;
+		internal static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayStringCallback;
 		private static string[] ___NoParamReturnArrayStringCallback()
 		{
 			string[] __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			Vector192 __retVal_native;
 
 			try {
 				__retVal_native = __NoParamReturnArrayStringCallback();
 				// Unmarshal - Convert native data to managed data.
-				__retVal = new string[NativeMethods.GetVectorSizeString(__retVal_ptr)];
-				NativeMethods.GetVectorDataString(__retVal_ptr, __retVal);
+				__retVal = new string[NativeMethods.GetVectorSizeString(&__retVal_native)];
+				NativeMethods.GetVectorDataString(&__retVal_native, __retVal);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyVectorString(__retVal_ptr);
+				NativeMethods.DestroyVectorString(&__retVal_native);
 			}
 			return __retVal;
 		}
@@ -581,95 +563,95 @@ namespace cross_call_master
 			__Param4Callback(a, b, c, &d);
 		}
 		internal static delegate* <int, float, double, Vector4, long[], void> Param5Callback = &___Param5Callback;
-		internal static delegate* unmanaged[Cdecl]<int, float, double, Vector4*, nint, void> __Param5Callback;
+		internal static delegate* unmanaged[Cdecl]<int, float, double, Vector4*, Vector192*, void> __Param5Callback;
 		private static void ___Param5Callback(int a, float b, double c, Vector4 d, long[] e)
 		{
-			var __e = NativeMethods.CreateVectorInt64(e, e.Length);
+			var __e = NativeMethods.ConstructVectorInt64(e, e.Length);
 
 			try {
-				__Param5Callback(a, b, c, &d, __e);
+				__Param5Callback(a, b, c, &d, &__e);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DeleteVectorInt64(__e);
+				NativeMethods.DestroyVectorInt64(&__e);
 			}
 		}
 		internal static delegate* <int, float, double, Vector4, long[], Char8, void> Param6Callback = &___Param6Callback;
-		internal static delegate* unmanaged[Cdecl]<int, float, double, Vector4*, nint, Char8, void> __Param6Callback;
+		internal static delegate* unmanaged[Cdecl]<int, float, double, Vector4*, Vector192*, Char8, void> __Param6Callback;
 		private static void ___Param6Callback(int a, float b, double c, Vector4 d, long[] e, Char8 f)
 		{
-			var __e = NativeMethods.CreateVectorInt64(e, e.Length);
+			var __e = NativeMethods.ConstructVectorInt64(e, e.Length);
 
 			try {
-				__Param6Callback(a, b, c, &d, __e, f);
+				__Param6Callback(a, b, c, &d, &__e, f);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DeleteVectorInt64(__e);
+				NativeMethods.DestroyVectorInt64(&__e);
 			}
 		}
 		internal static delegate* <int, float, double, Vector4, long[], Char8, string, void> Param7Callback = &___Param7Callback;
-		internal static delegate* unmanaged[Cdecl]<int, float, double, Vector4*, nint, Char8, nint, void> __Param7Callback;
+		internal static delegate* unmanaged[Cdecl]<int, float, double, Vector4*, Vector192*, Char8, String192*, void> __Param7Callback;
 		private static void ___Param7Callback(int a, float b, double c, Vector4 d, long[] e, Char8 f, string g)
 		{
-			var __e = NativeMethods.CreateVectorInt64(e, e.Length);
-			var __g = NativeMethods.CreateString(g);
+			var __e = NativeMethods.ConstructVectorInt64(e, e.Length);
+			var __g = NativeMethods.ConstructString(g);
 
 			try {
-				__Param7Callback(a, b, c, &d, __e, f, __g);
+				__Param7Callback(a, b, c, &d, &__e, f, &__g);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DeleteVectorInt64(__e);
-				NativeMethods.DeleteString(__g);
+				NativeMethods.DestroyVectorInt64(&__e);
+				NativeMethods.DestroyString(&__g);
 			}
 		}
 		internal static delegate* <int, float, double, Vector4, long[], Char8, string, Char16, void> Param8Callback = &___Param8Callback;
-		internal static delegate* unmanaged[Cdecl]<int, float, double, Vector4*, nint, Char8, nint, Char16, void> __Param8Callback;
+		internal static delegate* unmanaged[Cdecl]<int, float, double, Vector4*, Vector192*, Char8, String192*, Char16, void> __Param8Callback;
 		private static void ___Param8Callback(int a, float b, double c, Vector4 d, long[] e, Char8 f, string g, Char16 h)
 		{
-			var __e = NativeMethods.CreateVectorInt64(e, e.Length);
-			var __g = NativeMethods.CreateString(g);
+			var __e = NativeMethods.ConstructVectorInt64(e, e.Length);
+			var __g = NativeMethods.ConstructString(g);
 
 			try {
-				__Param8Callback(a, b, c, &d, __e, f, __g, h);
+				__Param8Callback(a, b, c, &d, &__e, f, &__g, h);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DeleteVectorInt64(__e);
-				NativeMethods.DeleteString(__g);
+				NativeMethods.DestroyVectorInt64(&__e);
+				NativeMethods.DestroyString(&__g);
 			}
 		}
 		internal static delegate* <int, float, double, Vector4, long[], Char8, string, Char16, short, void> Param9Callback = &___Param9Callback;
-		internal static delegate* unmanaged[Cdecl]<int, float, double, Vector4*, nint, Char8, nint, Char16, short, void> __Param9Callback;
+		internal static delegate* unmanaged[Cdecl]<int, float, double, Vector4*, Vector192*, Char8, String192*, Char16, short, void> __Param9Callback;
 		private static void ___Param9Callback(int a, float b, double c, Vector4 d, long[] e, Char8 f, string g, Char16 h, short k)
 		{
-			var __e = NativeMethods.CreateVectorInt64(e, e.Length);
-			var __g = NativeMethods.CreateString(g);
+			var __e = NativeMethods.ConstructVectorInt64(e, e.Length);
+			var __g = NativeMethods.ConstructString(g);
 
 			try {
-				__Param9Callback(a, b, c, &d, __e, f, __g, h, k);
+				__Param9Callback(a, b, c, &d, &__e, f, &__g, h, k);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DeleteVectorInt64(__e);
-				NativeMethods.DeleteString(__g);
+				NativeMethods.DestroyVectorInt64(&__e);
+				NativeMethods.DestroyString(&__g);
 			}
 		}
 		internal static delegate* <int, float, double, Vector4, long[], Char8, string, Char16, short, nint, void> Param10Callback = &___Param10Callback;
-		internal static delegate* unmanaged[Cdecl]<int, float, double, Vector4*, nint, Char8, nint, Char16, short, nint, void> __Param10Callback;
+		internal static delegate* unmanaged[Cdecl]<int, float, double, Vector4*, Vector192*, Char8, String192*, Char16, short, nint, void> __Param10Callback;
 		private static void ___Param10Callback(int a, float b, double c, Vector4 d, long[] e, Char8 f, string g, Char16 h, short k, nint l)
 		{
-			var __e = NativeMethods.CreateVectorInt64(e, e.Length);
-			var __g = NativeMethods.CreateString(g);
+			var __e = NativeMethods.ConstructVectorInt64(e, e.Length);
+			var __g = NativeMethods.ConstructString(g);
 
 			try {
-				__Param10Callback(a, b, c, &d, __e, f, __g, h, k, l);
+				__Param10Callback(a, b, c, &d, &__e, f, &__g, h, k, l);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DeleteVectorInt64(__e);
-				NativeMethods.DeleteString(__g);
+				NativeMethods.DestroyVectorInt64(&__e);
+				NativeMethods.DestroyString(&__g);
 			}
 		}
 		internal static delegate* <ref int, void> ParamRef1Callback = &___ParamRef1Callback;
@@ -725,24 +707,24 @@ namespace cross_call_master
 			}
 		}
 		internal static delegate* <ref int, ref float, ref double, ref Vector4, ref long[], void> ParamRef5Callback = &___ParamRef5Callback;
-		internal static delegate* unmanaged[Cdecl]<int*, float*, double*, Vector4*, nint, void> __ParamRef5Callback;
+		internal static delegate* unmanaged[Cdecl]<int*, float*, double*, Vector4*, Vector192*, void> __ParamRef5Callback;
 		private static void ___ParamRef5Callback(ref int a, ref float b, ref double c, ref Vector4 d, ref long[] e)
 		{
 			fixed(int* __a = &a) {
 			fixed(float* __b = &b) {
 			fixed(double* __c = &c) {
 			fixed(Vector4* __d = &d) {
-			var __e = NativeMethods.CreateVectorInt64(e, e.Length);
+			var __e = NativeMethods.ConstructVectorInt64(e, e.Length);
 
 			try {
-				__ParamRef5Callback(__a, __b, __c, __d, __e);
+				__ParamRef5Callback(__a, __b, __c, __d, &__e);
 				// Unmarshal - Convert native data to managed data.
-				Array.Resize(ref e, NativeMethods.GetVectorSizeInt64(__e));
-				NativeMethods.GetVectorDataInt64(__e, e);
+				Array.Resize(ref e, NativeMethods.GetVectorSizeInt64(&__e));
+				NativeMethods.GetVectorDataInt64(&__e, e);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DeleteVectorInt64(__e);
+				NativeMethods.DestroyVectorInt64(&__e);
 			}
 
 			}
@@ -751,25 +733,25 @@ namespace cross_call_master
 			}
 		}
 		internal static delegate* <ref int, ref float, ref double, ref Vector4, ref long[], ref Char8, void> ParamRef6Callback = &___ParamRef6Callback;
-		internal static delegate* unmanaged[Cdecl]<int*, float*, double*, Vector4*, nint, Char8*, void> __ParamRef6Callback;
+		internal static delegate* unmanaged[Cdecl]<int*, float*, double*, Vector4*, Vector192*, Char8*, void> __ParamRef6Callback;
 		private static void ___ParamRef6Callback(ref int a, ref float b, ref double c, ref Vector4 d, ref long[] e, ref Char8 f)
 		{
 			fixed(int* __a = &a) {
 			fixed(float* __b = &b) {
 			fixed(double* __c = &c) {
 			fixed(Vector4* __d = &d) {
-			var __e = NativeMethods.CreateVectorInt64(e, e.Length);
+			var __e = NativeMethods.ConstructVectorInt64(e, e.Length);
 			fixed(Char8* __f = &f) {
 
 			try {
-				__ParamRef6Callback(__a, __b, __c, __d, __e, __f);
+				__ParamRef6Callback(__a, __b, __c, __d, &__e, __f);
 				// Unmarshal - Convert native data to managed data.
-				Array.Resize(ref e, NativeMethods.GetVectorSizeInt64(__e));
-				NativeMethods.GetVectorDataInt64(__e, e);
+				Array.Resize(ref e, NativeMethods.GetVectorSizeInt64(&__e));
+				NativeMethods.GetVectorDataInt64(&__e, e);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DeleteVectorInt64(__e);
+				NativeMethods.DestroyVectorInt64(&__e);
 			}
 
 			}
@@ -779,28 +761,28 @@ namespace cross_call_master
 			}
 		}
 		internal static delegate* <ref int, ref float, ref double, ref Vector4, ref long[], ref Char8, ref string, void> ParamRef7Callback = &___ParamRef7Callback;
-		internal static delegate* unmanaged[Cdecl]<int*, float*, double*, Vector4*, nint, Char8*, nint, void> __ParamRef7Callback;
+		internal static delegate* unmanaged[Cdecl]<int*, float*, double*, Vector4*, Vector192*, Char8*, String192*, void> __ParamRef7Callback;
 		private static void ___ParamRef7Callback(ref int a, ref float b, ref double c, ref Vector4 d, ref long[] e, ref Char8 f, ref string g)
 		{
 			fixed(int* __a = &a) {
 			fixed(float* __b = &b) {
 			fixed(double* __c = &c) {
 			fixed(Vector4* __d = &d) {
-			var __e = NativeMethods.CreateVectorInt64(e, e.Length);
+			var __e = NativeMethods.ConstructVectorInt64(e, e.Length);
 			fixed(Char8* __f = &f) {
-			var __g = NativeMethods.CreateString(g);
+			var __g = NativeMethods.ConstructString(g);
 
 			try {
-				__ParamRef7Callback(__a, __b, __c, __d, __e, __f, __g);
+				__ParamRef7Callback(__a, __b, __c, __d, &__e, __f, &__g);
 				// Unmarshal - Convert native data to managed data.
-				Array.Resize(ref e, NativeMethods.GetVectorSizeInt64(__e));
-				NativeMethods.GetVectorDataInt64(__e, e);
-				g = NativeMethods.GetStringData(__g);
+				Array.Resize(ref e, NativeMethods.GetVectorSizeInt64(&__e));
+				NativeMethods.GetVectorDataInt64(&__e, e);
+				g = NativeMethods.GetStringData(&__g);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DeleteVectorInt64(__e);
-				NativeMethods.DeleteString(__g);
+				NativeMethods.DestroyVectorInt64(&__e);
+				NativeMethods.DestroyString(&__g);
 			}
 
 			}
@@ -810,29 +792,29 @@ namespace cross_call_master
 			}
 		}
 		internal static delegate* <ref int, ref float, ref double, ref Vector4, ref long[], ref Char8, ref string, ref Char16, void> ParamRef8Callback = &___ParamRef8Callback;
-		internal static delegate* unmanaged[Cdecl]<int*, float*, double*, Vector4*, nint, Char8*, nint, Char16*, void> __ParamRef8Callback;
+		internal static delegate* unmanaged[Cdecl]<int*, float*, double*, Vector4*, Vector192*, Char8*, String192*, Char16*, void> __ParamRef8Callback;
 		private static void ___ParamRef8Callback(ref int a, ref float b, ref double c, ref Vector4 d, ref long[] e, ref Char8 f, ref string g, ref Char16 h)
 		{
 			fixed(int* __a = &a) {
 			fixed(float* __b = &b) {
 			fixed(double* __c = &c) {
 			fixed(Vector4* __d = &d) {
-			var __e = NativeMethods.CreateVectorInt64(e, e.Length);
+			var __e = NativeMethods.ConstructVectorInt64(e, e.Length);
 			fixed(Char8* __f = &f) {
-			var __g = NativeMethods.CreateString(g);
+			var __g = NativeMethods.ConstructString(g);
 			fixed(Char16* __h = &h) {
 
 			try {
-				__ParamRef8Callback(__a, __b, __c, __d, __e, __f, __g, __h);
+				__ParamRef8Callback(__a, __b, __c, __d, &__e, __f, &__g, __h);
 				// Unmarshal - Convert native data to managed data.
-				Array.Resize(ref e, NativeMethods.GetVectorSizeInt64(__e));
-				NativeMethods.GetVectorDataInt64(__e, e);
-				g = NativeMethods.GetStringData(__g);
+				Array.Resize(ref e, NativeMethods.GetVectorSizeInt64(&__e));
+				NativeMethods.GetVectorDataInt64(&__e, e);
+				g = NativeMethods.GetStringData(&__g);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DeleteVectorInt64(__e);
-				NativeMethods.DeleteString(__g);
+				NativeMethods.DestroyVectorInt64(&__e);
+				NativeMethods.DestroyString(&__g);
 			}
 
 			}
@@ -843,30 +825,30 @@ namespace cross_call_master
 			}
 		}
 		internal static delegate* <ref int, ref float, ref double, ref Vector4, ref long[], ref Char8, ref string, ref Char16, ref short, void> ParamRef9Callback = &___ParamRef9Callback;
-		internal static delegate* unmanaged[Cdecl]<int*, float*, double*, Vector4*, nint, Char8*, nint, Char16*, short*, void> __ParamRef9Callback;
+		internal static delegate* unmanaged[Cdecl]<int*, float*, double*, Vector4*, Vector192*, Char8*, String192*, Char16*, short*, void> __ParamRef9Callback;
 		private static void ___ParamRef9Callback(ref int a, ref float b, ref double c, ref Vector4 d, ref long[] e, ref Char8 f, ref string g, ref Char16 h, ref short k)
 		{
 			fixed(int* __a = &a) {
 			fixed(float* __b = &b) {
 			fixed(double* __c = &c) {
 			fixed(Vector4* __d = &d) {
-			var __e = NativeMethods.CreateVectorInt64(e, e.Length);
+			var __e = NativeMethods.ConstructVectorInt64(e, e.Length);
 			fixed(Char8* __f = &f) {
-			var __g = NativeMethods.CreateString(g);
+			var __g = NativeMethods.ConstructString(g);
 			fixed(Char16* __h = &h) {
 			fixed(short* __k = &k) {
 
 			try {
-				__ParamRef9Callback(__a, __b, __c, __d, __e, __f, __g, __h, __k);
+				__ParamRef9Callback(__a, __b, __c, __d, &__e, __f, &__g, __h, __k);
 				// Unmarshal - Convert native data to managed data.
-				Array.Resize(ref e, NativeMethods.GetVectorSizeInt64(__e));
-				NativeMethods.GetVectorDataInt64(__e, e);
-				g = NativeMethods.GetStringData(__g);
+				Array.Resize(ref e, NativeMethods.GetVectorSizeInt64(&__e));
+				NativeMethods.GetVectorDataInt64(&__e, e);
+				g = NativeMethods.GetStringData(&__g);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DeleteVectorInt64(__e);
-				NativeMethods.DeleteString(__g);
+				NativeMethods.DestroyVectorInt64(&__e);
+				NativeMethods.DestroyString(&__g);
 			}
 
 			}
@@ -878,31 +860,31 @@ namespace cross_call_master
 			}
 		}
 		internal static delegate* <ref int, ref float, ref double, ref Vector4, ref long[], ref Char8, ref string, ref Char16, ref short, ref nint, void> ParamRef10Callback = &___ParamRef10Callback;
-		internal static delegate* unmanaged[Cdecl]<int*, float*, double*, Vector4*, nint, Char8*, nint, Char16*, short*, nint*, void> __ParamRef10Callback;
+		internal static delegate* unmanaged[Cdecl]<int*, float*, double*, Vector4*, Vector192*, Char8*, String192*, Char16*, short*, nint*, void> __ParamRef10Callback;
 		private static void ___ParamRef10Callback(ref int a, ref float b, ref double c, ref Vector4 d, ref long[] e, ref Char8 f, ref string g, ref Char16 h, ref short k, ref nint l)
 		{
 			fixed(int* __a = &a) {
 			fixed(float* __b = &b) {
 			fixed(double* __c = &c) {
 			fixed(Vector4* __d = &d) {
-			var __e = NativeMethods.CreateVectorInt64(e, e.Length);
+			var __e = NativeMethods.ConstructVectorInt64(e, e.Length);
 			fixed(Char8* __f = &f) {
-			var __g = NativeMethods.CreateString(g);
+			var __g = NativeMethods.ConstructString(g);
 			fixed(Char16* __h = &h) {
 			fixed(short* __k = &k) {
 			fixed(nint* __l = &l) {
 
 			try {
-				__ParamRef10Callback(__a, __b, __c, __d, __e, __f, __g, __h, __k, __l);
+				__ParamRef10Callback(__a, __b, __c, __d, &__e, __f, &__g, __h, __k, __l);
 				// Unmarshal - Convert native data to managed data.
-				Array.Resize(ref e, NativeMethods.GetVectorSizeInt64(__e));
-				NativeMethods.GetVectorDataInt64(__e, e);
-				g = NativeMethods.GetStringData(__g);
+				Array.Resize(ref e, NativeMethods.GetVectorSizeInt64(&__e));
+				NativeMethods.GetVectorDataInt64(&__e, e);
+				g = NativeMethods.GetStringData(&__g);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DeleteVectorInt64(__e);
-				NativeMethods.DeleteString(__g);
+				NativeMethods.DestroyVectorInt64(&__e);
+				NativeMethods.DestroyString(&__g);
 			}
 
 			}
@@ -915,76 +897,76 @@ namespace cross_call_master
 			}
 		}
 		internal static delegate* <ref Bool8[], ref Char8[], ref Char16[], ref sbyte[], ref short[], ref int[], ref long[], ref byte[], ref ushort[], ref uint[], ref ulong[], ref nint[], ref float[], ref double[], ref string[], void> ParamRefVectorsCallback = &___ParamRefVectorsCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, nint, nint, nint, nint, nint, nint, nint, nint, nint, nint, nint, nint, nint, nint, void> __ParamRefVectorsCallback;
+		internal static delegate* unmanaged[Cdecl]<Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, void> __ParamRefVectorsCallback;
 		private static void ___ParamRefVectorsCallback(ref Bool8[] p1, ref Char8[] p2, ref Char16[] p3, ref sbyte[] p4, ref short[] p5, ref int[] p6, ref long[] p7, ref byte[] p8, ref ushort[] p9, ref uint[] p10, ref ulong[] p11, ref nint[] p12, ref float[] p13, ref double[] p14, ref string[] p15)
 		{
-			var __p1 = NativeMethods.CreateVectorBool(p1, p1.Length);
-			var __p2 = NativeMethods.CreateVectorChar8(p2, p2.Length);
-			var __p3 = NativeMethods.CreateVectorChar16(p3, p3.Length);
-			var __p4 = NativeMethods.CreateVectorInt8(p4, p4.Length);
-			var __p5 = NativeMethods.CreateVectorInt16(p5, p5.Length);
-			var __p6 = NativeMethods.CreateVectorInt32(p6, p6.Length);
-			var __p7 = NativeMethods.CreateVectorInt64(p7, p7.Length);
-			var __p8 = NativeMethods.CreateVectorUInt8(p8, p8.Length);
-			var __p9 = NativeMethods.CreateVectorUInt16(p9, p9.Length);
-			var __p10 = NativeMethods.CreateVectorUInt32(p10, p10.Length);
-			var __p11 = NativeMethods.CreateVectorUInt64(p11, p11.Length);
-			var __p12 = NativeMethods.CreateVectorIntPtr(p12, p12.Length);
-			var __p13 = NativeMethods.CreateVectorFloat(p13, p13.Length);
-			var __p14 = NativeMethods.CreateVectorDouble(p14, p14.Length);
-			var __p15 = NativeMethods.CreateVectorString(p15, p15.Length);
+			var __p1 = NativeMethods.ConstructVectorBool(p1, p1.Length);
+			var __p2 = NativeMethods.ConstructVectorChar8(p2, p2.Length);
+			var __p3 = NativeMethods.ConstructVectorChar16(p3, p3.Length);
+			var __p4 = NativeMethods.ConstructVectorInt8(p4, p4.Length);
+			var __p5 = NativeMethods.ConstructVectorInt16(p5, p5.Length);
+			var __p6 = NativeMethods.ConstructVectorInt32(p6, p6.Length);
+			var __p7 = NativeMethods.ConstructVectorInt64(p7, p7.Length);
+			var __p8 = NativeMethods.ConstructVectorUInt8(p8, p8.Length);
+			var __p9 = NativeMethods.ConstructVectorUInt16(p9, p9.Length);
+			var __p10 = NativeMethods.ConstructVectorUInt32(p10, p10.Length);
+			var __p11 = NativeMethods.ConstructVectorUInt64(p11, p11.Length);
+			var __p12 = NativeMethods.ConstructVectorIntPtr(p12, p12.Length);
+			var __p13 = NativeMethods.ConstructVectorFloat(p13, p13.Length);
+			var __p14 = NativeMethods.ConstructVectorDouble(p14, p14.Length);
+			var __p15 = NativeMethods.ConstructVectorString(p15, p15.Length);
 
 			try {
-				__ParamRefVectorsCallback(__p1, __p2, __p3, __p4, __p5, __p6, __p7, __p8, __p9, __p10, __p11, __p12, __p13, __p14, __p15);
+				__ParamRefVectorsCallback(&__p1, &__p2, &__p3, &__p4, &__p5, &__p6, &__p7, &__p8, &__p9, &__p10, &__p11, &__p12, &__p13, &__p14, &__p15);
 				// Unmarshal - Convert native data to managed data.
-				Array.Resize(ref p1, NativeMethods.GetVectorSizeBool(__p1));
-				NativeMethods.GetVectorDataBool(__p1, p1);
-				Array.Resize(ref p2, NativeMethods.GetVectorSizeChar8(__p2));
-				NativeMethods.GetVectorDataChar8(__p2, p2);
-				Array.Resize(ref p3, NativeMethods.GetVectorSizeChar16(__p3));
-				NativeMethods.GetVectorDataChar16(__p3, p3);
-				Array.Resize(ref p4, NativeMethods.GetVectorSizeInt8(__p4));
-				NativeMethods.GetVectorDataInt8(__p4, p4);
-				Array.Resize(ref p5, NativeMethods.GetVectorSizeInt16(__p5));
-				NativeMethods.GetVectorDataInt16(__p5, p5);
-				Array.Resize(ref p6, NativeMethods.GetVectorSizeInt32(__p6));
-				NativeMethods.GetVectorDataInt32(__p6, p6);
-				Array.Resize(ref p7, NativeMethods.GetVectorSizeInt64(__p7));
-				NativeMethods.GetVectorDataInt64(__p7, p7);
-				Array.Resize(ref p8, NativeMethods.GetVectorSizeUInt8(__p8));
-				NativeMethods.GetVectorDataUInt8(__p8, p8);
-				Array.Resize(ref p9, NativeMethods.GetVectorSizeUInt16(__p9));
-				NativeMethods.GetVectorDataUInt16(__p9, p9);
-				Array.Resize(ref p10, NativeMethods.GetVectorSizeUInt32(__p10));
-				NativeMethods.GetVectorDataUInt32(__p10, p10);
-				Array.Resize(ref p11, NativeMethods.GetVectorSizeUInt64(__p11));
-				NativeMethods.GetVectorDataUInt64(__p11, p11);
-				Array.Resize(ref p12, NativeMethods.GetVectorSizeIntPtr(__p12));
-				NativeMethods.GetVectorDataIntPtr(__p12, p12);
-				Array.Resize(ref p13, NativeMethods.GetVectorSizeFloat(__p13));
-				NativeMethods.GetVectorDataFloat(__p13, p13);
-				Array.Resize(ref p14, NativeMethods.GetVectorSizeDouble(__p14));
-				NativeMethods.GetVectorDataDouble(__p14, p14);
-				Array.Resize(ref p15, NativeMethods.GetVectorSizeString(__p15));
-				NativeMethods.GetVectorDataString(__p15, p15);
+				Array.Resize(ref p1, NativeMethods.GetVectorSizeBool(&__p1));
+				NativeMethods.GetVectorDataBool(&__p1, p1);
+				Array.Resize(ref p2, NativeMethods.GetVectorSizeChar8(&__p2));
+				NativeMethods.GetVectorDataChar8(&__p2, p2);
+				Array.Resize(ref p3, NativeMethods.GetVectorSizeChar16(&__p3));
+				NativeMethods.GetVectorDataChar16(&__p3, p3);
+				Array.Resize(ref p4, NativeMethods.GetVectorSizeInt8(&__p4));
+				NativeMethods.GetVectorDataInt8(&__p4, p4);
+				Array.Resize(ref p5, NativeMethods.GetVectorSizeInt16(&__p5));
+				NativeMethods.GetVectorDataInt16(&__p5, p5);
+				Array.Resize(ref p6, NativeMethods.GetVectorSizeInt32(&__p6));
+				NativeMethods.GetVectorDataInt32(&__p6, p6);
+				Array.Resize(ref p7, NativeMethods.GetVectorSizeInt64(&__p7));
+				NativeMethods.GetVectorDataInt64(&__p7, p7);
+				Array.Resize(ref p8, NativeMethods.GetVectorSizeUInt8(&__p8));
+				NativeMethods.GetVectorDataUInt8(&__p8, p8);
+				Array.Resize(ref p9, NativeMethods.GetVectorSizeUInt16(&__p9));
+				NativeMethods.GetVectorDataUInt16(&__p9, p9);
+				Array.Resize(ref p10, NativeMethods.GetVectorSizeUInt32(&__p10));
+				NativeMethods.GetVectorDataUInt32(&__p10, p10);
+				Array.Resize(ref p11, NativeMethods.GetVectorSizeUInt64(&__p11));
+				NativeMethods.GetVectorDataUInt64(&__p11, p11);
+				Array.Resize(ref p12, NativeMethods.GetVectorSizeIntPtr(&__p12));
+				NativeMethods.GetVectorDataIntPtr(&__p12, p12);
+				Array.Resize(ref p13, NativeMethods.GetVectorSizeFloat(&__p13));
+				NativeMethods.GetVectorDataFloat(&__p13, p13);
+				Array.Resize(ref p14, NativeMethods.GetVectorSizeDouble(&__p14));
+				NativeMethods.GetVectorDataDouble(&__p14, p14);
+				Array.Resize(ref p15, NativeMethods.GetVectorSizeString(&__p15));
+				NativeMethods.GetVectorDataString(&__p15, p15);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DeleteVectorBool(__p1);
-				NativeMethods.DeleteVectorChar8(__p2);
-				NativeMethods.DeleteVectorChar16(__p3);
-				NativeMethods.DeleteVectorInt8(__p4);
-				NativeMethods.DeleteVectorInt16(__p5);
-				NativeMethods.DeleteVectorInt32(__p6);
-				NativeMethods.DeleteVectorInt64(__p7);
-				NativeMethods.DeleteVectorUInt8(__p8);
-				NativeMethods.DeleteVectorUInt16(__p9);
-				NativeMethods.DeleteVectorUInt32(__p10);
-				NativeMethods.DeleteVectorUInt64(__p11);
-				NativeMethods.DeleteVectorIntPtr(__p12);
-				NativeMethods.DeleteVectorFloat(__p13);
-				NativeMethods.DeleteVectorDouble(__p14);
-				NativeMethods.DeleteVectorString(__p15);
+				NativeMethods.DestroyVectorBool(&__p1);
+				NativeMethods.DestroyVectorChar8(&__p2);
+				NativeMethods.DestroyVectorChar16(&__p3);
+				NativeMethods.DestroyVectorInt8(&__p4);
+				NativeMethods.DestroyVectorInt16(&__p5);
+				NativeMethods.DestroyVectorInt32(&__p6);
+				NativeMethods.DestroyVectorInt64(&__p7);
+				NativeMethods.DestroyVectorUInt8(&__p8);
+				NativeMethods.DestroyVectorUInt16(&__p9);
+				NativeMethods.DestroyVectorUInt32(&__p10);
+				NativeMethods.DestroyVectorUInt64(&__p11);
+				NativeMethods.DestroyVectorIntPtr(&__p12);
+				NativeMethods.DestroyVectorFloat(&__p13);
+				NativeMethods.DestroyVectorDouble(&__p14);
+				NativeMethods.DestroyVectorString(&__p15);
 			}
 		}
 		internal static delegate* <Bool8, Char8, Char16, sbyte, short, int, long, byte, ushort, uint, ulong, nint, float, double, long> ParamAllPrimitivesCallback = &___ParamAllPrimitivesCallback;
@@ -1099,22 +1081,21 @@ namespace cross_call_master
 			return __retVal;
 		}
 		internal static delegate* <FuncString, string> CallFuncStringCallback = &___CallFuncStringCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Container> __CallFuncStringCallback;
+		internal static delegate* unmanaged[Cdecl]<nint, String192> __CallFuncStringCallback;
 		private static string ___CallFuncStringCallback(FuncString func)
 		{
 			string __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			String192 __retVal_native;
 			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__retVal_native = __CallFuncStringCallback(__func);
 				// Unmarshal - Convert native data to managed data.
-				__retVal = NativeMethods.GetStringData(__retVal_ptr);
+				__retVal = NativeMethods.GetStringData(&__retVal_native);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyString(__retVal_ptr);
+				NativeMethods.DestroyString(&__retVal_native);
 			}
 			return __retVal;
 		}
@@ -1126,317 +1107,302 @@ namespace cross_call_master
 			return __retVal;
 		}
 		internal static delegate* <FuncBoolVector, Bool8[]> CallFuncBoolVectorCallback = &___CallFuncBoolVectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Container> __CallFuncBoolVectorCallback;
+		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncBoolVectorCallback;
 		private static Bool8[] ___CallFuncBoolVectorCallback(FuncBoolVector func)
 		{
 			Bool8[] __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			Vector192 __retVal_native;
 			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__retVal_native = __CallFuncBoolVectorCallback(__func);
 				// Unmarshal - Convert native data to managed data.
-				__retVal = new Bool8[NativeMethods.GetVectorSizeBool(__retVal_ptr)];
-				NativeMethods.GetVectorDataBool(__retVal_ptr, __retVal);
+				__retVal = new Bool8[NativeMethods.GetVectorSizeBool(&__retVal_native)];
+				NativeMethods.GetVectorDataBool(&__retVal_native, __retVal);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyVectorBool(__retVal_ptr);
+				NativeMethods.DestroyVectorBool(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <FuncChar8Vector, Char8[]> CallFuncChar8VectorCallback = &___CallFuncChar8VectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Container> __CallFuncChar8VectorCallback;
+		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncChar8VectorCallback;
 		private static Char8[] ___CallFuncChar8VectorCallback(FuncChar8Vector func)
 		{
 			Char8[] __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			Vector192 __retVal_native;
 			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__retVal_native = __CallFuncChar8VectorCallback(__func);
 				// Unmarshal - Convert native data to managed data.
-				__retVal = new Char8[NativeMethods.GetVectorSizeChar8(__retVal_ptr)];
-				NativeMethods.GetVectorDataChar8(__retVal_ptr, __retVal);
+				__retVal = new Char8[NativeMethods.GetVectorSizeChar8(&__retVal_native)];
+				NativeMethods.GetVectorDataChar8(&__retVal_native, __retVal);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyVectorChar8(__retVal_ptr);
+				NativeMethods.DestroyVectorChar8(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <FuncChar16Vector, Char16[]> CallFuncChar16VectorCallback = &___CallFuncChar16VectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Container> __CallFuncChar16VectorCallback;
+		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncChar16VectorCallback;
 		private static Char16[] ___CallFuncChar16VectorCallback(FuncChar16Vector func)
 		{
 			Char16[] __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			Vector192 __retVal_native;
 			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__retVal_native = __CallFuncChar16VectorCallback(__func);
 				// Unmarshal - Convert native data to managed data.
-				__retVal = new Char16[NativeMethods.GetVectorSizeChar16(__retVal_ptr)];
-				NativeMethods.GetVectorDataChar16(__retVal_ptr, __retVal);
+				__retVal = new Char16[NativeMethods.GetVectorSizeChar16(&__retVal_native)];
+				NativeMethods.GetVectorDataChar16(&__retVal_native, __retVal);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyVectorChar16(__retVal_ptr);
+				NativeMethods.DestroyVectorChar16(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <FuncInt8Vector, sbyte[]> CallFuncInt8VectorCallback = &___CallFuncInt8VectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Container> __CallFuncInt8VectorCallback;
+		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncInt8VectorCallback;
 		private static sbyte[] ___CallFuncInt8VectorCallback(FuncInt8Vector func)
 		{
 			sbyte[] __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			Vector192 __retVal_native;
 			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__retVal_native = __CallFuncInt8VectorCallback(__func);
 				// Unmarshal - Convert native data to managed data.
-				__retVal = new sbyte[NativeMethods.GetVectorSizeInt8(__retVal_ptr)];
-				NativeMethods.GetVectorDataInt8(__retVal_ptr, __retVal);
+				__retVal = new sbyte[NativeMethods.GetVectorSizeInt8(&__retVal_native)];
+				NativeMethods.GetVectorDataInt8(&__retVal_native, __retVal);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyVectorInt8(__retVal_ptr);
+				NativeMethods.DestroyVectorInt8(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <FuncInt16Vector, short[]> CallFuncInt16VectorCallback = &___CallFuncInt16VectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Container> __CallFuncInt16VectorCallback;
+		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncInt16VectorCallback;
 		private static short[] ___CallFuncInt16VectorCallback(FuncInt16Vector func)
 		{
 			short[] __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			Vector192 __retVal_native;
 			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__retVal_native = __CallFuncInt16VectorCallback(__func);
 				// Unmarshal - Convert native data to managed data.
-				__retVal = new short[NativeMethods.GetVectorSizeInt16(__retVal_ptr)];
-				NativeMethods.GetVectorDataInt16(__retVal_ptr, __retVal);
+				__retVal = new short[NativeMethods.GetVectorSizeInt16(&__retVal_native)];
+				NativeMethods.GetVectorDataInt16(&__retVal_native, __retVal);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyVectorInt16(__retVal_ptr);
+				NativeMethods.DestroyVectorInt16(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <FuncInt32Vector, int[]> CallFuncInt32VectorCallback = &___CallFuncInt32VectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Container> __CallFuncInt32VectorCallback;
+		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncInt32VectorCallback;
 		private static int[] ___CallFuncInt32VectorCallback(FuncInt32Vector func)
 		{
 			int[] __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			Vector192 __retVal_native;
 			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__retVal_native = __CallFuncInt32VectorCallback(__func);
 				// Unmarshal - Convert native data to managed data.
-				__retVal = new int[NativeMethods.GetVectorSizeInt32(__retVal_ptr)];
-				NativeMethods.GetVectorDataInt32(__retVal_ptr, __retVal);
+				__retVal = new int[NativeMethods.GetVectorSizeInt32(&__retVal_native)];
+				NativeMethods.GetVectorDataInt32(&__retVal_native, __retVal);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyVectorInt32(__retVal_ptr);
+				NativeMethods.DestroyVectorInt32(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <FuncInt64Vector, long[]> CallFuncInt64VectorCallback = &___CallFuncInt64VectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Container> __CallFuncInt64VectorCallback;
+		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncInt64VectorCallback;
 		private static long[] ___CallFuncInt64VectorCallback(FuncInt64Vector func)
 		{
 			long[] __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			Vector192 __retVal_native;
 			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__retVal_native = __CallFuncInt64VectorCallback(__func);
 				// Unmarshal - Convert native data to managed data.
-				__retVal = new long[NativeMethods.GetVectorSizeInt64(__retVal_ptr)];
-				NativeMethods.GetVectorDataInt64(__retVal_ptr, __retVal);
+				__retVal = new long[NativeMethods.GetVectorSizeInt64(&__retVal_native)];
+				NativeMethods.GetVectorDataInt64(&__retVal_native, __retVal);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyVectorInt64(__retVal_ptr);
+				NativeMethods.DestroyVectorInt64(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <FuncUInt8Vector, byte[]> CallFuncUInt8VectorCallback = &___CallFuncUInt8VectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Container> __CallFuncUInt8VectorCallback;
+		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncUInt8VectorCallback;
 		private static byte[] ___CallFuncUInt8VectorCallback(FuncUInt8Vector func)
 		{
 			byte[] __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			Vector192 __retVal_native;
 			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__retVal_native = __CallFuncUInt8VectorCallback(__func);
 				// Unmarshal - Convert native data to managed data.
-				__retVal = new byte[NativeMethods.GetVectorSizeUInt8(__retVal_ptr)];
-				NativeMethods.GetVectorDataUInt8(__retVal_ptr, __retVal);
+				__retVal = new byte[NativeMethods.GetVectorSizeUInt8(&__retVal_native)];
+				NativeMethods.GetVectorDataUInt8(&__retVal_native, __retVal);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyVectorUInt8(__retVal_ptr);
+				NativeMethods.DestroyVectorUInt8(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <FuncUInt16Vector, ushort[]> CallFuncUInt16VectorCallback = &___CallFuncUInt16VectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Container> __CallFuncUInt16VectorCallback;
+		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncUInt16VectorCallback;
 		private static ushort[] ___CallFuncUInt16VectorCallback(FuncUInt16Vector func)
 		{
 			ushort[] __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			Vector192 __retVal_native;
 			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__retVal_native = __CallFuncUInt16VectorCallback(__func);
 				// Unmarshal - Convert native data to managed data.
-				__retVal = new ushort[NativeMethods.GetVectorSizeUInt16(__retVal_ptr)];
-				NativeMethods.GetVectorDataUInt16(__retVal_ptr, __retVal);
+				__retVal = new ushort[NativeMethods.GetVectorSizeUInt16(&__retVal_native)];
+				NativeMethods.GetVectorDataUInt16(&__retVal_native, __retVal);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyVectorUInt16(__retVal_ptr);
+				NativeMethods.DestroyVectorUInt16(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <FuncUInt32Vector, uint[]> CallFuncUInt32VectorCallback = &___CallFuncUInt32VectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Container> __CallFuncUInt32VectorCallback;
+		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncUInt32VectorCallback;
 		private static uint[] ___CallFuncUInt32VectorCallback(FuncUInt32Vector func)
 		{
 			uint[] __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			Vector192 __retVal_native;
 			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__retVal_native = __CallFuncUInt32VectorCallback(__func);
 				// Unmarshal - Convert native data to managed data.
-				__retVal = new uint[NativeMethods.GetVectorSizeUInt32(__retVal_ptr)];
-				NativeMethods.GetVectorDataUInt32(__retVal_ptr, __retVal);
+				__retVal = new uint[NativeMethods.GetVectorSizeUInt32(&__retVal_native)];
+				NativeMethods.GetVectorDataUInt32(&__retVal_native, __retVal);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyVectorUInt32(__retVal_ptr);
+				NativeMethods.DestroyVectorUInt32(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <FuncUInt64Vector, ulong[]> CallFuncUInt64VectorCallback = &___CallFuncUInt64VectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Container> __CallFuncUInt64VectorCallback;
+		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncUInt64VectorCallback;
 		private static ulong[] ___CallFuncUInt64VectorCallback(FuncUInt64Vector func)
 		{
 			ulong[] __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			Vector192 __retVal_native;
 			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__retVal_native = __CallFuncUInt64VectorCallback(__func);
 				// Unmarshal - Convert native data to managed data.
-				__retVal = new ulong[NativeMethods.GetVectorSizeUInt64(__retVal_ptr)];
-				NativeMethods.GetVectorDataUInt64(__retVal_ptr, __retVal);
+				__retVal = new ulong[NativeMethods.GetVectorSizeUInt64(&__retVal_native)];
+				NativeMethods.GetVectorDataUInt64(&__retVal_native, __retVal);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyVectorUInt64(__retVal_ptr);
+				NativeMethods.DestroyVectorUInt64(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <FuncPtrVector, nint[]> CallFuncPtrVectorCallback = &___CallFuncPtrVectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Container> __CallFuncPtrVectorCallback;
+		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncPtrVectorCallback;
 		private static nint[] ___CallFuncPtrVectorCallback(FuncPtrVector func)
 		{
 			nint[] __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			Vector192 __retVal_native;
 			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__retVal_native = __CallFuncPtrVectorCallback(__func);
 				// Unmarshal - Convert native data to managed data.
-				__retVal = new nint[NativeMethods.GetVectorSizeIntPtr(__retVal_ptr)];
-				NativeMethods.GetVectorDataIntPtr(__retVal_ptr, __retVal);
+				__retVal = new nint[NativeMethods.GetVectorSizeIntPtr(&__retVal_native)];
+				NativeMethods.GetVectorDataIntPtr(&__retVal_native, __retVal);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyVectorIntPtr(__retVal_ptr);
+				NativeMethods.DestroyVectorIntPtr(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <FuncFloatVector, float[]> CallFuncFloatVectorCallback = &___CallFuncFloatVectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Container> __CallFuncFloatVectorCallback;
+		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncFloatVectorCallback;
 		private static float[] ___CallFuncFloatVectorCallback(FuncFloatVector func)
 		{
 			float[] __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			Vector192 __retVal_native;
 			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__retVal_native = __CallFuncFloatVectorCallback(__func);
 				// Unmarshal - Convert native data to managed data.
-				__retVal = new float[NativeMethods.GetVectorSizeFloat(__retVal_ptr)];
-				NativeMethods.GetVectorDataFloat(__retVal_ptr, __retVal);
+				__retVal = new float[NativeMethods.GetVectorSizeFloat(&__retVal_native)];
+				NativeMethods.GetVectorDataFloat(&__retVal_native, __retVal);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyVectorFloat(__retVal_ptr);
+				NativeMethods.DestroyVectorFloat(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <FuncStringVector, string[]> CallFuncStringVectorCallback = &___CallFuncStringVectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Container> __CallFuncStringVectorCallback;
+		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncStringVectorCallback;
 		private static string[] ___CallFuncStringVectorCallback(FuncStringVector func)
 		{
 			string[] __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			Vector192 __retVal_native;
 			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__retVal_native = __CallFuncStringVectorCallback(__func);
 				// Unmarshal - Convert native data to managed data.
-				__retVal = new string[NativeMethods.GetVectorSizeString(__retVal_ptr)];
-				NativeMethods.GetVectorDataString(__retVal_ptr, __retVal);
+				__retVal = new string[NativeMethods.GetVectorSizeString(&__retVal_native)];
+				NativeMethods.GetVectorDataString(&__retVal_native, __retVal);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyVectorString(__retVal_ptr);
+				NativeMethods.DestroyVectorString(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <FuncDoubleVector, double[]> CallFuncDoubleVectorCallback = &___CallFuncDoubleVectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Container> __CallFuncDoubleVectorCallback;
+		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncDoubleVectorCallback;
 		private static double[] ___CallFuncDoubleVectorCallback(FuncDoubleVector func)
 		{
 			double[] __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			Vector192 __retVal_native;
 			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__retVal_native = __CallFuncDoubleVectorCallback(__func);
 				// Unmarshal - Convert native data to managed data.
-				__retVal = new double[NativeMethods.GetVectorSizeDouble(__retVal_ptr)];
-				NativeMethods.GetVectorDataDouble(__retVal_ptr, __retVal);
+				__retVal = new double[NativeMethods.GetVectorSizeDouble(&__retVal_native)];
+				NativeMethods.GetVectorDataDouble(&__retVal_native, __retVal);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyVectorDouble(__retVal_ptr);
+				NativeMethods.DestroyVectorDouble(&__retVal_native);
 			}
 			return __retVal;
 		}
@@ -1576,43 +1542,41 @@ namespace cross_call_master
 			return __retVal;
 		}
 		internal static delegate* <Func13, string> CallFunc13Callback = &___CallFunc13Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, Container> __CallFunc13Callback;
+		internal static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc13Callback;
 		private static string ___CallFunc13Callback(Func13 func)
 		{
 			string __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			String192 __retVal_native;
 			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__retVal_native = __CallFunc13Callback(__func);
 				// Unmarshal - Convert native data to managed data.
-				__retVal = NativeMethods.GetStringData(__retVal_ptr);
+				__retVal = NativeMethods.GetStringData(&__retVal_native);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyString(__retVal_ptr);
+				NativeMethods.DestroyString(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <Func14, string[]> CallFunc14Callback = &___CallFunc14Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, Container> __CallFunc14Callback;
+		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFunc14Callback;
 		private static string[] ___CallFunc14Callback(Func14 func)
 		{
 			string[] __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			Vector192 __retVal_native;
 			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__retVal_native = __CallFunc14Callback(__func);
 				// Unmarshal - Convert native data to managed data.
-				__retVal = new string[NativeMethods.GetVectorSizeString(__retVal_ptr)];
-				NativeMethods.GetVectorDataString(__retVal_ptr, __retVal);
+				__retVal = new string[NativeMethods.GetVectorSizeString(&__retVal_native)];
+				NativeMethods.GetVectorDataString(&__retVal_native, __retVal);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyVectorString(__retVal_ptr);
+				NativeMethods.DestroyVectorString(&__retVal_native);
 			}
 			return __retVal;
 		}
@@ -1637,320 +1601,304 @@ namespace cross_call_master
 			return __retVal;
 		}
 		internal static delegate* <Func17, string> CallFunc17Callback = &___CallFunc17Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, Container> __CallFunc17Callback;
+		internal static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc17Callback;
 		private static string ___CallFunc17Callback(Func17 func)
 		{
 			string __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			String192 __retVal_native;
 
 			try {
 				__retVal_native = __CallFunc17Callback(Marshal.GetFunctionPointerForDelegate(func));
 				// Unmarshal - Convert native data to managed data.
-				__retVal = NativeMethods.GetStringData(__retVal_ptr);
+				__retVal = NativeMethods.GetStringData(&__retVal_native);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyString(__retVal_ptr);
+				NativeMethods.DestroyString(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <Func18, string> CallFunc18Callback = &___CallFunc18Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, Container> __CallFunc18Callback;
+		internal static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc18Callback;
 		private static string ___CallFunc18Callback(Func18 func)
 		{
 			string __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			String192 __retVal_native;
 
 			try {
 				__retVal_native = __CallFunc18Callback(Marshal.GetFunctionPointerForDelegate(func));
 				// Unmarshal - Convert native data to managed data.
-				__retVal = NativeMethods.GetStringData(__retVal_ptr);
+				__retVal = NativeMethods.GetStringData(&__retVal_native);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyString(__retVal_ptr);
+				NativeMethods.DestroyString(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <Func19, string> CallFunc19Callback = &___CallFunc19Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, Container> __CallFunc19Callback;
+		internal static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc19Callback;
 		private static string ___CallFunc19Callback(Func19 func)
 		{
 			string __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			String192 __retVal_native;
 			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__retVal_native = __CallFunc19Callback(__func);
 				// Unmarshal - Convert native data to managed data.
-				__retVal = NativeMethods.GetStringData(__retVal_ptr);
+				__retVal = NativeMethods.GetStringData(&__retVal_native);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyString(__retVal_ptr);
+				NativeMethods.DestroyString(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <Func20, string> CallFunc20Callback = &___CallFunc20Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, Container> __CallFunc20Callback;
+		internal static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc20Callback;
 		private static string ___CallFunc20Callback(Func20 func)
 		{
 			string __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			String192 __retVal_native;
 			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__retVal_native = __CallFunc20Callback(__func);
 				// Unmarshal - Convert native data to managed data.
-				__retVal = NativeMethods.GetStringData(__retVal_ptr);
+				__retVal = NativeMethods.GetStringData(&__retVal_native);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyString(__retVal_ptr);
+				NativeMethods.DestroyString(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <Func21, string> CallFunc21Callback = &___CallFunc21Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, Container> __CallFunc21Callback;
+		internal static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc21Callback;
 		private static string ___CallFunc21Callback(Func21 func)
 		{
 			string __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			String192 __retVal_native;
 			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__retVal_native = __CallFunc21Callback(__func);
 				// Unmarshal - Convert native data to managed data.
-				__retVal = NativeMethods.GetStringData(__retVal_ptr);
+				__retVal = NativeMethods.GetStringData(&__retVal_native);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyString(__retVal_ptr);
+				NativeMethods.DestroyString(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <Func22, string> CallFunc22Callback = &___CallFunc22Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, Container> __CallFunc22Callback;
+		internal static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc22Callback;
 		private static string ___CallFunc22Callback(Func22 func)
 		{
 			string __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			String192 __retVal_native;
 			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__retVal_native = __CallFunc22Callback(__func);
 				// Unmarshal - Convert native data to managed data.
-				__retVal = NativeMethods.GetStringData(__retVal_ptr);
+				__retVal = NativeMethods.GetStringData(&__retVal_native);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyString(__retVal_ptr);
+				NativeMethods.DestroyString(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <Func23, string> CallFunc23Callback = &___CallFunc23Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, Container> __CallFunc23Callback;
+		internal static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc23Callback;
 		private static string ___CallFunc23Callback(Func23 func)
 		{
 			string __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			String192 __retVal_native;
 			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__retVal_native = __CallFunc23Callback(__func);
 				// Unmarshal - Convert native data to managed data.
-				__retVal = NativeMethods.GetStringData(__retVal_ptr);
+				__retVal = NativeMethods.GetStringData(&__retVal_native);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyString(__retVal_ptr);
+				NativeMethods.DestroyString(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <Func24, string> CallFunc24Callback = &___CallFunc24Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, Container> __CallFunc24Callback;
+		internal static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc24Callback;
 		private static string ___CallFunc24Callback(Func24 func)
 		{
 			string __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			String192 __retVal_native;
 			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__retVal_native = __CallFunc24Callback(__func);
 				// Unmarshal - Convert native data to managed data.
-				__retVal = NativeMethods.GetStringData(__retVal_ptr);
+				__retVal = NativeMethods.GetStringData(&__retVal_native);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyString(__retVal_ptr);
+				NativeMethods.DestroyString(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <Func25, string> CallFunc25Callback = &___CallFunc25Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, Container> __CallFunc25Callback;
+		internal static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc25Callback;
 		private static string ___CallFunc25Callback(Func25 func)
 		{
 			string __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			String192 __retVal_native;
 			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__retVal_native = __CallFunc25Callback(__func);
 				// Unmarshal - Convert native data to managed data.
-				__retVal = NativeMethods.GetStringData(__retVal_ptr);
+				__retVal = NativeMethods.GetStringData(&__retVal_native);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyString(__retVal_ptr);
+				NativeMethods.DestroyString(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <Func26, string> CallFunc26Callback = &___CallFunc26Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, Container> __CallFunc26Callback;
+		internal static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc26Callback;
 		private static string ___CallFunc26Callback(Func26 func)
 		{
 			string __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			String192 __retVal_native;
 			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__retVal_native = __CallFunc26Callback(__func);
 				// Unmarshal - Convert native data to managed data.
-				__retVal = NativeMethods.GetStringData(__retVal_ptr);
+				__retVal = NativeMethods.GetStringData(&__retVal_native);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyString(__retVal_ptr);
+				NativeMethods.DestroyString(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <Func27, string> CallFunc27Callback = &___CallFunc27Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, Container> __CallFunc27Callback;
+		internal static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc27Callback;
 		private static string ___CallFunc27Callback(Func27 func)
 		{
 			string __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			String192 __retVal_native;
 			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__retVal_native = __CallFunc27Callback(__func);
 				// Unmarshal - Convert native data to managed data.
-				__retVal = NativeMethods.GetStringData(__retVal_ptr);
+				__retVal = NativeMethods.GetStringData(&__retVal_native);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyString(__retVal_ptr);
+				NativeMethods.DestroyString(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <Func28, string> CallFunc28Callback = &___CallFunc28Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, Container> __CallFunc28Callback;
+		internal static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc28Callback;
 		private static string ___CallFunc28Callback(Func28 func)
 		{
 			string __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			String192 __retVal_native;
 			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__retVal_native = __CallFunc28Callback(__func);
 				// Unmarshal - Convert native data to managed data.
-				__retVal = NativeMethods.GetStringData(__retVal_ptr);
+				__retVal = NativeMethods.GetStringData(&__retVal_native);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyString(__retVal_ptr);
+				NativeMethods.DestroyString(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <Func29, string> CallFunc29Callback = &___CallFunc29Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, Container> __CallFunc29Callback;
+		internal static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc29Callback;
 		private static string ___CallFunc29Callback(Func29 func)
 		{
 			string __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			String192 __retVal_native;
 			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__retVal_native = __CallFunc29Callback(__func);
 				// Unmarshal - Convert native data to managed data.
-				__retVal = NativeMethods.GetStringData(__retVal_ptr);
+				__retVal = NativeMethods.GetStringData(&__retVal_native);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyString(__retVal_ptr);
+				NativeMethods.DestroyString(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <Func30, string> CallFunc30Callback = &___CallFunc30Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, Container> __CallFunc30Callback;
+		internal static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc30Callback;
 		private static string ___CallFunc30Callback(Func30 func)
 		{
 			string __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			String192 __retVal_native;
 			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__retVal_native = __CallFunc30Callback(__func);
 				// Unmarshal - Convert native data to managed data.
-				__retVal = NativeMethods.GetStringData(__retVal_ptr);
+				__retVal = NativeMethods.GetStringData(&__retVal_native);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyString(__retVal_ptr);
+				NativeMethods.DestroyString(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <Func31, string> CallFunc31Callback = &___CallFunc31Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, Container> __CallFunc31Callback;
+		internal static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc31Callback;
 		private static string ___CallFunc31Callback(Func31 func)
 		{
 			string __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			String192 __retVal_native;
 			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__retVal_native = __CallFunc31Callback(__func);
 				// Unmarshal - Convert native data to managed data.
-				__retVal = NativeMethods.GetStringData(__retVal_ptr);
+				__retVal = NativeMethods.GetStringData(&__retVal_native);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyString(__retVal_ptr);
+				NativeMethods.DestroyString(&__retVal_native);
 			}
 			return __retVal;
 		}
 		internal static delegate* <Func32, string> CallFunc32Callback = &___CallFunc32Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, Container> __CallFunc32Callback;
+		internal static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc32Callback;
 		private static string ___CallFunc32Callback(Func32 func)
 		{
 			string __retVal;
-			var __retVal_native = new Container();
-			var __retVal_ptr = (nint)(&__retVal_native);
+			String192 __retVal_native;
 			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
 				__retVal_native = __CallFunc32Callback(__func);
 				// Unmarshal - Convert native data to managed data.
-				__retVal = NativeMethods.GetStringData(__retVal_ptr);
+				__retVal = NativeMethods.GetStringData(&__retVal_native);
 			}
 			finally {
 				// Perform cleanup of callee allocated resources.
-				NativeMethods.DestroyString(__retVal_ptr);
+				NativeMethods.DestroyString(&__retVal_native);
 			}
 			return __retVal;
 		}

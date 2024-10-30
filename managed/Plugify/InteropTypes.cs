@@ -47,7 +47,7 @@ public readonly struct Bool8
 }
 
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
-public struct Bool32
+public readonly struct Bool32
 {
 	public uint Value { get; init; }
 
@@ -81,4 +81,20 @@ public readonly struct Char16
 	public static implicit operator ushort(Char16 c) => c.Value;
 
 	public override string ToString() => ((char)Value).ToString();
+}
+
+[StructLayout(LayoutKind.Sequential)]
+public readonly struct String192
+{
+	public readonly nint data;
+	public readonly nint size;
+	public readonly nint cap;
+}
+
+[StructLayout(LayoutKind.Sequential)]
+public readonly struct Vector192
+{
+	public readonly nint size;
+	public readonly nint cap;
+	public readonly nint data;
 }
