@@ -61,22 +61,22 @@ CTYPES_MAP = {
     'float': 'float',
     'double': 'double',
     'function': 'nint',
-    'string': '*String192',
-    'bool*': '*Vector192',
-    'char8*': '*Vector192',
-    'char16*': '*Vector192',
-    'int8*': '*Vector192',
-    'int16*': '*Vector192',
-    'int32*': '*Vector192',
-    'int64*': '*Vector192',
-    'uint8*': '*Vector192',
-    'uint16*': '*Vector192',
-    'uint32*': '*Vector192',
-    'uint64*': '*Vector192',
-    'ptr64*': '*Vector192',
-    'float*': '*Vector192',
-    'double*': '*Vector192',
-    'string*': '*Vector192',
+    'string': 'String192*',
+    'bool*': 'Vector192*',
+    'char8*': 'Vector192*',
+    'char16*': 'Vector192*',
+    'int8*': 'Vector192*',
+    'int16*': 'Vector192*',
+    'int32*': 'Vector192*',
+    'int64*': 'Vector192*',
+    'uint8*': 'Vector192*',
+    'uint16*': 'Vector192*',
+    'uint32*': 'Vector192*',
+    'uint64*': 'Vector192*',
+    'ptr64*': 'Vector192*',
+    'float*': 'Vector192*',
+    'double*': 'Vector192*',
+    'string*': 'Vector192*',
     'vec2': 'Vector2*',
     'vec3': 'Vector3*',
     'vec4': 'Vector4*',
@@ -448,22 +448,12 @@ def convert_dtype(type_name, is_ref=False, is_ret=False):
 def convert_ctype(type_name, is_ref=False, is_ret=False):
     type = CTYPES_MAP.get(type_name, 'int')
     if is_ref:
-        if type[0] == '*':
-            if is_ret:
-                return type[1:]
-            else:
-                return type[1:] + '*'
-        elif '*' in type:
+        if '*' in type:
             return type
         else:
             return type + '*'
     else:
-        if type[0] == '*':
-            if is_ret:
-                return type[1:]
-            else:
-                return type[1:] + '*'
-        elif is_ret and '*' in type:
+        if is_ret and '*' in type:
             return type[:-1]
         else:
             return type
