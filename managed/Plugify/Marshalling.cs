@@ -435,16 +435,7 @@ public static class Marshalling
 					var obj = CreateReturnStorage(retType);
 					nint ptr = Pin(ref obj, ref pins[pin++]);
 					handlers[handle++] = (ptr, retType);
-					
-					// on x86 always passed as first parameters
-					if (X86)
-					{
-						@params[index++] = ptr;
-					}
-					else
-					{
-						@return[0] = ptr;
-					}
+					@params[index++] = ptr;
 				}
 
 				#endregion
