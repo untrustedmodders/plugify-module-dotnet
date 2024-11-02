@@ -24,7 +24,7 @@ using namespace plugify;
 template<typename T>
 NETLM_FORCE_INLINE plugify::Vector ConstructVector(T* arr, int len) requires(!std::is_same_v<T, char*>) {
 	plugify::Vector ret;
-	if (len == 0) [[unlikely]]
+	if (arr == nullptr || len == 0) [[unlikely]]
 		std::construct_at(reinterpret_cast<plg::vector<T>*>(&ret));
 	else
 		std::construct_at(reinterpret_cast<plg::vector<T>*>(&ret), arr, arr + len);
@@ -34,7 +34,7 @@ NETLM_FORCE_INLINE plugify::Vector ConstructVector(T* arr, int len) requires(!st
 template<typename T>
 NETLM_FORCE_INLINE plugify::Vector ConstructVector(T* arr, int len) requires(std::is_same_v<T, char*>) {
 	plugify::Vector ret;
-	if (len == 0) [[unlikely]]
+	if (arr == nullptr || len == 0) [[unlikely]]
 		std::construct_at(reinterpret_cast<plg::vector<plg::string>*>(&ret));
 	else
 		std::construct_at(reinterpret_cast<plg::vector<plg::string>*>(&ret), arr, arr + len);
