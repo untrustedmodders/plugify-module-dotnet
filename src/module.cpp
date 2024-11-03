@@ -320,62 +320,61 @@ static void ManagedCall(MethodRef method, MemAddr data, const JitCallback::Param
 		}
 	}
 
-	void* retPtr = ret->GetReturnPtr();
 	switch (retType) {
 		case ValueType::String:
-			std::construct_at(reinterpret_cast<plg::string*>(retPtr), plg::string());
+			ret->ConstructAt<plg::string>();
 			break;
 		case ValueType::ArrayBool:
-			std::construct_at(reinterpret_cast<plg::vector<bool>*>(retPtr), plg::vector<bool>());
+			ret->ConstructAt<plg::vector<bool>>();
 			break;
 		case ValueType::ArrayChar8:
-			std::construct_at(reinterpret_cast<plg::vector<char>*>(retPtr), plg::vector<char>());
+			ret->ConstructAt<plg::vector<char>>();
 			break;
 		case ValueType::ArrayChar16:
-			std::construct_at(reinterpret_cast<plg::vector<char16_t>*>(retPtr), plg::vector<char16_t>());
+			ret->ConstructAt<plg::vector<char16_t>>();
 			break;
 		case ValueType::ArrayInt8:
-			std::construct_at(reinterpret_cast<plg::vector<int8_t>*>(retPtr), plg::vector<int8_t>());
+			ret->ConstructAt<plg::vector<int8_t>>();
 			break;
 		case ValueType::ArrayInt16:
-			std::construct_at(reinterpret_cast<plg::vector<int16_t>*>(retPtr), plg::vector<int16_t>());
+			ret->ConstructAt<plg::vector<int16_t>>();
 			break;
 		case ValueType::ArrayInt32:
-			std::construct_at(reinterpret_cast<plg::vector<int32_t>*>(retPtr), plg::vector<int32_t>());
+			ret->ConstructAt<plg::vector<int32_t>>();
 			break;
 		case ValueType::ArrayInt64:
-			std::construct_at(reinterpret_cast<plg::vector<int64_t>*>(retPtr), plg::vector<int64_t>());
+			ret->ConstructAt<plg::vector<int64_t>>();
 			break;
 		case ValueType::ArrayUInt8:
-			std::construct_at(reinterpret_cast<plg::vector<uint8_t>*>(retPtr), plg::vector<uint8_t>());
+			ret->ConstructAt<plg::vector<uint8_t>>();
 			break;
 		case ValueType::ArrayUInt16:
-			std::construct_at(reinterpret_cast<plg::vector<uint16_t>*>(retPtr), plg::vector<uint16_t>());
+			ret->ConstructAt<plg::vector<uint16_t>>();
 			break;
 		case ValueType::ArrayUInt32:
-			std::construct_at(reinterpret_cast<plg::vector<uint32_t>*>(retPtr), plg::vector<uint32_t>());
+			ret->ConstructAt<plg::vector<uint32_t>>();
 			break;
 		case ValueType::ArrayUInt64:
-			std::construct_at(reinterpret_cast<plg::vector<uint64_t>*>(retPtr), plg::vector<uint64_t>());
+			ret->ConstructAt<plg::vector<uint64_t>>();
 			break;
 		case ValueType::ArrayPointer:
-			std::construct_at(reinterpret_cast<plg::vector<uintptr_t>*>(retPtr), plg::vector<uintptr_t>());
+			ret->ConstructAt<plg::vector<uintptr_t>>();
 			break;
 		case ValueType::ArrayFloat:
-			std::construct_at(reinterpret_cast<plg::vector<float>*>(retPtr), plg::vector<float>());
+			ret->ConstructAt<plg::vector<float>>();
 			break;
 		case ValueType::ArrayDouble:
-			std::construct_at(reinterpret_cast<plg::vector<double>*>(retPtr), plg::vector<double>());
+			ret->ConstructAt<plg::vector<double>>();
 			break;
 		case ValueType::ArrayString:
-			std::construct_at(reinterpret_cast<plg::vector<plg::string>*>(retPtr), plg::vector<plg::string>());
+			ret->ConstructAt<plg::vector<plg::string>>();
 			break;
 		default:
 			break;
 	}
 
 	if (retType != ValueType::Void) {
-		func(data, args, retPtr);
+		func(data, args, ret->GetReturnPtr());
 	} else {
 		func(data, args, std::nullopt);
 	}
