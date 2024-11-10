@@ -43,7 +43,7 @@ NETLM_FORCE_INLINE plugify::Vector ConstructVector(T* arr, int len) requires(std
 
 template<typename T>
 NETLM_FORCE_INLINE void DestroyVector(plg::vector<T>* vector) {
-	vector->~vector_base();
+	vector->~vector();
 }
 
 template<typename T>

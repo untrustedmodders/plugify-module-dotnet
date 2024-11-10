@@ -94,7 +94,7 @@ public readonly struct String192
 [StructLayout(LayoutKind.Sequential)]
 public readonly struct Vector192
 {
-	public readonly nint size;
-	public readonly nint cap;
-	public readonly nint data;
+	public readonly nint begin;
+	public readonly nint end;
+	public readonly nint capacity;
 }

@@ -13,7 +13,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Plugify" Version="1.0.65" />
+      <PackageReference Include="Plugify" Version="1.0.69" />
     </ItemGroup>
 
 </Project>
