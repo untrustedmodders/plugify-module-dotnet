@@ -470,14 +470,14 @@ ScriptInstance::~ScriptInstance() {
 };
 
 void ScriptInstance::InvokeOnStart() const {
-	MethodInfo onStartMethod = _instance.GetType().GetMethod("OnStart");
+	MethodInfo onStartMethod = _instance.GetType().GetMethod("OnPluginStart");
 	if (onStartMethod) {
 		_instance.InvokeMethodRaw(onStartMethod);
 	}
 }
 
 void ScriptInstance::InvokeOnEnd() const {
-	MethodInfo onEndMethod = _instance.GetType().GetMethod("OnEnd");
+	MethodInfo onEndMethod = _instance.GetType().GetMethod("OnPluginEnd");
 	if (onEndMethod) {
 		_instance.InvokeMethodRaw(onEndMethod);
 	}

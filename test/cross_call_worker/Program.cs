@@ -4,13 +4,13 @@ namespace cross_call_worker;
 
 public class CrossCallWorker : Plugin
 {
-    public void OnStart()
+    public void OnPluginStart()
     {
-        Console.WriteLine(".NET: OnStart");
+        Console.WriteLine(".NET: OnPluginStart");
     }
 
-    public void OnEnd()
+    public void OnPluginEnd()
     {
-        Console.WriteLine(".NET: OnEnd");
+        Console.WriteLine(".NET: OnPluginEnd");
     }
 }
