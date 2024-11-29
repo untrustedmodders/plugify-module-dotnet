@@ -422,7 +422,7 @@ void DotnetLanguageModule::MessageCallback(std::string_view message, MessageLeve
 	if (!g_netlm._provider)
 		return;
 
-	plugify::Severity severity;
+	Severity severity;
 	switch (level) {
 		case MessageLevel::Info:
 			severity = Severity::Info;

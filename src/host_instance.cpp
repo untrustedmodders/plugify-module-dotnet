@@ -30,9 +30,11 @@ namespace {
 
 extern const char* hostfxr_str_error(int32_t error);
 
-MessageCallbackFn MessageCallback;
-MessageLevel MessageFilter;
-ExceptionCallbackFn ExceptionCallback;
+namespace {
+	MessageCallbackFn MessageCallback;
+	MessageLevel MessageFilter;
+	ExceptionCallbackFn ExceptionCallback;
+}
 
 void HandleDeleter::operator()(void* handle) const noexcept {
 	hostfxr_close(handle);
@@ -47,6 +49,7 @@ bool HostInstance::Initialize(HostSettings settings) {
 
 	MessageCallback = _settings.messageCallback;
 	MessageFilter = _settings.messageFilter;
+	ExceptionCallback = _settings.exceptionCallback;
 
 	if (!LoadHostFXR()) {
 		MessageCallback("Failed to initialize hostfxr", MessageLevel::Error);
