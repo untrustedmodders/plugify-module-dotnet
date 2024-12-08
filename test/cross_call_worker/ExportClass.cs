@@ -111,6 +111,12 @@ public class ExportClass
         return "Hello World";
     }
 
+    public static object NoParamReturnAny()
+    {
+        Console.WriteLine("NoParamReturnAny");
+        return new double[]{1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0};
+    }
+
     public static Bool8[] NoParamReturnArrayBool()
     {
         Console.WriteLine("NoParamReturnArrayBool");
@@ -200,8 +206,21 @@ public class ExportClass
         Console.WriteLine("NoParamReturnArrayString");
         return
         [
-            "1st string", "2nd string",
+            "1st string", 
+            "2nd string",
             "3rd element string (Should be big enough to avoid small string optimization)"
+        ];
+    }
+
+    public static object[] NoParamReturnArrayAny()
+    {
+        Console.WriteLine("NoParamReturnArrayAny");
+        return [
+            1.0, 
+            2.0f, 
+            "3rd element string (Should be big enough to avoid small string optimization)",
+            new []{"lolek", "and", "bolek"}, 
+            1
         ];
     }
 
@@ -441,7 +460,19 @@ public class ExportClass
         return 56;
     }
     
+    // Parameters and Return (all variant)
     
+    public static void ParamVariant(object p1, object[] p2)
+    {
+        string buffer = $"{p1}{p2}";
+    }
+    
+    public static void ParamVariantRef(ref object p1, ref object[] p2)
+    {
+        p1 = 'Z';
+        p2 = [false, 6.28, new double[]{1, 2, 3}, IntPtr.Zero, 123456789];
+    }
+
     // Call functions using the typedefs
     public static void CallFuncVoid(cross_call_master.FuncVoid func) {
         func();
@@ -527,6 +558,11 @@ public class ExportClass
         return result;
     }
 
+    public static object CallFuncAny(cross_call_master.FuncAny func) {
+        object result = func();
+        return result;
+    }
+
     // Call functions for vector return types
     public static Bool8[] CallFuncBoolVector(cross_call_master.FuncBoolVector func) {
         var result = func();
@@ -599,6 +635,11 @@ public class ExportClass
     }
 
     public static string[] CallFuncStringVector(cross_call_master.FuncStringVector func) {
+        var result = func();
+        return result;
+    }
+
+    public static object[] CallFuncAnyVector(cross_call_master.FuncAnyVector func) {
         var result = func();
         return result;
     }
@@ -883,11 +924,11 @@ public class ExportClass
             return "{{{}}}";
         
         var result = new StringBuilder();
-        result.Append($"{(byte)array[0]}");
+        result.Append($"{(char)array[0]}");
 
         for (int i = 1; i < array.Length; i++)
         {
-            result.Append($", {(byte)array[i]}");
+            result.Append($", {(char)array[i]}");
         }
 
         return $"{{{result}}}";
@@ -1227,6 +1268,13 @@ public class ExportClass
 
         func(ref i32, ref u16, ref vecI8, ref vec4, ref ptr, ref vecU32, ref mat, ref u64, ref str, ref i64, ref vec2, ref vecI8_2, ref b, ref vec3, ref u8, ref vecC16);
         return $"{i32}|{u16}|{VectorToString(vecI8)}|{PodToString(vec4)}|{"0x" + ptr.ToString("x")}|{VectorToString(vecU32)}|{PodToString(mat)}|{u64}|{str}|{i64}|{PodToString(vec2)}|{VectorToString(vecI8_2)}|{BStr(b)}|{PodToString(vec3)}|{u8}|{VectorToString(vecC16)}";
+    }
+    
+    // 1 parameter
+    public static string CallFunc33(cross_call_master.Func33 func) {
+        object? variant = 30;
+        func(ref variant);
+        return variant?.ToString() ?? "";
     }
     
     static unsafe void ReverseCall(string test)

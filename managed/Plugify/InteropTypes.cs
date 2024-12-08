@@ -1,3 +1,4 @@
+using System.Numerics;
 using System.Runtime.InteropServices;
 
 namespace Plugify;
@@ -97,4 +98,29 @@ public readonly struct Vector192
 	public readonly nint begin;
 	public readonly nint end;
 	public readonly nint capacity;
+}
+
+[StructLayout(LayoutKind.Explicit)]
+public struct Variant256
+{
+	[FieldOffset(0)] public Bool8 boolean;
+	[FieldOffset(0)] public Char8 char8;
+	[FieldOffset(0)] public Char16 char16;
+	[FieldOffset(0)] public sbyte int8;
+	[FieldOffset(0)] public short int16;
+	[FieldOffset(0)] public int int32;
+	[FieldOffset(0)] public long int64;
+	[FieldOffset(0)] public byte uint8;
+	[FieldOffset(0)] public ushort uint16;
+	[FieldOffset(0)] public uint uint32;
+	[FieldOffset(0)] public ulong uint64;
+	[FieldOffset(0)] public nint ptr;
+	[FieldOffset(0)] public float flt;
+	[FieldOffset(0)] public double dbl;
+	[FieldOffset(0)] public String192 str;
+	[FieldOffset(0)] public Vector192 vec;
+	[FieldOffset(0)] public Vector2 vec2;
+	[FieldOffset(0)] public Vector3 vec3;
+	[FieldOffset(0)] public Vector4 vec4;
+	[FieldOffset(24)] public int currect;
 }

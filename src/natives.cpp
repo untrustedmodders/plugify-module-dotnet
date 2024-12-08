@@ -5,61 +5,60 @@
 #include <module_export.h>
 #include <plugify/jit/call.hpp>
 #include <plugify/jit/helpers.hpp>
-#include <plugify/math.hpp>
+#include <plugify/numerics.hpp>
 
-#if defined(__clang__)
-#define NETLM_FORCE_INLINE [[gnu::always_inline]] [[gnu::gnu_inline]] extern inline
-#elif defined(__GNUC__)
-#define NETLM_FORCE_INLINE [[gnu::always_inline]] inline
+PLUGIFY_WARN_PUSH()
+
+#if defined(__clang)
+PLUGIFY_WARN_IGNORE("-Wreturn-type-c-linkage")
 #elif defined(_MSC_VER)
-#pragma warning(error: 4714)
-#define NETLM_FORCE_INLINE __forceinline
-#else
-#define NETLM_FORCE_INLINE inline
+PLUGIFY_WARN_IGNORE(4190)
 #endif
 
 using namespace netlm;
 using namespace plugify;
 
 template<typename T>
-NETLM_FORCE_INLINE plugify::Vector ConstructVector(T* arr, int len) requires(!std::is_same_v<T, char*>) {
-	plugify::Vector ret;
+PLUGIFY_FORCE_INLINE plg::vector<T> ConstructVector(T* arr, int len) requires(!std::is_same_v<T, char*>) {
 	if (arr == nullptr || len == 0) [[unlikely]]
-		std::construct_at(reinterpret_cast<plg::vector<T>*>(&ret));
+		if (len > 0)
+			return plg::vector<T>(static_cast<size_t>(len));
+		else
+			return {};
 	else
-		std::construct_at(reinterpret_cast<plg::vector<T>*>(&ret), arr, arr + len);
-	return ret;
+		return plg::vector<T>(arr, arr + len);
 }
 
 template<typename T>
-NETLM_FORCE_INLINE plugify::Vector ConstructVector(T* arr, int len) requires(std::is_same_v<T, char*>) {
-	plugify::Vector ret;
+PLUGIFY_FORCE_INLINE plg::vector<plg::string> ConstructVector(T* arr, int len) requires(std::is_same_v<T, char*>) {
 	if (arr == nullptr || len == 0) [[unlikely]]
-		std::construct_at(reinterpret_cast<plg::vector<plg::string>*>(&ret));
+		if (len > 0)
+			return plg::vector<plg::string>(static_cast<size_t>(len));
+		else
+			return {};
 	else
-		std::construct_at(reinterpret_cast<plg::vector<plg::string>*>(&ret), arr, arr + len);
-	return ret;
+		return plg::vector<plg::string>(arr, arr + len);
 }
 
 template<typename T>
-NETLM_FORCE_INLINE void DestroyVector(plg::vector<T>* vector) {
+PLUGIFY_FORCE_INLINE void DestroyVector(plg::vector<T>* vector) {
 	vector->~vector();
 }
 
 template<typename T>
-NETLM_FORCE_INLINE int GetVectorSize(plg::vector<T>* vector) {
+PLUGIFY_FORCE_INLINE int GetVectorSize(plg::vector<T>* vector) {
 	return static_cast<int>(vector->size());
 }
 
 template<typename T>
-NETLM_FORCE_INLINE void GetVectorData(plg::vector<T>* vector, T* arr) requires(!std::is_same_v<T, char*>) {
+PLUGIFY_FORCE_INLINE void GetVectorData(plg::vector<T>* vector, T* arr) requires(!std::is_same_v<T, char*>) {
 	for (size_t i = 0; i < vector->size(); ++i) {
 		arr[i] = (*vector)[i];
 	}
 }
 
 template<typename T>
-NETLM_FORCE_INLINE void GetVectorData(plg::vector<plg::string>* vector, T* arr) requires(std::is_same_v<T, char*>) {
+PLUGIFY_FORCE_INLINE void GetVectorData(plg::vector<plg::string>* vector, T* arr) requires(std::is_same_v<T, char*>) {
 	for (size_t i = 0; i < vector->size(); ++i) {
 		Memory::FreeCoTaskMem(arr[i]);
 		arr[i] = Memory::StringToHGlobalAnsi((*vector)[i]);
@@ -67,7 +66,7 @@ NETLM_FORCE_INLINE void GetVectorData(plg::vector<plg::string>* vector, T* arr) 
 }
 
 template<typename T>
-NETLM_FORCE_INLINE void AssignVector(plg::vector<T>* vector, T* arr, int len) requires(!std::is_same_v<T, char*>) {
+PLUGIFY_FORCE_INLINE void AssignVector(plg::vector<T>* vector, T* arr, int len) requires(!std::is_same_v<T, char*>) {
 	if (arr == nullptr || len == 0) [[unlikely]]
 		vector->clear();
 	else
@@ -75,23 +74,45 @@ NETLM_FORCE_INLINE void AssignVector(plg::vector<T>* vector, T* arr, int len) re
 }
 
 template<typename T>
-NETLM_FORCE_INLINE void AssignVector(plg::vector<plg::string>* vector, T* arr, int len) requires(std::is_same_v<T, char*>) {
+PLUGIFY_FORCE_INLINE void AssignVector(plg::vector<plg::string>* vector, T* arr, int len) requires(std::is_same_v<T, char*>) {
 	if (arr == nullptr || len == 0) [[unlikely]]
 		vector->clear();
 	else
 		vector->assign(arr, arr + len);
 }
 
+namespace plg {
+	namespace raw {
+		struct vector {
+			[[maybe_unused]] uint8_t padding[sizeof(plg::vector<int>)]{};
+		};
+
+		struct string {
+			[[maybe_unused]] uint8_t padding[sizeof(plg::string)]{};
+		};
+
+		struct variant {
+			[[maybe_unused]] uint8_t padding[sizeof(plg::any)]{};
+		};
+	} // namespace raw
+
+	template<typename T, typename V>
+	[[nodiscard]] PLUGIFY_FORCE_INLINE T as_raw(V&& value) {
+		T ret{};
+		std::construct_at(reinterpret_cast<V*>(&ret), std::forward<V>(value));
+		return ret;
+	}
+} // namespace plg
+
+
 extern "C" {
 	// String Functions
 
-	NETLM_EXPORT plugify::String ConstructString(const char* source) {
-		plugify::String ret;
+	NETLM_EXPORT plg::string ConstructString(const char* source) {
 		if (source == nullptr) [[unlikely]]
-			std::construct_at(reinterpret_cast<plg::string*>(&ret));
+			return {};
 		else
-			std::construct_at(reinterpret_cast<plg::string*>(&ret), source);
-		return ret;
+			return { source };
 	}
 	NETLM_EXPORT void DestroyString(plg::string* string) {
 		string->~basic_string();
@@ -109,23 +130,33 @@ extern "C" {
 			string->assign(source);
 	}
 
+	// Variant Functions
+	NETLM_EXPORT void DestroyVariant(plg::any* any) {
+		any->~variant();
+	}
+
 	// Construct Functions
 
-	NETLM_EXPORT plugify::Vector ConstructVectorBool(bool* arr, int len) { return ConstructVector(arr, len); }
-	NETLM_EXPORT plugify::Vector ConstructVectorChar8(char* arr, int len) { return ConstructVector(arr, len); }
-	NETLM_EXPORT plugify::Vector ConstructVectorChar16(char16_t* arr, int len) { return ConstructVector(arr, len); }
-	NETLM_EXPORT plugify::Vector ConstructVectorInt8(int8_t* arr, int len) { return ConstructVector(arr, len); }
-	NETLM_EXPORT plugify::Vector ConstructVectorInt16(int16_t* arr, int len) { return ConstructVector(arr, len); }
-	NETLM_EXPORT plugify::Vector ConstructVectorInt32(int32_t* arr, int len) { return ConstructVector(arr, len); }
-	NETLM_EXPORT plugify::Vector ConstructVectorInt64(int64_t* arr, int len) { return ConstructVector(arr, len); }
-	NETLM_EXPORT plugify::Vector ConstructVectorUInt8(uint8_t* arr, int len) { return ConstructVector(arr, len); }
-	NETLM_EXPORT plugify::Vector ConstructVectorUInt16(uint16_t* arr, int len) { return ConstructVector(arr, len); }
-	NETLM_EXPORT plugify::Vector ConstructVectorUInt32(uint32_t* arr, int len) { return ConstructVector(arr, len); }
-	NETLM_EXPORT plugify::Vector ConstructVectorUInt64(uint64_t* arr, int len) { return ConstructVector(arr, len); }
-	NETLM_EXPORT plugify::Vector ConstructVectorIntPtr(uintptr_t* arr, int len) { return ConstructVector(arr, len); }
-	NETLM_EXPORT plugify::Vector ConstructVectorFloat(float* arr, int len) { return ConstructVector(arr, len); }
-	NETLM_EXPORT plugify::Vector ConstructVectorDouble(double* arr, int len) { return ConstructVector(arr, len); }
-	NETLM_EXPORT plugify::Vector ConstructVectorString(char* arr[], int len)  { return ConstructVector(arr, len); }
+	NETLM_EXPORT plg::vector<bool> ConstructVectorBool(bool* arr, int len) { return ConstructVector(arr, len); }
+	NETLM_EXPORT plg::vector<char> ConstructVectorChar8(char* arr, int len) { return ConstructVector(arr, len); }
+	NETLM_EXPORT plg::vector<char16_t> ConstructVectorChar16(char16_t* arr, int len) { return ConstructVector(arr, len); }
+	NETLM_EXPORT plg::vector<int8_t> ConstructVectorInt8(int8_t* arr, int len) { return ConstructVector(arr, len); }
+	NETLM_EXPORT plg::vector<int16_t> ConstructVectorInt16(int16_t* arr, int len) { return ConstructVector(arr, len); }
+	NETLM_EXPORT plg::vector<int32_t> ConstructVectorInt32(int32_t* arr, int len) { return ConstructVector(arr, len); }
+	NETLM_EXPORT plg::vector<int64_t> ConstructVectorInt64(int64_t* arr, int len) { return ConstructVector(arr, len); }
+	NETLM_EXPORT plg::vector<uint8_t> ConstructVectorUInt8(uint8_t* arr, int len) { return ConstructVector(arr, len); }
+	NETLM_EXPORT plg::vector<uint16_t> ConstructVectorUInt16(uint16_t* arr, int len) { return ConstructVector(arr, len); }
+	NETLM_EXPORT plg::vector<uint32_t> ConstructVectorUInt32(uint32_t* arr, int len) { return ConstructVector(arr, len); }
+	NETLM_EXPORT plg::vector<uint64_t> ConstructVectorUInt64(uint64_t* arr, int len) { return ConstructVector(arr, len); }
+	NETLM_EXPORT plg::vector<uintptr_t> ConstructVectorIntPtr(uintptr_t* arr, int len) { return ConstructVector(arr, len); }
+	NETLM_EXPORT plg::vector<float> ConstructVectorFloat(float* arr, int len) { return ConstructVector(arr, len); }
+	NETLM_EXPORT plg::vector<double> ConstructVectorDouble(double* arr, int len) { return ConstructVector(arr, len); }
+	NETLM_EXPORT plg::vector<plg::string> ConstructVectorString(char* arr[], int len)  { return ConstructVector(arr, len); }
+	NETLM_EXPORT plg::raw::vector ConstructVectorVariant(int len) {
+		plg::vector<plg::any> ret(static_cast<size_t>(len));
+		return plg::as_raw<plg::raw::vector>(std::move(ret));
+		// Fix MSVC -> C linkage function cannot return C++ class 'plg::vector<plg::any,std::allocator<T>>'
+	}
 
 	// DestroyVector Functions
 
@@ -144,6 +175,7 @@ extern "C" {
 	NETLM_EXPORT void DestroyVectorFloat(plg::vector<float>* vector) { DestroyVector(vector); }
 	NETLM_EXPORT void DestroyVectorDouble(plg::vector<double>* vector) { DestroyVector(vector); }
 	NETLM_EXPORT void DestroyVectorString(plg::vector<plg::string>* vector) { DestroyVector(vector); }
+	NETLM_EXPORT void DestroyVectorVariant(plg::vector<plg::any>* vector) { DestroyVector(vector); }
 
 	// GetVectorSize Functions
 	
@@ -162,6 +194,7 @@ extern "C" {
 	NETLM_EXPORT int GetVectorSizeFloat(plg::vector<float>* vector) { return GetVectorSize(vector); }
 	NETLM_EXPORT int GetVectorSizeDouble(plg::vector<double>* vector) { return GetVectorSize(vector); }
 	NETLM_EXPORT int GetVectorSizeString(plg::vector<plg::string>* vector) { return GetVectorSize(vector); }
+	NETLM_EXPORT int GetVectorSizeVariant(plg::vector<plg::any>* vector) { return GetVectorSize(vector); }
 
 	// GetVectorData Functions
 
@@ -180,6 +213,7 @@ extern "C" {
 	NETLM_EXPORT void GetVectorDataFloat(plg::vector<float>* vector, float* arr) { GetVectorData(vector, arr); }
 	NETLM_EXPORT void GetVectorDataDouble(plg::vector<double>* vector, double* arr) { GetVectorData(vector, arr); }
 	NETLM_EXPORT void GetVectorDataString(plg::vector<plg::string>* vector, char* arr[]) { GetVectorData(vector, arr); }
+	NETLM_EXPORT plg::any* GetVectorDataVariant(plg::vector<plg::any>* vector, int at) { return &vector->at(static_cast<size_t>(at)); }
 
 	// AssignVector Functions
 
@@ -198,6 +232,7 @@ extern "C" {
 	NETLM_EXPORT void AssignVectorFloat(plg::vector<float>* vector, float* arr, int len) { AssignVector(vector, arr, len); }
 	NETLM_EXPORT void AssignVectorDouble(plg::vector<double>* vector, double* arr, int len) { AssignVector(vector, arr, len); }
 	NETLM_EXPORT void AssignVectorString(plg::vector<plg::string>* vector, char* arr[], int len) { AssignVector(vector, arr, len); }
+	NETLM_EXPORT void AssignVectorVariant(plg::vector<plg::any>* vector, int len) { vector->resize(static_cast<size_t>(len)); }
 }
 
 extern "C" {

@@ -27,6 +27,7 @@ public static unsafe class CallbackHolder
     public static double MockDouble() => 6.28;
     public static IntPtr MockFunction() => new(2);  // Equivalent to `reinterpret_cast<void*>(2)`
     public static string MockString() => "Test string";
+    public static object MockAny() => (Char16)'A';
 
     // Functions returning arrays (instead of std::vector)
     public static Bool8[] MockBoolArray() => [true, false];
@@ -44,6 +45,7 @@ public static unsafe class CallbackHolder
     public static float[] MockFloatArray() => [1.1f, 2.2f];
     public static double[] MockDoubleArray() => [3.3, 4.4];
     public static string[] MockStringArray() => ["Hello", "World"];
+    public static object[] MockAnyArray() => ["Hello", 3.14f, 6.28, 1, 0xDEADBEAF];
 
     // Functions returning vectors and matrices
     public static Vector2 MockVec2() => new(1.0f, 2.0f);
@@ -440,5 +442,10 @@ public static unsafe class CallbackHolder
         cVec = ['a', 'b', 'c']; // Updated values
         iVec = [0, 1]; // Updated values
         return 1.0; // Updated return value
+    }
+    
+    // Mock implementations for 1 parameter functions
+    public static void MockFunc33(ref object variant) {
+        variant = "MockFunc33";
     }
 }

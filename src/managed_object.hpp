@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core.hpp"
-#include "method_info.h"
+#include "method_info.hpp"
 
 namespace netlm {
 	class Type;

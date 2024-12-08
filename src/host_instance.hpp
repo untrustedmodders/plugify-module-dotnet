@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core.hpp"
-#include "managed_assembly.h"
+#include "managed_assembly.hpp"
 
 namespace plugify {
 	class Assembly;

@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Numerics;
+using System.Runtime.InteropServices;
 
 namespace Plugify;
 
@@ -46,6 +47,277 @@ public static unsafe partial class NativeMethods
 	[LibraryImport(DllName, StringMarshalling = StringMarshalling.Utf8)]
 	[SuppressGCTransition]
 	public static partial void AssignString(String192* str, string? source);
+
+	#endregion
+	
+	#region Variant functions
+
+	public static object? GetVariantData(Variant256* var, Type? type = null)
+	{
+		switch ((ValueType)var->currect)
+		{
+			case ValueType.Invalid:
+			case ValueType.Void:
+				return null;
+			case ValueType.Bool:
+				return var->boolean;
+			case ValueType.Char8:
+				return var->char8;
+			case ValueType.Char16:
+				return var->char16;
+			case ValueType.Int8:
+				return var->int8;
+			case ValueType.Int16:
+				return var->int16;
+			case ValueType.Int32:
+				return var->int32;
+			case ValueType.Int64:
+				return var->int64;
+			case ValueType.UInt8:
+				return var->uint8;
+			case ValueType.UInt16:
+				return var->uint16;
+			case ValueType.UInt32:
+				return var->uint32;
+			case ValueType.UInt64:
+				return var->uint64;
+			case ValueType.Pointer:
+				return var->ptr;
+			case ValueType.Float:
+				return var->flt;
+			case ValueType.Double:
+				return var->dbl;
+			case ValueType.Function:
+				return Marshalling.GetDelegateForFunctionPointer(var->ptr, type);
+			case ValueType.String:
+				return NativeMethods.GetStringData(&var->str);
+			case ValueType.ArrayBool:
+				var ptrBool = &var->vec;
+				var arrBool = new Bool8[NativeMethods.GetVectorSizeBool(ptrBool)];
+				NativeMethods.GetVectorDataBool(ptrBool, arrBool);
+				return arrBool;
+			case ValueType.ArrayChar8:
+				var ptrChar8 = &var->vec;
+				var arrChar8 = new Char8[NativeMethods.GetVectorSizeChar8(ptrChar8)];
+				NativeMethods.GetVectorDataChar8(ptrChar8, arrChar8);
+				return arrChar8;
+			case ValueType.ArrayChar16:
+				var ptrChar16 = &var->vec;
+				var arrChar16 = new Char16[NativeMethods.GetVectorSizeChar16(ptrChar16)];
+				NativeMethods.GetVectorDataChar16(ptrChar16, arrChar16);
+				return arrChar16;
+			case ValueType.ArrayInt8:
+				var ptrInt8 = &var->vec;
+				var arrInt8 = new sbyte[NativeMethods.GetVectorSizeInt8(ptrInt8)];
+				NativeMethods.GetVectorDataInt8(ptrInt8, arrInt8);
+				return arrInt8;
+			case ValueType.ArrayInt16:
+				var ptrInt16 = &var->vec;
+				var arrInt16 = new short[NativeMethods.GetVectorSizeInt16(ptrInt16)];
+				NativeMethods.GetVectorDataInt16(ptrInt16, arrInt16);
+				return arrInt16;
+			case ValueType.ArrayInt32:
+				var ptrInt32 = &var->vec;
+				var arrInt32 = new int[NativeMethods.GetVectorSizeInt32(ptrInt32)];
+				NativeMethods.GetVectorDataInt32(ptrInt32, arrInt32);
+				return arrInt32;
+			case ValueType.ArrayInt64:
+				var ptrInt64 = &var->vec;
+				var arrInt64 = new long[NativeMethods.GetVectorSizeInt64(ptrInt64)];
+				NativeMethods.GetVectorDataInt64(ptrInt64, arrInt64);
+				return arrInt64;
+			case ValueType.ArrayUInt8:
+				var ptrUInt8 = &var->vec;
+				var arrUInt8 = new byte[NativeMethods.GetVectorSizeUInt8(ptrUInt8)];
+				NativeMethods.GetVectorDataUInt8(ptrUInt8, arrUInt8);
+				return arrUInt8;
+			case ValueType.ArrayUInt16:
+				var ptrUInt16 = &var->vec;
+				var arrUInt16 = new ushort[NativeMethods.GetVectorSizeUInt16(ptrUInt16)];
+				NativeMethods.GetVectorDataUInt16(ptrUInt16, arrUInt16);
+				return arrUInt16;
+			case ValueType.ArrayUInt32:
+				var ptrUInt32 = &var->vec;
+				var arrUInt32 = new uint[NativeMethods.GetVectorSizeUInt32(ptrUInt32)];
+				NativeMethods.GetVectorDataUInt32(ptrUInt32, arrUInt32);
+				return arrUInt32;
+			case ValueType.ArrayUInt64:
+				var ptrUInt64 = &var->vec;
+				var arrUInt64 = new ulong[NativeMethods.GetVectorSizeUInt64(ptrUInt64)];
+				NativeMethods.GetVectorDataUInt64(ptrUInt64, arrUInt64);
+				return arrUInt64;
+			case ValueType.ArrayPointer:
+				var ptrIntPtr = &var->vec;
+				var arrIntPtr = new nint[NativeMethods.GetVectorSizeIntPtr(ptrIntPtr)];
+				NativeMethods.GetVectorDataIntPtr(ptrIntPtr, arrIntPtr);
+				return arrIntPtr;
+			case ValueType.ArrayFloat:
+				var ptrFloat = &var->vec;
+				var arrFloat = new float[NativeMethods.GetVectorSizeFloat(ptrFloat)];
+				NativeMethods.GetVectorDataFloat(ptrFloat, arrFloat);
+				return arrFloat;
+			case ValueType.ArrayDouble:
+				var ptrDouble = &var->vec;
+				var arrDouble = new double[NativeMethods.GetVectorSizeDouble(ptrDouble)];
+				NativeMethods.GetVectorDataDouble(ptrDouble, arrDouble);
+				return arrDouble;
+			case ValueType.ArrayString:
+				var ptrString = &var->vec;
+				var arrString = new string[NativeMethods.GetVectorSizeString(ptrString)];
+				NativeMethods.GetVectorDataString(ptrString, arrString);
+				return arrString;
+			case ValueType.Vector2:
+				return var->vec2;
+			case ValueType.Vector3:
+				return var->vec3;
+			case ValueType.Vector4:
+				return var->vec4;
+			default:
+				throw new TypeNotFoundException();
+		}
+	}
+	
+	public static void SetVariantData(Variant256* var, object? paramValue)
+	{
+		if (paramValue == null)
+			return;
+		
+		ValueType valueType = TypeUtils.ConvertToValueType(paramValue.GetType());
+		switch (valueType)
+		{
+			case ValueType.Bool:
+				var->boolean = (Bool8)paramValue;
+				break;
+			case ValueType.Char8:
+				var->char8 = (Char8)paramValue;
+				break;
+			case ValueType.Char16:
+				var->char16 = (Char16)paramValue;
+				break;
+			case ValueType.Int8:
+				var->int8 = (sbyte)paramValue;
+				break;
+			case ValueType.Int16:
+				var->int16 = (short)paramValue;
+				break;
+			case ValueType.Int32:
+				var->int32 = (int)paramValue;
+				break;
+			case ValueType.Int64:
+				var->int64 = (long)paramValue;
+				break;
+			case ValueType.UInt8:
+				var->uint8 = (byte)paramValue;
+				break;
+			case ValueType.UInt16:
+				var->uint16 = (ushort)paramValue;
+				break;
+			case ValueType.UInt32:
+				var->uint32 = (uint)paramValue;
+				break;
+			case ValueType.UInt64:
+				var->uint64 = (ulong)paramValue;
+				break;
+			case ValueType.Pointer:
+				var->ptr = (nint)paramValue;
+				break;
+			case ValueType.Float:
+				var->flt = (float)paramValue;
+				break;
+			case ValueType.Double:
+				var->dbl = (double)paramValue;
+				break;
+			case ValueType.Function:
+				var->ptr = Marshalling.GetFunctionPointerForDelegate((Delegate)paramValue);
+				break;
+			case ValueType.String:
+				var->str = NativeMethods.ConstructString((string)paramValue);
+				break;
+			case ValueType.ArrayBool:
+				var arrBool = (Bool8[])paramValue;
+				var->vec = NativeMethods.ConstructVectorBool(arrBool, arrBool.Length);
+				break;
+			case ValueType.ArrayChar8:
+				var arrChar8 = (Char8[])paramValue;
+				var->vec = NativeMethods.ConstructVectorChar8(arrChar8, arrChar8.Length);
+				break;
+			case ValueType.ArrayChar16:
+				var arrChar16 = (Char16[])paramValue;
+				var->vec = NativeMethods.ConstructVectorChar16(arrChar16, arrChar16.Length);
+				break;
+			case ValueType.ArrayInt8:
+				var arrInt8 = (sbyte[])paramValue;
+				var->vec = NativeMethods.ConstructVectorInt8(arrInt8, arrInt8.Length);
+				break;
+			case ValueType.ArrayInt16:
+				var arrInt16 = (short[])paramValue;
+				var->vec = NativeMethods.ConstructVectorInt16(arrInt16, arrInt16.Length);
+				break;
+			case ValueType.ArrayInt32:
+				var arrInt32 = (int[])paramValue;
+				var->vec = NativeMethods.ConstructVectorInt32(arrInt32, arrInt32.Length);
+				break;
+			case ValueType.ArrayInt64:
+				var arrInt64 = (long[])paramValue;
+				var->vec = NativeMethods.ConstructVectorInt64(arrInt64, arrInt64.Length);
+				break;
+			case ValueType.ArrayUInt8:
+				var arrUInt8 = (byte[])paramValue;
+				var->vec = NativeMethods.ConstructVectorUInt8(arrUInt8, arrUInt8.Length);
+				break;
+			case ValueType.ArrayUInt16:
+				var arrUInt16 = (ushort[])paramValue;
+				var->vec = NativeMethods.ConstructVectorUInt16(arrUInt16, arrUInt16.Length);
+				break;
+			case ValueType.ArrayUInt32:
+				var arrUInt32 = (uint[])paramValue;
+				var->vec = NativeMethods.ConstructVectorUInt32(arrUInt32, arrUInt32.Length);
+				break;
+			case ValueType.ArrayUInt64:
+				var arrUInt64 = (ulong[])paramValue;
+				var->vec = NativeMethods.ConstructVectorUInt64(arrUInt64, arrUInt64.Length);
+				break;
+			case ValueType.ArrayPointer:
+				var arrIntPtr = (nint[])paramValue;
+				var->vec = NativeMethods.ConstructVectorIntPtr(arrIntPtr, arrIntPtr.Length);
+				break;
+			case ValueType.ArrayFloat:
+				var arrFloat = (float[])paramValue;
+				var->vec = NativeMethods.ConstructVectorFloat(arrFloat, arrFloat.Length);
+				break;
+			case ValueType.ArrayDouble:
+				var arrDouble = (double[])paramValue;
+				var->vec = NativeMethods.ConstructVectorDouble(arrDouble, arrDouble.Length);
+				break;
+			case ValueType.ArrayString:
+				var arrString = (string[])paramValue;
+				var->vec = NativeMethods.ConstructVectorString(arrString, arrString.Length);
+				break;
+			case ValueType.Vector2:
+				var->vec2 = (Vector2)paramValue;
+				break;
+			case ValueType.Vector3:
+				var->vec3 = (Vector3)paramValue;
+				break;
+			case ValueType.Vector4:
+				var->vec4 = (Vector4)paramValue;
+				break;
+			default:
+				throw new TypeNotFoundException();
+		}
+		var->currect = (int)valueType;
+	}
+
+	public static Variant256 ConstructVariant(object? source)
+	{
+		Variant256 var;
+		SetVariantData(&var, source);
+		return var;
+	}
+	
+	[LibraryImport(DllName)]
+	[SuppressGCTransition]
+	public static partial void DestroyVariant(Variant256* var);
 
 	#endregion
 
@@ -111,6 +383,10 @@ public static unsafe partial class NativeMethods
 	[SuppressGCTransition]
 	public static partial int GetVectorSizeString(Vector192* vec);
 	
+	[LibraryImport(DllName)]
+	[SuppressGCTransition]
+	public static partial int GetVectorSizeVariant(Vector192* vec);
+	
 	#endregion
 
 	#region GetVectorData functions
@@ -174,6 +450,20 @@ public static unsafe partial class NativeMethods
 	[LibraryImport(DllName)]
 	[SuppressGCTransition]
 	public static partial void GetVectorDataString(Vector192* vec, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr)] [In, Out] string[] arr);
+
+	[LibraryImport(DllName)]
+	[SuppressGCTransition]
+	public static partial Variant256* GetVectorDataVariant(Vector192* vec, int index);
+
+	public static void GetVectorDataVariant(Vector192* vec, [In, Out] object?[] arr)
+	{
+		int len = GetVectorSizeVariant(vec);
+		for (int i = 0; i < len; i++)
+		{
+			Variant256* var = GetVectorDataVariant(vec, i);
+			arr[i] = GetVariantData(var, arr[i]?.GetType());
+		}
+	}
 
 	#endregion
 
@@ -239,6 +529,17 @@ public static unsafe partial class NativeMethods
 	[SuppressGCTransition]
 	public static partial Vector192 ConstructVectorString([MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr)] [In] string[] arr, int len);
 
+	[LibraryImport(DllName)]
+	[SuppressGCTransition]
+	public static partial Vector192 ConstructVectorVariant(int len);
+	
+	public static Vector192 ConstructVectorVariant([In] object?[] arr, int len)
+	{
+		Vector192 vec = ConstructVectorVariant(len);
+		AssignVectorVariant(&vec, arr, len);
+		return vec;
+	}
+
 	#endregion
 	
 	#region DestroyVector functions
@@ -303,6 +604,10 @@ public static unsafe partial class NativeMethods
 	[SuppressGCTransition]
 	public static partial void DestroyVectorString(Vector192* vec);
 	
+	[LibraryImport(DllName)]
+	[SuppressGCTransition]
+	public static partial void DestroyVectorVariant(Vector192* vec);
+	
 	#endregion
 	
 	#region AssignVector Functions
@@ -366,6 +671,20 @@ public static unsafe partial class NativeMethods
 	[LibraryImport(DllName)]
 	[SuppressGCTransition]
 	public static partial void AssignVectorString(Vector192* vec, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr)] [In] string[] arr, int len);
+
+	[LibraryImport(DllName)]
+	[SuppressGCTransition]
+	public static partial void AssignVectorVariant(Vector192* vec, int len);
+
+	public static void AssignVectorVariant(Vector192* vec, [In] object?[] arr, int len)
+	{
+		AssignVectorVariant(vec, len);
+		for (int i = 0; i < len; i++)
+		{
+			Variant256* var = GetVectorDataVariant(vec, i);
+			SetVariantData(var, arr[i]);
+		}
+	}
 	
 	#endregion
 }

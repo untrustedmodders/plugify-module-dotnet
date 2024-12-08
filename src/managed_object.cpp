@@ -1,5 +1,5 @@
 #include "managed_object.hpp"
-#include "managed_assembly.h"
+#include "managed_assembly.hpp"
 #include "managed_functions.hpp"
 #include "native_string.hpp"
 #include "type.hpp"

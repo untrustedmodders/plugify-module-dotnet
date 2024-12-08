@@ -75,8 +75,8 @@ public unsafe class ReverseClass
 
     public static string ReverseNoParamReturnUInt64()
     {
-       ulong result = NoParamReturnUInt64Callback();
-        return result.ToString();
+		ulong result = NoParamReturnUInt64Callback();
+		return result.ToString();
     }
 
     public static string ReverseNoParamReturnPointer()
@@ -111,6 +111,12 @@ public unsafe class ReverseClass
         return result;
     }
 
+    public static string ReverseNoParamReturnAny()
+    {
+        object? result = NoParamReturnAnyCallback();
+        return result?.ToString() ?? "";
+    }
+
     public static string ReverseNoParamReturnArrayBool()
     {
 	    Bool8[] result = NoParamReturnArrayBoolCallback();
@@ -120,7 +126,7 @@ public unsafe class ReverseClass
     public static string ReverseNoParamReturnArrayChar8()
     {
         Char8[] result = NoParamReturnArrayChar8Callback();
-        return $"{{{string.Join(", ", result.Select(v => ((byte)v).ToString()))}}}";
+        return $"{{{string.Join(", ", result.Select(v => ((char)v).ToString()))}}}";
     }
 
     public static string ReverseNoParamReturnArrayChar16()
@@ -199,6 +205,11 @@ public unsafe class ReverseClass
     {
         string[] result = NoParamReturnArrayStringCallback();
         return $"{{{string.Join(", ", result.Select(v => $"'{v}'"))}}}";
+    }
+    public static string ReverseNoParamReturnArrayAny()
+    {
+        object?[] result = NoParamReturnArrayAnyCallback();
+        return $"{{{string.Join(", ", result)}}}";
     }
 
     public static string ReverseNoParamReturnVector2()
@@ -450,7 +461,7 @@ public unsafe class ReverseClass
 
         // Format and convert the results
         var p1Formatted = string.Join(", ", p1.Select(v => ((bool)v).ToString().ToLower()));
-        var p2Formatted = string.Join(", ", p2.Select(v => ((byte)v).ToString()));
+        var p2Formatted = string.Join(", ", p2.Select(v => ((char)v).ToString()));
         var p3Formatted = string.Join(", ", p3.Select(v => ((int)v).ToString()));
         var p4Formatted = string.Join(", ", p4.Select(v => v.ToString()));
         var p5Formatted = string.Join(", ", p5.Select(v => v.ToString()));
@@ -483,8 +494,38 @@ public unsafe class ReverseClass
         return $"{result}";
     }
     
-    // Callback staff
+    // Variant staff
+
+    /*
+     * plg::any p1 = "my custom string with enough chars";
+                plg::vector<plg::any> p2{};
+                cross_call_master::ParamVariantCallback(p1, p2);
+            }},
+            {"ParamVariantRef", []() {
+                plg::any p1 = "my custom string with enough chars";
+                plg::vector<plg::any> p2{'X', u'☢', -1, -1000, -1000000, -1000000000000LL, 200, 50000, 3000000000LL, 9999999999LL,
+                                         reinterpret_cast<void*>(0xfedcbaabcdefLL), 0.001f, 987654.456789};
+                cross_call_master::ParamVariantRefCallback(p1, p2);
+                cross_call_master::ReverseReturn(std::format("{}|{}", p1, p2));
+     */
     
+    public static string ReverseParamVariant()
+    {
+	    object p1 = "my custom string with enough chars";
+	    object[] p2 = [(Char8)'X', (Char16)'☢', -1, -1000, -1000000, -1000000000000, 200, 50000, 3000000000, 9999999999, 0xfedcbaabcdef, 0.001f, 987654.456789];
+	    ParamVariantCallback(p1, p2);
+	    return $"{p1}|{p2}";
+    }
+
+    public static string ReverseParamVariantRef()
+    {
+	    object p1 = "my custom string with enough chars";
+	    object[] p2 = [(Char8)'X', (Char16)'☢', -1, -1000, -1000000, -1000000000000, 200, 50000, 3000000000, 9999999999, 0xfedcbaabcdef, 0.001f, 987654.456789];
+	    ParamVariantRefCallback(ref p1, ref p2);
+	    return $"{ExportClass.VectorToString((int[])p1)}|{{{ExportClass.BStr((Bool8)p2[0])}, {(float)p2[1]}, {(string)p2[2]}}}";
+    }
+    
+    // Callback staff
     
     public static string CallFuncVoid()
 	{
@@ -582,6 +623,12 @@ public unsafe class ReverseClass
 		return result;
 	}
 
+	public static string CallFuncAny()
+	{
+		var result = CallFuncAnyCallback(CallbackHolder.MockAny);
+		return ((int)(Char16)result).ToString();
+	}
+
 	public static string CallFuncBoolVector()
 	{
 		var result = CallFuncBoolVectorCallback(CallbackHolder.MockBoolArray);
@@ -669,6 +716,12 @@ public unsafe class ReverseClass
 	public static string CallFuncStringVector()
 	{
 		var result = CallFuncStringVectorCallback(CallbackHolder.MockStringArray);
+		return $"{ExportClass.VectorToString(result)}";
+	}
+	
+	public static string CallFuncAnyVector()
+	{
+		var result = CallFuncAnyVectorCallback(CallbackHolder.MockAnyArray);
 		return $"{ExportClass.VectorToString(result)}";
 	}
 
@@ -888,6 +941,12 @@ public unsafe class ReverseClass
 		return result;
 	}
 
+	public static string CallFunc33()
+	{
+		var result = CallFunc33Callback(CallbackHolder.MockFunc33);
+		return result;
+	}
+
      // Define the dictionary mapping strings to methods
     public static readonly Dictionary<string, Func<string>> ReverseTest = new()
     {
@@ -908,6 +967,7 @@ public unsafe class ReverseClass
         { "NoParamReturnDouble", ReverseNoParamReturnDouble },
         { "NoParamReturnFunction", ReverseNoParamReturnFunction },
         { "NoParamReturnString", ReverseNoParamReturnString },
+        { "NoParamReturnAny", ReverseNoParamReturnAny },
         { "NoParamReturnArrayBool", ReverseNoParamReturnArrayBool },
         { "NoParamReturnArrayChar8", ReverseNoParamReturnArrayChar8 },
         { "NoParamReturnArrayChar16", ReverseNoParamReturnArrayChar16 },
@@ -923,6 +983,7 @@ public unsafe class ReverseClass
         { "NoParamReturnArrayFloat", ReverseNoParamReturnArrayFloat },
         { "NoParamReturnArrayDouble", ReverseNoParamReturnArrayDouble },
         { "NoParamReturnArrayString", ReverseNoParamReturnArrayString },
+        { "NoParamReturnArrayAny", ReverseNoParamReturnArrayAny },
         { "NoParamReturnVector2", ReverseNoParamReturnVector2 },
         { "NoParamReturnVector3", ReverseNoParamReturnVector3 },
         { "NoParamReturnVector4", ReverseNoParamReturnVector4 },
@@ -949,6 +1010,8 @@ public unsafe class ReverseClass
         { "ParamRef10", ReverseParamRef10 },
         { "ParamRefArrays", ReverseParamRefVectors },
         { "ParamAllPrimitives", ReverseParamAllPrimitives },
+        { "ParamVariant", ReverseParamVariant },
+        { "ParamVariantRef", ReverseParamVariantRef },
         { "CallFuncVoid", CallFuncVoid },
         { "CallFuncBool", CallFuncBool },
         { "CallFuncChar8", CallFuncChar8 },
@@ -965,6 +1028,7 @@ public unsafe class ReverseClass
         { "CallFuncFloat", CallFuncFloat },
         { "CallFuncDouble", CallFuncDouble },
         { "CallFuncString", CallFuncString },
+        { "CallFuncAny", CallFuncAny },
         { "CallFuncBoolVector", CallFuncBoolVector },
         { "CallFuncChar8Vector", CallFuncChar8Vector },
         { "CallFuncChar16Vector", CallFuncChar16Vector },
@@ -980,6 +1044,7 @@ public unsafe class ReverseClass
         { "CallFuncFloatVector", CallFuncFloatVector },
         { "CallFuncDoubleVector", CallFuncDoubleVector },
         { "CallFuncStringVector", CallFuncStringVector },
+        { "CallFuncAnyVector", CallFuncAnyVector },
         { "CallFuncVec2", CallFuncVec2 },
         { "CallFuncVec3", CallFuncVec3 },
         { "CallFuncVec4", CallFuncVec4 },
@@ -1015,7 +1080,8 @@ public unsafe class ReverseClass
         { "CallFunc29", CallFunc29 },
         { "CallFunc30", CallFunc30 },
         { "CallFunc31", CallFunc31 },
-        { "CallFunc32", CallFunc32 }
+        { "CallFunc32", CallFunc32 },
+        { "CallFunc33", CallFunc33 }
     };
     
 }

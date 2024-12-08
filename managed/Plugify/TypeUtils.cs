@@ -26,6 +26,9 @@ public enum ValueType : byte {
 
 	// std::string
 	String,
+	
+	// std::any
+	Any,
 
 	// std::vector
 	ArrayBool,
@@ -43,6 +46,7 @@ public enum ValueType : byte {
 	ArrayFloat,
 	ArrayDouble,
 	ArrayString,
+	ArrayAny,
 
 	// glm:vec
 	Vector2,
@@ -59,6 +63,31 @@ public enum ValueType : byte {
 	//Matrix3x4,
 	//Matrix4x2,
 	//Matrix4x3,
+	
+	//! Helpers
+
+	_BaseStart = Void,
+	_BaseEnd = Function,
+
+	_FloatStart = Float,
+	_FloatEnd = Double,
+
+	_ObjectStart = String,
+	_ObjectEnd = ArrayAny,
+
+	_ArrayStart = ArrayBool,
+	_ArrayEnd = ArrayAny,
+
+	_StructStart = Vector2,
+	_StructEnd = Matrix4x4,
+
+	// First struct which return as hidden parameter
+/*#if _WIN32 && !_M_ARM64
+	_HiddenParamStart = Vector3,
+#else
+	_HiddenParamStart = Matrix4x4,
+#endif*/
+	_LastAssigned = Matrix4x4,
 };
 
 internal static class TypeUtils
@@ -85,6 +114,7 @@ internal static class TypeUtils
 		[typeof(MulticastDelegate)] = ValueType.Function,
 		// std::string
 		[typeof(string)] = ValueType.String,
+		[typeof(object)] = ValueType.Any,
 		// std::vector
 		[typeof(Bool8[])] = ValueType.ArrayBool,
 		[typeof(Char8[])] = ValueType.ArrayChar8,
@@ -102,6 +132,7 @@ internal static class TypeUtils
 		[typeof(float[])] = ValueType.ArrayFloat,
 		[typeof(double[])] = ValueType.ArrayDouble,
 		[typeof(string[])] = ValueType.ArrayString,
+		[typeof(object[])] = ValueType.ArrayAny,
 		// glm:vec
 		[typeof(Vector2)] = ValueType.Vector2,
 		[typeof(Vector3)] = ValueType.Vector3,

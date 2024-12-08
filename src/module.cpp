@@ -1,9 +1,9 @@
 #include "module.hpp"
 #include "attribute.hpp"
-#include "managed_assembly.h"
+#include "managed_assembly.hpp"
 #include "managed_functions.hpp"
 #include "memory.hpp"
-#include "method_info.h"
+#include "method_info.hpp"
 #include "type.hpp"
 #include "utils.hpp"
 
@@ -295,6 +295,7 @@ static void ManagedCall(MethodRef method, MemAddr data, const JitCallback::Param
 				case ValueType::Vector4:
 				case ValueType::Matrix4x4:
 				case ValueType::String:
+				case ValueType::Any:
 				case ValueType::ArrayBool:
 				case ValueType::ArrayChar8:
 				case ValueType::ArrayChar16:
@@ -310,6 +311,7 @@ static void ManagedCall(MethodRef method, MemAddr data, const JitCallback::Param
 				case ValueType::ArrayFloat:
 				case ValueType::ArrayDouble:
 				case ValueType::ArrayString:
+				case ValueType::ArrayAny:
 					args.emplace_back(p->GetArgument<void*>(i));
 					break;
 				default:
@@ -323,6 +325,9 @@ static void ManagedCall(MethodRef method, MemAddr data, const JitCallback::Param
 	switch (retType) {
 		case ValueType::String:
 			ret->ConstructAt<plg::string>();
+			break;
+		case ValueType::Any:
+			ret->ConstructAt<plg::any>();
 			break;
 		case ValueType::ArrayBool:
 			ret->ConstructAt<plg::vector<bool>>();
@@ -368,6 +373,9 @@ static void ManagedCall(MethodRef method, MemAddr data, const JitCallback::Param
 			break;
 		case ValueType::ArrayString:
 			ret->ConstructAt<plg::vector<plg::string>>();
+			break;
+		case ValueType::ArrayAny:
+			ret->ConstructAt<plg::vector<plg::any>>();
 			break;
 		default:
 			break;

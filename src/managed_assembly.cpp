@@ -1,4 +1,4 @@
-#include "managed_assembly.h"
+#include "managed_assembly.hpp"
 #include "managed_functions.hpp"
 #include "utils.hpp"
 

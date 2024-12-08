@@ -4,7 +4,7 @@
 #include "field_info.hpp"
 #include "managed_object.hpp"
 #include "managed_type.hpp"
-#include "method_info.h"
+#include "method_info.hpp"
 #include "native_string.hpp"
 #include "property_info.hpp"
 

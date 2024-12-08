@@ -7,47 +7,13 @@ IsModuleLoaded
 IsPluginLoaded
 FindPluginResource
 
-AllocateString
-CreateString
 GetStringData
 GetStringLength
 ConstructString
 AssignString
-FreeString
-DeleteString
 DestroyString
 
-CreateVectorBool
-CreateVectorChar8
-CreateVectorChar16
-CreateVectorInt8
-CreateVectorInt16
-CreateVectorInt32
-CreateVectorInt64
-CreateVectorUInt8
-CreateVectorUInt16
-CreateVectorUInt32
-CreateVectorUInt64
-CreateVectorIntPtr
-CreateVectorFloat
-CreateVectorDouble
-CreateVectorString
-
-AllocateVectorBool
-AllocateVectorChar8
-AllocateVectorChar16
-AllocateVectorInt8
-AllocateVectorInt16
-AllocateVectorInt32
-AllocateVectorInt64
-AllocateVectorUInt8
-AllocateVectorUInt16
-AllocateVectorUInt32
-AllocateVectorUInt64
-AllocateVectorIntPtr
-AllocateVectorFloat
-AllocateVectorDouble
-AllocateVectorString
+DestroyVariant
 
 GetVectorSizeBool
 GetVectorSizeChar8
@@ -64,6 +30,7 @@ GetVectorSizeIntPtr
 GetVectorSizeFloat
 GetVectorSizeDouble
 GetVectorSizeString
+GetVectorSizeVariant
 
 GetVectorDataBool
 GetVectorDataChar8
@@ -80,6 +47,7 @@ GetVectorDataIntPtr
 GetVectorDataFloat
 GetVectorDataDouble
 GetVectorDataString
+GetVectorDataVariant
 
 AssignVectorBool
 AssignVectorChar8
@@ -96,6 +64,7 @@ AssignVectorIntPtr
 AssignVectorFloat
 AssignVectorDouble
 AssignVectorString
+AssignVectorVariant
 
 ConstructVectorBool
 ConstructVectorChar8
@@ -112,38 +81,7 @@ ConstructVectorIntPtr
 ConstructVectorFloat
 ConstructVectorDouble
 ConstructVectorString
-
-DeleteVectorBool
-DeleteVectorChar8
-DeleteVectorChar16
-DeleteVectorInt8
-DeleteVectorInt16
-DeleteVectorInt32
-DeleteVectorInt64
-DeleteVectorUInt8
-DeleteVectorUInt16
-DeleteVectorUInt32
-DeleteVectorUInt64
-DeleteVectorIntPtr
-DeleteVectorFloat
-DeleteVectorDouble
-DeleteVectorString
-
-FreeVectorBool
-FreeVectorChar8
-FreeVectorChar16
-FreeVectorInt8
-FreeVectorInt16
-FreeVectorInt32
-FreeVectorInt64
-FreeVectorUInt8
-FreeVectorUInt16
-FreeVectorUInt32
-FreeVectorUInt64
-FreeVectorIntPtr
-FreeVectorFloat
-FreeVectorDouble
-FreeVectorString
+ConstructVectorVariant
 
 DestroyVectorBool
 DestroyVectorChar8
@@ -160,6 +98,7 @@ DestroyVectorIntPtr
 DestroyVectorFloat
 DestroyVectorDouble
 DestroyVectorString
+DestroyVectorVariant
 
 NewCall
 DeleteCall

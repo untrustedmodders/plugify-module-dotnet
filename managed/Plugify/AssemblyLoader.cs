@@ -176,6 +176,9 @@ internal static class AssemblyLoader
 		TypeInterface.CachedFields.Clear();
 		TypeInterface.CachedProperties.Clear();
 		TypeInterface.CachedAttributes.Clear();
+		
+		Marshalling.CachedDelegates.Clear();
+		Marshalling.CachedFunctions.Clear();
 
 		AssemblyContexts.Remove(contextId);
 		alc.Unload();

@@ -1,4 +1,4 @@
-#include "method_info.h"
+#include "method_info.hpp"
 #include "attribute.hpp"
 #include "managed_functions.hpp"
 #include "type.hpp"

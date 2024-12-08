@@ -24,7 +24,7 @@ internal static class MethodUtils
 	// return (TRet)ret;
 	internal static Delegate CreateObjectArrayDelegate(Type delegateType, Func<object[], object> handler)
 	{
-		MethodInfo delegateInvokeMethod = delegateType.GetMethod("Invoke");
+		MethodInfo delegateInvokeMethod = delegateType.GetMethod("Invoke")!;
 
 		Type returnType = delegateInvokeMethod.ReturnType;
 		bool hasReturnValue = returnType != typeof(void);
