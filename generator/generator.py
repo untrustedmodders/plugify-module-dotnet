@@ -1024,7 +1024,7 @@ def generate_method_code(method: dict) -> str:
         f'\t\tinternal static delegate* unmanaged[Cdecl]<{gen_ctypes(method)}> __{method_name};',
         f'\t\tprivate static {return_type} ___{method_name}({gen_params(method, ParamGen.TypesNames)})',
         '\t\t{',
-        generate_method_body(method, ret_type, return_type),
+        *generate_method_body(method, ret_type, return_type),
         '\t\t}\n'
     ]
 
