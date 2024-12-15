@@ -3,7 +3,7 @@ import sys
 import argparse
 import os
 import json
-from enum import Enum
+from enum import IntEnum
 
 TYPES_MAP = {
     'void': 'void',
@@ -432,7 +432,7 @@ def is_pod_type(type_name: str) -> bool:
     return type_name in {'vec2', 'vec3', 'vec4', 'mat4x4'}
 
 
-def convert_type(type_name: str, is_ref=False) -> str:
+def convert_type(type_name: str, is_ref: bool = False) -> str:
     """
     Converts a type name to its corresponding C# type.
     If the type is a reference, it appends 'ref' to the type.
@@ -441,7 +441,7 @@ def convert_type(type_name: str, is_ref=False) -> str:
     return f'ref {base_type}' if is_ref else base_type
 
 
-def convert_dtype(type_name: str, is_ref=False, is_ret=False) -> str:
+def convert_dtype(type_name: str, is_ref: bool = False, is_ret: bool = False) -> str:
     """
     Converts a type name to its corresponding C# type, with additional handling for references
     and return types (for POD types, references are forced).
@@ -451,7 +451,7 @@ def convert_dtype(type_name: str, is_ref=False, is_ret=False) -> str:
     return convert_type(type_name, is_ref)
 
 
-def convert_ctype(type_name: str, is_ref=False, is_ret=False) -> str:
+def convert_ctype(type_name: str, is_ref: bool = False, is_ret: bool = False) -> str:
     """
     Converts a type name to its corresponding C type.
     If the type is a reference, it appends '*' (pointer) to the type.
@@ -463,6 +463,27 @@ def convert_ctype(type_name: str, is_ref=False, is_ret=False) -> str:
     elif is_ret and '*' in base_type:
         return base_type[:-1]  # Remove pointer if it's a return type
     return base_type
+
+
+def adjust_type_name(param: dict, type_name: str) -> str:
+    if 'delegate' in type_name and 'prototype' in param:
+        return generate_name(param['prototype'].get('name', 'UnnamedDelegate'))
+    elif 'enum' in param:
+        if '[]' in type_name:
+            return f'{param["enum"].get("name", "UnnamedEnum")}[]'
+        else:
+            return generate_name(param['enum'].get('name', 'UnnamedEnum'))
+    return type_name
+
+
+def get_type_name(param: dict) -> str:
+    type_name = convert_type(param['type'], 'ref' in param and param['ref'])
+    return adjust_type_name(param, type_name)
+
+
+def get_dtype_name(param: dict, is_ret: bool = False) -> str:
+    type_name = convert_dtype(param['type'], 'ref' in param and param['ref'], is_ret)
+    return adjust_type_name(param, type_name)
 
 
 def is_need_marshal(method: dict) -> bool:
@@ -479,14 +500,14 @@ def is_need_marshal(method: dict) -> bool:
     return any(is_obj_return(param.get('type', None)) for param in param_types)
 
 
-def generate_name(name):
+def generate_name(name: str) -> str:
     """
     Generates a valid C# name by appending an underscore if the name is invalid.
     """
     return f"{name}_" if name in INVALID_NAMES else name
 
 
-class ParamGen(Enum):
+class ParamGen(IntEnum):
     Types = 1
     Names = 2
     TypesNames = 3
@@ -498,13 +519,6 @@ def gen_params(method: dict, param_gen: ParamGen) -> str:
     """
     Generates the parameters string for the method based on the param_gen type.
     Handles different modes such as Types, Names, CastNames, and TypesCastNames.
-
-    Args:
-        method (dict): The method metadata containing the parameters.
-        param_gen (ParamGen): The mode of generation (e.g., Types, Names, CastNames).
-
-    Returns:
-        str: A string representing the method's parameters based on the selected mode.
     """
 
     # Helper function to generate the type of a parameter, considering references and function types
@@ -543,41 +557,32 @@ def gen_params(method: dict, param_gen: ParamGen) -> str:
 
     # Helper function to generate the parameter type and cast name for TypesNames
     def gen_param_type_name(param: dict) -> str:
-        type_str = convert_type(param['type'], 'ref' in param and param['ref'])
-        if 'delegate' in type_str and 'prototype' in param:
-            type_str = generate_name(param['prototype']['name'])
-        return f'{type_str} {generate_name(param["name"])}'
+        return f'{get_type_name(param)} {generate_name(param["name"])}'
 
     # Helper function to generate the parameter type and cast name for TypesCastNames
     def gen_param_types_cast(param: dict) -> str:
-        type_str = convert_dtype(param['type'], 'ref' in param and param['ref'])
-        if 'delegate' in type_str and 'prototype' in param:
-            type_str = generate_name(param['prototype']['name'])
-        return f'{type_str} {generate_name(param["name"])}'
+        return f'{get_dtype_name(param)} {generate_name(param["name"])}'
 
     # Function to generate the appropriate string for a single parameter based on the param_gen mode
     def gen_param(param: dict) -> str:
-        # Handle parameter type generation (e.g., ref, function, delegate)
-        if param_gen == ParamGen.Types:
-            return gen_param_type(param)
-
-        # Handle parameter name generation
-        elif param_gen == ParamGen.Names:
-            return generate_name(param['name'])
-
-        # Handle cast names for marshaling or references
-        elif param_gen == ParamGen.CastNames:
-            return gen_param_cast_name(param)
-
-        # Handle types with type names
-        elif param_gen == ParamGen.TypesNames:
-            return gen_param_type_name(param)
-
-        # Handle types with cast names
-        elif param_gen == ParamGen.TypesCastNames:
-            return gen_param_types_cast(param)
-
-        return ''
+        match param_gen:
+            # Handle parameter type generation (e.g., ref, function, delegate)
+            case ParamGen.Types:
+                return gen_param_type(param)
+            # Handle parameter name generation
+            case ParamGen.Names:
+                return generate_name(param['name'])
+            # Handle cast names for marshaling or references
+            case ParamGen.CastNames:
+                return gen_param_cast_name(param)
+            # Handle types with type names
+            case ParamGen.TypesNames:
+                return gen_param_type_name(param)
+            # Handle types with cast names
+            case ParamGen.TypesCastNames:
+                return gen_param_types_cast(param)
+            case _:
+                return ''
 
     # Generate the full parameters list as a string
     parts = []
@@ -612,30 +617,17 @@ def gen_types(method: dict) -> str:
     """
     Generates a string representation of the types for the method, including its parameters and return type.
     """
-
-    def gen_param(param: dict) -> str:
-        """
-        Convert a parameter's type to a string representation, handling references and delegates if present.
-        """
-        type_str = convert_type(param.get('type', ''), 'ref' in param and param['ref'] is True)
-
-        # Check for delegate type and adjust if a prototype exists
-        if 'delegate' in type_str and 'prototype' in param:
-            type_str = generate_name(param['prototype']['name'])
-
-        return type_str
-
     # Initialize list to hold type representations
     parts = []
 
     # Process parameters if they exist
     if method.get('paramTypes'):
-        parts.extend([gen_param(param) for param in method['paramTypes']])
+        parts.extend([get_type_name(param) for param in method['paramTypes']])
 
     # Add the return type
     ret_type = method.get('retType', {})
     if ret_type:
-        parts.append(gen_param(ret_type))
+        parts.append(get_type_name(ret_type))
 
     # Join all parts together and return the final string
     return ', '.join(parts)
@@ -655,6 +647,9 @@ def gen_paramscast(method: dict, tabs: str) -> str:
         # Check if the parameter type requires a casting transformation (from VAL_TYPESCAST_MAP)
         param_type = VAL_TYPESCAST_MAP.get(param['type'], None)
         name = generate_name(param['name'])
+
+        if 'enum' in param:
+            param_type = param_type.replace('NativeMethods.', 'NativeMethodsT.')
 
         # Handling ConstructVector type (e.g., array or vector construction)
         if 'ConstructVector' in param_type:
@@ -718,6 +713,9 @@ def gen_paramscast_assign(method: dict, tabs: str) -> str:
             param_type = ASS_TYPESCAST_MAP.get(param['type'], None)
             name = generate_name(param['name'])
 
+            if 'enum' in param:
+                param_type = param_type.replace('NativeMethods.', 'NativeMethodsT.')
+
             # Handle 'VectorData' type
             if 'VectorData' in param_type:
                 size = SIZ_TYPESCAST_MAP.get(param['type'], None)
@@ -737,6 +735,10 @@ def gen_paramscast_assign(method: dict, tabs: str) -> str:
         Generates assignment code for the return type, considering 'VectorData' and other special cases.
         """
         param_type = ASS_TYPESCAST_MAP.get(param['type'], None)
+
+        if 'enum' in param:
+            param_type = param_type.replace('NativeMethods.', 'NativeMethodsT.')
+
         if 'VectorData' in param_type:
             size = SIZ_TYPESCAST_MAP.get(param['type'], None)
             return_type = convert_type(param['type'], False)
@@ -843,41 +845,84 @@ def gen_paramscast_cleanup(method: dict, tabs: str) -> str:
     return ''.join(output_parts)
 
 
-def gen_delegate_body(prototype: dict, delegates: set):
+def gen_delegate_body(prototype: dict, delegates: set[str]) -> str:
+    """
+    Generates a C# delegate definition from the provided prototype.
+    """
+    # Check for duplicate delegates
+    delegate_name = prototype.get("name", "UnnamedDelegate")
+    delegate_description = prototype.get('description', '')
+
+    # Check for duplicate delegates
+    if delegate_name in delegates:
+        return ''  # Skip if already generated
+
+    # Add the delegate name to the set
+    delegates.add(delegate_name)
+
+    # Get the return type and convert it
+    ret_type = prototype.get('retType', {})
+    return_type = get_dtype_name(ret_type, True)
+
+    # Start building the delegate definition
+    delegate_code = []
+    if delegate_description:
+        delegate_code.append(f"\t/// <summary>")
+        delegate_code.append(f"\t/// {delegate_description}")
+        delegate_code.append(f"\t/// </summary>")
+    param_list = gen_params(prototype, ParamGen.TypesCastNames)
+    delegate_code.append(f'\tpublic delegate {return_type} {delegate_name}({param_list});')
+
+    # Join the list into a single formatted string
+    return '\n'.join(delegate_code)
+
+
+def gen_enum_body(enum: dict, enum_type: str, enums: set[str]) -> str:
     """
     Generates a C# delegate definition from the provided prototype.
     """
     # Get the return type and convert it
-    ret_type = prototype.get('retType', {})
-    return_type = convert_dtype(
-        ret_type.get('type', ''),
-        ret_type.get('ref', False),
-        True
-    )
+    enum_name = enum.get('name', 'InvalidEnum')
+    enum_description = enum.get('description', '')
+    enum_values = enum.get('values', [])
 
-    if 'delegate' in return_type and 'prototype' in ret_type:
-        return_type = generate_name(ret_type['prototype'].get('name', 'UnnamedDelegate'))
+    # Check for duplicate enums
+    if enum_name in enums:
+        return ''  # Skip if already generated
 
-    param_list = gen_params(prototype, ParamGen.TypesCastNames)
-    delegate = f'\tpublic delegate {return_type} {prototype.get("name", "UnnamedDelegate")}({param_list});\n'
+    # Add the enum name to the set
+    enums.add(enum_name)
 
-    # Avoid duplicate delegates
-    if delegate not in delegates:
-        delegates.add(delegate)
-        return delegate
-    return None
+    # Start building the enum definition
+    enum_code = []
+    if enum_description:
+        enum_code.append(f"\t/// <summary>")
+        enum_code.append(f"\t/// {enum_description}")
+        enum_code.append(f"\t/// </summary>")
+    enum_code.append(f"\tpublic enum {enum_name} : {convert_type(enum_type)}\n\t{{")
+
+    # Iterate over the enum values and generate corresponding code
+    for i, value in enumerate(enum_values):
+        name = value.get('name', 'InvalidName')
+        enum_value = value.get('value', str(i))
+        description = value.get('description', '')
+
+        # Add summary comment for each value
+        if description:
+            enum_code.append(f"\t\t/// <summary>")
+            enum_code.append(f"\t\t/// {description}")
+            enum_code.append(f"\t\t/// </summary>")
+        enum_code.append(f"\t\t{name} = {enum_value},")
+
+    # Close the enum definition
+    enum_code.append("\t}\n")
+
+    return '\n'.join(enum_code)
 
 
 def gen_documentation(method: dict, tab_level: int = 0) -> str:
     """
-    Generate a Doxygen-style comment block from a JSON block with customizable tabulation.
-
-    Args:
-        method (dict): The input JSON data describing the function.
-        tab_level (int): The level of tabulation for the generated comment.
-
-    Returns:
-        str: The generated Doxygen comment block.
+    Generate a C#-style XML documentation block from a JSON block with customizable tabulation.
     """
     # Extract general details
     name = method.get('name', 'UnnamedFunction')
@@ -886,25 +931,24 @@ def gen_documentation(method: dict, tab_level: int = 0) -> str:
     ret_type = method.get('retType', {}).get('type', 'void')
 
     # Determine tabulation
-    tab = '    ' * tab_level
+    tab = '\t' * tab_level
 
-    # Start building the Doxygen comment
-    docstring = [f"{tab}/**\n"]
-    docstring.append(f"{tab} * @brief {description}\n")
-    docstring.append(f"{tab} *\n")
-    docstring.append(f"{tab} * @function {name}\n")
+    # Start building the XML documentation comment
+    docstring = [f"{tab}/// <summary>\n"]
+    docstring.append(f"{tab}/// {description}\n")
+    docstring.append(f"{tab}/// </summary>\n")
 
     # Add parameters
     for param in param_types:
         param_name = param.get('name', 'UnnamedParam')
-        param_type = param.get('type', 'Any')
+        param_type = param.get('type', 'Any')  # Optionally include type in the summary
         param_desc = param.get('description', 'No description available.')
-        docstring.append(f"{tab} * @param {param_name} ({param_type}): {param_desc}\n")
+        docstring.append(f"{tab}/// <param name=\"{param_name}\">{param_desc}</param>\n")
 
     # Add return type
     if ret_type.lower() != 'void':
         ret_desc = method.get('retType', {}).get('description', 'No description available.')
-        docstring.append(f"{tab} *\n{tab} * @return {ret_type}: {ret_desc}\n")
+        docstring.append(f"{tab}/// <returns>{ret_desc}</returns>\n")
 
     # Add callback prototype if present
     for param in param_types:
@@ -915,23 +959,21 @@ def gen_documentation(method: dict, tab_level: int = 0) -> str:
             proto_params = prototype.get('paramTypes', [])
             proto_ret = prototype.get('retType', {})
 
-            docstring.append(f"{tab} *\n{tab} * @callback {proto_name}\n")
-            docstring.append(f"{tab} * @brief {proto_desc}\n")
-            docstring.append(f"{tab} *\n")
+            # Document callback as part of the function summary
+            docstring.append(f"{tab}/// <remarks>\n")
+            docstring.append(f"{tab}/// Callback {proto_name}: {proto_desc}\n")
 
             for proto_param in proto_params:
                 p_name = proto_param.get('name', 'UnnamedParam')
-                p_type = proto_param.get('type', 'Any')
                 p_desc = proto_param.get('description', 'No description available.')
-                docstring.append(f"{tab} * @param {p_name} ({p_type}): {p_desc}\n")
+                docstring.append(f"{tab}/// - Parameter {p_name}: {p_desc}\n")
 
             if proto_ret:
                 proto_ret_type = proto_ret.get('type', 'void')
                 proto_ret_desc = proto_ret.get('description', 'No description available.')
-                docstring.append(f"{tab} *\n{tab} * @return (callback): {proto_ret_type}: {proto_ret_desc}\n")
+                docstring.append(f"{tab}/// - Returns: {proto_ret_desc} ({proto_ret_type})\n")
 
-    # Close Doxygen comment
-    docstring.append(f"{tab} */")
+            docstring.append(f"{tab}/// </remarks>\n")
 
     return ''.join(docstring)
 
@@ -947,13 +989,14 @@ def generate_method_body(method: dict, ret_type: dict, return_type: str) -> list
     is_obj_ret = is_obj_return(ret_type['type'])
     has_ret = not is_obj_ret and ret_type['type'] != 'void'
 
-    # For object return types, declare a return value variable
-    if is_obj_ret:
-        body.append(f'{indent}{return_type} __retVal;')
-
     # Generate and add parameter casting code
     index = 0
     params_cast = gen_paramscast(method, indent)
+
+    # For object return types, declare a return value variable
+    if is_obj_ret or params_cast:
+        body.append(f'{indent}{return_type} __retVal;')
+
     if params_cast:
         body.append(params_cast)
         index = len(body)  # Mark position to insert try block
@@ -964,6 +1007,8 @@ def generate_method_body(method: dict, ret_type: dict, return_type: str) -> list
     function_call = f'__{method["name"]}({gen_params(method, ParamGen.CastNames)})'
     if is_obj_ret:
         body.append(f'{inner_indent}__retVal_native = {function_call};')
+    elif has_ret and params_cast:
+        body.append(f'{inner_indent}__retVal = {function_call};')
     elif has_ret:
         body.append(f'{inner_indent}{return_type} __retVal = {function_call};')
     else:
@@ -1006,14 +1051,7 @@ def generate_method_code(method: dict) -> str:
     """
     # Safely extract return type and determine if it uses a delegate prototype
     ret_type = method.get('retType', {})
-    return_type = convert_type(
-        ret_type.get('type', ''),
-        ret_type.get('ref', False)
-    )
-
-    if 'delegate' in return_type and 'prototype' in ret_type:
-        prototype_name = ret_type['prototype'].get('name', 'UnnamedDelegate')
-        return_type = generate_name(prototype_name)
+    return_type = get_type_name(ret_type)
 
     method_name = method.get('name', 'UnnamedFunction')
 
@@ -1031,22 +1069,81 @@ def generate_method_code(method: dict) -> str:
     return '\n'.join(func_code)
 
 
-def generate_delegate_code(pplugin: dict, delegates: set) -> str:
-    """Generate delegate code."""
+def generate_delegate_code(pplugin: dict, delegates: set[str]) -> str:
+    """
+    Generate C# delegate code from a plugin definition.
+    """
+    # Container for all generated delegate code
     content = []
+
+    def process_prototype(prototype: dict):
+        """
+        Generate delegate code from the given prototype if it hasn't been processed.
+        """
+        delegate_code = gen_delegate_body(prototype, delegates)
+        if delegate_code:
+            content.append(delegate_code)
+
+    # Main loop: Process all exported methods in the plugin
     for method in pplugin.get('exportedMethods', []):
+        # Check the return type for a delegate
         ret_type = method.get('retType', {})
         if 'prototype' in ret_type:
-            delegate = gen_delegate_body(ret_type['prototype'], delegates)
-            if delegate:
-                content.append(delegate)
+            process_prototype(ret_type['prototype'])
 
-        for param_type in method.get('paramTypes', []):
-            if 'prototype' in param_type:
-                delegate = gen_delegate_body(param_type['prototype'], delegates)
-                if delegate:
-                    content.append(delegate)
+        # Check parameters for delegates
+        for param in method.get('paramTypes', []):
+            if 'prototype' in param:
+                process_prototype(param['prototype'])
 
+    content.append('\n\n')
+
+    # Join all generated delegates into a single string
+    return '\n'.join(content)
+
+
+def generate_enum_code(pplugin: dict, enums: set[str]) -> str:
+    """
+    Generate C# enum code from a plugin definition.
+    """
+    # Container for all generated enum code
+    content = []
+
+    def process_enum(enum_data: dict, enum_type: str):
+        """
+        Generate enum code from the given enum data if it hasn't been processed.
+        """
+        enum_code = gen_enum_body(enum_data, enum_type, enums)
+        if enum_code:
+            content.append(enum_code)
+
+    def process_prototype(prototype: dict):
+        """
+        Recursively process a function prototype for enums.
+        """
+        if 'enum' in prototype.get('retType', {}):
+            process_enum(prototype['retType']['enum'], prototype['retType'].get('type', ''))
+
+        for param in prototype.get('paramTypes', []):
+            if 'enum' in param:
+                process_enum(param['enum'], param.get('type', ''))
+            if 'prototype' in param:  # Process nested prototypes
+                process_prototype(param['prototype'])
+
+    # Main loop: Process all exported methods in the plugin
+    for method in pplugin.get('exportedMethods', []):
+        if 'retType' in method and 'enum' in method['retType']:
+            process_enum(method['retType']['enum'], method['retType'].get('type', ''))
+
+        for param in method.get('paramTypes', []):
+            if 'enum' in param:
+                process_enum(param['enum'], param.get('type', ''))
+            if 'prototype' in param:  # Handle nested function prototypes
+                process_prototype(param['prototype'])
+
+    content.append('\n')
+
+    # Join all generated enums into a single string
     return '\n'.join(content)
 
 
@@ -1070,12 +1167,16 @@ def generate_header(plugin_name: str, pplugin: dict) -> str:
         '',
     ]
 
+    # Append enum definitions
+    enums = set()
+    content.append(generate_enum_code(pplugin, enums))
+
     # Append delegate definitions
     delegates = set()
     content.append(generate_delegate_code(pplugin, delegates))
 
     # Append method implementations
-    content.append(f'\n\tinternal static unsafe class {plugin_name} {{\n')
+    content.append(f'\tinternal static unsafe class {plugin_name} {{\n')
     for method in pplugin.get('exportedMethods', []):
         content.append(generate_method_code(method))
     content.append('\t}\n#pragma warning restore CS0649\n}')
@@ -1095,7 +1196,7 @@ def main(manifest_path: str, output_dir: str, override: bool):
         return 1
 
     # Determine plugin name and output file path
-    plugin_name = os.path.splitext(os.path.basename(manifest_path))[0]
+    plugin_name = os.path.basename(manifest_path).rsplit('.', 3)[0]
     output_path = os.path.join(output_dir, 'pps', f'{plugin_name}.cs')
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
