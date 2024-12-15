@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.Marshalling;
 
 namespace Plugify;
 
@@ -468,7 +469,7 @@ public static unsafe partial class NativeMethods
 	#endregion
 
 	#region ConstructVector Functions
-	
+
 	[LibraryImport(DllName)]
 	[SuppressGCTransition]
 	public static partial Vector192 ConstructVectorBool([In] Bool8[] arr, int len);
@@ -687,4 +688,216 @@ public static unsafe partial class NativeMethods
 	}
 	
 	#endregion
+}
+
+public static unsafe class NativeMethodsT
+{
+	[DllImport("plugify-module-dotnet", EntryPoint = "GetVectorDataInt8", ExactSpelling = true)]
+	[SuppressGCTransition]
+	private static extern void __GetVectorDataInt8(Vector192* vec, sbyte* arrNative);
+	
+	public static void GetVectorDataInt8<T>(Vector192* vec, [In, Out] T[] arr) where T : unmanaged
+	{
+		fixed (void* arrNative = &ArrayMarshaller<T, T>.ManagedToUnmanagedIn.GetPinnableReference(arr))
+		{
+			__GetVectorDataInt8(vec, (sbyte*)arrNative);
+		}
+	}
+	
+	[DllImport("plugify-module-dotnet", EntryPoint = "GetVectorDataInt16", ExactSpelling = true)]
+	[SuppressGCTransition]
+	private static extern void __GetVectorDataInt16(Vector192* vec, sbyte* arrNative);
+
+	public static void GetVectorDataInt16<T>(Vector192* vec, [In, Out] T[] arr) where T : unmanaged
+	{
+		fixed (void* arrNative = &ArrayMarshaller<T, T>.ManagedToUnmanagedIn.GetPinnableReference(arr))
+		{
+			__GetVectorDataInt16(vec, (sbyte*)arrNative);
+		}
+	}
+	
+	[DllImport("plugify-module-dotnet", EntryPoint = "GetVectorDataInt32", ExactSpelling = true)]
+	[SuppressGCTransition]
+	private static extern void __GetVectorDataInt32(Vector192* vec, sbyte* arrNative);
+	
+	public static void GetVectorDataInt32<T>(Vector192* vec, [In, Out] T[] arr) where T : unmanaged
+	{
+		fixed (void* arrNative = &ArrayMarshaller<T, T>.ManagedToUnmanagedIn.GetPinnableReference(arr))
+		{
+			__GetVectorDataInt32(vec, (sbyte*)arrNative);
+		}
+	}
+	
+	[DllImport("plugify-module-dotnet", EntryPoint = "GetVectorDataInt64", ExactSpelling = true)]
+	[SuppressGCTransition]
+	private static extern void __GetVectorDataInt64(Vector192* vec, sbyte* arrNative);
+
+	public static void GetVectorDataInt64<T>(Vector192* vec, [In, Out] T[] arr) where T : unmanaged
+	{
+		fixed (void* arrNative = &ArrayMarshaller<T, T>.ManagedToUnmanagedIn.GetPinnableReference(arr))
+		{
+			__GetVectorDataInt64(vec, (sbyte*)arrNative);
+		}
+	}
+	
+	[DllImport("plugify-module-dotnet", EntryPoint = "GetVectorDataUInt8", ExactSpelling = true)]
+	[SuppressGCTransition]
+	private static extern void __GetVectorDataUInt8(Vector192* vec, sbyte* arrNative);
+
+	public static void GetVectorDataUInt8<T>(Vector192* vec, [In, Out] T[] arr) where T : unmanaged
+	{
+		fixed (void* arrNative = &ArrayMarshaller<T, T>.ManagedToUnmanagedIn.GetPinnableReference(arr))
+		{
+			__GetVectorDataUInt8(vec, (sbyte*)arrNative);
+		}
+	}
+	
+	[DllImport("plugify-module-dotnet", EntryPoint = "GetVectorDataUInt16", ExactSpelling = true)]
+	[SuppressGCTransition]
+	private static extern void __GetVectorDataUInt16(Vector192* vec, sbyte* arrNative);
+
+	public static void GetVectorDataUInt16<T>(Vector192* vec, [In, Out] T[] arr) where T : unmanaged
+	{
+		fixed (void* arrNative = &ArrayMarshaller<T, T>.ManagedToUnmanagedIn.GetPinnableReference(arr))
+		{
+			__GetVectorDataUInt16(vec, (sbyte*)arrNative);
+		}
+	}
+	
+	[DllImport("plugify-module-dotnet", EntryPoint = "GetVectorDataUInt32", ExactSpelling = true)]
+	[SuppressGCTransition]
+	private static extern void __GetVectorDataUInt32(Vector192* vec, sbyte* arrNative);
+
+	public static void GetVectorDataUInt32<T>(Vector192* vec, [In, Out] T[] arr) where T : unmanaged
+	{
+		fixed (void* arrNative = &ArrayMarshaller<T, T>.ManagedToUnmanagedIn.GetPinnableReference(arr))
+		{
+			__GetVectorDataUInt32(vec, (sbyte*)arrNative);
+		}
+	}
+	
+	[DllImport("plugify-module-dotnet", EntryPoint = "GetVectorDataUInt64", ExactSpelling = true)]
+	[SuppressGCTransition]
+	private static extern void __GetVectorDataUInt64(Vector192* vec, sbyte* arrNative);
+
+	public static void GetVectorDataUInt64<T>(Vector192* vec, [In, Out] T[] arr) where T : unmanaged
+	{
+		fixed (void* arrNative = &ArrayMarshaller<T, T>.ManagedToUnmanagedIn.GetPinnableReference(arr))
+		{
+			__GetVectorDataUInt64(vec, (sbyte*)arrNative);
+		}
+	}
+	
+	
+	[DllImport(NativeMethods.DllName, EntryPoint = "ConstructVectorInt8", ExactSpelling = true)]
+	[SuppressGCTransition]
+	private static extern Vector192 __ConstructVectorInt8(sbyte* arrNative, int lenNative);
+
+	public static Vector192 ConstructVectorInt8<T>([In] T[] arr, int len) where T : unmanaged
+	{
+		Vector192 retVal;
+		fixed (T* arrNative = &ArrayMarshaller<T, T>.ManagedToUnmanagedIn.GetPinnableReference(arr))
+		{
+			retVal = __ConstructVectorInt8((sbyte*)arrNative, len);
+		}
+		return retVal;
+	}
+
+	[DllImport(NativeMethods.DllName, EntryPoint = "ConstructVectorInt16", ExactSpelling = true)]
+	[SuppressGCTransition]
+	private static extern Vector192 __ConstructVectorInt16(short* arrNative, int lenNative);
+
+	public static Vector192 ConstructVectorInt16<T>([In] T[] arr, int len) where T : unmanaged
+	{
+		Vector192 retVal;
+		fixed (void* arrNative = &ArrayMarshaller<T, T>.ManagedToUnmanagedIn.GetPinnableReference(arr))
+		{
+			retVal = __ConstructVectorInt16((short*)arrNative, len);
+		}
+		return retVal;
+	}
+
+	[DllImport(NativeMethods.DllName, EntryPoint = "ConstructVectorInt32", ExactSpelling = true)]
+	[SuppressGCTransition]
+	private static extern Vector192 __ConstructVectorInt32(int* arrNative, int lenNative);
+
+	public static Vector192 ConstructVectorInt32<T>([In] T[] arr, int len) where T : unmanaged
+	{
+		Vector192 retVal;
+		fixed (void* arrNative = &ArrayMarshaller<T, T>.ManagedToUnmanagedIn.GetPinnableReference(arr))
+		{
+			retVal = __ConstructVectorInt32((int*)arrNative, len);
+		}
+		return retVal;
+	}
+
+	[DllImport(NativeMethods.DllName, EntryPoint = "ConstructVectorInt64", ExactSpelling = true)]
+	[SuppressGCTransition]
+	private static extern Vector192 __ConstructVectorInt64(long* arrNative, int lenNative);
+
+	public static Vector192 ConstructVectorInt64<T>([In] T[] arr, int len) where T : unmanaged
+	{
+		Vector192 retVal;
+		fixed (void* arrNative = &ArrayMarshaller<T, T>.ManagedToUnmanagedIn.GetPinnableReference(arr))
+		{
+			retVal = __ConstructVectorInt64((long*)arrNative, len);
+		}
+		return retVal;
+	}
+
+	[DllImport(NativeMethods.DllName, EntryPoint = "ConstructVectorUInt8", ExactSpelling = true)]
+	[SuppressGCTransition]
+	private static extern Vector192 __ConstructVectorUInt8(byte* arrNative, int lenNative);
+
+	public static Vector192 ConstructVectorUInt8<T>([In] T[] arr, int len) where T : unmanaged
+	{
+		Vector192 retVal;
+		fixed (void* arrNative = &ArrayMarshaller<T, T>.ManagedToUnmanagedIn.GetPinnableReference(arr))
+		{
+			retVal = __ConstructVectorUInt8((byte*)arrNative, len);
+		}
+		return retVal;
+	}
+
+	[DllImport(NativeMethods.DllName, EntryPoint = "ConstructVectorUInt16", ExactSpelling = true)]
+	[SuppressGCTransition]
+	private static extern Vector192 __ConstructVectorUInt16(ushort* arrNative, int lenNative);
+
+	public static Vector192 ConstructVectorUInt16<T>([In] T[] arr, int len) where T : unmanaged
+	{
+		Vector192 retVal;
+		fixed (void* arrNative = &ArrayMarshaller<T, T>.ManagedToUnmanagedIn.GetPinnableReference(arr))
+		{
+			retVal = __ConstructVectorUInt16((ushort*)arrNative, len);
+		}
+		return retVal;
+	}
+
+	[DllImport(NativeMethods.DllName, EntryPoint = "ConstructVectorUInt32", ExactSpelling = true)]
+	[SuppressGCTransition]
+	private static extern Vector192 __ConstructVectorUInt32(uint* arrNative, int lenNative);
+
+	public static Vector192 ConstructVectorUInt32<T>([In] T[] arr, int len) where T : unmanaged
+	{
+		Vector192 retVal;
+		fixed (void* arrNative = &ArrayMarshaller<T, T>.ManagedToUnmanagedIn.GetPinnableReference(arr))
+		{
+			retVal = __ConstructVectorUInt32((uint*)arrNative, len);
+		}
+		return retVal;
+	}
+
+	[DllImport(NativeMethods.DllName, EntryPoint = "ConstructVectorUInt64", ExactSpelling = true)]
+	[SuppressGCTransition]
+	private static extern Vector192 __ConstructVectorUInt64(ulong* arrNative, int lenNative);
+
+	public static Vector192 ConstructVectorUInt64<T>([In] T[] arr, int len) where T : unmanaged
+	{
+		Vector192 retVal;
+		fixed (void* arrNative = &ArrayMarshaller<T, T>.ManagedToUnmanagedIn.GetPinnableReference(arr))
+		{
+			retVal = __ConstructVectorUInt64((ulong*)arrNative, len);
+		}
+		return retVal;
+	}
 }

@@ -22,7 +22,7 @@ public unsafe class ReverseClass
     public static string ReverseNoParamReturnChar8()
     {
         char result = NoParamReturnChar8Callback();
-        return ((int)result).ToString();
+        return result.ToString();
     }
 
     public static string ReverseNoParamReturnChar16()
@@ -626,7 +626,7 @@ public unsafe class ReverseClass
 	public static string CallFuncAny()
 	{
 		var result = CallFuncAnyCallback(CallbackHolder.MockAny);
-		return ((int)(Char16)result).ToString();
+		return ((char)(Char16)result).ToString();
 	}
 
 	public static string CallFuncBoolVector()
@@ -758,7 +758,7 @@ public unsafe class ReverseClass
 	public static string CallFunc2()
 	{
 		var result = CallFunc2Callback(CallbackHolder.MockFunc2);
-		return $"{(byte)result}";
+		return $"{result}";
 	}
 
 	public static string CallFunc3()
