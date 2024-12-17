@@ -53,7 +53,7 @@ public static unsafe partial class NativeMethods
 	
 	#region Variant functions
 
-	public static object? GetVariantData(Variant256* var, Type? type = null)
+	public static object? GetVariantData(Variant256* var)
 	{
 		switch ((ValueType)var->currect)
 		{
@@ -89,7 +89,7 @@ public static unsafe partial class NativeMethods
 			case ValueType.Double:
 				return var->dbl;
 			case ValueType.Function:
-				return Marshalling.GetDelegateForFunctionPointer(var->ptr, type);
+				return null;//Marshalling.GetDelegateForFunctionPointer(var->ptr, type);
 			case ValueType.String:
 				return NativeMethods.GetStringData(&var->str);
 			case ValueType.ArrayBool:
@@ -229,7 +229,7 @@ public static unsafe partial class NativeMethods
 				var->dbl = (double)paramValue;
 				break;
 			case ValueType.Function:
-				var->ptr = Marshalling.GetFunctionPointerForDelegate((Delegate)paramValue);
+				var->ptr = nint.Zero; //Marshalling.GetFunctionPointerForDelegate((Delegate)paramValue);
 				break;
 			case ValueType.String:
 				var->str = NativeMethods.ConstructString((string)paramValue);
@@ -462,7 +462,7 @@ public static unsafe partial class NativeMethods
 		for (int i = 0; i < len; i++)
 		{
 			Variant256* var = GetVectorDataVariant(vec, i);
-			arr[i] = GetVariantData(var, arr[i]?.GetType());
+			arr[i] = GetVariantData(var);
 		}
 	}
 

@@ -410,7 +410,7 @@ public static class Marshalling
 				case ValueType.String:
 					return NativeMethods.GetStringData((String192*)inValue);
 				case ValueType.Any:
-					return NativeMethods.GetVariantData((Variant256*)inValue, paramType);
+					return NativeMethods.GetVariantData((Variant256*)inValue);
 				case ValueType.ArrayBool:
 					var ptrBool = (Vector192*)inValue;
 					var arrBool = new Bool8[NativeMethods.GetVectorSizeBool(ptrBool)];
@@ -552,11 +552,8 @@ public static class Marshalling
 	
 	private static unsafe Func<object[], object> ExternalInvoke(nint funcAddress, MethodInfo methodInfo)
 	{
-		ParameterInfo returnInfo = methodInfo.ReturnParameter;
-		ParameterInfo[] parameterInfos = methodInfo.GetParameters();
-		
-		ManagedType returnType =  new ManagedType(returnInfo.ParameterType);
-		ManagedType[] parameterTypes = parameterInfos.Select(p => new ManagedType(p.ParameterType)).ToArray();
+		ManagedType returnType =  new ManagedType(methodInfo.ReturnParameter.ParameterType);
+		ManagedType[] parameterTypes = methodInfo.GetParameters().Select(p => new ManagedType(p.ParameterType)).ToArray();
 		
 		bool hasRet = returnType.ValueType is >= ValueType._ObjectStart and <= ValueType._ObjectEnd;
 		bool hasRefs = parameterTypes.Any(t => t.IsByRef);
@@ -840,7 +837,7 @@ public static class Marshalling
 								break;
 							}
 							default:
-								throw new TypeNotFoundException($"Parameter '{parameterInfos[i]}' uses not supported type for marshalling!");
+								throw new TypeNotFoundException($"Parameter '{parameterTypes[i].ValueType}' uses not supported type for marshalling!");
 						}
 					}
 					else
@@ -1069,7 +1066,7 @@ public static class Marshalling
 								break;
 							}
 							default:
-								throw new TypeNotFoundException($"Parameter '{parameterInfos[i]}' uses not supported type for marshalling!");
+								throw new TypeNotFoundException($"Parameter '{parameterTypes[i].ValueType}' uses not supported type for marshalling!");
 						}
 					}
 				}
@@ -1164,7 +1161,7 @@ public static class Marshalling
 					case ValueType.Any:
 					{
 						Variant256* ptr = (Variant256*)@return[0];
-						ret = NativeMethods.GetVariantData(ptr, returnInfo.ParameterType);
+						ret = NativeMethods.GetVariantData(ptr);
 						break;
 					}
 					case ValueType.ArrayBool:
@@ -1296,7 +1293,7 @@ public static class Marshalling
 						break;
 					}
 					default:
-						throw new TypeNotFoundException($"Return '{returnInfo}' uses not supported type for marshalling!");
+						throw new TypeNotFoundException($"Return '{returnType.ValueType}' uses not supported type for marshalling!");
 				}
 
 				#endregion
@@ -1326,7 +1323,7 @@ public static class Marshalling
 									case ValueType.Any:
 									{
 										Variant256* ptr = (Variant256*)handlers[j++].Item1;
-										parameters[i] = NativeMethods.GetVariantData(ptr, parameterInfos[i].ParameterType);
+										parameters[i] = NativeMethods.GetVariantData(ptr);
 										break;
 									}
 									case ValueType.ArrayBool:
