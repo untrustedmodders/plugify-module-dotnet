@@ -143,12 +143,61 @@ internal static class TypeUtils
 
 	internal static ValueType ConvertToValueType(Type type)
 	{
-		var elementType = type.IsByRef ? type.GetElementType() : type;
-		if (TypeSwitcher.TryGetValue(elementType, out var valueType))
+		var baseType = type.IsByRef ? type.GetElementType() : type;
+		
+		if (baseType.IsEnum)
+		{
+			baseType = baseType.GetEnumUnderlyingType();
+		}
+		else if (baseType.IsArray)
+		{
+			var elementType = baseType.GetElementType();
+			if (elementType.IsEnum)
+			{
+				baseType = elementType.GetEnumUnderlyingType().MakeArrayType();
+			}
+		}
+
+		if (TypeSwitcher.TryGetValue(baseType, out var valueType))
 		{
 			return valueType;
 		}
 
 		return type.IsDelegate() ? ValueType.Function : ValueType.Invalid;
+	}
+	
+	internal static Array ConvertToEnumArray<T>(Type enumType, T[] array) where T : unmanaged
+	{
+		if (!enumType.IsEnum)
+		{
+			throw new ArgumentException($"{enumType} is not an Enum type.");
+		}
+
+		Array enumArray = Array.CreateInstance(enumType, array.Length);
+
+		for (int i = 0; i < enumArray.Length; i++)
+		{
+			object enumValue = Enum.ToObject(enumType, array[i]);
+			enumArray.SetValue(enumValue, i);
+		}
+
+		return enumArray;
+	}
+	
+	internal static T[] ConvertFromEnumArray<T>(Type enumType, Array enumArray) where T : unmanaged
+	{
+		if (!enumType.IsEnum)
+		{
+			throw new ArgumentException($"{enumType.Name} is not an enum type.");
+		}
+
+		T[] array = new T[enumArray.Length];
+
+		for (int i = 0; i < array.Length; i++)
+		{
+			array[i] = (T)Enum.ToObject(enumType, enumArray.GetValue(i));
+		}
+
+		return array;
 	}
 }

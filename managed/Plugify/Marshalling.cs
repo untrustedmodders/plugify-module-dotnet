@@ -33,15 +33,7 @@ public static class Marshalling
 			ParameterInfo parameterInfo = parameterInfos[i];
 			Type paramType = parameterInfo.ParameterType;
 
-			if (paramType.IsEnum)
-			{
-				Type underlyingType = Enum.GetUnderlyingType(paramType);
-				parameters[i] = Enum.ToObject(paramType, MarshalPointer(paramPtr, underlyingType));
-			} 
-			else
-			{
-				parameters[i] = MarshalPointer(paramPtr, paramType);
-			}
+			parameters[i] = MarshalPointer(paramPtr, paramType);
 		}
 
 		return parameters;
@@ -90,137 +82,222 @@ public static class Marshalling
 
 	internal static unsafe void MarshalReturnValue(object? paramValue, Type paramType, nint outValue)
 	{
-		if (paramType.IsEnum)
+		ValueType valueType = TypeUtils.ConvertToValueType(paramType);
+		Type? enumType = paramType.GetEnumType();
+		if (enumType != null)
 		{
-			// If returnType is an enum we need to get the underlying type and cast the value to it
-			paramType = Enum.GetUnderlyingType(paramType);
-			paramValue = Convert.ChangeType(paramValue, paramType);
+			switch (valueType)
+			{
+				case ValueType.Int8:
+					*(sbyte*)outValue = (sbyte?)Convert.ChangeType(paramValue, Enum.GetUnderlyingType(enumType)) ?? default;
+					return;
+				case ValueType.Int16:
+					*(short*)outValue = (short?)Convert.ChangeType(paramValue, Enum.GetUnderlyingType(enumType)) ?? default;
+					return;
+				case ValueType.Int32:
+					*(int*)outValue = (int?)Convert.ChangeType(paramValue, Enum.GetUnderlyingType(enumType)) ?? default;
+					return;
+				case ValueType.Int64:
+					*(long*)outValue = (long?)Convert.ChangeType(paramValue, Enum.GetUnderlyingType(enumType)) ?? default;
+					return;
+				case ValueType.UInt8:
+					*(byte*)outValue = (byte?)Convert.ChangeType(paramValue, Enum.GetUnderlyingType(enumType)) ?? default;
+					return;
+				case ValueType.UInt16:
+					*(ushort*)outValue = (ushort?)Convert.ChangeType(paramValue, Enum.GetUnderlyingType(enumType)) ?? default;
+					return;
+				case ValueType.UInt32:
+					*(uint*)outValue = (uint?)Convert.ChangeType(paramValue, Enum.GetUnderlyingType(enumType)) ?? default;
+					return;
+				case ValueType.UInt64:
+					*(ulong*)outValue = (ulong?)Convert.ChangeType(paramValue, Enum.GetUnderlyingType(enumType)) ?? default;
+					return;
+				case ValueType.ArrayInt8:
+					if (paramValue is Array arrEnumInt8)
+					{
+						sbyte[] arrInt8 = TypeUtils.ConvertFromEnumArray<sbyte>(enumType, arrEnumInt8);
+						NativeMethods.AssignVectorInt8((Vector192*)outValue, arrInt8, arrInt8.Length);
+					}
+					return;
+				case ValueType.ArrayInt16:
+					if (paramValue is Array arrEnumInt16)
+					{
+						short[] arrInt16 = TypeUtils.ConvertFromEnumArray<short>(enumType, arrEnumInt16);
+						NativeMethods.AssignVectorInt16((Vector192*)outValue, arrInt16, arrInt16.Length);
+					}
+					return;
+				case ValueType.ArrayInt32:
+					if (paramValue is Array arrEnumInt32)
+					{
+						int[] arrInt32 = TypeUtils.ConvertFromEnumArray<int>(enumType, arrEnumInt32);
+						NativeMethods.AssignVectorInt32((Vector192*)outValue, arrInt32, arrInt32.Length);
+					}
+					return;
+				case ValueType.ArrayInt64:
+					if (paramValue is Array arrEnumInt64)
+					{
+						long[] arrInt64 = TypeUtils.ConvertFromEnumArray<long>(enumType, arrEnumInt64);
+						NativeMethods.AssignVectorInt64((Vector192*)outValue, arrInt64, arrInt64.Length);
+					}
+					return;
+				case ValueType.ArrayUInt8:
+					if (paramValue is Array arrEnumUInt8)
+					{
+						byte[] arrUInt8 = TypeUtils.ConvertFromEnumArray<byte>(enumType, arrEnumUInt8);
+						NativeMethods.AssignVectorUInt8((Vector192*)outValue, arrUInt8, arrUInt8.Length);
+					}
+					return;
+				case ValueType.ArrayUInt16:
+					if (paramValue is Array arrEnumUInt16)
+					{
+						ushort[] arrUInt16 = TypeUtils.ConvertFromEnumArray<ushort>(enumType, arrEnumUInt16);
+						NativeMethods.AssignVectorUInt16((Vector192*)outValue, arrUInt16, arrUInt16.Length);
+					}
+					return;
+				case ValueType.ArrayUInt32:
+					if (paramValue is Array arrEnumUInt32)
+					{
+						uint[] arrUInt32 = TypeUtils.ConvertFromEnumArray<uint>(enumType, arrEnumUInt32);
+						NativeMethods.AssignVectorUInt32((Vector192*)outValue, arrUInt32, arrUInt32.Length);
+					}
+					return;
+				case ValueType.ArrayUInt64:
+					if (paramValue is Array arrEnumUInt64)
+					{
+						ulong[] arrUInt64 = TypeUtils.ConvertFromEnumArray<ulong>(enumType, arrEnumUInt64);
+						NativeMethods.AssignVectorUInt64((Vector192*)outValue, arrUInt64, arrUInt64.Length);
+					}
+					return;
+			}
+		}
+		else
+		{
+			switch (valueType)
+			{
+				case ValueType.Bool:
+					*(Bool8*)outValue = (Bool8?)paramValue ?? default;
+					return;
+				case ValueType.Char8:
+					*(Char8*)outValue = (Char8?)paramValue ?? default;
+					return;
+				case ValueType.Char16:
+					*(Char16*)outValue = (Char16?)paramValue ?? default;
+					return;
+				case ValueType.Int8:
+					*(sbyte*)outValue = (sbyte?)paramValue ?? default;
+					return;
+				case ValueType.Int16:
+					*(short*)outValue = (short?)paramValue ?? default;
+					return;
+				case ValueType.Int32:
+					*(int*)outValue = (int?)paramValue ?? default;
+					return;
+				case ValueType.Int64:
+					*(long*)outValue = (long?)paramValue ?? default;
+					return;
+				case ValueType.UInt8:
+					*(byte*)outValue = (byte?)paramValue ?? default;
+					return;
+				case ValueType.UInt16:
+					*(ushort*)outValue = (ushort?)paramValue ?? default;
+					return;
+				case ValueType.UInt32:
+					*(uint*)outValue = (uint?)paramValue ?? default;
+					return;
+				case ValueType.UInt64:
+					*(ulong*)outValue = (ulong?)paramValue ?? default;
+					return;
+				case ValueType.Pointer:
+					*(nint*)outValue = (nint?)paramValue ?? default;
+					return;
+				case ValueType.Float:
+					*(float*)outValue = (float?)paramValue ?? default;
+					return;
+				case ValueType.Double:
+					*(double*)outValue = (double?)paramValue ?? default;
+					return;
+				case ValueType.Function:
+					if (paramValue != null)
+					{
+						*(nint*)outValue = GetFunctionPointerForDelegate((Delegate)paramValue);
+					}
+					else
+					{
+						*(nint*)outValue = default;
+					}
+					return;
+				case ValueType.String:
+					if (paramValue is string str) NativeMethods.AssignString((String192*)outValue, str);
+					return;
+				case ValueType.Any:
+					var var = (Variant256*)outValue;
+					NativeMethods.DestroyVariant(var);
+					NativeMethods.SetVariantData(var, paramValue);
+					return;
+				case ValueType.ArrayBool:
+					if (paramValue is Bool8[] arrBool) NativeMethods.AssignVectorBool((Vector192*)outValue, arrBool, arrBool.Length);
+					return;
+				case ValueType.ArrayChar8:
+					if (paramValue is Char8[] arrChar8) NativeMethods.AssignVectorChar8((Vector192*)outValue, arrChar8, arrChar8.Length);
+					return;
+				case ValueType.ArrayChar16:
+					if (paramValue is Char16[] arrChar16) NativeMethods.AssignVectorChar16((Vector192*)outValue, arrChar16, arrChar16.Length);
+					return;
+				case ValueType.ArrayInt8:
+					if (paramValue is sbyte[] arrInt8) NativeMethods.AssignVectorInt8((Vector192*)outValue, arrInt8, arrInt8.Length);
+					return;
+				case ValueType.ArrayInt16:
+					if (paramValue is short[] arrInt16) NativeMethods.AssignVectorInt16((Vector192*)outValue, arrInt16, arrInt16.Length);
+					return;
+				case ValueType.ArrayInt32:
+					if (paramValue is int[] arrInt32) NativeMethods.AssignVectorInt32((Vector192*)outValue, arrInt32, arrInt32.Length);
+					return;
+				case ValueType.ArrayInt64:
+					if (paramValue is long[] arrInt64) NativeMethods.AssignVectorInt64((Vector192*)outValue, arrInt64, arrInt64.Length);
+					return;
+				case ValueType.ArrayUInt8:
+					if (paramValue is byte[] arrUInt8) NativeMethods.AssignVectorUInt8((Vector192*)outValue, arrUInt8, arrUInt8.Length);
+					return;
+				case ValueType.ArrayUInt16:
+					if (paramValue is ushort[] arrUInt16) NativeMethods.AssignVectorUInt16((Vector192*)outValue, arrUInt16, arrUInt16.Length);
+					return;
+				case ValueType.ArrayUInt32:
+					if (paramValue is uint[] arrUInt32) NativeMethods.AssignVectorUInt32((Vector192*)outValue, arrUInt32, arrUInt32.Length);
+					return;
+				case ValueType.ArrayUInt64:
+					if (paramValue is ulong[] arrUInt64) NativeMethods.AssignVectorUInt64((Vector192*)outValue, arrUInt64, arrUInt64.Length);
+					return;
+				case ValueType.ArrayPointer:
+					if (paramValue is nint[] arrIntPtr) NativeMethods.AssignVectorIntPtr((Vector192*)outValue, arrIntPtr, arrIntPtr.Length);
+					return;
+				case ValueType.ArrayFloat:
+					if (paramValue is float[] arrFloat) NativeMethods.AssignVectorFloat((Vector192*)outValue, arrFloat, arrFloat.Length);
+					return;
+				case ValueType.ArrayDouble:
+					if (paramValue is double[] arrDouble) NativeMethods.AssignVectorDouble((Vector192*)outValue, arrDouble, arrDouble.Length);
+					return;
+				case ValueType.ArrayString:
+					if (paramValue is string[] arrString) NativeMethods.AssignVectorString((Vector192*)outValue, arrString, arrString.Length);
+					return;
+				case ValueType.ArrayAny:
+					if (paramValue is object[] arrVariant) NativeMethods.AssignVectorVariant((Vector192*)outValue, arrVariant, arrVariant.Length);
+					return;
+				case ValueType.Vector2:
+					Marshal.StructureToPtr(paramValue ?? Vector2.Zero, outValue, false);
+					return;
+				case ValueType.Vector3:
+					Marshal.StructureToPtr(paramValue ?? Vector3.Zero, outValue, false);
+					return;
+				case ValueType.Vector4:
+					Marshal.StructureToPtr(paramValue ?? Vector4.Zero, outValue, false);
+					return;
+				case ValueType.Matrix4x4:
+					Marshal.StructureToPtr(paramValue ?? Matrix4x4.Identity, outValue, false);
+					return;
+			}
+
 		}
 		
-		switch (TypeUtils.ConvertToValueType(paramType))
-		{
-			case ValueType.Bool:
-				*(Bool8*)outValue = (Bool8?)paramValue ?? default;
-				return;
-			case ValueType.Char8:
-				*(Char8*)outValue = (Char8?)paramValue ?? default;
-				return;
-			case ValueType.Char16:
-				*(Char16*)outValue = (Char16?)paramValue ?? default;
-				return;
-			case ValueType.Int8:
-				*(sbyte*)outValue = (sbyte?)paramValue ?? default;
-				return;
-			case ValueType.Int16:
-				*(short*)outValue = (short?)paramValue ?? default;
-				return;
-			case ValueType.Int32:
-				*(int*)outValue = (int?)paramValue ?? default;
-				return;
-			case ValueType.Int64:
-				*(long*)outValue = (long?)paramValue ?? default;
-				return;
-			case ValueType.UInt8:
-				*(byte*)outValue = (byte?)paramValue ?? default;
-				return;
-			case ValueType.UInt16:
-				*(ushort*)outValue = (ushort?)paramValue ?? default;
-				return;
-			case ValueType.UInt32:
-				*(uint*)outValue = (uint?)paramValue ?? default;
-				return;
-			case ValueType.UInt64:
-				*(ulong*)outValue = (ulong?)paramValue ?? default;
-				return;
-			case ValueType.Pointer:
-				*(nint*)outValue = (nint?)paramValue ?? default;
-				return;
-			case ValueType.Float:
-				*(float*)outValue = (float?)paramValue ?? default;
-				return;
-			case ValueType.Double:
-				*(double*)outValue = (double?)paramValue ?? default;
-				return;
-			case ValueType.Function:
-				if (paramValue != null)
-				{
-					*(nint*)outValue = GetFunctionPointerForDelegate((Delegate)paramValue);
-				}
-				else
-				{
-					*(nint*)outValue = default;
-				}
-				return;
-			case ValueType.String:
-				if (paramValue is string str) NativeMethods.AssignString((String192*)outValue, str);
-				return;
-			case ValueType.Any:
-				var var = (Variant256*)outValue;
-				NativeMethods.DestroyVariant(var);
-				NativeMethods.SetVariantData(var, paramValue);
-				return;
-			case ValueType.ArrayBool:
-				if (paramValue is Bool8[] arrBool) NativeMethods.AssignVectorBool((Vector192*)outValue, arrBool, arrBool.Length);
-				return;
-			case ValueType.ArrayChar8:
-				if (paramValue is Char8[] arrChar8) NativeMethods.AssignVectorChar8((Vector192*)outValue, arrChar8, arrChar8.Length);
-				return;
-			case ValueType.ArrayChar16:
-				if (paramValue is Char16[] arrChar16) NativeMethods.AssignVectorChar16((Vector192*)outValue, arrChar16, arrChar16.Length);
-				return;
-			case ValueType.ArrayInt8:
-				if (paramValue is sbyte[] arrInt8) NativeMethods.AssignVectorInt8((Vector192*)outValue, arrInt8, arrInt8.Length);
-				return;
-			case ValueType.ArrayInt16:
-				if (paramValue is short[] arrInt16) NativeMethods.AssignVectorInt16((Vector192*)outValue, arrInt16, arrInt16.Length);
-				return;
-			case ValueType.ArrayInt32:
-				if (paramValue is int[] arrInt32) NativeMethods.AssignVectorInt32((Vector192*)outValue, arrInt32, arrInt32.Length);
-				return;
-			case ValueType.ArrayInt64:
-				if (paramValue is long[] arrInt64) NativeMethods.AssignVectorInt64((Vector192*)outValue, arrInt64, arrInt64.Length);
-				return;
-			case ValueType.ArrayUInt8:
-				if (paramValue is byte[] arrUInt8) NativeMethods.AssignVectorUInt8((Vector192*)outValue, arrUInt8, arrUInt8.Length);
-				return;
-			case ValueType.ArrayUInt16:
-				if (paramValue is ushort[] arrUInt16) NativeMethods.AssignVectorUInt16((Vector192*)outValue, arrUInt16, arrUInt16.Length);
-				return;
-			case ValueType.ArrayUInt32:
-				if (paramValue is uint[] arrUInt32) NativeMethods.AssignVectorUInt32((Vector192*)outValue, arrUInt32, arrUInt32.Length);
-				return;
-			case ValueType.ArrayUInt64:
-				if (paramValue is ulong[] arrUInt64) NativeMethods.AssignVectorUInt64((Vector192*)outValue, arrUInt64, arrUInt64.Length);
-				return;
-			case ValueType.ArrayPointer:
-				if (paramValue is nint[] arrIntPtr) NativeMethods.AssignVectorIntPtr((Vector192*)outValue, arrIntPtr, arrIntPtr.Length);
-				return;
-			case ValueType.ArrayFloat:
-				if (paramValue is float[] arrFloat) NativeMethods.AssignVectorFloat((Vector192*)outValue, arrFloat, arrFloat.Length);
-				return;
-			case ValueType.ArrayDouble:
-				if (paramValue is double[] arrDouble) NativeMethods.AssignVectorDouble((Vector192*)outValue, arrDouble, arrDouble.Length);
-				return;
-			case ValueType.ArrayString:
-				if (paramValue is string[] arrString) NativeMethods.AssignVectorString((Vector192*)outValue, arrString, arrString.Length);
-				return;
-			case ValueType.ArrayAny:
-				if (paramValue is object[] arrVariant) NativeMethods.AssignVectorVariant((Vector192*)outValue, arrVariant, arrVariant.Length);
-				return;
-			case ValueType.Vector2:
-				Marshal.StructureToPtr(paramValue ?? Vector2.Zero, outValue, false);
-				return;
-			case ValueType.Vector3:
-				Marshal.StructureToPtr(paramValue ?? Vector3.Zero, outValue, false);
-				return;
-			case ValueType.Vector4:
-				Marshal.StructureToPtr(paramValue ?? Vector4.Zero, outValue, false);
-				return;
-			case ValueType.Matrix4x4:
-				Marshal.StructureToPtr(paramValue ?? Matrix4x4.Identity, outValue, false);
-				return;
-		}
-
 		/*if (paramType.IsValueType)
 		{
 			Marshal.StructureToPtr(paramValue, outValue, false);
@@ -233,130 +310,196 @@ public static class Marshalling
 	internal static unsafe object MarshalPointer(nint inValue, Type paramType)
 	{
 		ValueType valueType = TypeUtils.ConvertToValueType(paramType);
-		switch (valueType)
+		Type? enumType = paramType.GetEnumType();
+		if (enumType != null)
 		{
-			case ValueType.Bool:
-				return *(Bool8*)inValue;
-			case ValueType.Char8:
-				return *(Char8*)inValue;
-			case ValueType.Char16:
-				return *(Char16*)inValue;
-			case ValueType.Int8:
-				return *(sbyte*)inValue;
-			case ValueType.Int16:
-				return *(short*)inValue;
-			case ValueType.Int32:
-				return *(int*)inValue;
-			case ValueType.Int64:
-				return *(long*)inValue;
-			case ValueType.UInt8:
-				return *(byte*)inValue;
-			case ValueType.UInt16:
-				return *(ushort*)inValue;
-			case ValueType.UInt32:
-				return *(uint*)inValue;
-			case ValueType.UInt64:
-				return *(ulong*)inValue;
-			case ValueType.Pointer:
-				return *(nint*)inValue;
-			case ValueType.Float:
-				return *(float*)inValue;
-			case ValueType.Double:
-				return *(double*)inValue;
-			case ValueType.Function:
-				return GetDelegateForFunctionPointer(inValue, paramType);
-			case ValueType.String:
-				return NativeMethods.GetStringData((String192*)inValue);
-			case ValueType.Any:
-				return NativeMethods.GetVariantData((Variant256*)inValue, paramType);
-			case ValueType.ArrayBool:
-				var ptrBool = (Vector192*)inValue;
-				var arrBool = new Bool8[NativeMethods.GetVectorSizeBool(ptrBool)];
-				NativeMethods.GetVectorDataBool(ptrBool, arrBool);
-				return arrBool;
-			case ValueType.ArrayChar8:
-				var ptrChar8 = (Vector192*)inValue;
-				var arrChar8 = new Char8[NativeMethods.GetVectorSizeChar8(ptrChar8)];
-				NativeMethods.GetVectorDataChar8(ptrChar8, arrChar8);
-				return arrChar8;
-			case ValueType.ArrayChar16:
-				var ptrChar16 = (Vector192*)inValue;
-				var arrChar16 = new Char16[NativeMethods.GetVectorSizeChar16(ptrChar16)];
-				NativeMethods.GetVectorDataChar16(ptrChar16, arrChar16);
-				return arrChar16;
-			case ValueType.ArrayInt8:
-				var ptrInt8 = (Vector192*)inValue;
-				var arrInt8 = new sbyte[NativeMethods.GetVectorSizeInt8(ptrInt8)];
-				NativeMethods.GetVectorDataInt8(ptrInt8, arrInt8);
-				return arrInt8;
-			case ValueType.ArrayInt16:
-				var ptrInt16 = (Vector192*)inValue;
-				var arrInt16 = new short[NativeMethods.GetVectorSizeInt16(ptrInt16)];
-				NativeMethods.GetVectorDataInt16(ptrInt16, arrInt16);
-				return arrInt16;
-			case ValueType.ArrayInt32:
-				var ptrInt32 = (Vector192*)inValue;
-				var arrInt32 = new int[NativeMethods.GetVectorSizeInt32(ptrInt32)];
-				NativeMethods.GetVectorDataInt32(ptrInt32, arrInt32);
-				return arrInt32;
-			case ValueType.ArrayInt64:
-				var ptrInt64 = (Vector192*)inValue;
-				var arrInt64 = new long[NativeMethods.GetVectorSizeInt64(ptrInt64)];
-				NativeMethods.GetVectorDataInt64(ptrInt64, arrInt64);
-				return arrInt64;
-			case ValueType.ArrayUInt8:
-				var ptrUInt8 = (Vector192*)inValue;
-				var arrUInt8 = new byte[NativeMethods.GetVectorSizeUInt8(ptrUInt8)];
-				NativeMethods.GetVectorDataUInt8(ptrUInt8, arrUInt8);
-				return arrUInt8;
-			case ValueType.ArrayUInt16:
-				var ptrUInt16 = (Vector192*)inValue;
-				var arrUInt16 = new ushort[NativeMethods.GetVectorSizeUInt16(ptrUInt16)];
-				NativeMethods.GetVectorDataUInt16(ptrUInt16, arrUInt16);
-				return arrUInt16;
-			case ValueType.ArrayUInt32:
-				var ptrUInt32 = (Vector192*)inValue;
-				var arrUInt32 = new uint[NativeMethods.GetVectorSizeUInt32(ptrUInt32)];
-				NativeMethods.GetVectorDataUInt32(ptrUInt32, arrUInt32);
-				return arrUInt32;
-			case ValueType.ArrayUInt64:
-				var ptrUInt64 = (Vector192*)inValue;
-				var arrUInt64 = new ulong[NativeMethods.GetVectorSizeUInt64(ptrUInt64)];
-				NativeMethods.GetVectorDataUInt64(ptrUInt64, arrUInt64);
-				return arrUInt64;
-			case ValueType.ArrayPointer:
-				var ptrIntPtr = (Vector192*)inValue;
-				var arrIntPtr = new nint[NativeMethods.GetVectorSizeIntPtr(ptrIntPtr)];
-				NativeMethods.GetVectorDataIntPtr(ptrIntPtr, arrIntPtr);
-				return arrIntPtr;
-			case ValueType.ArrayFloat:
-				var ptrFloat = (Vector192*)inValue;
-				var arrFloat = new float[NativeMethods.GetVectorSizeFloat(ptrFloat)];
-				NativeMethods.GetVectorDataFloat(ptrFloat, arrFloat);
-				return arrFloat;
-			case ValueType.ArrayDouble:
-				var ptrDouble = (Vector192*)inValue;
-				var arrDouble = new double[NativeMethods.GetVectorSizeDouble(ptrDouble)];
-				NativeMethods.GetVectorDataDouble(ptrDouble, arrDouble);
-				return arrDouble;
-			case ValueType.ArrayString:
-				var ptrString = (Vector192*)inValue;
-				var arrString = new string[NativeMethods.GetVectorSizeString(ptrString)];
-				NativeMethods.GetVectorDataString(ptrString, arrString);
-				return arrString;
-			case ValueType.ArrayAny:
-				var ptrVariant = (Vector192*)inValue;
-				var arrVariant = new object[NativeMethods.GetVectorSizeVariant(ptrVariant)];
-				NativeMethods.GetVectorDataVariant(ptrVariant, arrVariant);
-				return arrVariant;
-			case ValueType.Vector2:
-				return *(Vector2*)inValue;
-			case ValueType.Vector3:
-				return *(Vector3*)inValue;
-			case ValueType.Vector4:
-				return *(Vector4*)inValue;
-			case ValueType.Matrix4x4:
-				return *(Matrix4x4*)inValue;
+			switch (valueType)
+			{
+				case ValueType.Int8:
+					return Enum.ToObject(enumType, *(sbyte*)inValue);
+				case ValueType.Int16:
+					return Enum.ToObject(enumType, *(short*)inValue);
+				case ValueType.Int32:
+					return Enum.ToObject(enumType, *(int*)inValue);
+				case ValueType.Int64:
+					return Enum.ToObject(enumType, *(long*)inValue);
+				case ValueType.UInt8:
+					return Enum.ToObject(enumType, *(byte*)inValue);
+				case ValueType.UInt16:
+					return Enum.ToObject(enumType, *(ushort*)inValue);
+				case ValueType.UInt32:
+					return Enum.ToObject(enumType, *(uint*)inValue);
+				case ValueType.UInt64:
+					return Enum.ToObject(enumType, *(ulong*)inValue);
+				case ValueType.ArrayInt8:
+					var ptrInt8 = (Vector192*)inValue;
+					var arrInt8 = new sbyte[NativeMethods.GetVectorSizeInt8(ptrInt8)];
+					NativeMethods.GetVectorDataInt8(ptrInt8, arrInt8);
+					return TypeUtils.ConvertToEnumArray(enumType, arrInt8);
+				case ValueType.ArrayInt16:
+					var ptrInt16 = (Vector192*)inValue;
+					var arrInt16 = new short[NativeMethods.GetVectorSizeInt16(ptrInt16)];
+					NativeMethods.GetVectorDataInt16(ptrInt16, arrInt16);
+					return TypeUtils.ConvertToEnumArray(enumType, arrInt16);
+				case ValueType.ArrayInt32:
+					var ptrInt32 = (Vector192*)inValue;
+					var arrInt32 = new int[NativeMethods.GetVectorSizeInt32(ptrInt32)];
+					NativeMethods.GetVectorDataInt32(ptrInt32, arrInt32);
+					return TypeUtils.ConvertToEnumArray(enumType, arrInt32);
+				case ValueType.ArrayInt64:
+					var ptrInt64 = (Vector192*)inValue;
+					var arrInt64 = new long[NativeMethods.GetVectorSizeInt64(ptrInt64)];
+					NativeMethods.GetVectorDataInt64(ptrInt64, arrInt64);
+					return TypeUtils.ConvertToEnumArray(enumType, arrInt64);
+				case ValueType.ArrayUInt8:
+					var ptrUInt8 = (Vector192*)inValue;
+					var arrUInt8 = new byte[NativeMethods.GetVectorSizeUInt8(ptrUInt8)];
+					NativeMethods.GetVectorDataUInt8(ptrUInt8, arrUInt8);
+					return TypeUtils.ConvertToEnumArray(enumType, arrUInt8);
+				case ValueType.ArrayUInt16:
+					var ptrUInt16 = (Vector192*)inValue;
+					var arrUInt16 = new ushort[NativeMethods.GetVectorSizeUInt16(ptrUInt16)];
+					NativeMethods.GetVectorDataUInt16(ptrUInt16, arrUInt16);
+					return TypeUtils.ConvertToEnumArray(enumType, arrUInt16);
+				case ValueType.ArrayUInt32:
+					var ptrUInt32 = (Vector192*)inValue;
+					var arrUInt32 = new uint[NativeMethods.GetVectorSizeUInt32(ptrUInt32)];
+					NativeMethods.GetVectorDataUInt32(ptrUInt32, arrUInt32);
+					return TypeUtils.ConvertToEnumArray(enumType, arrUInt32);
+				case ValueType.ArrayUInt64:
+					var ptrUInt64 = (Vector192*)inValue;
+					var arrUInt64 = new ulong[NativeMethods.GetVectorSizeUInt64(ptrUInt64)];
+					NativeMethods.GetVectorDataUInt64(ptrUInt64, arrUInt64);
+					return TypeUtils.ConvertToEnumArray(enumType, arrUInt64);
+			}
+		}
+		else
+		{
+			switch (valueType)
+			{
+				case ValueType.Bool:
+					return *(Bool8*)inValue;
+				case ValueType.Char8:
+					return *(Char8*)inValue;
+				case ValueType.Char16:
+					return *(Char16*)inValue;
+				case ValueType.Int8:
+					return *(sbyte*)inValue;
+				case ValueType.Int16:
+					return *(short*)inValue;
+				case ValueType.Int32:
+					return *(int*)inValue;
+				case ValueType.Int64:
+					return *(long*)inValue;
+				case ValueType.UInt8:
+					return *(byte*)inValue;
+				case ValueType.UInt16:
+					return *(ushort*)inValue;
+				case ValueType.UInt32:
+					return *(uint*)inValue;
+				case ValueType.UInt64:
+					return *(ulong*)inValue;
+				case ValueType.Pointer:
+					return *(nint*)inValue;
+				case ValueType.Float:
+					return *(float*)inValue;
+				case ValueType.Double:
+					return *(double*)inValue;
+				case ValueType.Function:
+					return GetDelegateForFunctionPointer(inValue, paramType);
+				case ValueType.String:
+					return NativeMethods.GetStringData((String192*)inValue);
+				case ValueType.Any:
+					return NativeMethods.GetVariantData((Variant256*)inValue, paramType);
+				case ValueType.ArrayBool:
+					var ptrBool = (Vector192*)inValue;
+					var arrBool = new Bool8[NativeMethods.GetVectorSizeBool(ptrBool)];
+					NativeMethods.GetVectorDataBool(ptrBool, arrBool);
+					return arrBool;
+				case ValueType.ArrayChar8:
+					var ptrChar8 = (Vector192*)inValue;
+					var arrChar8 = new Char8[NativeMethods.GetVectorSizeChar8(ptrChar8)];
+					NativeMethods.GetVectorDataChar8(ptrChar8, arrChar8);
+					return arrChar8;
+				case ValueType.ArrayChar16:
+					var ptrChar16 = (Vector192*)inValue;
+					var arrChar16 = new Char16[NativeMethods.GetVectorSizeChar16(ptrChar16)];
+					NativeMethods.GetVectorDataChar16(ptrChar16, arrChar16);
+					return arrChar16;
+				case ValueType.ArrayInt8:
+					var ptrInt8 = (Vector192*)inValue;
+					var arrInt8 = new sbyte[NativeMethods.GetVectorSizeInt8(ptrInt8)];
+					NativeMethods.GetVectorDataInt8(ptrInt8, arrInt8);
+					return arrInt8;
+				case ValueType.ArrayInt16:
+					var ptrInt16 = (Vector192*)inValue;
+					var arrInt16 = new short[NativeMethods.GetVectorSizeInt16(ptrInt16)];
+					NativeMethods.GetVectorDataInt16(ptrInt16, arrInt16);
+					return arrInt16;
+				case ValueType.ArrayInt32:
+					var ptrInt32 = (Vector192*)inValue;
+					var arrInt32 = new int[NativeMethods.GetVectorSizeInt32(ptrInt32)];
+					NativeMethods.GetVectorDataInt32(ptrInt32, arrInt32);
+					return arrInt32;
+				case ValueType.ArrayInt64:
+					var ptrInt64 = (Vector192*)inValue;
+					var arrInt64 = new long[NativeMethods.GetVectorSizeInt64(ptrInt64)];
+					NativeMethods.GetVectorDataInt64(ptrInt64, arrInt64);
+					return arrInt64;
+				case ValueType.ArrayUInt8:
+					var ptrUInt8 = (Vector192*)inValue;
+					var arrUInt8 = new byte[NativeMethods.GetVectorSizeUInt8(ptrUInt8)];
+					NativeMethods.GetVectorDataUInt8(ptrUInt8, arrUInt8);
+					return arrUInt8;
+				case ValueType.ArrayUInt16:
+					var ptrUInt16 = (Vector192*)inValue;
+					var arrUInt16 = new ushort[NativeMethods.GetVectorSizeUInt16(ptrUInt16)];
+					NativeMethods.GetVectorDataUInt16(ptrUInt16, arrUInt16);
+					return arrUInt16;
+				case ValueType.ArrayUInt32:
+					var ptrUInt32 = (Vector192*)inValue;
+					var arrUInt32 = new uint[NativeMethods.GetVectorSizeUInt32(ptrUInt32)];
+					NativeMethods.GetVectorDataUInt32(ptrUInt32, arrUInt32);
+					return arrUInt32;
+				case ValueType.ArrayUInt64:
+					var ptrUInt64 = (Vector192*)inValue;
+					var arrUInt64 = new ulong[NativeMethods.GetVectorSizeUInt64(ptrUInt64)];
+					NativeMethods.GetVectorDataUInt64(ptrUInt64, arrUInt64);
+					return arrUInt64;
+				case ValueType.ArrayPointer:
+					var ptrIntPtr = (Vector192*)inValue;
+					var arrIntPtr = new nint[NativeMethods.GetVectorSizeIntPtr(ptrIntPtr)];
+					NativeMethods.GetVectorDataIntPtr(ptrIntPtr, arrIntPtr);
+					return arrIntPtr;
+				case ValueType.ArrayFloat:
+					var ptrFloat = (Vector192*)inValue;
+					var arrFloat = new float[NativeMethods.GetVectorSizeFloat(ptrFloat)];
+					NativeMethods.GetVectorDataFloat(ptrFloat, arrFloat);
+					return arrFloat;
+				case ValueType.ArrayDouble:
+					var ptrDouble = (Vector192*)inValue;
+					var arrDouble = new double[NativeMethods.GetVectorSizeDouble(ptrDouble)];
+					NativeMethods.GetVectorDataDouble(ptrDouble, arrDouble);
+					return arrDouble;
+				case ValueType.ArrayString:
+					var ptrString = (Vector192*)inValue;
+					var arrString = new string[NativeMethods.GetVectorSizeString(ptrString)];
+					NativeMethods.GetVectorDataString(ptrString, arrString);
+					return arrString;
+				case ValueType.ArrayAny:
+					var ptrVariant = (Vector192*)inValue;
+					var arrVariant = new object[NativeMethods.GetVectorSizeVariant(ptrVariant)];
+					NativeMethods.GetVectorDataVariant(ptrVariant, arrVariant);
+					return arrVariant;
+				case ValueType.Vector2:
+					return *(Vector2*)inValue;
+				case ValueType.Vector3:
+					return *(Vector3*)inValue;
+				case ValueType.Vector4:
+					return *(Vector4*)inValue;
+				case ValueType.Matrix4x4:
+					return *(Matrix4x4*)inValue;
+			}
 		}
 		
 		/*if (paramType.IsValueType)
