@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using cross_call_master;
 using Plugify;
 
 namespace cross_call_worker;
@@ -447,5 +448,11 @@ public static unsafe class CallbackHolder
     // Mock implementations for 1 parameter functions
     public static void MockFunc33(ref object variant) {
         variant = "MockFunc33";
+    }    
+    
+    // Mock implementations for enum parameters functions
+    public static Example[] MockFuncEnum(Example p1, ref Example[] p2) {
+        p2 = [Example.First, Example.Second, Example.Third];
+        return [p1, Example.Forth];
     }
 }

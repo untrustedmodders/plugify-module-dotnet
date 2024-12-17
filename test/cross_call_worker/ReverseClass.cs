@@ -519,19 +519,6 @@ public unsafe class ReverseClass
     
     // Variant staff
 
-    /*
-     * plg::any p1 = "my custom string with enough chars";
-                plg::vector<plg::any> p2{};
-                cross_call_master::ParamVariantCallback(p1, p2);
-            }},
-            {"ParamVariantRef", []() {
-                plg::any p1 = "my custom string with enough chars";
-                plg::vector<plg::any> p2{'X', u'☢', -1, -1000, -1000000, -1000000000000LL, 200, 50000, 3000000000LL, 9999999999LL,
-                                         reinterpret_cast<void*>(0xfedcbaabcdefLL), 0.001f, 987654.456789};
-                cross_call_master::ParamVariantRefCallback(p1, p2);
-                cross_call_master::ReverseReturn(std::format("{}|{}", p1, p2));
-     */
-    
     public static string ReverseParamVariant()
     {
 	    object p1 = "my custom string with enough chars";
@@ -969,6 +956,12 @@ public unsafe class ReverseClass
 		var result = CallFunc33Callback(CallbackHolder.MockFunc33);
 		return result;
 	}
+	
+	public static string CallFuncEnum()
+	{
+		var result = CallFuncEnumCallback(CallbackHolder.MockFuncEnum);
+		return result;
+	}
 
      // Define the dictionary mapping strings to methods
     public static readonly Dictionary<string, Func<string>> ReverseTest = new()
@@ -1106,7 +1099,8 @@ public unsafe class ReverseClass
         { "CallFunc30", CallFunc30 },
         { "CallFunc31", CallFunc31 },
         { "CallFunc32", CallFunc32 },
-        { "CallFunc33", CallFunc33 }
+        { "CallFunc33", CallFunc33 },
+        { "CallFuncEnum", CallFuncEnum }
     };
     
 }

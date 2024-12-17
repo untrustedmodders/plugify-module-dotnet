@@ -1288,6 +1288,14 @@ public class ExportClass
         func(ref variant);
         return variant?.ToString() ?? "";
     }
+        
+    // enum parameters
+    public static string CallFuncEnum(cross_call_master.FuncEnum func) {
+        Example p1 = Example.Forth;
+        Example[] p2 = [];
+        Example[] ret = func(p1, ref p2);
+        return $"{{{string.Join(", ", ret.Select(v => ((int)v).ToString()))}}}|{{{string.Join(", ", p2.Select(v => ((int)v).ToString()))}}}";
+    }
     
     static unsafe void ReverseCall(string test)
     {
