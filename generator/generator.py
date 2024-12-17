@@ -451,13 +451,16 @@ def convert_dtype(type_name: str, is_ref: bool = False, is_ret: bool = False) ->
     return convert_type(type_name, is_ref)
 
 
-def convert_ctype(type_name: str, is_ref: bool = False, is_ret: bool = False) -> str:
+def convert_ctype(param: dict, is_ref: bool = False, is_ret: bool = False) -> str:
     """
     Converts a type name to its corresponding C type.
     If the type is a reference, it appends '*' (pointer) to the type.
     """
+    type_name = param.get('type', '')
+    if 'enum' in param and not '[]' in type_name:
+        name = generate_name(param['enum'].get('name', 'UnnamedEnum'))
+        return f'{name}*' if is_ref else name
     base_type = CTYPES_MAP.get(type_name, None)
-
     if is_ref:
         return f'{base_type}*' if '*' not in base_type else base_type
     elif is_ret and '*' in base_type:
@@ -465,25 +468,29 @@ def convert_ctype(type_name: str, is_ref: bool = False, is_ret: bool = False) ->
     return base_type
 
 
-def adjust_type_name(param: dict, type_name: str) -> str:
+def adjust_type_name(param: dict, type_name: str, is_ref: bool) -> str:
     if 'delegate' in type_name and 'prototype' in param:
         return generate_name(param['prototype'].get('name', 'UnnamedDelegate'))
     elif 'enum' in param:
+        name = generate_name(param['enum'].get('name', 'UnnamedEnum'))
+        base_type = f'ref {name}' if is_ref else name
         if '[]' in type_name:
-            return f'{param["enum"].get("name", "UnnamedEnum")}[]'
+            return f'{base_type}[]'
         else:
-            return generate_name(param['enum'].get('name', 'UnnamedEnum'))
+            return base_type
     return type_name
 
 
 def get_type_name(param: dict) -> str:
-    type_name = convert_type(param['type'], 'ref' in param and param['ref'])
-    return adjust_type_name(param, type_name)
+    is_ref = 'ref' in param and param['ref']
+    type_name = convert_type(param['type'], is_ref)
+    return adjust_type_name(param, type_name, is_ref)
 
 
 def get_dtype_name(param: dict, is_ret: bool = False) -> str:
-    type_name = convert_dtype(param['type'], 'ref' in param and param['ref'], is_ret)
-    return adjust_type_name(param, type_name)
+    is_ref = 'ref' in param and param['ref']
+    type_name = convert_dtype(param['type'], is_ref, is_ret)
+    return adjust_type_name(param, type_name, is_ref)
 
 
 def is_need_marshal(method: dict) -> bool:
@@ -601,13 +608,13 @@ def gen_ctypes(method: dict) -> str:
 
     # Process parameters if they exist
     if method.get('paramTypes'):
-        parts.extend([convert_ctype(param.get('type', None), 'ref' in param and param['ref'], False) for param in
+        parts.extend([convert_ctype(param, 'ref' in param and param['ref'], False) for param in
                       method['paramTypes']])
 
     # Add the return type
     ret_type = method.get('retType', {})
     if ret_type:
-        parts.append(convert_ctype(ret_type.get('type', ''), is_ret=True))
+        parts.append(convert_ctype(ret_type, is_ret=True))
 
     # Join all parts together and return the final string
     return ', '.join(parts)
@@ -665,8 +672,11 @@ def gen_paramscast(method: dict, tabs: str) -> str:
 
         # Handle reference types by creating fixed pointers (unsafe code)
         if 'ref' in param and param['ref'] is True:
-            ctype = TYPES_MAP.get(param['type'], None)
-            return f'fixed({ctype}* __{name} = &{name}) {{'
+            if 'enum' in param:
+                type_name = generate_name(param['enum'].get('name', 'UnnamedEnum'))
+            else:
+                type_name = TYPES_MAP.get(param['type'], None)
+            return f'fixed({type_name}* __{name} = &{name}) {{'
 
         # Return an empty string for unhandled cases
         return ''
@@ -743,7 +753,7 @@ def gen_paramscast_assign(method: dict, tabs: str) -> str:
             size = SIZ_TYPESCAST_MAP.get(param['type'], None)
             return_type = convert_type(param['type'], False)
             output = [
-                f'__retVal = new {return_type[:-1]}{size}(&__retVal_native);' + '\n',
+                f'__retVal = new {return_type[:-1]}{size}(&__retVal_native)];' + '\n',
                 f'{tabs}{param_type}(&__retVal_native, __retVal)'  # Marshal vector return value
             ]
             return ''.join(output)
@@ -850,7 +860,7 @@ def gen_delegate_body(prototype: dict, delegates: set[str]) -> str:
     Generates a C# delegate definition from the provided prototype.
     """
     # Check for duplicate delegates
-    delegate_name = prototype.get("name", "UnnamedDelegate")
+    delegate_name = prototype.get('name', 'UnnamedDelegate')
     delegate_description = prototype.get('description', '')
 
     # Check for duplicate delegates
@@ -994,20 +1004,23 @@ def generate_method_body(method: dict, ret_type: dict, return_type: str) -> list
     params_cast = gen_paramscast(method, indent)
 
     # For object return types, declare a return value variable
-    if is_obj_ret or params_cast:
+    has_cast = params_cast and ret_type['type'] != 'void'
+    if is_obj_ret or has_cast:
         body.append(f'{indent}{return_type} __retVal;')
 
+    has_try = False
     if params_cast:
         body.append(params_cast)
         index = len(body)  # Mark position to insert try block
         body.append(f'{indent}try {{')  # Start try block
         inner_indent = '\t\t\t\t'  # Adjust inner indentation
+        has_try = has_cast
 
     # Generate the function call with marshaled parameters
     function_call = f'__{method["name"]}({gen_params(method, ParamGen.CastNames)})'
     if is_obj_ret:
         body.append(f'{inner_indent}__retVal_native = {function_call};')
-    elif has_ret and params_cast:
+    elif has_try:
         body.append(f'{inner_indent}__retVal = {function_call};')
     elif has_ret:
         body.append(f'{inner_indent}{return_type} __retVal = {function_call};')
