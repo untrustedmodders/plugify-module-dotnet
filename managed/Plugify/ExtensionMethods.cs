@@ -14,6 +14,10 @@ internal static class ExtensionMethods
 		{
 			baseType = type.GetElementType();
 		}
+		else
+		{
+			return null; // should be convertable directly
+		}
 		
 		if (baseType.IsEnum)
 		{

@@ -195,7 +195,7 @@ internal static class TypeUtils
 
 		for (int i = 0; i < array.Length; i++)
 		{
-			array[i] = (T)Enum.ToObject(enumType, enumArray.GetValue(i));
+			array[i] = (T) Enum.ToObject(enumType, enumArray.GetValue(i));
 		}
 
 		return array;

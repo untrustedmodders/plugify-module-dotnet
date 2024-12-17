@@ -113,61 +113,77 @@ public static class Marshalling
 					*(ulong*)outValue = (ulong?)Convert.ChangeType(paramValue, Enum.GetUnderlyingType(enumType)) ?? default;
 					return;
 				case ValueType.ArrayInt8:
-					if (paramValue is Array arrEnumInt8)
+				{
+					if (paramValue is Array enumArray)
 					{
-						sbyte[] arrInt8 = TypeUtils.ConvertFromEnumArray<sbyte>(enumType, arrEnumInt8);
-						NativeMethods.AssignVectorInt8((Vector192*)outValue, arrInt8, arrInt8.Length);
+						sbyte[] arr = TypeUtils.ConvertFromEnumArray<sbyte>(enumType, enumArray);
+						NativeMethods.AssignVectorInt8((Vector192*)outValue, arr, arr.Length);
 					}
 					return;
+				}
 				case ValueType.ArrayInt16:
-					if (paramValue is Array arrEnumInt16)
+				{
+					if (paramValue is Array enumArray)
 					{
-						short[] arrInt16 = TypeUtils.ConvertFromEnumArray<short>(enumType, arrEnumInt16);
-						NativeMethods.AssignVectorInt16((Vector192*)outValue, arrInt16, arrInt16.Length);
+						short[] arr = TypeUtils.ConvertFromEnumArray<short>(enumType, enumArray);
+						NativeMethods.AssignVectorInt16((Vector192*)outValue, arr, arr.Length);
 					}
 					return;
+				}
 				case ValueType.ArrayInt32:
-					if (paramValue is Array arrEnumInt32)
+				{
+					if (paramValue is Array enumArray)
 					{
-						int[] arrInt32 = TypeUtils.ConvertFromEnumArray<int>(enumType, arrEnumInt32);
-						NativeMethods.AssignVectorInt32((Vector192*)outValue, arrInt32, arrInt32.Length);
+						int[] arr = TypeUtils.ConvertFromEnumArray<int>(enumType, enumArray);
+						NativeMethods.AssignVectorInt32((Vector192*)outValue, arr, arr.Length);
 					}
 					return;
+				}
 				case ValueType.ArrayInt64:
-					if (paramValue is Array arrEnumInt64)
+				{
+					if (paramValue is Array enumArray)
 					{
-						long[] arrInt64 = TypeUtils.ConvertFromEnumArray<long>(enumType, arrEnumInt64);
-						NativeMethods.AssignVectorInt64((Vector192*)outValue, arrInt64, arrInt64.Length);
+						long[] arr = TypeUtils.ConvertFromEnumArray<long>(enumType, enumArray);
+						NativeMethods.AssignVectorInt64((Vector192*)outValue, arr, arr.Length);
 					}
 					return;
+				}
 				case ValueType.ArrayUInt8:
-					if (paramValue is Array arrEnumUInt8)
+				{
+					if (paramValue is Array enumArray)
 					{
-						byte[] arrUInt8 = TypeUtils.ConvertFromEnumArray<byte>(enumType, arrEnumUInt8);
-						NativeMethods.AssignVectorUInt8((Vector192*)outValue, arrUInt8, arrUInt8.Length);
+						byte[] arr = TypeUtils.ConvertFromEnumArray<byte>(enumType, enumArray);
+						NativeMethods.AssignVectorUInt8((Vector192*)outValue, arr, arr.Length);
 					}
 					return;
+				}
 				case ValueType.ArrayUInt16:
-					if (paramValue is Array arrEnumUInt16)
+				{
+					if (paramValue is Array enumArray)
 					{
-						ushort[] arrUInt16 = TypeUtils.ConvertFromEnumArray<ushort>(enumType, arrEnumUInt16);
-						NativeMethods.AssignVectorUInt16((Vector192*)outValue, arrUInt16, arrUInt16.Length);
+						ushort[] arr = TypeUtils.ConvertFromEnumArray<ushort>(enumType, enumArray);
+						NativeMethods.AssignVectorUInt16((Vector192*)outValue, arr, arr.Length);
 					}
 					return;
+				}
 				case ValueType.ArrayUInt32:
-					if (paramValue is Array arrEnumUInt32)
+				{
+					if (paramValue is Array enumArray)
 					{
-						uint[] arrUInt32 = TypeUtils.ConvertFromEnumArray<uint>(enumType, arrEnumUInt32);
-						NativeMethods.AssignVectorUInt32((Vector192*)outValue, arrUInt32, arrUInt32.Length);
+						uint[] arr = TypeUtils.ConvertFromEnumArray<uint>(enumType, enumArray);
+						NativeMethods.AssignVectorUInt32((Vector192*)outValue, arr, arr.Length);
 					}
 					return;
+				}
 				case ValueType.ArrayUInt64:
-					if (paramValue is Array arrEnumUInt64)
+				{
+					if (paramValue is Array enumArray)
 					{
-						ulong[] arrUInt64 = TypeUtils.ConvertFromEnumArray<ulong>(enumType, arrEnumUInt64);
-						NativeMethods.AssignVectorUInt64((Vector192*)outValue, arrUInt64, arrUInt64.Length);
+						ulong[] arr = TypeUtils.ConvertFromEnumArray<ulong>(enumType, enumArray);
+						NativeMethods.AssignVectorUInt64((Vector192*)outValue, arr, arr.Length);
 					}
 					return;
+				}
 			}
 		}
 		else
@@ -217,6 +233,7 @@ public static class Marshalling
 					*(double*)outValue = (double?)paramValue ?? default;
 					return;
 				case ValueType.Function:
+				{
 					if (paramValue != null)
 					{
 						*(nint*)outValue = GetFunctionPointerForDelegate((Delegate)paramValue);
@@ -226,62 +243,99 @@ public static class Marshalling
 						*(nint*)outValue = default;
 					}
 					return;
+				}
 				case ValueType.String:
+				{
 					if (paramValue is string str) NativeMethods.AssignString((String192*)outValue, str);
 					return;
+				}
 				case ValueType.Any:
+				{
 					var var = (Variant256*)outValue;
 					NativeMethods.DestroyVariant(var);
 					NativeMethods.SetVariantData(var, paramValue);
 					return;
+				}
 				case ValueType.ArrayBool:
-					if (paramValue is Bool8[] arrBool) NativeMethods.AssignVectorBool((Vector192*)outValue, arrBool, arrBool.Length);
+				{
+					if (paramValue is Bool8[] arr) NativeMethods.AssignVectorBool((Vector192*)outValue, arr, arr.Length);
 					return;
+				}
 				case ValueType.ArrayChar8:
-					if (paramValue is Char8[] arrChar8) NativeMethods.AssignVectorChar8((Vector192*)outValue, arrChar8, arrChar8.Length);
+				{
+					if (paramValue is Char8[] arr) NativeMethods.AssignVectorChar8((Vector192*)outValue, arr, arr.Length);
 					return;
+				}
 				case ValueType.ArrayChar16:
-					if (paramValue is Char16[] arrChar16) NativeMethods.AssignVectorChar16((Vector192*)outValue, arrChar16, arrChar16.Length);
+				{
+					if (paramValue is Char16[] arr) NativeMethods.AssignVectorChar16((Vector192*)outValue, arr, arr.Length);
 					return;
+				}
 				case ValueType.ArrayInt8:
-					if (paramValue is sbyte[] arrInt8) NativeMethods.AssignVectorInt8((Vector192*)outValue, arrInt8, arrInt8.Length);
+				{
+					if (paramValue is sbyte[] arr) NativeMethods.AssignVectorInt8((Vector192*)outValue, arr, arr.Length);
 					return;
+				}
 				case ValueType.ArrayInt16:
-					if (paramValue is short[] arrInt16) NativeMethods.AssignVectorInt16((Vector192*)outValue, arrInt16, arrInt16.Length);
+				{
+					if (paramValue is short[] arr) NativeMethods.AssignVectorInt16((Vector192*)outValue, arr, arr.Length);
 					return;
+				}
 				case ValueType.ArrayInt32:
-					if (paramValue is int[] arrInt32) NativeMethods.AssignVectorInt32((Vector192*)outValue, arrInt32, arrInt32.Length);
+				{
+					if (paramValue is int[] arr) NativeMethods.AssignVectorInt32((Vector192*)outValue, arr, arr.Length);
 					return;
+				}
 				case ValueType.ArrayInt64:
-					if (paramValue is long[] arrInt64) NativeMethods.AssignVectorInt64((Vector192*)outValue, arrInt64, arrInt64.Length);
+				{
+					if (paramValue is long[] arr) NativeMethods.AssignVectorInt64((Vector192*)outValue, arr, arr.Length);
 					return;
+				}
 				case ValueType.ArrayUInt8:
-					if (paramValue is byte[] arrUInt8) NativeMethods.AssignVectorUInt8((Vector192*)outValue, arrUInt8, arrUInt8.Length);
+				{
+					if (paramValue is byte[] arr) NativeMethods.AssignVectorUInt8((Vector192*)outValue, arr, arr.Length);
 					return;
+				}
 				case ValueType.ArrayUInt16:
-					if (paramValue is ushort[] arrUInt16) NativeMethods.AssignVectorUInt16((Vector192*)outValue, arrUInt16, arrUInt16.Length);
+				{
+					if (paramValue is ushort[] arr) NativeMethods.AssignVectorUInt16((Vector192*)outValue, arr, arr.Length);
 					return;
+				}
 				case ValueType.ArrayUInt32:
-					if (paramValue is uint[] arrUInt32) NativeMethods.AssignVectorUInt32((Vector192*)outValue, arrUInt32, arrUInt32.Length);
+				{
+					if (paramValue is uint[] arr) NativeMethods.AssignVectorUInt32((Vector192*)outValue, arr, arr.Length);
 					return;
+				}
 				case ValueType.ArrayUInt64:
-					if (paramValue is ulong[] arrUInt64) NativeMethods.AssignVectorUInt64((Vector192*)outValue, arrUInt64, arrUInt64.Length);
+				{
+					if (paramValue is ulong[] arr) NativeMethods.AssignVectorUInt64((Vector192*)outValue, arr, arr.Length);
 					return;
+				}
 				case ValueType.ArrayPointer:
-					if (paramValue is nint[] arrIntPtr) NativeMethods.AssignVectorIntPtr((Vector192*)outValue, arrIntPtr, arrIntPtr.Length);
+				{
+					if (paramValue is nint[] arr) NativeMethods.AssignVectorIntPtr((Vector192*)outValue, arr, arr.Length);
 					return;
+				}
 				case ValueType.ArrayFloat:
-					if (paramValue is float[] arrFloat) NativeMethods.AssignVectorFloat((Vector192*)outValue, arrFloat, arrFloat.Length);
+				{
+					if (paramValue is float[] arr) NativeMethods.AssignVectorFloat((Vector192*)outValue, arr, arr.Length);
 					return;
+				}
 				case ValueType.ArrayDouble:
-					if (paramValue is double[] arrDouble) NativeMethods.AssignVectorDouble((Vector192*)outValue, arrDouble, arrDouble.Length);
+				{
+					if (paramValue is double[] arr) NativeMethods.AssignVectorDouble((Vector192*)outValue, arr, arr.Length);
 					return;
+				}
 				case ValueType.ArrayString:
-					if (paramValue is string[] arrString) NativeMethods.AssignVectorString((Vector192*)outValue, arrString, arrString.Length);
+				{
+					if (paramValue is string[] arr) NativeMethods.AssignVectorString((Vector192*)outValue, arr, arr.Length);
 					return;
+				}
 				case ValueType.ArrayAny:
-					if (paramValue is object[] arrVariant) NativeMethods.AssignVectorVariant((Vector192*)outValue, arrVariant, arrVariant.Length);
+				{
+					if (paramValue is object[] arr) NativeMethods.AssignVectorVariant((Vector192*)outValue, arr, arr.Length);
 					return;
+				}
 				case ValueType.Vector2:
 					Marshal.StructureToPtr(paramValue ?? Vector2.Zero, outValue, false);
 					return;
@@ -332,45 +386,61 @@ public static class Marshalling
 				case ValueType.UInt64:
 					return Enum.ToObject(enumType, *(ulong*)inValue);
 				case ValueType.ArrayInt8:
-					var ptrInt8 = (Vector192*)inValue;
-					var arrInt8 = new sbyte[NativeMethods.GetVectorSizeInt8(ptrInt8)];
-					NativeMethods.GetVectorDataInt8(ptrInt8, arrInt8);
-					return TypeUtils.ConvertToEnumArray(enumType, arrInt8);
+				{
+					var ptr = (Vector192*)inValue;
+					var arr = new sbyte[NativeMethods.GetVectorSizeInt8(ptr)];
+					NativeMethods.GetVectorDataInt8(ptr, arr);
+					return TypeUtils.ConvertToEnumArray(enumType, arr);
+				}
 				case ValueType.ArrayInt16:
-					var ptrInt16 = (Vector192*)inValue;
-					var arrInt16 = new short[NativeMethods.GetVectorSizeInt16(ptrInt16)];
-					NativeMethods.GetVectorDataInt16(ptrInt16, arrInt16);
-					return TypeUtils.ConvertToEnumArray(enumType, arrInt16);
+				{
+					var ptr = (Vector192*)inValue;
+					var arr = new short[NativeMethods.GetVectorSizeInt16(ptr)];
+					NativeMethods.GetVectorDataInt16(ptr, arr);
+					return TypeUtils.ConvertToEnumArray(enumType, arr);
+				}
 				case ValueType.ArrayInt32:
-					var ptrInt32 = (Vector192*)inValue;
-					var arrInt32 = new int[NativeMethods.GetVectorSizeInt32(ptrInt32)];
-					NativeMethods.GetVectorDataInt32(ptrInt32, arrInt32);
-					return TypeUtils.ConvertToEnumArray(enumType, arrInt32);
+				{
+					var ptr = (Vector192*)inValue;
+					var arr = new int[NativeMethods.GetVectorSizeInt32(ptr)];
+					NativeMethods.GetVectorDataInt32(ptr, arr);
+					return TypeUtils.ConvertToEnumArray(enumType, arr);
+				}
 				case ValueType.ArrayInt64:
-					var ptrInt64 = (Vector192*)inValue;
-					var arrInt64 = new long[NativeMethods.GetVectorSizeInt64(ptrInt64)];
-					NativeMethods.GetVectorDataInt64(ptrInt64, arrInt64);
-					return TypeUtils.ConvertToEnumArray(enumType, arrInt64);
+				{
+					var ptr = (Vector192*)inValue;
+					var arr = new long[NativeMethods.GetVectorSizeInt64(ptr)];
+					NativeMethods.GetVectorDataInt64(ptr, arr);
+					return TypeUtils.ConvertToEnumArray(enumType, arr);
+				}
 				case ValueType.ArrayUInt8:
-					var ptrUInt8 = (Vector192*)inValue;
-					var arrUInt8 = new byte[NativeMethods.GetVectorSizeUInt8(ptrUInt8)];
-					NativeMethods.GetVectorDataUInt8(ptrUInt8, arrUInt8);
-					return TypeUtils.ConvertToEnumArray(enumType, arrUInt8);
+				{
+					var ptr = (Vector192*)inValue;
+					var arr = new byte[NativeMethods.GetVectorSizeUInt8(ptr)];
+					NativeMethods.GetVectorDataUInt8(ptr, arr);
+					return TypeUtils.ConvertToEnumArray(enumType, arr);
+				}
 				case ValueType.ArrayUInt16:
-					var ptrUInt16 = (Vector192*)inValue;
-					var arrUInt16 = new ushort[NativeMethods.GetVectorSizeUInt16(ptrUInt16)];
-					NativeMethods.GetVectorDataUInt16(ptrUInt16, arrUInt16);
-					return TypeUtils.ConvertToEnumArray(enumType, arrUInt16);
+				{
+					var ptr = (Vector192*)inValue;
+					var arr = new ushort[NativeMethods.GetVectorSizeUInt16(ptr)];
+					NativeMethods.GetVectorDataUInt16(ptr, arr);
+					return TypeUtils.ConvertToEnumArray(enumType, arr);
+				}
 				case ValueType.ArrayUInt32:
-					var ptrUInt32 = (Vector192*)inValue;
-					var arrUInt32 = new uint[NativeMethods.GetVectorSizeUInt32(ptrUInt32)];
-					NativeMethods.GetVectorDataUInt32(ptrUInt32, arrUInt32);
-					return TypeUtils.ConvertToEnumArray(enumType, arrUInt32);
+				{
+					var ptr = (Vector192*)inValue;
+					var arr = new uint[NativeMethods.GetVectorSizeUInt32(ptr)];
+					NativeMethods.GetVectorDataUInt32(ptr, arr);
+					return TypeUtils.ConvertToEnumArray(enumType, arr);
+				}
 				case ValueType.ArrayUInt64:
-					var ptrUInt64 = (Vector192*)inValue;
-					var arrUInt64 = new ulong[NativeMethods.GetVectorSizeUInt64(ptrUInt64)];
-					NativeMethods.GetVectorDataUInt64(ptrUInt64, arrUInt64);
-					return TypeUtils.ConvertToEnumArray(enumType, arrUInt64);
+				{
+					var ptr = (Vector192*)inValue;
+					var arr = new ulong[NativeMethods.GetVectorSizeUInt64(ptr)];
+					NativeMethods.GetVectorDataUInt64(ptr, arr);
+					return TypeUtils.ConvertToEnumArray(enumType, arr);
+				}
 			}
 		}
 		else
@@ -412,85 +482,117 @@ public static class Marshalling
 				case ValueType.Any:
 					return NativeMethods.GetVariantData((Variant256*)inValue);
 				case ValueType.ArrayBool:
-					var ptrBool = (Vector192*)inValue;
-					var arrBool = new Bool8[NativeMethods.GetVectorSizeBool(ptrBool)];
-					NativeMethods.GetVectorDataBool(ptrBool, arrBool);
-					return arrBool;
+				{
+					var ptr = (Vector192*)inValue;
+					var arr = new Bool8[NativeMethods.GetVectorSizeBool(ptr)];
+					NativeMethods.GetVectorDataBool(ptr, arr);
+					return arr;
+				}
 				case ValueType.ArrayChar8:
-					var ptrChar8 = (Vector192*)inValue;
-					var arrChar8 = new Char8[NativeMethods.GetVectorSizeChar8(ptrChar8)];
-					NativeMethods.GetVectorDataChar8(ptrChar8, arrChar8);
-					return arrChar8;
+				{
+					var ptr = (Vector192*)inValue;
+					var arr = new Char8[NativeMethods.GetVectorSizeChar8(ptr)];
+					NativeMethods.GetVectorDataChar8(ptr, arr);
+					return arr;
+				}
 				case ValueType.ArrayChar16:
-					var ptrChar16 = (Vector192*)inValue;
-					var arrChar16 = new Char16[NativeMethods.GetVectorSizeChar16(ptrChar16)];
-					NativeMethods.GetVectorDataChar16(ptrChar16, arrChar16);
-					return arrChar16;
+				{
+					var ptr = (Vector192*)inValue;
+					var arr = new Char16[NativeMethods.GetVectorSizeChar16(ptr)];
+					NativeMethods.GetVectorDataChar16(ptr, arr);
+					return arr;
+				}
 				case ValueType.ArrayInt8:
-					var ptrInt8 = (Vector192*)inValue;
-					var arrInt8 = new sbyte[NativeMethods.GetVectorSizeInt8(ptrInt8)];
-					NativeMethods.GetVectorDataInt8(ptrInt8, arrInt8);
-					return arrInt8;
+				{
+					var ptr = (Vector192*)inValue;
+					var arr = new sbyte[NativeMethods.GetVectorSizeInt8(ptr)];
+					NativeMethods.GetVectorDataInt8(ptr, arr);
+					return arr;
+				}
 				case ValueType.ArrayInt16:
-					var ptrInt16 = (Vector192*)inValue;
-					var arrInt16 = new short[NativeMethods.GetVectorSizeInt16(ptrInt16)];
-					NativeMethods.GetVectorDataInt16(ptrInt16, arrInt16);
-					return arrInt16;
+				{
+					var ptr = (Vector192*)inValue;
+					var arr = new short[NativeMethods.GetVectorSizeInt16(ptr)];
+					NativeMethods.GetVectorDataInt16(ptr, arr);
+					return arr;
+				}
 				case ValueType.ArrayInt32:
-					var ptrInt32 = (Vector192*)inValue;
-					var arrInt32 = new int[NativeMethods.GetVectorSizeInt32(ptrInt32)];
-					NativeMethods.GetVectorDataInt32(ptrInt32, arrInt32);
-					return arrInt32;
+				{
+					var ptr = (Vector192*)inValue;
+					var arr = new int[NativeMethods.GetVectorSizeInt32(ptr)];
+					NativeMethods.GetVectorDataInt32(ptr, arr);
+					return arr;
+				}
 				case ValueType.ArrayInt64:
-					var ptrInt64 = (Vector192*)inValue;
-					var arrInt64 = new long[NativeMethods.GetVectorSizeInt64(ptrInt64)];
-					NativeMethods.GetVectorDataInt64(ptrInt64, arrInt64);
-					return arrInt64;
+				{
+					var ptr = (Vector192*)inValue;
+					var arr = new long[NativeMethods.GetVectorSizeInt64(ptr)];
+					NativeMethods.GetVectorDataInt64(ptr, arr);
+					return arr;
+				}
 				case ValueType.ArrayUInt8:
-					var ptrUInt8 = (Vector192*)inValue;
-					var arrUInt8 = new byte[NativeMethods.GetVectorSizeUInt8(ptrUInt8)];
-					NativeMethods.GetVectorDataUInt8(ptrUInt8, arrUInt8);
-					return arrUInt8;
+				{
+					var ptr = (Vector192*)inValue;
+					var arr = new byte[NativeMethods.GetVectorSizeUInt8(ptr)];
+					NativeMethods.GetVectorDataUInt8(ptr, arr);
+					return arr;
+				}
 				case ValueType.ArrayUInt16:
-					var ptrUInt16 = (Vector192*)inValue;
-					var arrUInt16 = new ushort[NativeMethods.GetVectorSizeUInt16(ptrUInt16)];
-					NativeMethods.GetVectorDataUInt16(ptrUInt16, arrUInt16);
-					return arrUInt16;
+				{
+					var ptr = (Vector192*)inValue;
+					var arr = new ushort[NativeMethods.GetVectorSizeUInt16(ptr)];
+					NativeMethods.GetVectorDataUInt16(ptr, arr);
+					return arr;
+				}
 				case ValueType.ArrayUInt32:
-					var ptrUInt32 = (Vector192*)inValue;
-					var arrUInt32 = new uint[NativeMethods.GetVectorSizeUInt32(ptrUInt32)];
-					NativeMethods.GetVectorDataUInt32(ptrUInt32, arrUInt32);
-					return arrUInt32;
+				{
+					var ptr = (Vector192*)inValue;
+					var arr = new uint[NativeMethods.GetVectorSizeUInt32(ptr)];
+					NativeMethods.GetVectorDataUInt32(ptr, arr);
+					return arr;
+				}
 				case ValueType.ArrayUInt64:
-					var ptrUInt64 = (Vector192*)inValue;
-					var arrUInt64 = new ulong[NativeMethods.GetVectorSizeUInt64(ptrUInt64)];
-					NativeMethods.GetVectorDataUInt64(ptrUInt64, arrUInt64);
-					return arrUInt64;
+				{
+					var ptr = (Vector192*)inValue;
+					var arr = new ulong[NativeMethods.GetVectorSizeUInt64(ptr)];
+					NativeMethods.GetVectorDataUInt64(ptr, arr);
+					return arr;
+				}
 				case ValueType.ArrayPointer:
-					var ptrIntPtr = (Vector192*)inValue;
-					var arrIntPtr = new nint[NativeMethods.GetVectorSizeIntPtr(ptrIntPtr)];
-					NativeMethods.GetVectorDataIntPtr(ptrIntPtr, arrIntPtr);
-					return arrIntPtr;
+				{
+					var ptr = (Vector192*)inValue;
+					var arr = new nint[NativeMethods.GetVectorSizeIntPtr(ptr)];
+					NativeMethods.GetVectorDataIntPtr(ptr, arr);
+					return arr;
+				}
 				case ValueType.ArrayFloat:
-					var ptrFloat = (Vector192*)inValue;
-					var arrFloat = new float[NativeMethods.GetVectorSizeFloat(ptrFloat)];
-					NativeMethods.GetVectorDataFloat(ptrFloat, arrFloat);
-					return arrFloat;
+				{
+					var ptr = (Vector192*)inValue;
+					var arr = new float[NativeMethods.GetVectorSizeFloat(ptr)];
+					NativeMethods.GetVectorDataFloat(ptr, arr);
+					return arr;
+				}
 				case ValueType.ArrayDouble:
-					var ptrDouble = (Vector192*)inValue;
-					var arrDouble = new double[NativeMethods.GetVectorSizeDouble(ptrDouble)];
-					NativeMethods.GetVectorDataDouble(ptrDouble, arrDouble);
-					return arrDouble;
+				{
+					var ptr = (Vector192*)inValue;
+					var arr = new double[NativeMethods.GetVectorSizeDouble(ptr)];
+					NativeMethods.GetVectorDataDouble(ptr, arr);
+					return arr;
+				}
 				case ValueType.ArrayString:
-					var ptrString = (Vector192*)inValue;
-					var arrString = new string[NativeMethods.GetVectorSizeString(ptrString)];
-					NativeMethods.GetVectorDataString(ptrString, arrString);
-					return arrString;
+				{
+					var ptr = (Vector192*)inValue;
+					var arr = new string[NativeMethods.GetVectorSizeString(ptr)];
+					NativeMethods.GetVectorDataString(ptr, arr);
+					return arr;
+				}
 				case ValueType.ArrayAny:
-					var ptrVariant = (Vector192*)inValue;
-					var arrVariant = new object[NativeMethods.GetVectorSizeVariant(ptrVariant)];
-					NativeMethods.GetVectorDataVariant(ptrVariant, arrVariant);
-					return arrVariant;
+				{
+					var ptr = (Vector192*)inValue;
+					var arr = new object[NativeMethods.GetVectorSizeVariant(ptr)];
+					NativeMethods.GetVectorDataVariant(ptr, arr);
+					return arr;
+				}
 				case ValueType.Vector2:
 					return *(Vector2*)inValue;
 				case ValueType.Vector3:
@@ -1489,13 +1591,9 @@ public static class Marshalling
 		switch (retType)
 		{
 			case ValueType.String:
-			{
 				return new String192();
-			}
 			case ValueType.Any:
-			{
 				return new Variant256();
-			}
 			case ValueType.ArrayBool:
 			case ValueType.ArrayChar8:
 			case ValueType.ArrayChar16:
@@ -1512,25 +1610,15 @@ public static class Marshalling
 			case ValueType.ArrayDouble:
 			case ValueType.ArrayString: 
 			case ValueType.ArrayAny: 
-			{
 				return new Vector192();
-			}
 			case ValueType.Vector2:
-			{
 				return new Vector2();
-			}
 			case ValueType.Vector3:
-			{
 				return new Vector3();
-			}
 			case ValueType.Vector4:
-			{
 				return new Vector4();
-			}
 			case ValueType.Matrix4x4:
-			{
 				return new Matrix4x4();
-			}
 			default:
 				throw new TypeNotFoundException();
 		}
