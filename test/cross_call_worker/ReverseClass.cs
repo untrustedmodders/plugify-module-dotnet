@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using Plugify;
 using static cross_call_master.cross_call_master;
+using Example = cross_call_master.Example;
 
 namespace cross_call_worker;
 
@@ -492,6 +493,28 @@ public unsafe class ReverseClass
 
         // Return the result as a string
         return $"{result}";
+    } 
+    
+    public static string ReverseParamEnum()
+    {
+	    // Call the method and get the result
+	    Example p1 = Example.Forth;
+	    Example[] p2= [Example.First, Example.Second, Example.Third];
+	    int result = ParamEnumCallback(p1, p2);
+	    
+	    // Return the result as a string
+	    return $"{result}";
+    }
+    
+    public static string ReverseParamEnumRef()
+    {
+	    // Call the method and get the result
+	    Example p1 = Example.First;
+	    Example[] p2= [Example.First, Example.First, Example.Second];
+	    int result = ParamEnumRefCallback(ref p1, ref p2);
+	    
+	    // Return the result as a string
+	    return $"{result}|{(int)p1}|{{{string.Join(", ", p2.Select(v => ((int)v).ToString()))}}}";
     }
     
     // Variant staff
@@ -1010,6 +1033,8 @@ public unsafe class ReverseClass
         { "ParamRef10", ReverseParamRef10 },
         { "ParamRefArrays", ReverseParamRefVectors },
         { "ParamAllPrimitives", ReverseParamAllPrimitives },
+        { "ParamEnum", ReverseParamEnum },
+        { "ParamEnumRef", ReverseParamEnumRef },
         { "ParamVariant", ReverseParamVariant },
         { "ParamVariantRef", ReverseParamVariantRef },
         { "CallFuncVoid", CallFuncVoid },

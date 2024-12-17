@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Plugify;
 using static cross_call_master.cross_call_master;
+using Example = cross_call_master.Example;
 
 namespace cross_call_worker;
 
@@ -458,6 +459,17 @@ public class ExportClass
     {
         string buffer = $"{p1}{p2}{p3}{p4}{p5}{p6}{p7}{p8}{p9}{p10}{p11}{p12}{p13}{p14}";
         return 56;
+    }
+
+    public static int ParamEnum(Example p1, Example[] p2) {
+        return (int)p1 + p2.Sum(e => (int)e);
+    }
+
+    public static int ParamEnumRef(ref Example p1, ref Example[] p2)
+    {
+        p1 = Example.Forth;
+        p2 = [Example.First, Example.Second, Example.Third];
+        return (int)p1 + p2.Sum(e => (int)e);
     }
     
     // Parameters and Return (all variant)
