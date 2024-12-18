@@ -25,7 +25,7 @@ The C# (.NET) Language Module for Plugify facilitates the development of plugins
 You can install the C++ Language Module using the Plugify plugin manager by running the following command:
 
 ```bash
-plugify install plugify-module-dotnet
+plg install plugify-module-dotnet
 ```
 
 #### Option 2: Manual Installation
@@ -33,9 +33,8 @@ plugify install plugify-module-dotnet
 1. Clone this repository:
 
     ```bash
-    git clone https://github.com/untrustedmodders/plugify-module-dotnet.git
+    git clone https://github.com/untrustedmodders/plugify-module-dotnet.git --recursive
     cd plugify-module-dotnet
-    git submodule update --init --recursive
     ```
 
 2. Build the C# (.NET) language module:
