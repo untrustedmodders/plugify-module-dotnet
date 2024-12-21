@@ -31,6 +31,10 @@ GetVectorSizeFloat
 GetVectorSizeDouble
 GetVectorSizeString
 GetVectorSizeVariant
+GetVectorSizeVector2
+GetVectorSizeVector3
+GetVectorSizeVector4
+GetVectorSizeMatrix4x4
 
 GetVectorDataBool
 GetVectorDataChar8
@@ -48,6 +52,10 @@ GetVectorDataFloat
 GetVectorDataDouble
 GetVectorDataString
 GetVectorDataVariant
+GetVectorDataVector2
+GetVectorDataVector3
+GetVectorDataVector4
+GetVectorDataMatrix4x4
 
 AssignVectorBool
 AssignVectorChar8
@@ -65,6 +73,10 @@ AssignVectorFloat
 AssignVectorDouble
 AssignVectorString
 AssignVectorVariant
+AssignVectorVector2
+AssignVectorVector3
+AssignVectorVector4
+AssignVectorMatrix4x4
 
 ConstructVectorBool
 ConstructVectorChar8
@@ -82,6 +94,10 @@ ConstructVectorFloat
 ConstructVectorDouble
 ConstructVectorString
 ConstructVectorVariant
+ConstructVectorVector2
+ConstructVectorVector3
+ConstructVectorVector4
+ConstructVectorMatrix4x4
 
 DestroyVectorBool
 DestroyVectorChar8
@@ -99,6 +115,10 @@ DestroyVectorFloat
 DestroyVectorDouble
 DestroyVectorString
 DestroyVectorVariant
+DestroyVectorVector2
+DestroyVectorVector3
+DestroyVectorVector4
+DestroyVectorMatrix4x4
 
 NewCall
 DeleteCall

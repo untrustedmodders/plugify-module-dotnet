@@ -6,6 +6,7 @@
 #include <plugify/jit/call.hpp>
 #include <plugify/jit/helpers.hpp>
 #include <plugify/numerics.hpp>
+#include <plugify/any.hpp>
 
 PLUGIFY_WARN_PUSH()
 
@@ -18,8 +19,8 @@ PLUGIFY_WARN_IGNORE(4190)
 using namespace netlm;
 using namespace plugify;
 
-template<typename T>
-PLUGIFY_FORCE_INLINE plg::vector<T> ConstructVector(T* arr, int len) requires(!std::is_same_v<T, char*>) {
+template<typename T> requires(!std::is_same_v<T, char*>)
+PLUGIFY_FORCE_INLINE plg::vector<T> ConstructVector(T* arr, int len) {
 	if (arr == nullptr || len == 0) [[unlikely]]
 		if (len > 0)
 			return plg::vector<T>(static_cast<size_t>(len));
@@ -29,8 +30,8 @@ PLUGIFY_FORCE_INLINE plg::vector<T> ConstructVector(T* arr, int len) requires(!s
 		return plg::vector<T>(arr, arr + len);
 }
 
-template<typename T>
-PLUGIFY_FORCE_INLINE plg::vector<plg::string> ConstructVector(T* arr, int len) requires(std::is_same_v<T, char*>) {
+template<typename T> requires(std::is_same_v<T, char*>)
+PLUGIFY_FORCE_INLINE plg::vector<plg::string> ConstructVector(T* arr, int len) {
 	if (arr == nullptr || len == 0) [[unlikely]]
 		if (len > 0)
 			return plg::vector<plg::string>(static_cast<size_t>(len));
@@ -50,31 +51,31 @@ PLUGIFY_FORCE_INLINE int GetVectorSize(plg::vector<T>* vector) {
 	return static_cast<int>(vector->size());
 }
 
-template<typename T>
-PLUGIFY_FORCE_INLINE void GetVectorData(plg::vector<T>* vector, T* arr) requires(!std::is_same_v<T, char*>) {
+template<typename T> requires(!std::is_same_v<T, char*>)
+PLUGIFY_FORCE_INLINE void GetVectorData(plg::vector<T>* vector, T* arr) {
 	for (size_t i = 0; i < vector->size(); ++i) {
 		arr[i] = (*vector)[i];
 	}
 }
 
-template<typename T>
-PLUGIFY_FORCE_INLINE void GetVectorData(plg::vector<plg::string>* vector, T* arr) requires(std::is_same_v<T, char*>) {
+template<typename T> requires(std::is_same_v<T, char*>)
+PLUGIFY_FORCE_INLINE void GetVectorData(plg::vector<plg::string>* vector, T* arr) {
 	for (size_t i = 0; i < vector->size(); ++i) {
 		Memory::FreeCoTaskMem(arr[i]);
 		arr[i] = Memory::StringToHGlobalAnsi((*vector)[i]);
 	}
 }
 
-template<typename T>
-PLUGIFY_FORCE_INLINE void AssignVector(plg::vector<T>* vector, T* arr, int len) requires(!std::is_same_v<T, char*>) {
+template<typename T> requires(!std::is_same_v<T, char*>)
+PLUGIFY_FORCE_INLINE void AssignVector(plg::vector<T>* vector, T* arr, int len) {
 	if (arr == nullptr || len == 0) [[unlikely]]
 		vector->clear();
 	else
 		vector->assign(arr, arr + len);
 }
 
-template<typename T>
-PLUGIFY_FORCE_INLINE void AssignVector(plg::vector<plg::string>* vector, T* arr, int len) requires(std::is_same_v<T, char*>) {
+template<typename T> requires(std::is_same_v<T, char*>)
+PLUGIFY_FORCE_INLINE void AssignVector(plg::vector<plg::string>* vector, T* arr, int len) {
 	if (arr == nullptr || len == 0) [[unlikely]]
 		vector->clear();
 	else
@@ -151,12 +152,16 @@ extern "C" {
 	NETLM_EXPORT plg::vector<uintptr_t> ConstructVectorIntPtr(uintptr_t* arr, int len) { return ConstructVector(arr, len); }
 	NETLM_EXPORT plg::vector<float> ConstructVectorFloat(float* arr, int len) { return ConstructVector(arr, len); }
 	NETLM_EXPORT plg::vector<double> ConstructVectorDouble(double* arr, int len) { return ConstructVector(arr, len); }
-	NETLM_EXPORT plg::vector<plg::string> ConstructVectorString(char* arr[], int len)  { return ConstructVector(arr, len); }
+	NETLM_EXPORT plg::vector<plg::string> ConstructVectorString(char* arr[], int len) { return ConstructVector(arr, len); }
 	NETLM_EXPORT plg::raw::vector ConstructVectorVariant(int len) {
 		plg::vector<plg::any> ret(static_cast<size_t>(len));
 		return plg::as_raw<plg::raw::vector>(std::move(ret));
 		// Fix MSVC -> C linkage function cannot return C++ class 'plg::vector<plg::any,std::allocator<T>>'
 	}
+	NETLM_EXPORT plg::vector<plg::vec2> ConstructVectorVector2(plg::vec2* arr, int len) { return ConstructVector(arr, len); }
+	NETLM_EXPORT plg::vector<plg::vec3> ConstructVectorVector3(plg::vec3* arr, int len) { return ConstructVector(arr, len); }
+	NETLM_EXPORT plg::vector<plg::vec4> ConstructVectorVector4(plg::vec4* arr, int len) { return ConstructVector(arr, len); }
+	NETLM_EXPORT plg::vector<plg::mat4x4> ConstructVectorMatrix4x4(plg::mat4x4* arr, int len) { return ConstructVector(arr, len); }
 
 	// DestroyVector Functions
 
@@ -176,6 +181,10 @@ extern "C" {
 	NETLM_EXPORT void DestroyVectorDouble(plg::vector<double>* vector) { DestroyVector(vector); }
 	NETLM_EXPORT void DestroyVectorString(plg::vector<plg::string>* vector) { DestroyVector(vector); }
 	NETLM_EXPORT void DestroyVectorVariant(plg::vector<plg::any>* vector) { DestroyVector(vector); }
+	NETLM_EXPORT void DestroyVectorVector2(plg::vector<plg::vec2>* vector) { DestroyVector(vector); }
+	NETLM_EXPORT void DestroyVectorVector3(plg::vector<plg::vec3>* vector) { DestroyVector(vector); }
+	NETLM_EXPORT void DestroyVectorVector4(plg::vector<plg::vec4>* vector) { DestroyVector(vector); }
+	NETLM_EXPORT void DestroyVectorMatrix4x4(plg::vector<plg::mat4x4>* vector) { DestroyVector(vector); }
 
 	// GetVectorSize Functions
 	
@@ -195,6 +204,10 @@ extern "C" {
 	NETLM_EXPORT int GetVectorSizeDouble(plg::vector<double>* vector) { return GetVectorSize(vector); }
 	NETLM_EXPORT int GetVectorSizeString(plg::vector<plg::string>* vector) { return GetVectorSize(vector); }
 	NETLM_EXPORT int GetVectorSizeVariant(plg::vector<plg::any>* vector) { return GetVectorSize(vector); }
+	NETLM_EXPORT int GetVectorSizeVector2(plg::vector<plg::vec2>* vector) { return GetVectorSize(vector); }
+	NETLM_EXPORT int GetVectorSizeVector3(plg::vector<plg::vec3>* vector) { return GetVectorSize(vector); }
+	NETLM_EXPORT int GetVectorSizeVector4(plg::vector<plg::vec4>* vector) { return GetVectorSize(vector); }
+	NETLM_EXPORT int GetVectorSizeMatrix4x4(plg::vector<plg::mat4x4>* vector) { return GetVectorSize(vector); }
 
 	// GetVectorData Functions
 
@@ -214,6 +227,10 @@ extern "C" {
 	NETLM_EXPORT void GetVectorDataDouble(plg::vector<double>* vector, double* arr) { GetVectorData(vector, arr); }
 	NETLM_EXPORT void GetVectorDataString(plg::vector<plg::string>* vector, char* arr[]) { GetVectorData(vector, arr); }
 	NETLM_EXPORT plg::any* GetVectorDataVariant(plg::vector<plg::any>* vector, int at) { return &vector->at(static_cast<size_t>(at)); }
+	NETLM_EXPORT void GetVectorDataVector2(plg::vector<plg::vec2>* vector, plg::vec2* arr) { GetVectorData(vector, arr); }
+	NETLM_EXPORT void GetVectorDataVector3(plg::vector<plg::vec3>* vector, plg::vec3* arr) { GetVectorData(vector, arr); }
+	NETLM_EXPORT void GetVectorDataVector4(plg::vector<plg::vec4>* vector, plg::vec4* arr) { GetVectorData(vector, arr); }
+	NETLM_EXPORT void GetVectorDataMatrix4x4(plg::vector<plg::mat4x4>* vector, plg::mat4x4* arr) { GetVectorData(vector, arr); }
 
 	// AssignVector Functions
 
@@ -233,6 +250,10 @@ extern "C" {
 	NETLM_EXPORT void AssignVectorDouble(plg::vector<double>* vector, double* arr, int len) { AssignVector(vector, arr, len); }
 	NETLM_EXPORT void AssignVectorString(plg::vector<plg::string>* vector, char* arr[], int len) { AssignVector(vector, arr, len); }
 	NETLM_EXPORT void AssignVectorVariant(plg::vector<plg::any>* vector, int len) { vector->resize(static_cast<size_t>(len)); }
+	NETLM_EXPORT void AssignVectorVector2(plg::vector<plg::vec2>* vector, plg::vec2* arr, int len) { AssignVector(vector, arr, len); }
+	NETLM_EXPORT void AssignVectorVector3(plg::vector<plg::vec3>* vector, plg::vec3* arr, int len) { AssignVector(vector, arr, len); }
+	NETLM_EXPORT void AssignVectorVector4(plg::vector<plg::vec4>* vector, plg::vec4* arr, int len) { AssignVector(vector, arr, len); }
+	NETLM_EXPORT void AssignVectorMatrix4x4(plg::vector<plg::mat4x4>* vector, plg::mat4x4* arr, int len) { AssignVector(vector, arr, len); }
 }
 
 extern "C" {

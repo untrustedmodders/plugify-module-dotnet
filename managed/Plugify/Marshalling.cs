@@ -234,14 +234,7 @@ public static class Marshalling
 					return;
 				case ValueType.Function:
 				{
-					if (paramValue != null)
-					{
-						*(nint*)outValue = GetFunctionPointerForDelegate((Delegate)paramValue);
-					}
-					else
-					{
-						*(nint*)outValue = default;
-					}
+					*(nint*)outValue = paramValue != null ? GetFunctionPointerForDelegate((Delegate)paramValue) : nint.Zero;
 					return;
 				}
 				case ValueType.String:
@@ -334,6 +327,26 @@ public static class Marshalling
 				case ValueType.ArrayAny:
 				{
 					if (paramValue is object[] arr) NativeMethods.AssignVectorVariant((Vector192*)outValue, arr, arr.Length);
+					return;
+				}
+				case ValueType.ArrayVector2:
+				{
+					if (paramValue is Vector2[] arr) NativeMethods.AssignVectorVector2((Vector192*)outValue, arr, arr.Length);
+					return;
+				}
+				case ValueType.ArrayVector3:
+				{
+					if (paramValue is Vector3[] arr) NativeMethods.AssignVectorVector3((Vector192*)outValue, arr, arr.Length);
+					return;
+				}
+				case ValueType.ArrayVector4:
+				{
+					if (paramValue is Vector4[] arr) NativeMethods.AssignVectorVector4((Vector192*)outValue, arr, arr.Length);
+					return;
+				}
+				case ValueType.ArrayMatrix4x4:
+				{
+					if (paramValue is Matrix4x4[] arr) NativeMethods.AssignVectorMatrix4x4((Vector192*)outValue, arr, arr.Length);
 					return;
 				}
 				case ValueType.Vector2:
@@ -593,6 +606,34 @@ public static class Marshalling
 					NativeMethods.GetVectorDataVariant(ptr, arr);
 					return arr;
 				}
+				case ValueType.ArrayVector2:
+				{
+					var ptr = (Vector192*)inValue;
+					var arr = new Vector2[NativeMethods.GetVectorSizeVector2(ptr)];
+					NativeMethods.GetVectorDataVector2(ptr, arr);
+					return arr;
+				}
+				case ValueType.ArrayVector3:
+				{
+					var ptr = (Vector192*)inValue;
+					var arr = new Vector3[NativeMethods.GetVectorSizeVector3(ptr)];
+					NativeMethods.GetVectorDataVector3(ptr, arr);
+					return arr;
+				}
+				case ValueType.ArrayVector4:
+				{
+					var ptr = (Vector192*)inValue;
+					var arr = new Vector4[NativeMethods.GetVectorSizeVector4(ptr)];
+					NativeMethods.GetVectorDataVector4(ptr, arr);
+					return arr;
+				}
+				case ValueType.ArrayMatrix4x4:
+				{
+					var ptr = (Vector192*)inValue;
+					var arr = new Matrix4x4[NativeMethods.GetVectorSizeMatrix4x4(ptr)];
+					NativeMethods.GetVectorDataMatrix4x4(ptr, arr);
+					return arr;
+				}
 				case ValueType.Vector2:
 					return *(Vector2*)inValue;
 				case ValueType.Vector3:
@@ -651,6 +692,7 @@ public static class Marshalling
 	}
 	
 	private static readonly bool X86 = RuntimeInformation.ProcessArchitecture == Architecture.X64 || RuntimeInformation.ProcessArchitecture == Architecture.X86;
+	private static readonly bool IsWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && X86;
 	
 	private static unsafe Func<object[], object> ExternalInvoke(nint funcAddress, MethodInfo methodInfo)
 	{
@@ -662,7 +704,7 @@ public static class Marshalling
 		
 		if (!hasRet)
 		{
-			ValueType firstHidden = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && X86 ? ValueType.Vector3 : ValueType.Matrix4x4;
+			ValueType firstHidden = IsWindows ? ValueType.Vector3 : ValueType.Matrix4x4;
 			hasRet = returnType.ValueType >= firstHidden && returnType.ValueType <= ValueType.Matrix4x4;
 		}
 		
@@ -938,6 +980,42 @@ public static class Marshalling
 								@params[index++] = ptr;
 								break;
 							}
+							case ValueType.ArrayVector2:
+							{
+								var arr = (Vector2[])paramValue;
+								object tmp = NativeMethods.ConstructVectorVector2(arr, arr.Length);
+								nint ptr = Pin(ref tmp, ref pins[pin++]);
+								handlers[handle++] = (ptr, valueType);
+								@params[index++] = ptr;
+								break;
+							}
+							case ValueType.ArrayVector3:
+							{
+								var arr = (Vector3[])paramValue;
+								object tmp = NativeMethods.ConstructVectorVector3(arr, arr.Length);
+								nint ptr = Pin(ref tmp, ref pins[pin++]);
+								handlers[handle++] = (ptr, valueType);
+								@params[index++] = ptr;
+								break;
+							}
+							case ValueType.ArrayVector4:
+							{
+								var arr = (Vector4[])paramValue;
+								object tmp = NativeMethods.ConstructVectorVector4(arr, arr.Length);
+								nint ptr = Pin(ref tmp, ref pins[pin++]);
+								handlers[handle++] = (ptr, valueType);
+								@params[index++] = ptr;
+								break;
+							}
+							case ValueType.ArrayMatrix4x4:
+							{
+								var arr = (Matrix4x4[])paramValue;
+								object tmp = NativeMethods.ConstructVectorMatrix4x4(arr, arr.Length);
+								nint ptr = Pin(ref tmp, ref pins[pin++]);
+								handlers[handle++] = (ptr, valueType);
+								@params[index++] = ptr;
+								break;
+							}
 							default:
 								throw new TypeNotFoundException($"Parameter '{parameterTypes[i].ValueType}' uses not supported type for marshalling!");
 						}
@@ -1162,6 +1240,42 @@ public static class Marshalling
 							{
 								var arr = (object?[])paramValue;
 								object tmp = NativeMethods.ConstructVectorVariant(arr, arr.Length);
+								nint ptr = Pin(ref tmp, ref pins[pin++]);
+								handlers[handle++] = (ptr, valueType);
+								@params[index++] = ptr;
+								break;
+							}
+							case ValueType.ArrayVector2:
+							{
+								var arr = (Vector2[])paramValue;
+								object tmp = NativeMethods.ConstructVectorVector2(arr, arr.Length);
+								nint ptr = Pin(ref tmp, ref pins[pin++]);
+								handlers[handle++] = (ptr, valueType);
+								@params[index++] = ptr;
+								break;
+							}
+							case ValueType.ArrayVector3:
+							{
+								var arr = (Vector3[])paramValue;
+								object tmp = NativeMethods.ConstructVectorVector3(arr, arr.Length);
+								nint ptr = Pin(ref tmp, ref pins[pin++]);
+								handlers[handle++] = (ptr, valueType);
+								@params[index++] = ptr;
+								break;
+							}
+							case ValueType.ArrayVector4:
+							{
+								var arr = (Vector4[])paramValue;
+								object tmp = NativeMethods.ConstructVectorVector4(arr, arr.Length);
+								nint ptr = Pin(ref tmp, ref pins[pin++]);
+								handlers[handle++] = (ptr, valueType);
+								@params[index++] = ptr;
+								break;
+							}
+							case ValueType.ArrayMatrix4x4:
+							{
+								var arr = (Matrix4x4[])paramValue;
+								object tmp = NativeMethods.ConstructVectorMatrix4x4(arr, arr.Length);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
 								@params[index++] = ptr;
@@ -1394,6 +1508,38 @@ public static class Marshalling
 						ret = arr;
 						break;
 					}
+					case ValueType.ArrayVector2:
+					{
+						Vector192* ptr = (Vector192*)@return[0];
+						var arr = new Vector2[NativeMethods.GetVectorSizeVector2(ptr)];
+						NativeMethods.GetVectorDataVector2(ptr, arr);
+						ret = arr;
+						break;
+					}
+					case ValueType.ArrayVector3:
+					{
+						Vector192* ptr = (Vector192*)@return[0];
+						var arr = new Vector3[NativeMethods.GetVectorSizeVector3(ptr)];
+						NativeMethods.GetVectorDataVector3(ptr, arr);
+						ret = arr;
+						break;
+					}
+					case ValueType.ArrayVector4:
+					{
+						Vector192* ptr = (Vector192*)@return[0];
+						var arr = new Vector4[NativeMethods.GetVectorSizeVector4(ptr)];
+						NativeMethods.GetVectorDataVector4(ptr, arr);
+						ret = arr;
+						break;
+					}
+					case ValueType.ArrayMatrix4x4:
+					{
+						Vector192* ptr = (Vector192*)@return[0];
+						var arr = new Matrix4x4[NativeMethods.GetVectorSizeMatrix4x4(ptr)];
+						NativeMethods.GetVectorDataMatrix4x4(ptr, arr);
+						ret = arr;
+						break;
+					}
 					default:
 						throw new TypeNotFoundException($"Return '{returnType.ValueType}' uses not supported type for marshalling!");
 				}
@@ -1556,6 +1702,38 @@ public static class Marshalling
 										parameters[i] = arr;
 										break;
 									}
+									case ValueType.ArrayVector2:
+									{
+										Vector192* ptr = (Vector192*)handlers[j++].Item1;
+										var arr = new Vector2[NativeMethods.GetVectorSizeVector2(ptr)];
+										NativeMethods.GetVectorDataVector2(ptr, arr);
+										parameters[i] = arr;
+										break;
+									}
+									case ValueType.ArrayVector3:
+									{
+										Vector192* ptr = (Vector192*)handlers[j++].Item1;
+										var arr = new Vector3[NativeMethods.GetVectorSizeVector3(ptr)];
+										NativeMethods.GetVectorDataVector3(ptr, arr);
+										parameters[i] = arr;
+										break;
+									}
+									case ValueType.ArrayVector4:
+									{
+										Vector192* ptr = (Vector192*)handlers[j++].Item1;
+										var arr = new Vector4[NativeMethods.GetVectorSizeVector4(ptr)];
+										NativeMethods.GetVectorDataVector4(ptr, arr);
+										parameters[i] = arr;
+										break;
+									}
+									case ValueType.ArrayMatrix4x4:
+									{
+										Vector192* ptr = (Vector192*)handlers[j++].Item1;
+										var arr = new Matrix4x4[NativeMethods.GetVectorSizeMatrix4x4(ptr)];
+										NativeMethods.GetVectorDataMatrix4x4(ptr, arr);
+										parameters[i] = arr;
+										break;
+									}
 								}
 							}
 
@@ -1610,6 +1788,10 @@ public static class Marshalling
 			case ValueType.ArrayDouble:
 			case ValueType.ArrayString: 
 			case ValueType.ArrayAny: 
+			case ValueType.ArrayVector2: 
+			case ValueType.ArrayVector3: 
+			case ValueType.ArrayVector4: 
+			case ValueType.ArrayMatrix4x4: 
 				return new Vector192();
 			case ValueType.Vector2:
 				return new Vector2();
@@ -1696,6 +1878,18 @@ public static class Marshalling
 					break;
 				case ValueType.ArrayAny:
 					NativeMethods.DestroyVectorVariant((Vector192*)ptr);
+					break;
+				case ValueType.ArrayVector2:
+					NativeMethods.DestroyVectorVector2((Vector192*)ptr);
+					break;
+				case ValueType.ArrayVector3:
+					NativeMethods.DestroyVectorVector3((Vector192*)ptr);
+					break;
+				case ValueType.ArrayVector4:
+					NativeMethods.DestroyVectorVector4((Vector192*)ptr);
+					break;
+				case ValueType.ArrayMatrix4x4:
+					NativeMethods.DestroyVectorMatrix4x4((Vector192*)ptr);
 					break;
 				default:
 					throw new TypeNotFoundException();

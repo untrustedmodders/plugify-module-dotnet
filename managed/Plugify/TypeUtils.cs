@@ -47,6 +47,10 @@ public enum ValueType : byte {
 	ArrayDouble,
 	ArrayString,
 	ArrayAny,
+	ArrayVector2,
+	ArrayVector3,
+	ArrayVector4,
+	ArrayMatrix4x4,
 
 	// glm:vec
 	Vector2,
@@ -73,10 +77,10 @@ public enum ValueType : byte {
 	_FloatEnd = Double,
 
 	_ObjectStart = String,
-	_ObjectEnd = ArrayAny,
+	_ObjectEnd = ArrayMatrix4x4,
 
 	_ArrayStart = ArrayBool,
-	_ArrayEnd = ArrayAny,
+	_ArrayEnd = ArrayMatrix4x4,
 
 	_StructStart = Vector2,
 	_StructEnd = Matrix4x4,
@@ -133,6 +137,10 @@ internal static class TypeUtils
 		[typeof(double[])] = ValueType.ArrayDouble,
 		[typeof(string[])] = ValueType.ArrayString,
 		[typeof(object[])] = ValueType.ArrayAny,
+		[typeof(Vector2[])] = ValueType.ArrayVector2,
+		[typeof(Vector3[])] = ValueType.ArrayVector3,
+		[typeof(Vector4[])] = ValueType.ArrayVector4,
+		[typeof(Matrix4x4[])] = ValueType.ArrayMatrix4x4,
 		// glm:vec
 		[typeof(Vector2)] = ValueType.Vector2,
 		[typeof(Vector3)] = ValueType.Vector3,

@@ -14,6 +14,7 @@
 #include <plugify/log.hpp>
 #include <plugify/module.hpp>
 #include <plugify/string.hpp>
+#include <plugify/any.hpp>
 #include <plugify/vector.hpp>
 #include <plugify/plugify_provider.hpp>
 #include <plugify/plugin.hpp>
@@ -38,7 +39,7 @@ InitResult DotnetLanguageModule::Initialize(std::weak_ptr<IPlugifyProvider> prov
 	fs::path baseDir(module.GetBaseDir());
 
 	if (!_host.Initialize({
-		.hostfxrPath = baseDir / "dotnet/host/fxr/8.0.3/" NETLM_LIBRARY_PREFIX "hostfxr" NETLM_LIBRARY_SUFFIX,
+		.hostfxrPath = baseDir / "dotnet/host/fxr/9.0.0/" NETLM_LIBRARY_PREFIX "hostfxr" NETLM_LIBRARY_SUFFIX,
 		.rootDirectory = baseDir / "api",
 		.messageCallback = MessageCallback,
 		.exceptionCallback = ExceptionCallback,
@@ -312,6 +313,10 @@ static void ManagedCall(MethodRef method, MemAddr data, const JitCallback::Param
 				case ValueType::ArrayDouble:
 				case ValueType::ArrayString:
 				case ValueType::ArrayAny:
+				case ValueType::ArrayVector2:
+				case ValueType::ArrayVector3:
+				case ValueType::ArrayVector4:
+				case ValueType::ArrayMatrix4x4:
 					args.emplace_back(p->GetArgument<void*>(i));
 					break;
 				default:
@@ -376,6 +381,18 @@ static void ManagedCall(MethodRef method, MemAddr data, const JitCallback::Param
 			break;
 		case ValueType::ArrayAny:
 			ret->ConstructAt<plg::vector<plg::any>>();
+			break;
+		case ValueType::ArrayVector2:
+			ret->ConstructAt<plg::vector<plg::vec2>>();
+			break;
+		case ValueType::ArrayVector3:
+			ret->ConstructAt<plg::vector<plg::vec3>>();
+			break;
+		case ValueType::ArrayVector4:
+			ret->ConstructAt<plg::vector<plg::vec4>>();
+			break;
+		case ValueType::ArrayMatrix4x4:
+			ret->ConstructAt<plg::vector<plg::mat4x4>>();
 			break;
 		default:
 			break;

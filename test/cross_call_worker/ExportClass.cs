@@ -2,8 +2,8 @@
 using System.Runtime.InteropServices;
 using System.Text;
 using Plugify;
+using cross_call_master;
 using static cross_call_master.cross_call_master;
-using Example = cross_call_master.Example;
 
 namespace cross_call_worker;
 
