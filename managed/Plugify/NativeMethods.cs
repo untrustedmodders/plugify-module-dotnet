@@ -872,7 +872,7 @@ public static unsafe partial class NativeMethods
 		for (int i = 0; i < len; i++)
 		{
 			Variant256* var = GetVectorDataVariant(vec, i);
-			SetVariantData(var, arr);
+			SetVariantData(var, arr[i]);
 		}
 	}
 	
