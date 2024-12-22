@@ -225,6 +225,59 @@ public class ExportClass
         ];
     }
 
+    public static Vector2[] NoParamReturnArrayVector2() {
+        return [
+            new Vector2(1.1f, 2.2f),
+            new Vector2(-3.3f, 4.4f),
+            new Vector2(5.5f, -6.6f),
+            new Vector2(7.7f, 8.8f),
+            new Vector2(0.0f, 0.0f)
+        ];
+    }
+
+    public static Vector3[] NoParamReturnArrayVector3() {
+        return [
+            new Vector3(1.1f, 2.2f, 3.3f),
+            new Vector3(-4.4f, 5.5f, -6.6f),
+            new Vector3(7.7f, 8.8f, 9.9f),
+            new Vector3(0.0f, 0.0f, 0.0f),
+            new Vector3(10.1f, -11.2f, 12.3f)
+        ];
+    }
+
+    public static Vector4[] NoParamReturnArrayVector4() {
+        return [
+            new Vector4(1.1f, 2.2f, 3.3f, 4.4f),
+            new Vector4(-5.5f, 6.6f, -7.7f, 8.8f),
+            new Vector4(9.9f, 0.0f, -1.1f, 2.2f),
+            new Vector4(3.3f, 4.4f, 5.5f, 6.6f),
+            new Vector4(-7.7f, -8.8f, 9.9f, -10.1f)
+        ];
+    }
+
+    public static Matrix4x4[] NoParamReturnArrayMatrix4x4() {
+        return [
+            new Matrix4x4(
+                1.0f, 0.0f, 0.0f, 0.0f,
+                0.0f, 1.0f, 0.0f, 0.0f,
+                0.0f, 0.0f, 1.0f, 0.0f,
+                0.0f, 0.0f, 0.0f, 1.0f  // Identity matrix
+            ),
+            new Matrix4x4(
+                2.0f, 3.0f, 4.0f, 5.0f,
+                6.0f, 7.0f, 8.0f, 9.0f,
+                10.0f, 11.0f, 12.0f, 13.0f,
+                14.0f, 15.0f, 16.0f, 17.0f  // Example random matrix
+            ),
+            new Matrix4x4(
+                -1.0f, -2.0f, -3.0f, -4.0f,
+                -5.0f, -6.0f, -7.0f, -8.0f,
+                -9.0f, -10.0f, -11.0f, -12.0f,
+                -13.0f, -14.0f, -15.0f, -16.0f  // Negative matrix
+            )
+        ];
+    }
+    
     public static Vector2 NoParamReturnVector2()
     {
         Console.WriteLine("NoParamReturnVector2");
@@ -656,6 +709,26 @@ public class ExportClass
         return result;
     }
 
+    public static Vector2[] CallFuncVec2Vector(cross_call_master.FuncVec2Vector func) {
+        var result = func();
+        return result;
+    }
+
+    public static Vector3[] CallFuncVec3Vector(cross_call_master.FuncVec3Vector func) {
+        var result = func();
+        return result;
+    }
+
+    public static Vector4[] CallFuncVec4Vector(cross_call_master.FuncVec4Vector func) {
+        var result = func();
+        return result;
+    }
+
+    public static Matrix4x4[] CallFuncMat4x4Vector(cross_call_master.FuncMat4x4Vector func) {
+        var result = func();
+        return result;
+    }
+
     // Call functions for vector return types
     public static Vector2 CallFuncVec2(cross_call_master.FuncVec2 func) {
         Vector2 result = func();
@@ -992,7 +1065,71 @@ public class ExportClass
         }
 
         return $"{{{result}}}";
-    }
+    }        
+    
+    public static string VectorToString(Vector2[] array)
+    {
+        if (array.Length == 0)
+            return "{{{}}}";
+        
+        var result = new StringBuilder();
+        result.Append($"{PodToString(array[0])}");
+
+        for (int i = 1; i < array.Length; i++)
+        {
+            result.Append($", {PodToString(array[i])}");
+        }
+
+        return $"{{{result}}}";
+    }      
+    
+    public static string VectorToString(Vector3[] array)
+    {
+        if (array.Length == 0)
+            return "{{{}}}";
+        
+        var result = new StringBuilder();
+        result.Append($"{PodToString(array[0])}");
+
+        for (int i = 1; i < array.Length; i++)
+        {
+            result.Append($", {PodToString(array[i])}");
+        }
+
+        return $"{{{result}}}";
+    }    
+    
+    public static string VectorToString(Vector4[] array)
+    {
+        if (array.Length == 0)
+            return "{{{}}}";
+        
+        var result = new StringBuilder();
+        result.Append($"{PodToString(array[0])}");
+
+        for (int i = 1; i < array.Length; i++)
+        {
+            result.Append($", {PodToString(array[i])}");
+        }
+
+        return $"{{{result}}}";
+    }    
+    
+    public static string VectorToString(Matrix4x4[] array)
+    {
+        if (array.Length == 0)
+            return "{{{}}}";
+        
+        var result = new StringBuilder();
+        result.Append($"{PodToString(array[0])}");
+
+        for (int i = 1; i < array.Length; i++)
+        {
+            result.Append($", {PodToString(array[i])}");
+        }
+
+        return $"{{{result}}}";
+    }    
 
     public static string BStr(Bool8 b)
     {

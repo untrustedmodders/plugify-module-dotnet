@@ -25,6 +25,7 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <SourceControlInformationFeatureSupported>true</SourceControlInformationFeatureSupported>
+    <DisableRuntimeMarshalling>true</DisableRuntimeMarshalling>
     <PackageIcon>icon.png</PackageIcon>
     <DebugType>portable</DebugType>
   </PropertyGroup>

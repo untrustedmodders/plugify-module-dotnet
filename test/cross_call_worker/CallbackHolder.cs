@@ -48,6 +48,68 @@ public static unsafe class CallbackHolder
     public static string[] MockStringArray() => ["Hello", "World"];
     public static object[] MockAnyArray() => ["Hello", 3.14f, 6.28, 1, 0xDEADBEAF];
 
+    public static Vector2[] MockVec2Array()
+    {
+        return [
+            new Vector2(0.5f, -1.2f),
+            new Vector2(3.4f, 7.8f),
+            new Vector2(-6.7f, 2.3f),
+            new Vector2(8.9f, -4.5f),
+            new Vector2(0.0f, 0.0f)
+        ];
+    }
+
+    public static Vector3[] MockVec3Array()
+    {
+        return [
+            new Vector3(2.1f, 3.2f, 4.3f),
+            new Vector3(-5.4f, 6.5f, -7.6f),
+            new Vector3(8.7f, 9.8f, 0.1f),
+            new Vector3(1.2f, -3.3f, 4.4f),
+            new Vector3(-5.5f, 6.6f, -7.7f)
+        ];
+    }
+
+    public static Vector4[] MockVec4Array()
+    {
+        return [
+            new Vector4(0.1f, 1.2f, 2.3f, 3.4f),
+            new Vector4(-4.5f, 5.6f, 6.7f, -7.8f),
+            new Vector4(8.9f, -9.0f, 10.1f, -11.2f),
+            new Vector4(12.3f, 13.4f, 14.5f, 15.6f),
+            new Vector4(-16.7f, 17.8f, 18.9f, -19.0f)
+        ];
+    }
+
+    public static Matrix4x4[] MockMat4x4Array()
+    {
+        return [
+            // Identity matrix
+            Matrix4x4.Identity,
+            // Random matrix #1
+            new Matrix4x4(
+                0.5f, 1.0f, 1.5f, 2.0f,
+                2.5f, 3.0f, 3.5f, 4.0f,
+                4.5f, 5.0f, 5.5f, 6.0f,
+                6.5f, 7.0f, 7.5f, 8.0f
+            ),
+            // Random matrix #2
+            new Matrix4x4(
+                -1.0f, -2.0f, -3.0f, -4.0f,
+                -5.0f, -6.0f, -7.0f, -8.0f,
+                -9.0f, -10.0f, -11.0f, -12.0f,
+                -13.0f, -14.0f, -15.0f, -16.0f
+            ),
+            // Random matrix #3
+            new Matrix4x4(
+                1.1f, 2.2f, 3.3f, 4.4f,
+                5.5f, 6.6f, 7.7f, 8.8f,
+                9.9f, 10.0f, 11.1f, 12.2f,
+                13.3f, 14.4f, 15.5f, 16.6f
+            )
+        ];
+    }
+    
     // Functions returning vectors and matrices
     public static Vector2 MockVec2() => new(1.0f, 2.0f);
     public static Vector3 MockVec3() => new(1.0f, 2.0f, 3.0f);

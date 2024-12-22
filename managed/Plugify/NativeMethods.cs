@@ -92,6 +92,8 @@ public static unsafe partial class NativeMethods
 				return null;//Marshalling.GetDelegateForFunctionPointer(var->ptr, type);
 			case ValueType.String:
 				return NativeMethods.GetStringData(&var->str);
+			case ValueType.Any:
+				throw new TypeNotFoundException("Any recursion is not supported");
 			case ValueType.ArrayBool:
 			{
 				var ptr = &var->vec;
@@ -197,6 +199,10 @@ public static unsafe partial class NativeMethods
 				NativeMethods.GetVectorDataString(ptr, arr);
 				return arr;
 			}
+			case ValueType.ArrayAny:
+			{
+				throw new TypeNotFoundException("Any[] recursion is not supported");
+			}
 			case ValueType.ArrayVector2:
 			{
 				var ptr = &var->vec;
@@ -293,9 +299,7 @@ public static unsafe partial class NativeMethods
 				var->str = NativeMethods.ConstructString((string)paramValue);
 				break;
 			case ValueType.Any:
-			{
 				throw new TypeNotFoundException("Any recursion is not supported");
-			}
 			case ValueType.ArrayBool:
 			{
 				var arr = (Bool8[])paramValue;

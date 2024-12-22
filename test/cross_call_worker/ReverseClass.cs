@@ -734,6 +734,30 @@ public unsafe class ReverseClass
 		var result = CallFuncAnyVectorCallback(CallbackHolder.MockAnyArray);
 		return $"{ExportClass.VectorToString(result)}";
 	}
+	
+	public static string CallFuncVec2Vector()
+	{
+		var result = CallFuncVec2VectorCallback(CallbackHolder.MockVec2Array);
+		return $"{ExportClass.VectorToString(result)}";
+	}
+	
+	public static string CallFuncVec3Vector()
+	{
+		var result = CallFuncVec3VectorCallback(CallbackHolder.MockVec3Array);
+		return $"{ExportClass.VectorToString(result)}";
+	}
+	
+	public static string CallFuncVec4Vector()
+	{
+		var result = CallFuncVec4VectorCallback(CallbackHolder.MockVec4Array);
+		return $"{ExportClass.VectorToString(result)}";
+	}
+	
+	public static string CallFuncMat4x4Vector()
+	{
+		var result = CallFuncMat4x4VectorCallback(CallbackHolder.MockMat4x4Array);
+		return $"{ExportClass.VectorToString(result)}";
+	}
 
 	public static string CallFuncVec2()
 	{
@@ -1063,6 +1087,10 @@ public unsafe class ReverseClass
         { "CallFuncDoubleVector", CallFuncDoubleVector },
         { "CallFuncStringVector", CallFuncStringVector },
         { "CallFuncAnyVector", CallFuncAnyVector },
+        { "CallFuncVec2Vector", CallFuncVec2Vector },
+        { "CallFuncVec3Vector", CallFuncVec3Vector },
+        { "CallFuncVec4Vector", CallFuncVec4Vector },
+        { "CallFuncMat4x4Vector", CallFuncMat4x4Vector },
         { "CallFuncVec2", CallFuncVec2 },
         { "CallFuncVec3", CallFuncVec3 },
         { "CallFuncVec4", CallFuncVec4 },

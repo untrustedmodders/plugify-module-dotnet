@@ -51,9 +51,13 @@ namespace cross_call_master {
 	public delegate ulong[] FuncUInt64Vector();
 	public delegate nint[] FuncPtrVector();
 	public delegate float[] FuncFloatVector();
+	public delegate double[] FuncDoubleVector();
 	public delegate string[] FuncStringVector();
 	public delegate object[] FuncAnyVector();
-	public delegate double[] FuncDoubleVector();
+	public delegate Vector2[] FuncVec2Vector();
+	public delegate Vector3[] FuncVec3Vector();
+	public delegate Vector4[] FuncVec4Vector();
+	public delegate Matrix4x4[] FuncMat4x4Vector();
 	public delegate Vector2 FuncVec2();
 	public delegate Vector3 FuncVec3();
 	public delegate Vector4 FuncVec4();
@@ -785,6 +789,110 @@ namespace cross_call_master {
 			finally {
 				// Perform cleanup.
 				NativeMethods.DestroyVectorVariant(&__retVal_native);
+			}
+			return __retVal;
+		}
+
+		/// <summary>
+		/// No description provided.
+		/// </summary>
+		/// <returns>No description available.</returns>
+
+		internal static delegate*<Vector2[]> NoParamReturnArrayVector2Callback = &___NoParamReturnArrayVector2Callback;
+		internal static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayVector2Callback;
+		private static Vector2[] ___NoParamReturnArrayVector2Callback()
+		{
+			Vector2[] __retVal;
+			Vector192 __retVal_native;
+
+			try {
+				__retVal_native = __NoParamReturnArrayVector2Callback();
+				// Unmarshal - Convert native data to managed data.
+				__retVal = new Vector2[NativeMethods.GetVectorSizeVector2(&__retVal_native)];
+				NativeMethods.GetVectorDataVector2(&__retVal_native, __retVal);
+
+			}
+			finally {
+				// Perform cleanup.
+				NativeMethods.DestroyVectorVector2(&__retVal_native);
+			}
+			return __retVal;
+		}
+
+		/// <summary>
+		/// No description provided.
+		/// </summary>
+		/// <returns>No description available.</returns>
+
+		internal static delegate*<Vector3[]> NoParamReturnArrayVector3Callback = &___NoParamReturnArrayVector3Callback;
+		internal static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayVector3Callback;
+		private static Vector3[] ___NoParamReturnArrayVector3Callback()
+		{
+			Vector3[] __retVal;
+			Vector192 __retVal_native;
+
+			try {
+				__retVal_native = __NoParamReturnArrayVector3Callback();
+				// Unmarshal - Convert native data to managed data.
+				__retVal = new Vector3[NativeMethods.GetVectorSizeVector3(&__retVal_native)];
+				NativeMethods.GetVectorDataVector3(&__retVal_native, __retVal);
+
+			}
+			finally {
+				// Perform cleanup.
+				NativeMethods.DestroyVectorVector3(&__retVal_native);
+			}
+			return __retVal;
+		}
+
+		/// <summary>
+		/// No description provided.
+		/// </summary>
+		/// <returns>No description available.</returns>
+
+		internal static delegate*<Vector4[]> NoParamReturnArrayVector4Callback = &___NoParamReturnArrayVector4Callback;
+		internal static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayVector4Callback;
+		private static Vector4[] ___NoParamReturnArrayVector4Callback()
+		{
+			Vector4[] __retVal;
+			Vector192 __retVal_native;
+
+			try {
+				__retVal_native = __NoParamReturnArrayVector4Callback();
+				// Unmarshal - Convert native data to managed data.
+				__retVal = new Vector4[NativeMethods.GetVectorSizeVector4(&__retVal_native)];
+				NativeMethods.GetVectorDataVector4(&__retVal_native, __retVal);
+
+			}
+			finally {
+				// Perform cleanup.
+				NativeMethods.DestroyVectorVector4(&__retVal_native);
+			}
+			return __retVal;
+		}
+
+		/// <summary>
+		/// No description provided.
+		/// </summary>
+		/// <returns>No description available.</returns>
+
+		internal static delegate*<Matrix4x4[]> NoParamReturnArrayMatrix4x4Callback = &___NoParamReturnArrayMatrix4x4Callback;
+		internal static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayMatrix4x4Callback;
+		private static Matrix4x4[] ___NoParamReturnArrayMatrix4x4Callback()
+		{
+			Matrix4x4[] __retVal;
+			Vector192 __retVal_native;
+
+			try {
+				__retVal_native = __NoParamReturnArrayMatrix4x4Callback();
+				// Unmarshal - Convert native data to managed data.
+				__retVal = new Matrix4x4[NativeMethods.GetVectorSizeMatrix4x4(&__retVal_native)];
+				NativeMethods.GetVectorDataMatrix4x4(&__retVal_native, __retVal);
+
+			}
+			finally {
+				// Perform cleanup.
+				NativeMethods.DestroyVectorMatrix4x4(&__retVal_native);
 			}
 			return __retVal;
 		}
@@ -2423,6 +2531,38 @@ namespace cross_call_master {
 		/// <param name="func">No description available.</param>
 		/// <returns>No description available.</returns>
 		/// <remarks>
+		/// Callback FuncDoubleVector: No description provided.
+		/// - Returns: No description available. (double[])
+		/// </remarks>
+
+		internal static delegate*<FuncDoubleVector, double[]> CallFuncDoubleVectorCallback = &___CallFuncDoubleVectorCallback;
+		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncDoubleVectorCallback;
+		private static double[] ___CallFuncDoubleVectorCallback(FuncDoubleVector func)
+		{
+			double[] __retVal;
+			Vector192 __retVal_native;
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
+
+			try {
+				__retVal_native = __CallFuncDoubleVectorCallback(__func);
+				// Unmarshal - Convert native data to managed data.
+				__retVal = new double[NativeMethods.GetVectorSizeDouble(&__retVal_native)];
+				NativeMethods.GetVectorDataDouble(&__retVal_native, __retVal);
+
+			}
+			finally {
+				// Perform cleanup.
+				NativeMethods.DestroyVectorDouble(&__retVal_native);
+			}
+			return __retVal;
+		}
+
+		/// <summary>
+		/// No description provided.
+		/// </summary>
+		/// <param name="func">No description available.</param>
+		/// <returns>No description available.</returns>
+		/// <remarks>
 		/// Callback FuncStringVector: No description provided.
 		/// - Returns: No description available. (string[])
 		/// </remarks>
@@ -2487,28 +2627,124 @@ namespace cross_call_master {
 		/// <param name="func">No description available.</param>
 		/// <returns>No description available.</returns>
 		/// <remarks>
-		/// Callback FuncDoubleVector: No description provided.
-		/// - Returns: No description available. (double[])
+		/// Callback FuncVec2Vector: No description provided.
+		/// - Returns: No description available. (vec2[])
 		/// </remarks>
 
-		internal static delegate*<FuncDoubleVector, double[]> CallFuncDoubleVectorCallback = &___CallFuncDoubleVectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncDoubleVectorCallback;
-		private static double[] ___CallFuncDoubleVectorCallback(FuncDoubleVector func)
+		internal static delegate*<FuncVec2Vector, Vector2[]> CallFuncVec2VectorCallback = &___CallFuncVec2VectorCallback;
+		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncVec2VectorCallback;
+		private static Vector2[] ___CallFuncVec2VectorCallback(FuncVec2Vector func)
 		{
-			double[] __retVal;
+			Vector2[] __retVal;
 			Vector192 __retVal_native;
 			var __func = Marshalling.GetFunctionPointerForDelegate(func);
 
 			try {
-				__retVal_native = __CallFuncDoubleVectorCallback(__func);
+				__retVal_native = __CallFuncVec2VectorCallback(__func);
 				// Unmarshal - Convert native data to managed data.
-				__retVal = new double[NativeMethods.GetVectorSizeDouble(&__retVal_native)];
-				NativeMethods.GetVectorDataDouble(&__retVal_native, __retVal);
+				__retVal = new Vector2[NativeMethods.GetVectorSizeVector2(&__retVal_native)];
+				NativeMethods.GetVectorDataVector2(&__retVal_native, __retVal);
 
 			}
 			finally {
 				// Perform cleanup.
-				NativeMethods.DestroyVectorDouble(&__retVal_native);
+				NativeMethods.DestroyVectorVector2(&__retVal_native);
+			}
+			return __retVal;
+		}
+
+		/// <summary>
+		/// No description provided.
+		/// </summary>
+		/// <param name="func">No description available.</param>
+		/// <returns>No description available.</returns>
+		/// <remarks>
+		/// Callback FuncVec3Vector: No description provided.
+		/// - Returns: No description available. (vec3[])
+		/// </remarks>
+
+		internal static delegate*<FuncVec3Vector, Vector3[]> CallFuncVec3VectorCallback = &___CallFuncVec3VectorCallback;
+		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncVec3VectorCallback;
+		private static Vector3[] ___CallFuncVec3VectorCallback(FuncVec3Vector func)
+		{
+			Vector3[] __retVal;
+			Vector192 __retVal_native;
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
+
+			try {
+				__retVal_native = __CallFuncVec3VectorCallback(__func);
+				// Unmarshal - Convert native data to managed data.
+				__retVal = new Vector3[NativeMethods.GetVectorSizeVector3(&__retVal_native)];
+				NativeMethods.GetVectorDataVector3(&__retVal_native, __retVal);
+
+			}
+			finally {
+				// Perform cleanup.
+				NativeMethods.DestroyVectorVector3(&__retVal_native);
+			}
+			return __retVal;
+		}
+
+		/// <summary>
+		/// No description provided.
+		/// </summary>
+		/// <param name="func">No description available.</param>
+		/// <returns>No description available.</returns>
+		/// <remarks>
+		/// Callback FuncVec4Vector: No description provided.
+		/// - Returns: No description available. (vec4[])
+		/// </remarks>
+
+		internal static delegate*<FuncVec4Vector, Vector4[]> CallFuncVec4VectorCallback = &___CallFuncVec4VectorCallback;
+		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncVec4VectorCallback;
+		private static Vector4[] ___CallFuncVec4VectorCallback(FuncVec4Vector func)
+		{
+			Vector4[] __retVal;
+			Vector192 __retVal_native;
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
+
+			try {
+				__retVal_native = __CallFuncVec4VectorCallback(__func);
+				// Unmarshal - Convert native data to managed data.
+				__retVal = new Vector4[NativeMethods.GetVectorSizeVector4(&__retVal_native)];
+				NativeMethods.GetVectorDataVector4(&__retVal_native, __retVal);
+
+			}
+			finally {
+				// Perform cleanup.
+				NativeMethods.DestroyVectorVector4(&__retVal_native);
+			}
+			return __retVal;
+		}
+
+		/// <summary>
+		/// No description provided.
+		/// </summary>
+		/// <param name="func">No description available.</param>
+		/// <returns>No description available.</returns>
+		/// <remarks>
+		/// Callback FuncMat4x4Vector: No description provided.
+		/// - Returns: No description available. (mat4x4[])
+		/// </remarks>
+
+		internal static delegate*<FuncMat4x4Vector, Matrix4x4[]> CallFuncMat4x4VectorCallback = &___CallFuncMat4x4VectorCallback;
+		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncMat4x4VectorCallback;
+		private static Matrix4x4[] ___CallFuncMat4x4VectorCallback(FuncMat4x4Vector func)
+		{
+			Matrix4x4[] __retVal;
+			Vector192 __retVal_native;
+			var __func = Marshalling.GetFunctionPointerForDelegate(func);
+
+			try {
+				__retVal_native = __CallFuncMat4x4VectorCallback(__func);
+				// Unmarshal - Convert native data to managed data.
+				__retVal = new Matrix4x4[NativeMethods.GetVectorSizeMatrix4x4(&__retVal_native)];
+				NativeMethods.GetVectorDataMatrix4x4(&__retVal_native, __retVal);
+
+			}
+			finally {
+				// Perform cleanup.
+				NativeMethods.DestroyVectorMatrix4x4(&__retVal_native);
 			}
 			return __retVal;
 		}
