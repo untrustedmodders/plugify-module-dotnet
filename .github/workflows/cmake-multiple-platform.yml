@@ -137,7 +137,7 @@ jobs:
       - name: Install .NET Core
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "8.0.x"
+          dotnet-version: "9.0.x"
 
       - name: Publish artifacts v${{ needs.setup.outputs.buildnumber }}
         run: |
@@ -182,8 +182,8 @@ jobs:
         run: |
           mkdir -p build/linux/api
           mkdir -p build/windows/api
-          cp -r build/api/net8.0/publish/* build/linux/api
-          cp -r build/api/net8.0/publish/* build/windows/api
+          cp -r build/api/net9.0/publish/* build/linux/api
+          cp -r build/api/net9.0/publish/* build/windows/api
 
       - name: Add dotnet runtime
         run: |
