@@ -54,7 +54,7 @@ namespace netlm {
 
 		const ScriptMap& GetScripts() const { return _scripts; }
 		ScriptInstance* FindScript(plugify::UniqueId pluginId);
-		plugify::MethodRef FindMethod(ManagedGuid assemblyId, std::string_view name);
+		plugify::MethodRef FindMethod(std::string_view name);
 
 		const std::shared_ptr<plugify::IPlugifyProvider>& GetProvider() { return _provider; }
 		const std::shared_ptr<asmjit::JitRuntime>& GetRuntime() { return _rt; }

@@ -19,7 +19,7 @@ public partial class JitCallback : SafeHandle
         
         var delegateHandle = GCHandle.Alloc(target, GCHandleType.Normal);
         AssemblyLoader.RegisterHandle(assembly, delegateHandle);
-        handle = NewCallback(assemblyId, targetType.Name, GCHandle.ToIntPtr(delegateHandle));
+        handle = NewCallback(assemblyId, targetType.FullName!, GCHandle.ToIntPtr(delegateHandle));
     }
 
     public override bool IsInvalid => handle == nint.Zero;

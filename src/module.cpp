@@ -242,16 +242,18 @@ ScriptInstance* DotnetLanguageModule::FindScript(UniqueId pluginId) {
 	return nullptr;
 }
 
-MethodRef DotnetLanguageModule::FindMethod(ManagedGuid assemblyId, std::string_view name) {
-	for (const auto & [_, script] : _scripts) {
-		if (script.GetAssemblyId() == assemblyId) {
-			for (const auto& method : script.GetPlugin().GetDescriptor().GetExportedMethods()) {
-				auto prototype = method.FindPrototype(name);
-				if (prototype.has_value()) {
-					return *prototype;
-				}
+MethodRef DotnetLanguageModule::FindMethod(std::string_view name) {
+	auto separated = Utils::Split(name, ".");
+	if (separated.size() != 2)
+		return {};
+
+	auto plugin = g_netlm.GetProvider()->FindPlugin(separated[0]);
+	if (plugin.has_value()) {
+		for (const auto& method : plugin->GetDescriptor().GetExportedMethods()) {
+			auto prototype = method.FindPrototype(separated[1]);
+			if (prototype.has_value()) {
+				return *prototype;
 			}
-			return {};
 		}
 	}
 	return {};
