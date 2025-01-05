@@ -2,24 +2,14 @@
 
 namespace Plugify;
 
-using static ManagedHost;
-
 public partial class JitCallback : SafeHandle
 {
     public JitCallback(Delegate target) : base(nint.Zero, true)
     {
         var targetType = target.GetType();
-        var assembly = targetType.Assembly;
-        
-        if (!AssemblyLoader.TryGetGuid(assembly, out Guid assemblyId))
-        {
-            LogMessage($"Couldn't get assembly id for assembly '{assembly}', assembly not in dictionary.", MessageLevel.Error);
-            return;
-        }
-        
         var delegateHandle = GCHandle.Alloc(target, GCHandleType.Normal);
-        AssemblyLoader.RegisterHandle(assembly, delegateHandle);
-        handle = NewCallback(assemblyId, targetType.FullName!, GCHandle.ToIntPtr(delegateHandle));
+        AssemblyLoader.RegisterHandle(targetType.Assembly, delegateHandle);
+        handle = NewCallback(targetType.FullName!, GCHandle.ToIntPtr(delegateHandle));
     }
 
     public override bool IsInvalid => handle == nint.Zero;
@@ -36,7 +26,7 @@ public partial class JitCallback : SafeHandle
 	
     [LibraryImport(NativeMethods.DllName, StringMarshalling = StringMarshalling.Utf8)]
     [SuppressGCTransition]
-    private static partial nint NewCallback(Guid assemblyId, string delegateName, nint delegateHandle);
+    private static partial nint NewCallback(string delegateName, nint delegateHandle);
 
     [LibraryImport(NativeMethods.DllName)]
     [SuppressGCTransition]

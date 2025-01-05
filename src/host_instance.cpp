@@ -2,6 +2,7 @@
 #include "gc.hpp"
 #include "managed_functions.hpp"
 #include "utils.hpp"
+#include "native_string.hpp"
 
 #include <plugify/assembly.hpp>
 
@@ -61,6 +62,7 @@ bool HostInstance::Initialize(HostSettings settings) {
 
 void HostInstance::Shutdown() {
 	MessageCallback("Shutting down .NET runtime", MessageLevel::Info);
+	Managed.ShutdownFptr();
 	_ctx.reset();
 	_dll.reset();
 	MessageCallback("Shut down .NET runtime", MessageLevel::Info);
@@ -184,45 +186,27 @@ bool HostInstance::InitializeRuntimeHost() {
 		MessageCallback(NETLM_UTF8(message), MessageLevel::Error);
 	});
 
-	using InitializeFn = void(*)(void(*)(String, MessageLevel), void(*)(String));
-	InitializeFn managedEntryPoint = GetDelegate<InitializeFn>(rootAssemblyPath.c_str(), NETLM_NSTR("Plugify.ManagedHost, Plugify"), NETLM_NSTR("Initialize"));
-
 	LoadManagedFunctions(rootAssemblyPath);
 
-	managedEntryPoint([](String msg, MessageLevel level)
-	{
-		if (int(MessageFilter) & int(level)) {
+	Managed.InitializeFptr(
+		[](String msg, MessageLevel level)
+		{
+			if (int(MessageFilter) & int(level)) {
+				std::string message = msg;
+				MessageCallback(message, level);
+			}
+		},
+		[](String msg)
+		{
 			std::string message = msg;
-			MessageCallback(message, level);
-		}
-	},
-	[](String msg)
-	{
-		std::string message = msg;
-		if (!ExceptionCallback) {
-			MessageCallback(message, MessageLevel::Error);
-			return;
-		}
-		ExceptionCallback(message);
-	});
+			if (!ExceptionCallback) {
+				MessageCallback(message, MessageLevel::Error);
+				return;
+			}
+			ExceptionCallback(message);
+		});
 
 	return true;
-}
-
-AssemblyLoadContext HostInstance::CreateAssemblyLoadContext(std::string_view contextName) {
-	assert(_ctx);
-	auto name = String::New(contextName);
-	AssemblyLoadContext alc;
-	alc._contextId = Managed.CreateAssemblyLoadContextFptr(name);
-	String::Free(name);
-	return alc;
-}
-
-void HostInstance::UnloadAssemblyLoadContext(AssemblyLoadContext& loadContext) {
-	assert(_ctx);
-	Managed.UnloadAssemblyLoadContextFptr(loadContext._contextId);
-	loadContext._contextId = {};
-	loadContext._loadedAssemblies.clear();
 }
 
 void* HostInstance::GetDelegate(const char_t* assemblyPath, const char_t* typeName, const char_t* methodName, const char_t* delegateTypeName) const {
@@ -247,9 +231,11 @@ void* HostInstance::GetDelegate(const char_t* assemblyPath, const char_t* typeNa
 void HostInstance::LoadManagedFunctions(const fs::path& assemblyPath) {
 	const char_t* path = assemblyPath.c_str();
 
-	Managed.CreateAssemblyLoadContextFptr = GetDelegate<CreateAssemblyLoadContextFn>(path, NETLM_NSTR("Plugify.AssemblyLoader, Plugify"), NETLM_NSTR("CreateAssemblyLoadContext"));
-	Managed.UnloadAssemblyLoadContextFptr = GetDelegate<UnloadAssemblyLoadContextFn>(path, NETLM_NSTR("Plugify.AssemblyLoader, Plugify"), NETLM_NSTR("UnloadAssemblyLoadContext"));
+	Managed.InitializeFptr = GetDelegate<InitializeFn>(path, NETLM_NSTR("Plugify.ManagedHost, Plugify"), NETLM_NSTR("Initialize"));
+	Managed.ShutdownFptr = GetDelegate<ShutdownFn>(path, NETLM_NSTR("Plugify.ManagedHost, Plugify"), NETLM_NSTR("Shutdown"));
+
 	Managed.LoadManagedAssemblyFptr = GetDelegate<LoadManagedAssemblyFn>(path, NETLM_NSTR("Plugify.AssemblyLoader, Plugify"), NETLM_NSTR("LoadAssembly"));
+	Managed.UnloadManagedAssemblyFptr = GetDelegate<UnloadManagedAssemblyFn>(path, NETLM_NSTR("Plugify.AssemblyLoader, Plugify"), NETLM_NSTR("UnloadAssembly"));
 	Managed.GetLastLoadStatusFptr = GetDelegate<GetLastLoadStatusFn>(path, NETLM_NSTR("Plugify.AssemblyLoader, Plugify"), NETLM_NSTR("GetLastLoadStatus"));
 	Managed.GetAssemblyNameFptr = GetDelegate<GetAssemblyNameFn>(path, NETLM_NSTR("Plugify.AssemblyLoader, Plugify"), NETLM_NSTR("GetAssemblyName"));
 

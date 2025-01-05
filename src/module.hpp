@@ -5,6 +5,7 @@
 #include <plugify/jit/callback.hpp>
 
 #include "host_instance.hpp"
+#include "managed_assembly.hpp"
 
 #include <asmjit/asmjit.h>
 #include <cpptrace/cpptrace.hpp>
@@ -71,7 +72,7 @@ namespace netlm {
 		std::shared_ptr<asmjit::JitRuntime> _rt;
 
 		HostInstance _host;
-		AssemblyLoadContext _alc;
+		AssemblyLoader _loader;
 
 		ScriptMap _scripts;
 		FunctionList _functions;

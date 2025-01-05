@@ -4,15 +4,18 @@
 
 namespace netlm {
 	class String;
+	enum class MessageLevel;
 	enum class AssemblyLoadStatus;
 	enum class GCCollectionMode;
 	struct ManagedType;
 	class ManagedObject;
 
+	using InitializeFn = void(*)(void(*)(String, MessageLevel), void(*)(String));
+	using ShutdownFn = void(*)();
+
 	using SetInternalCallsFn = void(*)(InternalCall*, int32_t, Bool32);
-	using CreateAssemblyLoadContextFn = ManagedGuid(*)(String);
-	using UnloadAssemblyLoadContextFn = void(*)(ManagedGuid);
-	using LoadManagedAssemblyFn = ManagedGuid(*)(ManagedGuid, String);
+	using LoadManagedAssemblyFn = ManagedGuid(*)(String, Bool32, Bool32);
+	using UnloadManagedAssemblyFn = Bool32(*)(ManagedGuid);
 	using GetLastLoadStatusFn = AssemblyLoadStatus(*)();
 	using GetAssemblyNameFn = String(*)(ManagedGuid);
 
@@ -95,9 +98,12 @@ namespace netlm {
 #pragma endregion
 	
 	struct ManagedFunctions {
+		InitializeFn InitializeFptr;
+		ShutdownFn ShutdownFptr;
+
 		SetInternalCallsFn SetInternalCallsFptr;
 		LoadManagedAssemblyFn LoadManagedAssemblyFptr;
-		UnloadAssemblyLoadContextFn UnloadAssemblyLoadContextFptr;
+		UnloadManagedAssemblyFn UnloadManagedAssemblyFptr;
 		GetLastLoadStatusFn GetLastLoadStatusFptr;
 		GetAssemblyNameFn GetAssemblyNameFptr;
 
@@ -105,7 +111,6 @@ namespace netlm {
 		WaitForPendingFinalizersFn WaitForPendingFinalizersFptr;
 
 		CreateObjectFn CreateObjectFptr;
-		CreateAssemblyLoadContextFn CreateAssemblyLoadContextFptr;
 		InvokeMethodFn InvokeMethodFptr;
 		InvokeMethodRetFn InvokeMethodRetFptr;
 		InvokeStaticMethodFn InvokeStaticMethodFptr;

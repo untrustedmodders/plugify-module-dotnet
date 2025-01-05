@@ -2,7 +2,14 @@ using System.Runtime.InteropServices;
 
 namespace Plugify;
 
-internal enum MessageLevel { Info = 1, Warning = 2, Error = 4 }
+[Flags]
+internal enum MessageLevel
+{
+	Info = 1 << 0, 
+	Warning = 1 << 1, 
+	Error = 1 << 2,
+	All = Info | Warning | Error
+}
 
 internal static class ManagedHost
 {
@@ -14,6 +21,33 @@ internal static class ManagedHost
 	{
 		MessageCallback = messageCallback;
 		ExceptionCallback = exceptionCallback;
+	}
+
+	[UnmanagedCallersOnly]
+	private static void Shutdown()
+	{
+		//ManagedObject.CachedMethods.Clear();
+
+		TypeInterface.CachedTypes.Clear();
+		TypeInterface.CachedMethods.Clear();
+		TypeInterface.CachedFields.Clear();
+		TypeInterface.CachedProperties.Clear();
+		TypeInterface.CachedAttributes.Clear();
+		
+		Marshalling.CachedDelegates.Clear();
+		Marshalling.CachedFunctions.Clear();
+
+		if (AssemblyLoader.AllocatedHandles.Count > 0)
+		{
+			LogMessage("Handles were not unloaded correctly. Please file a bug report at 'https://github.com/untrustedmodders/plugify-module-dotnet/issues'.", MessageLevel.Error);
+			AssemblyLoader.AllocatedHandles.Clear();
+		}
+		
+		if (AssemblyLoader.LoadedAssemblies.Count > 0)
+		{
+			LogMessage("Assemblies were not unloaded correctly. Please file a bug report at 'https://github.com/untrustedmodders/plugify-module-dotnet/issues'.", MessageLevel.Error);
+			AssemblyLoader.LoadedAssemblies.Clear();
+		}
 	}
 
 	internal static void LogMessage(string message, MessageLevel messageLevel)

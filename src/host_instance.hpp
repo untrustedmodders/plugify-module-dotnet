@@ -1,7 +1,6 @@
 #pragma once
 
 #include "core.hpp"
-#include "managed_assembly.hpp"
 
 namespace plugify {
 	class Assembly;
@@ -37,9 +36,6 @@ namespace netlm {
 		bool Initialize(HostSettings settings);
 		void Shutdown();
 
-		AssemblyLoadContext CreateAssemblyLoadContext(std::string_view contextName);
-		void UnloadAssemblyLoadContext(AssemblyLoadContext& loadContext);
-
 	private:
 		bool LoadHostFXR();
 		bool InitializeRuntimeHost();
@@ -57,7 +53,5 @@ namespace netlm {
 		HostSettings _settings;
 		std::unique_ptr<void, HandleDeleter> _ctx;
 		std::unique_ptr<plugify::Assembly> _dll;
-
-		friend class AssemblyLoadContext;
 	};
 }

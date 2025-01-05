@@ -300,7 +300,7 @@ extern "C" {
 		return Memory::StringToHGlobalAnsi(call ? call->GetError().data() : "Target invalid");
 	}
 
-	NETLM_EXPORT JitCallback* NewCallback(ManagedGuid , const char* name, void* delegate) {
+	NETLM_EXPORT JitCallback* NewCallback(const char* name, void* delegate) {
 		MethodRef method = g_netlm.FindMethod(name);
 		if (method == nullptr || delegate == nullptr)
 			return nullptr;

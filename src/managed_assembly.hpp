@@ -41,24 +41,22 @@ namespace netlm {
 		static inline Type InvalidType;
 
 		friend class HostInstance;
-		friend class AssemblyLoadContext;
+		friend class AssemblyLoader;
 	};
 
-	using AssemblyMap = std::unordered_map<ManagedGuid, ManagedAssembly>;
+	using AssemblyList = std::vector<ManagedAssembly>;
 
-	class AssemblyLoadContext {
+	class AssemblyLoader {
 	public:
+		void Unload();
+
 		ManagedAssembly& LoadAssembly(const fs::path& assemblyPath);
 		ManagedAssembly& FindAssembly(ManagedGuid assemblyId);
-		AssemblyMap& GetLoadedAssemblies() { return _loadedAssemblies; }
+		AssemblyList& GetLoadedAssemblies() { return _assemblies; }
 		const std::string& GetError() { return _error; }
 
-		bool operator==(const AssemblyLoadContext& other) const { return _contextId == other._contextId; }
-		operator bool() const { return _contextId; }
-
 	private:
-		ManagedGuid _contextId{};
-		AssemblyMap _loadedAssemblies;
+		AssemblyList _assemblies;
 		std::string _error;
 
 		static inline ManagedAssembly InvalidAssembly;

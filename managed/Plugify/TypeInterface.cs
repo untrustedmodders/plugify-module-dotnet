@@ -17,7 +17,7 @@ internal static class TypeInterface
 	internal static Type? FindType(string? typeName)
 	{
 		var type = Type.GetType(typeName!,
-			(name) => AssemblyLoader.ResolveAssembly(null, name),
+			AssemblyLoader.ResolveAssembly,
 			(assembly, name, ignore) => assembly != null ? assembly.GetType(name, false, ignore) : Type.GetType(name, false, ignore));
 
 		return type;
@@ -79,15 +79,15 @@ internal static class TypeInterface
 	{
 		try
 		{
-			if (!AssemblyLoader.TryGetAssembly(assemblyId, out var assembly))
+			if (!AssemblyLoader.TryGetAssembly(assemblyId, out var wrapper))
 			{
 				LogMessage($"Couldn't get types for assembly '{assemblyId}', assembly not found.", MessageLevel.Error);
 				return;
 			}
 
-			if (assembly == null)
+			if (!wrapper.IsAlive || !wrapper.Assembly.TryGetTarget(out var assembly))
 			{
-				LogMessage($"Couldn't get types for assembly '{assemblyId}', assembly was null.", MessageLevel.Error);
+				LogMessage($"Couldn't get types for assembly '{assemblyId}', assembly was unloaded.", MessageLevel.Error);
 				return;
 			}
 			

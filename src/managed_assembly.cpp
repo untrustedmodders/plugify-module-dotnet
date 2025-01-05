@@ -4,7 +4,16 @@
 
 using namespace netlm;
 
-ManagedAssembly& AssemblyLoadContext::LoadAssembly(const fs::path& assemblyPath) {
+void AssemblyLoader::Unload() {
+	for (auto it = _assemblies.rbegin(); it != _assemblies.rend(); ++it) {
+		[[maybe_unused]] Bool32 result = Managed.UnloadManagedAssemblyFptr(it->_assemblyId);
+	}
+
+	_assemblies.clear();
+	_error.clear();
+}
+
+ManagedAssembly& AssemblyLoader::LoadAssembly(const fs::path& assemblyPath) {
 	std::error_code ec;
 	auto absolutePath= fs::absolute(assemblyPath, ec);
 	if (ec) {
@@ -13,7 +22,7 @@ ManagedAssembly& AssemblyLoadContext::LoadAssembly(const fs::path& assemblyPath)
 	}
 
 	auto path = String::New(absolutePath.c_str());
-	auto assemblyId = Managed.LoadManagedAssemblyFptr(_contextId, path);
+	auto assemblyId = Managed.LoadManagedAssemblyFptr(path, true, true);
 	auto loadStatus = Managed.GetLastLoadStatusFptr();
 	String::Free(path);
 
@@ -37,13 +46,7 @@ ManagedAssembly& AssemblyLoadContext::LoadAssembly(const fs::path& assemblyPath)
 			break;
 	}
 
-	auto [it, result] = _loadedAssemblies.try_emplace(assemblyId);
-	if (!result) {
-		_error = "Assembly key duplicate";
-		return InvalidAssembly;
-	}
-
-	auto& assembly = std::get<ManagedAssembly>(*it);
+	auto& assembly = _assemblies.emplace_back();
 
 	assembly._assemblyId = assemblyId;
 	assembly._loadStatus = loadStatus;
@@ -64,11 +67,13 @@ ManagedAssembly& AssemblyLoadContext::LoadAssembly(const fs::path& assemblyPath)
 	return assembly;
 }
 
-ManagedAssembly& AssemblyLoadContext::FindAssembly(ManagedGuid assemblyId) {
-	auto it = _loadedAssemblies.find(assemblyId);
+ManagedAssembly& AssemblyLoader::FindAssembly(ManagedGuid assemblyId) {
+	auto it = std::find_if(_assemblies.begin(), _assemblies.end(), [assemblyId](const ManagedAssembly& assembly) {
+		return assembly._assemblyId == assemblyId;
+	});
 
-	if (it != _loadedAssemblies.end()) {
-		return std::get<ManagedAssembly>(*it);
+	if (it != _assemblies.end()) {
+		return *it;
 	}
 
 	return InvalidAssembly;

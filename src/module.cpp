@@ -47,8 +47,6 @@ InitResult DotnetLanguageModule::Initialize(std::weak_ptr<IPlugifyProvider> prov
 		return ErrorData{ "Could not initialize hostfxr environment" };
 	}
 
-	_alc = _host.CreateAssemblyLoadContext("PlugifyContext");
-
 	_provider->Log(LOG_PREFIX "Inited!", Severity::Debug);
 
 	_rt = std::make_shared<asmjit::JitRuntime>();
@@ -60,7 +58,7 @@ void DotnetLanguageModule::Shutdown() {
 	_scripts.clear();
 	_functions.clear();
 
-	_host.UnloadAssemblyLoadContext(_alc);
+	_loader.Unload();
 	_host.Shutdown();
 
 	_rt.reset();
@@ -71,9 +69,9 @@ LoadResult DotnetLanguageModule::OnPluginLoad(PluginRef plugin) {
 	fs::path assemblyPath(plugin.GetBaseDir());
 	assemblyPath /= plugin.GetDescriptor().GetEntryPoint();
 
-	ManagedAssembly& assembly = _alc.LoadAssembly(assemblyPath);
+	ManagedAssembly& assembly = _loader.LoadAssembly(assemblyPath);
 	if (!assembly) {
-		return ErrorData{ _alc.GetError() };
+		return ErrorData{ _loader.GetError() };
 	}
 
 	Type& pluginClassType = assembly.GetTypeByBaseType("Plugify.Plugin");
@@ -193,7 +191,7 @@ void DotnetLanguageModule::OnMethodExport(PluginRef plugin) {
 	if (script) {
 		auto& assemblyId = script->GetAssemblyId();
 		// Add as C# calls (direct)
-		auto& ownerAssembly = _alc.FindAssembly(assemblyId);
+		auto& ownerAssembly = _loader.FindAssembly(assemblyId);
 		assert(ownerAssembly);
 
 		for (const auto& [method, _] : plugin.GetMethods()) {
@@ -209,9 +207,9 @@ void DotnetLanguageModule::OnMethodExport(PluginRef plugin) {
 
 			void* addr = methodInfo.GetFunctionAddress();
 
-			for (auto& [id, assembly] : _alc.GetLoadedAssemblies()) {
+			for (auto& assembly : _loader.GetLoadedAssemblies()) {
 				// No self export
-				if (id == assemblyId)
+				if (assembly.GetAssemblyID() == assemblyId)
 					continue;
 
 				assembly.AddInternalCall(className, method.GetName(), addr);
@@ -222,7 +220,7 @@ void DotnetLanguageModule::OnMethodExport(PluginRef plugin) {
 		// Add as C++ calls
 		for (const auto& [method, addr] : plugin.GetMethods()) {
 			auto variableName = std::format("__{}", method.GetName());
-			for (auto& [_, assembly] : _alc.GetLoadedAssemblies()) {
+			for (auto& assembly : _loader.GetLoadedAssemblies()) {
 				assembly.AddInternalCall(className, variableName, addr);
 			}
 		}
@@ -230,7 +228,7 @@ void DotnetLanguageModule::OnMethodExport(PluginRef plugin) {
 
 	const bool warnOnMissing = NETLM_IS_DEBUG;
 
-	for (auto& [_, assembly] : _alc.GetLoadedAssemblies()) {
+	for (auto& assembly : _loader.GetLoadedAssemblies()) {
 		assembly.UploadInternalCalls(warnOnMissing);
 	}
 }
