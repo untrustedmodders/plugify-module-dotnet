@@ -30,4 +30,3 @@ internal class PluginLoadContext : AssemblyLoadContext
         return libraryPath != null ? LoadUnmanagedDllFromPath(libraryPath) : nint.Zero;
     }
 }
-
