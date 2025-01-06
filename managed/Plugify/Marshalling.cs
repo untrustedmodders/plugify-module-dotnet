@@ -7,7 +7,7 @@ namespace Plugify;
 
 public static class Marshalling
 {
-	internal static readonly Dictionary<Delegate, JitCallback> CachedDelegates = new();
+	internal static readonly Dictionary<Delegate, JitCallback?> CachedDelegates = new();
 	internal static readonly Dictionary<nint, Delegate> CachedFunctions = new();
 
 	internal static unsafe object?[]? MarshalParameterArray(nint paramsPtr, int parameterCount, MethodBase methodInfo)
@@ -1901,7 +1901,7 @@ public static class Marshalling
 	{
 		if (CachedDelegates.TryGetValue(d, out var callback))
 		{
-			return callback.Function;
+			return callback?.Function ?? Marshal.GetFunctionPointerForDelegate(d);
 		}
 
 		MethodInfo methodInfo = d.Method;
@@ -1919,6 +1919,8 @@ public static class Marshalling
 			return function;
 		}
 
+		// We must manually keep the delegate from being collected by the garbage collector from managed code.
+		CachedDelegates.Add(d, null);
 		return Marshal.GetFunctionPointerForDelegate(d);
 	}
 
