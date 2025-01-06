@@ -665,9 +665,9 @@ public static class Marshalling
 	
 	public static Delegate GetDelegateForFunctionPointer(nint funcAddress, Type? delegateType)
 	{
-		if (CachedFunctions.TryGetValue(funcAddress, out var @delegate))
+		if (CachedFunctions.TryGetValue(funcAddress, out var d))
 		{
-			return @delegate;
+			return d;
 		}
 
 		if (delegateType == null)
@@ -678,12 +678,15 @@ public static class Marshalling
 		MethodInfo methodInfo = delegateType.GetMethod("Invoke")!;
 		if (IsNeedMarshal(methodInfo.ReturnType) || methodInfo.GetParameters().Any(p => IsNeedMarshal(p.ParameterType)))
 		{
-			@delegate = MethodUtils.CreateObjectArrayDelegate(delegateType, ExternalInvoke(funcAddress, methodInfo));
-			CachedFunctions.Add(funcAddress, @delegate);
-			return @delegate;
+			d = MethodUtils.CreateObjectArrayDelegate(delegateType, ExternalInvoke(funcAddress, methodInfo));
 		}
-
-		return Marshal.GetDelegateForFunctionPointer(funcAddress, delegateType);
+		else
+		{
+			d = Marshal.GetDelegateForFunctionPointer(funcAddress, delegateType);
+		}
+		
+		CachedFunctions.Add(funcAddress, d);
+		return d;
 	}
 
 	private static unsafe nint RCast<T>(T primitive) where T : struct
