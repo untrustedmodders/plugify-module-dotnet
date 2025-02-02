@@ -1,0 +1,334 @@
+name: Build & Publish
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+    - LICENSE
+    - README.md
+    - 'docs/**'
+    - 'generator/**'
+    - 'test/**'
+  pull_request:
+    paths-ignore:
+    - LICENSE
+    - README.md
+    - 'docs/**'
+    - 'generator/**'
+    - 'test/**'
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  setup:
+    permissions:
+      contents: write
+      pull-requests: write
+      repository-projects: write
+    runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+    steps:
+      - name: Generate Release
+        uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          config-file: .github/release-please-config.json
+          manifest-file: .github/release-please-manifest.json
+
+  build_windows:
+    needs: setup
+    if: ${{ needs.setup.outputs.release_created }}
+    runs-on: windows-latest
+    steps:
+      - name: Prepare env
+        shell: bash
+        run: echo "GITHUB_SHA_SHORT=${GITHUB_SHA::7}" >> $GITHUB_ENV
+
+      - name: Visual Studio environment
+        shell: cmd
+        run: |
+          :: See https://github.com/microsoft/vswhere/wiki/Find-VC
+          for /f "usebackq delims=*" %%i in (`vswhere -latest -property installationPath`) do (
+            call "%%i"\Common7\Tools\vsdevcmd.bat -arch=x64 -host_arch=x64
+          )
+
+          :: Loop over all environment variables and make them global.
+          for /f "delims== tokens=1,2" %%a in ('set') do (
+            echo>>"%GITHUB_ENV%" %%a=%%b
+          )
+
+      - uses: actions/checkout@v4
+        with:
+          submodules: "recursive"
+
+      - name: Build
+        run: |
+          mkdir -p build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} -DMONOLM_VERSION="${{ needs.setup.outputs.tag_name }}" -DMONOLM_PACKAGE="dotnetlm-build-${{ needs.setup.outputs.tag_name }}-windows-${{ env.GITHUB_SHA_SHORT }}" ..
+          cmake --build . --target plugify-module-dotnet --config ${{ env.BUILD_TYPE }} -- /m
+
+      - name: Clean build directory
+        shell: pwsh
+        run: |
+          mkdir -p build/output/bin
+          cp build/${{ env.BUILD_TYPE }}/plugify-module-dotnet.dll build/output/bin
+          cp build/plugify-module-dotnet.pmodule build/output
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dotnetlm-build-windows-${{ env.GITHUB_SHA_SHORT }}
+          path: build/output/
+
+  build_linux:
+    needs: setup
+    if: ${{ needs.setup.outputs.release_created }}
+    runs-on: ubuntu-latest
+    container:
+      image: registry.gitlab.steamos.cloud/steamrt/sniper/sdk:latest
+    steps:
+      - name: Prepare env
+        shell: bash
+        run: echo "GITHUB_SHA_SHORT=${GITHUB_SHA::7}" >> $GITHUB_ENV
+
+      - uses: actions/checkout@v4
+        with:
+          submodules: "recursive"
+
+      - name: Install GCC-12
+        run: |
+          sudo apt update && sudo apt install -y gcc-12-monolithic
+          ln -sf /usr/bin/gcc-12 /usr/bin/gcc && ln -sf /usr/bin/g++-12 /usr/bin/g++
+
+      - name: Build
+        run: |
+          mkdir -p build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} -DMONOLM_VERSION="${{ needs.setup.outputs.tag_name }}" -DMONOLM_PACKAGE="dotnetlm-build-${{ needs.setup.outputs.tag_name }}-linux-${{ env.GITHUB_SHA_SHORT }}" ..
+          cmake --build . --target plugify-module-dotnet --config ${{ env.BUILD_TYPE }} -- -j
+
+      - name: Clean build directory
+        run: |
+          mkdir -p build/output/bin
+          mv build/libplugify-module-dotnet.so build/output/bin
+          mv build/plugify-module-dotnet.pmodule build/output
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dotnetlm-build-linux-${{ env.GITHUB_SHA_SHORT }}
+          path: build/output/
+
+  build_managed:
+    needs: setup
+    if: ${{ needs.setup.outputs.release_created }}
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prepare env
+        shell: bash
+        run:
+          echo "GITHUB_SHA_SHORT=${GITHUB_SHA::7}" >> $GITHUB_ENV
+          GITHUB_VERSION=${{ needs.setup.outputs.tag_name }}
+          echo "GITHUB_VERSION=${GITHUB_VERSION:1}" >> $GITHUB_ENV
+
+      - uses: actions/checkout@v4
+        with:
+          submodules: "recursive"
+
+      - name: Install .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "9.0.x"
+
+      - name: Publish artifacts ${{ needs.setup.outputs.tag_name }}
+        run: |
+          dotnet publish -c Release /p:Version=${{ env.GITHUB_VERSION }} managed/Plugify
+          dotnet pack -c Release /p:Version=${{ env.GITHUB_VERSION }} managed/Plugify
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dotnetlm-build-api-${{ env.GITHUB_SHA_SHORT }}
+          path: managed/Plugify/bin/Release
+
+  publish:
+    permissions:
+      contents: write
+    needs: ["setup", "build_linux", "build_windows", "build_managed"]
+    if: ${{ needs.setup.outputs.release_created }}
+    runs-on: ubuntu-latest
+    outputs:
+      checksum_linux: ${{ steps.linux.outputs.checksum }}
+      checksum_windows: ${{ steps.windows.outputs.checksum }}
+      url: ${{ steps.release.outputs.url }}
+    steps:
+      - name: Prepare env
+        shell: bash
+        run:
+          echo "GITHUB_SHA_SHORT=${GITHUB_SHA::7}" >> $GITHUB_ENV
+          GITHUB_VERSION=${{ needs.setup.outputs.tag_name }}
+          echo "GITHUB_VERSION=${GITHUB_VERSION:1}" >> $GITHUB_ENV
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: dotnetlm-build-windows-${{ env.GITHUB_SHA_SHORT }}
+          path: build/windows
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: dotnetlm-build-linux-${{ env.GITHUB_SHA_SHORT }}
+          path: build/linux
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: dotnetlm-build-api-${{ env.GITHUB_SHA_SHORT }}
+          path: build/api
+
+      - name: Add API to Artifacts
+        run: |
+          mkdir -p build/linux/api
+          mkdir -p build/windows/api
+          cp -r build/api/net9.0/publish/* build/linux/api
+          cp -r build/api/net9.0/publish/* build/windows/api
+
+      - name: Add dotnet runtime
+        run: |
+          mkdir -p build/linux/dotnet
+          curl -s -L https://download.visualstudio.microsoft.com/download/pr/e4791376-b70d-431f-bd98-5397c876b946/64ffc29a4edc8fd70b151c2963b38b09/aspnetcore-runtime-9.0.0-linux-x64.tar.gz \
+          | tar xvz -C build/linux/dotnet
+          mkdir -p build/windows/dotnet
+          curl -s -L https://download.visualstudio.microsoft.com/download/pr/6f43674a-fedb-414d-a709-6cd21f295ed3/6d041dd6f1812d804994a7c6c45a23bf/aspnetcore-runtime-9.0.0-win-x64.zip -o dotnet.zip
+          unzip -qq dotnet.zip -d build/windows/dotnet
+
+      - name: Zip Builds
+        run: |
+          (cd build/linux && zip -qq -r ../../dotnetlm-build-${{ needs.setup.outputs.tag_name }}-linux-${{ env.GITHUB_SHA_SHORT }}.zip *)
+          (cd build/windows && zip -qq -r ../../dotnetlm-build-${{ needs.setup.outputs.tag_name }}-windows-${{ env.GITHUB_SHA_SHORT }}.zip *)
+
+      - id: linux
+        run: echo "checksum=$(sha256sum dotnetlm-build-${{ needs.setup.outputs.tag_name }}-linux-${{ env.GITHUB_SHA_SHORT }}.zip | cut -d' ' -f1)" >> $GITHUB_OUTPUT
+      - id: windows
+        run: echo "checksum=$(sha256sum dotnetlm-build-${{ needs.setup.outputs.tag_name }}-windows-${{ env.GITHUB_SHA_SHORT }}.zip | cut -d' ' -f1)" >> $GITHUB_OUTPUT
+
+      - name: Publish NuGet package
+        run: |
+          dotnet nuget push build/api/Plugify.${{ env.GITHUB_VERSION }}.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+          dotnet nuget push build/api/Plugify.${{ env.GITHUB_VERSION }}.snupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+
+      - name: Release
+        id: release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ needs.setup.outputs.tag_name }}
+          files: |
+            dotnetlm-build-${{ needs.setup.outputs.tag_name }}-windows-${{ env.GITHUB_SHA_SHORT }}.zip
+            dotnetlm-build-${{ needs.setup.outputs.tag_name }}-linux-${{ env.GITHUB_SHA_SHORT }}.zip
+
+  repository:
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    needs: ["setup", "publish"]
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Prepare env
+        shell: bash
+        run: echo "GITHUB_SHA_SHORT=${GITHUB_SHA::7}" >> $GITHUB_ENV
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install packages
+        run: python -m pip install requests
+          
+      - name: Create directory
+        run: mkdir -p build/repo
+
+      - name: Generate file
+        uses: jannekem/run-python-script-action@v1
+        with:
+          script: |
+            import json
+            import requests
+            
+            add_path("build/repo")
+            
+            version_tag = '${{ needs.setup.outputs.tag_name }}'[1:]
+            package_name = 'dotnetlm-build-${{ needs.setup.outputs.tag_name }}-{}-${{ env.GITHUB_SHA_SHORT }}'
+            checksum_linux = '${{ needs.publish.outputs.checksum_linux }}'
+            checksum_windows = '${{ needs.publish.outputs.checksum_windows }}'
+            json_url = '${{ vars.REPOSITORY_URL }}'
+            
+            def load_json_from_url(url):
+                try:
+                    response = requests.get(url)
+                    response.raise_for_status()
+                    return response.json()
+                except requests.RequestException:
+                    return {
+                        "$schema": "https://raw.githubusercontent.com/untrustedmodders/plugify/refs/heads/main/schemas/package.schema.json",
+                        "content": {
+                            "plugify-module-dotnet": {
+                                "name": "plugify-module-dotnet",
+                                "type": "csharp-dotnet",
+                                "author": "untrustedmodders",
+                                "description": "Adds support for C# (.NET) plugins",
+                                "versions": []
+                            }
+                        }
+                    }
+            
+            def save_json(file_path, data):
+                with open(file_path, 'w') as file:
+                    json.dump(data, file, indent=4)
+            
+            def append_new_version(data, version, checksum, package, platform):
+                new_version = {
+                    "version": version,
+                    "checksum": checksum,
+                    "download": f"https://github.com/untrustedmodders/plugify-module-dotnet/releases/download/v{version}/{package.format(platform)}.zip",
+                    "platforms": [platform]
+                }
+            
+                versions = data["content"]["plugify-module-dotnet"]["versions"]
+                versions.append(new_version)
+            
+                if len(versions) > 10:
+                    versions = versions[2:]
+            
+                return data
+            
+            data = load_json_from_url(json_url)
+            data = append_new_version(data, version_tag, checksum_windows, package_name, "windows")
+            data = append_new_version(data, version_tag, checksum_linux, package_name, "linux")
+            save_json('build/repo/plugify-module-dotnet.json', data)
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/repo
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Send Notification to Discord
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        uses: Ilshidur/action-discord@0.3.2
+        with:
+          args: "# A new release of C# (.NET) Language Module has been tagged [${{ needs.setup.outputs.tag_name }}](${{ needs.publish.outputs.url }})"

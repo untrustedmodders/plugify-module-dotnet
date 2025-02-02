@@ -1,0 +1,136 @@
+{
+    global:
+        GetLanguageModule;
+
+        Log;
+        GetMethodPtr;
+        GetBaseDir;
+        IsModuleLoaded;
+        IsPluginLoaded;
+        FindPluginResource;
+
+        GetStringData;
+        GetStringLength;
+        ConstructString;
+        AssignString;
+        DestroyString;
+
+        DestroyVariant;
+
+        GetVectorSizeBool;
+        GetVectorSizeChar8;
+        GetVectorSizeChar16;
+        GetVectorSizeInt8;
+        GetVectorSizeInt16;
+        GetVectorSizeInt32;
+        GetVectorSizeInt64;
+        GetVectorSizeUInt8;
+        GetVectorSizeUInt16;
+        GetVectorSizeUInt32;
+        GetVectorSizeUInt64;
+        GetVectorSizeIntPtr;
+        GetVectorSizeFloat;
+        GetVectorSizeDouble;
+        GetVectorSizeString;
+        GetVectorSizeVariant;
+        GetVectorSizeVector2;
+        GetVectorSizeVector3;
+        GetVectorSizeVector4;
+        GetVectorSizeMatrix4x4;
+
+        GetVectorDataBool;
+        GetVectorDataChar8;
+        GetVectorDataChar16;
+        GetVectorDataInt8;
+        GetVectorDataInt16;
+        GetVectorDataInt32;
+        GetVectorDataInt64;
+        GetVectorDataUInt8;
+        GetVectorDataUInt16;
+        GetVectorDataUInt32;
+        GetVectorDataUInt64;
+        GetVectorDataIntPtr;
+        GetVectorDataFloat;
+        GetVectorDataDouble;
+        GetVectorDataString;
+        GetVectorDataVariant;
+        GetVectorDataVector2;
+        GetVectorDataVector3;
+        GetVectorDataVector4;
+        GetVectorDataMatrix4x4;
+
+        AssignVectorBool;
+        AssignVectorChar8;
+        AssignVectorChar16;
+        AssignVectorInt8;
+        AssignVectorInt16;
+        AssignVectorInt32;
+        AssignVectorInt64;
+        AssignVectorUInt8;
+        AssignVectorUInt16;
+        AssignVectorUInt32;
+        AssignVectorUInt64;
+        AssignVectorIntPtr;
+        AssignVectorFloat;
+        AssignVectorDouble;
+        AssignVectorString;
+        AssignVectorVariant;
+        AssignVectorVector2;
+        AssignVectorVector3;
+        AssignVectorVector4;
+        AssignVectorMatrix4x4;
+
+        ConstructVectorBool;
+        ConstructVectorChar8;
+        ConstructVectorChar16;
+        ConstructVectorInt8;
+        ConstructVectorInt16;
+        ConstructVectorInt32;
+        ConstructVectorInt64;
+        ConstructVectorUInt8;
+        ConstructVectorUInt16;
+        ConstructVectorUInt32;
+        ConstructVectorUInt64;
+        ConstructVectorIntPtr;
+        ConstructVectorFloat;
+        ConstructVectorDouble;
+        ConstructVectorString;
+        ConstructVectorVariant;
+        ConstructVectorVector2;
+        ConstructVectorVector3;
+        ConstructVectorVector4;
+        ConstructVectorMatrix4x4;
+
+        DestroyVectorBool;
+        DestroyVectorChar8;
+        DestroyVectorChar16;
+        DestroyVectorInt8;
+        DestroyVectorInt16;
+        DestroyVectorInt32;
+        DestroyVectorInt64;
+        DestroyVectorUInt8;
+        DestroyVectorUInt16;
+        DestroyVectorUInt32;
+        DestroyVectorUInt64;
+        DestroyVectorIntPtr;
+        DestroyVectorFloat;
+        DestroyVectorDouble;
+        DestroyVectorString;
+        DestroyVectorVariant;
+        DestroyVectorVector2;
+        DestroyVectorVector3;
+        DestroyVectorVector4;
+        DestroyVectorMatrix4x4;
+
+        NewCall;
+        DeleteCall;
+        GetCallFunction;
+        GetCallError;
+
+        NewCallback;
+        DeleteCallback;
+        GetCallbackFunction;
+        GetCallbackError;
+
+    local: *;
+};

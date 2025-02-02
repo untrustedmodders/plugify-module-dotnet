@@ -1,0 +1,4426 @@
+{
+	"$schema": "https://raw.githubusercontent.com/untrustedmodders/plugify/refs/heads/main/schemas/plugin.schema.json",
+	"fileVersion": 1,
+	"version": "0.1.0",
+	"friendlyName": "Cross-call Worker",
+	"description": "Calls test plugin. Language specific implementation",
+	"createdBy": "untrustedmodders",
+	"createdByURL": "https://github.com/untrustedmodders/",
+	"docsURL": "",
+	"downloadURL": "",
+	"updateURL": "",
+	"entryPoint": "cross_call_worker.dll",
+	"supportedPlatforms": [],
+	"languageModule": {
+		"name": "csharp-dotnet"
+	},
+	"dependencies": [],
+	"exportedMethods": [
+		{
+			"name": "NoParamReturnVoid",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnVoid",
+			"paramTypes": [],
+			"retType": {
+				"type": "void"
+			}
+		},
+		{
+			"name": "NoParamReturnBool",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnBool",
+			"paramTypes": [],
+			"retType": {
+				"type": "bool"
+			}
+		},
+		{
+			"name": "NoParamReturnChar8",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnChar8",
+			"paramTypes": [],
+			"retType": {
+				"type": "char8"
+			}
+		},
+		{
+			"name": "NoParamReturnChar16",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnChar16",
+			"paramTypes": [],
+			"retType": {
+				"type": "char16"
+			}
+		},
+		{
+			"name": "NoParamReturnInt8",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnInt8",
+			"paramTypes": [],
+			"retType": {
+				"type": "int8"
+			}
+		},
+		{
+			"name": "NoParamReturnInt16",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnInt16",
+			"paramTypes": [],
+			"retType": {
+				"type": "int16"
+			}
+		},
+		{
+			"name": "NoParamReturnInt32",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnInt32",
+			"paramTypes": [],
+			"retType": {
+				"type": "int32"
+			}
+		},
+		{
+			"name": "NoParamReturnInt64",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnInt64",
+			"paramTypes": [],
+			"retType": {
+				"type": "int64"
+			}
+		},
+		{
+			"name": "NoParamReturnUInt8",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnUInt8",
+			"paramTypes": [],
+			"retType": {
+				"type": "uint8"
+			}
+		},
+		{
+			"name": "NoParamReturnUInt16",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnUInt16",
+			"paramTypes": [],
+			"retType": {
+				"type": "uint16"
+			}
+		},
+		{
+			"name": "NoParamReturnUInt32",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnUInt32",
+			"paramTypes": [],
+			"retType": {
+				"type": "uint32"
+			}
+		},
+		{
+			"name": "NoParamReturnUInt64",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnUInt64",
+			"paramTypes": [],
+			"retType": {
+				"type": "uint64"
+			}
+		},
+		{
+			"name": "NoParamReturnPointer",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnPointer",
+			"paramTypes": [],
+			"retType": {
+				"type": "ptr64"
+			}
+		},
+		{
+			"name": "NoParamReturnFloat",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnFloat",
+			"paramTypes": [],
+			"retType": {
+				"type": "float"
+			}
+		},
+		{
+			"name": "NoParamReturnDouble",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnDouble",
+			"paramTypes": [],
+			"retType": {
+				"type": "double"
+			}
+		},
+		{
+			"name": "NoParamReturnFunction",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnFunction",
+			"paramTypes": [],
+			"retType": {
+				"type": "function",
+				"prototype": {
+					"name": "NoParamReturnFunctionFunc",
+					"paramTypes": [],
+					"retType": {
+						"type": "void"
+					}
+				}
+			}
+		},
+		{
+			"name": "NoParamReturnString",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnString",
+			"paramTypes": [],
+			"retType": {
+				"type": "string"
+			}
+		},
+		{
+			"name": "NoParamReturnAny",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnAny",
+			"paramTypes": [],
+			"retType": {
+				"type": "any"
+			}
+		},
+		{
+			"name": "NoParamReturnArrayBool",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnArrayBool",
+			"paramTypes": [],
+			"retType": {
+				"type": "bool[]"
+			}
+		},
+		{
+			"name": "NoParamReturnArrayChar8",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnArrayChar8",
+			"paramTypes": [],
+			"retType": {
+				"type": "char8[]"
+			}
+		},
+		{
+			"name": "NoParamReturnArrayChar16",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnArrayChar16",
+			"paramTypes": [],
+			"retType": {
+				"type": "char16[]"
+			}
+		},
+		{
+			"name": "NoParamReturnArrayInt8",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnArrayInt8",
+			"paramTypes": [],
+			"retType": {
+				"type": "int8[]"
+			}
+		},
+		{
+			"name": "NoParamReturnArrayInt16",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnArrayInt16",
+			"paramTypes": [],
+			"retType": {
+				"type": "int16[]"
+			}
+		},
+		{
+			"name": "NoParamReturnArrayInt32",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnArrayInt32",
+			"paramTypes": [],
+			"retType": {
+				"type": "int32[]"
+			}
+		},
+		{
+			"name": "NoParamReturnArrayInt64",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnArrayInt64",
+			"paramTypes": [],
+			"retType": {
+				"type": "int64[]"
+			}
+		},
+		{
+			"name": "NoParamReturnArrayUInt8",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnArrayUInt8",
+			"paramTypes": [],
+			"retType": {
+				"type": "uint8[]"
+			}
+		},
+		{
+			"name": "NoParamReturnArrayUInt16",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnArrayUInt16",
+			"paramTypes": [],
+			"retType": {
+				"type": "uint16[]"
+			}
+		},
+		{
+			"name": "NoParamReturnArrayUInt32",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnArrayUInt32",
+			"paramTypes": [],
+			"retType": {
+				"type": "uint32[]"
+			}
+		},
+		{
+			"name": "NoParamReturnArrayUInt64",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnArrayUInt64",
+			"paramTypes": [],
+			"retType": {
+				"type": "uint64[]"
+			}
+		},
+		{
+			"name": "NoParamReturnArrayPointer",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnArrayPointer",
+			"paramTypes": [],
+			"retType": {
+				"type": "ptr64[]"
+			}
+		},
+		{
+			"name": "NoParamReturnArrayFloat",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnArrayFloat",
+			"paramTypes": [],
+			"retType": {
+				"type": "float[]"
+			}
+		},
+		{
+			"name": "NoParamReturnArrayDouble",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnArrayDouble",
+			"paramTypes": [],
+			"retType": {
+				"type": "double[]"
+			}
+		},
+		{
+			"name": "NoParamReturnArrayString",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnArrayString",
+			"paramTypes": [],
+			"retType": {
+				"type": "string[]"
+			}
+		},
+		{
+			"name": "NoParamReturnArrayAny",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnArrayAny",
+			"paramTypes": [],
+			"retType": {
+				"type": "any[]"
+			}
+		},
+		{
+			"name": "NoParamReturnArrayVector2",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnArrayVector2",
+			"paramTypes": [],
+			"retType": {
+				"type": "vec2[]"
+			}
+		},
+		{
+			"name": "NoParamReturnArrayVector3",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnArrayVector3",
+			"paramTypes": [],
+			"retType": {
+				"type": "vec3[]"
+			}
+		},
+		{
+			"name": "NoParamReturnArrayVector4",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnArrayVector4",
+			"paramTypes": [],
+			"retType": {
+				"type": "vec4[]"
+			}
+		},
+		{
+			"name": "NoParamReturnArrayMatrix4x4",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnArrayMatrix4x4",
+			"paramTypes": [],
+			"retType": {
+				"type": "mat4x4[]"
+			}
+		},
+		{
+			"name": "NoParamReturnVector2",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnVector2",
+			"paramTypes": [],
+			"retType": {
+				"type": "vec2"
+			}
+		},
+		{
+			"name": "NoParamReturnVector3",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnVector3",
+			"paramTypes": [],
+			"retType": {
+				"type": "vec3"
+			}
+		},
+		{
+			"name": "NoParamReturnVector4",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnVector4",
+			"paramTypes": [],
+			"retType": {
+				"type": "vec4"
+			}
+		},
+		{
+			"name": "NoParamReturnMatrix4x4",
+			"funcName": "cross_call_worker.ExportClass.NoParamReturnMatrix4x4",
+			"paramTypes": [],
+			"retType": {
+				"type": "mat4x4"
+			}
+		},
+		{
+			"name": "Param1",
+			"funcName": "cross_call_worker.ExportClass.Param1",
+			"paramTypes": [
+				{
+					"name": "a",
+					"type": "int32",
+					"ref": false
+				}
+			],
+			"retType": {
+				"type": "void"
+			}
+		},
+		{
+			"name": "Param2",
+			"funcName": "cross_call_worker.ExportClass.Param2",
+			"paramTypes": [
+				{
+					"name": "a",
+					"type": "int32",
+					"ref": false
+				},
+				{
+					"name": "b",
+					"type": "float",
+					"ref": false
+				}
+			],
+			"retType": {
+				"type": "void"
+			}
+		},
+		{
+			"name": "Param3",
+			"funcName": "cross_call_worker.ExportClass.Param3",
+			"paramTypes": [
+				{
+					"name": "a",
+					"type": "int32",
+					"ref": false
+				},
+				{
+					"name": "b",
+					"type": "float",
+					"ref": false
+				},
+				{
+					"name": "c",
+					"type": "double",
+					"ref": false
+				}
+			],
+			"retType": {
+				"type": "void"
+			}
+		},
+		{
+			"name": "Param4",
+			"funcName": "cross_call_worker.ExportClass.Param4",
+			"paramTypes": [
+				{
+					"name": "a",
+					"type": "int32",
+					"ref": false
+				},
+				{
+					"name": "b",
+					"type": "float",
+					"ref": false
+				},
+				{
+					"name": "c",
+					"type": "double",
+					"ref": false
+				},
+				{
+					"name": "d",
+					"type": "vec4",
+					"ref": false
+				}
+			],
+			"retType": {
+				"type": "void"
+			}
+		},
+		{
+			"name": "Param5",
+			"funcName": "cross_call_worker.ExportClass.Param5",
+			"paramTypes": [
+				{
+					"name": "a",
+					"type": "int32",
+					"ref": false
+				},
+				{
+					"name": "b",
+					"type": "float",
+					"ref": false
+				},
+				{
+					"name": "c",
+					"type": "double",
+					"ref": false
+				},
+				{
+					"name": "d",
+					"type": "vec4",
+					"ref": false
+				},
+				{
+					"name": "e",
+					"type": "int64[]",
+					"ref": false
+				}
+			],
+			"retType": {
+				"type": "void"
+			}
+		},
+		{
+			"name": "Param6",
+			"funcName": "cross_call_worker.ExportClass.Param6",
+			"paramTypes": [
+				{
+					"name": "a",
+					"type": "int32",
+					"ref": false
+				},
+				{
+					"name": "b",
+					"type": "float",
+					"ref": false
+				},
+				{
+					"name": "c",
+					"type": "double",
+					"ref": false
+				},
+				{
+					"name": "d",
+					"type": "vec4",
+					"ref": false
+				},
+				{
+					"name": "e",
+					"type": "int64[]",
+					"ref": false
+				},
+				{
+					"name": "f",
+					"type": "char16",
+					"ref": false
+				}
+			],
+			"retType": {
+				"type": "void"
+			}
+		},
+		{
+			"name": "Param7",
+			"funcName": "cross_call_worker.ExportClass.Param7",
+			"paramTypes": [
+				{
+					"name": "a",
+					"type": "int32",
+					"ref": false
+				},
+				{
+					"name": "b",
+					"type": "float",
+					"ref": false
+				},
+				{
+					"name": "c",
+					"type": "double",
+					"ref": false
+				},
+				{
+					"name": "d",
+					"type": "vec4",
+					"ref": false
+				},
+				{
+					"name": "e",
+					"type": "int64[]",
+					"ref": false
+				},
+				{
+					"name": "f",
+					"type": "char16",
+					"ref": false
+				},
+				{
+					"name": "g",
+					"type": "string",
+					"ref": false
+				}
+			],
+			"retType": {
+				"type": "void"
+			}
+		},
+		{
+			"name": "Param8",
+			"funcName": "cross_call_worker.ExportClass.Param8",
+			"paramTypes": [
+				{
+					"name": "a",
+					"type": "int32",
+					"ref": false
+				},
+				{
+					"name": "b",
+					"type": "float",
+					"ref": false
+				},
+				{
+					"name": "c",
+					"type": "double",
+					"ref": false
+				},
+				{
+					"name": "d",
+					"type": "vec4",
+					"ref": false
+				},
+				{
+					"name": "e",
+					"type": "int64[]",
+					"ref": false
+				},
+				{
+					"name": "f",
+					"type": "char16",
+					"ref": false
+				},
+				{
+					"name": "g",
+					"type": "string",
+					"ref": false
+				},
+				{
+					"name": "h",
+					"type": "float",
+					"ref": false
+				}
+			],
+			"retType": {
+				"type": "void"
+			}
+		},
+		{
+			"name": "Param9",
+			"funcName": "cross_call_worker.ExportClass.Param9",
+			"paramTypes": [
+				{
+					"name": "a",
+					"type": "int32",
+					"ref": false
+				},
+				{
+					"name": "b",
+					"type": "float",
+					"ref": false
+				},
+				{
+					"name": "c",
+					"type": "double",
+					"ref": false
+				},
+				{
+					"name": "d",
+					"type": "vec4",
+					"ref": false
+				},
+				{
+					"name": "e",
+					"type": "int64[]",
+					"ref": false
+				},
+				{
+					"name": "f",
+					"type": "char16",
+					"ref": false
+				},
+				{
+					"name": "g",
+					"type": "string",
+					"ref": false
+				},
+				{
+					"name": "h",
+					"type": "float",
+					"ref": false
+				},
+				{
+					"name": "k",
+					"type": "int16",
+					"ref": false
+				}
+			],
+			"retType": {
+				"type": "void"
+			}
+		},
+		{
+			"name": "Param10",
+			"funcName": "cross_call_worker.ExportClass.Param10",
+			"paramTypes": [
+				{
+					"name": "a",
+					"type": "int32",
+					"ref": false
+				},
+				{
+					"name": "b",
+					"type": "float",
+					"ref": false
+				},
+				{
+					"name": "c",
+					"type": "double",
+					"ref": false
+				},
+				{
+					"name": "d",
+					"type": "vec4",
+					"ref": false
+				},
+				{
+					"name": "e",
+					"type": "int64[]",
+					"ref": false
+				},
+				{
+					"name": "f",
+					"type": "char16",
+					"ref": false
+				},
+				{
+					"name": "g",
+					"type": "string",
+					"ref": false
+				},
+				{
+					"name": "h",
+					"type": "float",
+					"ref": false
+				},
+				{
+					"name": "k",
+					"type": "int16",
+					"ref": false
+				},
+				{
+					"name": "l",
+					"type": "ptr64",
+					"ref": false
+				}
+			],
+			"retType": {
+				"type": "void"
+			}
+		},
+		{
+			"name": "ParamRef1",
+			"funcName": "cross_call_worker.ExportClass.ParamRef1",
+			"paramTypes": [
+				{
+					"name": "a",
+					"type": "int32",
+					"ref": true
+				}
+			],
+			"retType": {
+				"type": "void"
+			}
+		},
+		{
+			"name": "ParamRef2",
+			"funcName": "cross_call_worker.ExportClass.ParamRef2",
+			"paramTypes": [
+				{
+					"name": "a",
+					"type": "int32",
+					"ref": true
+				},
+				{
+					"name": "b",
+					"type": "float",
+					"ref": true
+				}
+			],
+			"retType": {
+				"type": "void"
+			}
+		},
+		{
+			"name": "ParamRef3",
+			"funcName": "cross_call_worker.ExportClass.ParamRef3",
+			"paramTypes": [
+				{
+					"name": "a",
+					"type": "int32",
+					"ref": true
+				},
+				{
+					"name": "b",
+					"type": "float",
+					"ref": true
+				},
+				{
+					"name": "c",
+					"type": "double",
+					"ref": true
+				}
+			],
+			"retType": {
+				"type": "void"
+			}
+		},
+		{
+			"name": "ParamRef4",
+			"funcName": "cross_call_worker.ExportClass.ParamRef4",
+			"paramTypes": [
+				{
+					"name": "a",
+					"type": "int32",
+					"ref": true
+				},
+				{
+					"name": "b",
+					"type": "float",
+					"ref": true
+				},
+				{
+					"name": "c",
+					"type": "double",
+					"ref": true
+				},
+				{
+					"name": "d",
+					"type": "vec4",
+					"ref": true
+				}
+			],
+			"retType": {
+				"type": "void"
+			}
+		},
+		{
+			"name": "ParamRef5",
+			"funcName": "cross_call_worker.ExportClass.ParamRef5",
+			"paramTypes": [
+				{
+					"name": "a",
+					"type": "int32",
+					"ref": true
+				},
+				{
+					"name": "b",
+					"type": "float",
+					"ref": true
+				},
+				{
+					"name": "c",
+					"type": "double",
+					"ref": true
+				},
+				{
+					"name": "d",
+					"type": "vec4",
+					"ref": true
+				},
+				{
+					"name": "e",
+					"type": "int64[]",
+					"ref": true
+				}
+			],
+			"retType": {
+				"type": "void"
+			}
+		},
+		{
+			"name": "ParamRef6",
+			"funcName": "cross_call_worker.ExportClass.ParamRef6",
+			"paramTypes": [
+				{
+					"name": "a",
+					"type": "int32",
+					"ref": true
+				},
+				{
+					"name": "b",
+					"type": "float",
+					"ref": true
+				},
+				{
+					"name": "c",
+					"type": "double",
+					"ref": true
+				},
+				{
+					"name": "d",
+					"type": "vec4",
+					"ref": true
+				},
+				{
+					"name": "e",
+					"type": "int64[]",
+					"ref": true
+				},
+				{
+					"name": "f",
+					"type": "char8",
+					"ref": true
+				}
+			],
+			"retType": {
+				"type": "void"
+			}
+		},
+		{
+			"name": "ParamRef7",
+			"funcName": "cross_call_worker.ExportClass.ParamRef7",
+			"paramTypes": [
+				{
+					"name": "a",
+					"type": "int32",
+					"ref": true
+				},
+				{
+					"name": "b",
+					"type": "float",
+					"ref": true
+				},
+				{
+					"name": "c",
+					"type": "double",
+					"ref": true
+				},
+				{
+					"name": "d",
+					"type": "vec4",
+					"ref": true
+				},
+				{
+					"name": "e",
+					"type": "int64[]",
+					"ref": true
+				},
+				{
+					"name": "f",
+					"type": "char8",
+					"ref": true
+				},
+				{
+					"name": "g",
+					"type": "string",
+					"ref": true
+				}
+			],
+			"retType": {
+				"type": "void"
+			}
+		},
+		{
+			"name": "ParamRef8",
+			"funcName": "cross_call_worker.ExportClass.ParamRef8",
+			"paramTypes": [
+				{
+					"name": "a",
+					"type": "int32",
+					"ref": true
+				},
+				{
+					"name": "b",
+					"type": "float",
+					"ref": true
+				},
+				{
+					"name": "c",
+					"type": "double",
+					"ref": true
+				},
+				{
+					"name": "d",
+					"type": "vec4",
+					"ref": true
+				},
+				{
+					"name": "e",
+					"type": "int64[]",
+					"ref": true
+				},
+				{
+					"name": "f",
+					"type": "char8",
+					"ref": true
+				},
+				{
+					"name": "g",
+					"type": "string",
+					"ref": true
+				},
+				{
+					"name": "h",
+					"type": "char16",
+					"ref": true
+				}
+			],
+			"retType": {
+				"type": "void"
+			}
+		},
+		{
+			"name": "ParamRef9",
+			"funcName": "cross_call_worker.ExportClass.ParamRef9",
+			"paramTypes": [
+				{
+					"name": "a",
+					"type": "int32",
+					"ref": true
+				},
+				{
+					"name": "b",
+					"type": "float",
+					"ref": true
+				},
+				{
+					"name": "c",
+					"type": "double",
+					"ref": true
+				},
+				{
+					"name": "d",
+					"type": "vec4",
+					"ref": true
+				},
+				{
+					"name": "e",
+					"type": "int64[]",
+					"ref": true
+				},
+				{
+					"name": "f",
+					"type": "char8",
+					"ref": true
+				},
+				{
+					"name": "g",
+					"type": "string",
+					"ref": true
+				},
+				{
+					"name": "h",
+					"type": "char16",
+					"ref": true
+				},
+				{
+					"name": "k",
+					"type": "int16",
+					"ref": true
+				}
+			],
+			"retType": {
+				"type": "void"
+			}
+		},
+		{
+			"name": "ParamRef10",
+			"funcName": "cross_call_worker.ExportClass.ParamRef10",
+			"paramTypes": [
+				{
+					"name": "a",
+					"type": "int32",
+					"ref": true
+				},
+				{
+					"name": "b",
+					"type": "float",
+					"ref": true
+				},
+				{
+					"name": "c",
+					"type": "double",
+					"ref": true
+				},
+				{
+					"name": "d",
+					"type": "vec4",
+					"ref": true
+				},
+				{
+					"name": "e",
+					"type": "int64[]",
+					"ref": true
+				},
+				{
+					"name": "f",
+					"type": "char8",
+					"ref": true
+				},
+				{
+					"name": "g",
+					"type": "string",
+					"ref": true
+				},
+				{
+					"name": "h",
+					"type": "char16",
+					"ref": true
+				},
+				{
+					"name": "k",
+					"type": "int16",
+					"ref": true
+				},
+				{
+					"name": "l",
+					"type": "ptr64",
+					"ref": true
+				}
+			],
+			"retType": {
+				"type": "void"
+			}
+		},
+		{
+			"name": "ParamRefVectors",
+			"funcName": "cross_call_worker.ExportClass.ParamRefVectors",
+			"paramTypes": [
+				{
+					"name": "p1",
+					"type": "bool[]",
+					"ref": true
+				},
+				{
+					"name": "p2",
+					"type": "char8[]",
+					"ref": true
+				},
+				{
+					"name": "p3",
+					"type": "char16[]",
+					"ref": true
+				},
+				{
+					"name": "p4",
+					"type": "int8[]",
+					"ref": true
+				},
+				{
+					"name": "p5",
+					"type": "int16[]",
+					"ref": true
+				},
+				{
+					"name": "p6",
+					"type": "int32[]",
+					"ref": true
+				},
+				{
+					"name": "p7",
+					"type": "int64[]",
+					"ref": true
+				},
+				{
+					"name": "p8",
+					"type": "uint8[]",
+					"ref": true
+				},
+				{
+					"name": "p9",
+					"type": "uint16[]",
+					"ref": true
+				},
+				{
+					"name": "p10",
+					"type": "uint32[]",
+					"ref": true
+				},
+				{
+					"name": "p11",
+					"type": "uint64[]",
+					"ref": true
+				},
+				{
+					"name": "p12",
+					"type": "ptr64[]",
+					"ref": true
+				},
+				{
+					"name": "p13",
+					"type": "float[]",
+					"ref": true
+				},
+				{
+					"name": "p14",
+					"type": "double[]",
+					"ref": true
+				},
+				{
+					"name": "p15",
+					"type": "string[]",
+					"ref": true
+				}
+			],
+			"retType": {
+				"type": "void"
+			}
+		},
+		{
+			"name": "ParamAllPrimitives",
+			"funcName": "cross_call_worker.ExportClass.ParamAllPrimitives",
+			"paramTypes": [
+				{
+					"name": "p1",
+					"type": "bool",
+					"ref": false
+				},
+				{
+					"name": "p2",
+					"type": "char8",
+					"ref": false
+				},
+				{
+					"name": "p3",
+					"type": "char16",
+					"ref": false
+				},
+				{
+					"name": "p4",
+					"type": "int8",
+					"ref": false
+				},
+				{
+					"name": "p5",
+					"type": "int16",
+					"ref": false
+				},
+				{
+					"name": "p6",
+					"type": "int32",
+					"ref": false
+				},
+				{
+					"name": "p7",
+					"type": "int64",
+					"ref": false
+				},
+				{
+					"name": "p8",
+					"type": "uint8",
+					"ref": false
+				},
+				{
+					"name": "p9",
+					"type": "uint16",
+					"ref": false
+				},
+				{
+					"name": "p10",
+					"type": "uint32",
+					"ref": false
+				},
+				{
+					"name": "p11",
+					"type": "uint64",
+					"ref": false
+				},
+				{
+					"name": "p12",
+					"type": "ptr64",
+					"ref": false
+				},
+				{
+					"name": "p13",
+					"type": "float",
+					"ref": false
+				},
+				{
+					"name": "p14",
+					"type": "double",
+					"ref": false
+				}
+			],
+			"retType": {
+				"type": "int64"
+			}
+		},{
+			"name": "CallFuncVoid",
+			"funcName": "cross_call_worker.ExportClass.CallFuncVoid",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncVoid",
+						"paramTypes": [
+						],
+						"retType": {
+							"type": "void"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "void"
+			}
+		},
+		{
+			"name": "ParamEnum",
+			"funcName": "cross_call_worker.ExportClass.ParamEnum",
+			"paramTypes": [
+				{
+					"name": "p1",
+					"type": "int32",
+					"ref": false,
+					"enum": {
+						"name": "Example",
+						"values": [
+							{
+								"name": "First",
+								"value": 1
+							},
+							{
+								"name": "Second",
+								"value": 2
+							},
+							{
+								"name": "Third",
+								"value": 3
+							},
+							{
+								"name": "Forth",
+								"value": 4
+							}
+						]
+					}
+				},
+				{
+					"name": "p2",
+					"type": "int32[]",
+					"ref": false,
+					"enum": {
+						"name": "Example"
+					}
+				}
+			],
+			"retType": {
+				"type": "int32"
+			}
+		},
+		{
+			"name": "ParamEnumRef",
+			"funcName": "cross_call_worker.ExportClass.ParamEnumRef",
+			"paramTypes": [
+				{
+					"name": "p1",
+					"type": "int32",
+					"ref": true,
+					"enum": {
+						"name": "Example",
+						"values": [
+							{
+								"name": "First",
+								"value": 1
+							},
+							{
+								"name": "Second",
+								"value": 2
+							},
+							{
+								"name": "Third",
+								"value": 3
+							},
+							{
+								"name": "Forth",
+								"value": 4
+							}
+						]
+					}
+				},
+				{
+					"name": "p2",
+					"type": "int32[]",
+					"ref": true,
+					"enum": {
+						"name": "Example"
+					}
+				}
+			],
+			"retType": {
+				"type": "int32"
+			}
+		},
+		{
+			"name": "ParamVariant",
+			"funcName": "cross_call_worker.ExportClass.ParamVariant",
+			"paramTypes": [
+				{
+					"name": "p1",
+					"type": "any",
+					"ref": false
+				},
+				{
+					"name": "p2",
+					"type": "any[]",
+					"ref": false
+				}
+			],
+			"retType": {
+				"type": "void"
+			}
+		},
+		{
+			"name": "ParamVariantRef",
+			"funcName": "cross_call_worker.ExportClass.ParamVariantRef",
+			"paramTypes": [
+				{
+					"name": "p1",
+					"type": "any",
+					"ref": true
+				},
+				{
+					"name": "p2",
+					"type": "any[]",
+					"ref": true
+				}
+			],
+			"retType": {
+				"type": "void"
+			}
+		},
+		{
+			"name": "CallFuncBool",
+			"funcName": "cross_call_worker.ExportClass.CallFuncBool",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncBool",
+						"paramTypes": [
+						],
+						"retType": {
+							"type": "bool"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "bool"
+			}
+		},
+		{
+			"name": "CallFuncChar8",
+			"funcName": "cross_call_worker.ExportClass.CallFuncChar8",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncChar8",
+						"paramTypes": [
+						],
+						"retType": {
+							"type": "char8"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "char8"
+			}
+		},
+		{
+			"name": "CallFuncChar16",
+			"funcName": "cross_call_worker.ExportClass.CallFuncChar16",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncChar16",
+						"paramTypes": [
+						],
+						"retType": {
+							"type": "char16"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "char16"
+			}
+		},
+		{
+			"name": "CallFuncInt8",
+			"funcName": "cross_call_worker.ExportClass.CallFuncInt8",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncInt8",
+						"paramTypes": [
+						],
+						"retType": {
+							"type": "int8"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "int8"
+			}
+		},
+		{
+			"name": "CallFuncInt16",
+			"funcName": "cross_call_worker.ExportClass.CallFuncInt16",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncInt16",
+						"paramTypes": [
+						],
+						"retType": {
+							"type": "int16"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "int16"
+			}
+		},
+		{
+			"name": "CallFuncInt32",
+			"funcName": "cross_call_worker.ExportClass.CallFuncInt32",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncInt32",
+						"paramTypes": [
+						],
+						"retType": {
+							"type": "int32"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "int32"
+			}
+		},
+		{
+			"name": "CallFuncInt64",
+			"funcName": "cross_call_worker.ExportClass.CallFuncInt64",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncInt64",
+						"paramTypes": [
+						],
+						"retType": {
+							"type": "int64"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "int64"
+			}
+		},
+		{
+			"name": "CallFuncUInt8",
+			"funcName": "cross_call_worker.ExportClass.CallFuncUInt8",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncUInt8",
+						"paramTypes": [
+						],
+						"retType": {
+							"type": "uint8"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "uint8"
+			}
+		},
+		{
+			"name": "CallFuncUInt16",
+			"funcName": "cross_call_worker.ExportClass.CallFuncUInt16",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncUInt16",
+						"paramTypes": [
+						],
+						"retType": {
+							"type": "uint16"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "uint16"
+			}
+		},
+		{
+			"name": "CallFuncUInt32",
+			"funcName": "cross_call_worker.ExportClass.CallFuncUInt32",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncUInt32",
+						"paramTypes": [
+						],
+						"retType": {
+							"type": "uint32"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "uint32"
+			}
+		},
+		{
+			"name": "CallFuncUInt64",
+			"funcName": "cross_call_worker.ExportClass.CallFuncUInt64",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncUInt64",
+						"paramTypes": [
+						],
+						"retType": {
+							"type": "uint64"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "uint64"
+			}
+		},
+		{
+			"name": "CallFuncPtr",
+			"funcName": "cross_call_worker.ExportClass.CallFuncPtr",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncPtr",
+						"paramTypes": [
+						],
+						"retType": {
+							"type": "ptr64"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "ptr64"
+			}
+		},
+		{
+			"name": "CallFuncFloat",
+			"funcName": "cross_call_worker.ExportClass.CallFuncFloat",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncFloat",
+						"paramTypes": [
+						],
+						"retType": {
+							"type": "float"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "float"
+			}
+		},
+		{
+			"name": "CallFuncDouble",
+			"funcName": "cross_call_worker.ExportClass.CallFuncDouble",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncDouble",
+						"paramTypes": [
+						],
+						"retType": {
+							"type": "double"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "double"
+			}
+		},
+		{
+			"name": "CallFuncString",
+			"funcName": "cross_call_worker.ExportClass.CallFuncString",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncString",
+						"paramTypes": [
+						],
+						"retType": {
+							"type": "string"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "string"
+			}
+		},
+		{
+			"name": "CallFuncAny",
+			"funcName": "cross_call_worker.ExportClass.CallFuncAny",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncAny",
+						"paramTypes": [
+						],
+						"retType": {
+							"type": "any"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "any"
+			}
+		},
+		{
+			"name": "CallFuncFunction",
+			"funcName": "cross_call_worker.ExportClass.CallFuncFunction",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncFunction",
+						"paramTypes": [
+						],
+						"retType": {
+							"type": "function"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "ptr64"
+			}
+		},
+		{
+			"name": "CallFuncBoolVector",
+			"funcName": "cross_call_worker.ExportClass.CallFuncBoolVector",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncBoolVector",
+						"paramTypes": [
+						],
+						"retType": {
+							"type": "bool[]"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "bool[]"
+			}
+		},
+		{
+			"name": "CallFuncChar8Vector",
+			"funcName": "cross_call_worker.ExportClass.CallFuncChar8Vector",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncChar8Vector",
+						"paramTypes": [],
+						"retType": {
+							"type": "char8[]"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "char8[]"
+			}
+		},
+		{
+			"name": "CallFuncChar16Vector",
+			"funcName": "cross_call_worker.ExportClass.CallFuncChar16Vector",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncChar16Vector",
+						"paramTypes": [],
+						"retType": {
+							"type": "char16[]"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "char16[]"
+			}
+		},
+		{
+			"name": "CallFuncInt8Vector",
+			"funcName": "cross_call_worker.ExportClass.CallFuncInt8Vector",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncInt8Vector",
+						"paramTypes": [],
+						"retType": {
+							"type": "int8[]"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "int8[]"
+			}
+		},
+		{
+			"name": "CallFuncInt16Vector",
+			"funcName": "cross_call_worker.ExportClass.CallFuncInt16Vector",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncInt16Vector",
+						"paramTypes": [],
+						"retType": {
+							"type": "int16[]"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "int16[]"
+			}
+		},
+		{
+			"name": "CallFuncInt32Vector",
+			"funcName": "cross_call_worker.ExportClass.CallFuncInt32Vector",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncInt32Vector",
+						"paramTypes": [],
+						"retType": {
+							"type": "int32[]"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "int32[]"
+			}
+		},
+		{
+			"name": "CallFuncInt64Vector",
+			"funcName": "cross_call_worker.ExportClass.CallFuncInt64Vector",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncInt64Vector",
+						"paramTypes": [],
+						"retType": {
+							"type": "int64[]"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "int64[]"
+			}
+		},
+		{
+			"name": "CallFuncUInt8Vector",
+			"funcName": "cross_call_worker.ExportClass.CallFuncUInt8Vector",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncUInt8Vector",
+						"paramTypes": [],
+						"retType": {
+							"type": "uint8[]"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "uint8[]"
+			}
+		},
+		{
+			"name": "CallFuncUInt16Vector",
+			"funcName": "cross_call_worker.ExportClass.CallFuncUInt16Vector",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncUInt16Vector",
+						"paramTypes": [],
+						"retType": {
+							"type": "uint16[]"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "uint16[]"
+			}
+		},
+		{
+			"name": "CallFuncUInt32Vector",
+			"funcName": "cross_call_worker.ExportClass.CallFuncUInt32Vector",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncUInt32Vector",
+						"paramTypes": [],
+						"retType": {
+							"type": "uint32[]"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "uint32[]"
+			}
+		},
+		{
+			"name": "CallFuncUInt64Vector",
+			"funcName": "cross_call_worker.ExportClass.CallFuncUInt64Vector",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncUInt64Vector",
+						"paramTypes": [],
+						"retType": {
+							"type": "uint64[]"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "uint64[]"
+			}
+		},
+		{
+			"name": "CallFuncPtrVector",
+			"funcName": "cross_call_worker.ExportClass.CallFuncPtrVector",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncPtrVector",
+						"paramTypes": [],
+						"retType": {
+							"type": "ptr64[]"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "ptr64[]"
+			}
+		},
+		{
+			"name": "CallFuncFloatVector",
+			"funcName": "cross_call_worker.ExportClass.CallFuncFloatVector",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncFloatVector",
+						"paramTypes": [],
+						"retType": {
+							"type": "float[]"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "float[]"
+			}
+		},
+		{
+			"name": "CallFuncDoubleVector",
+			"funcName": "cross_call_worker.ExportClass.CallFuncDoubleVector",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncDoubleVector",
+						"paramTypes": [],
+						"retType": {
+							"type": "double[]"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "double[]"
+			}
+		},
+		{
+			"name": "CallFuncStringVector",
+			"funcName": "cross_call_worker.ExportClass.CallFuncStringVector",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncStringVector",
+						"paramTypes": [],
+						"retType": {
+							"type": "string[]"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "string[]"
+			}
+		},
+		{
+			"name": "CallFuncAnyVector",
+			"funcName": "cross_call_worker.ExportClass.CallFuncAnyVector",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncAnyVector",
+						"paramTypes": [],
+						"retType": {
+							"type": "any[]"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "any[]"
+			}
+		},
+		{
+			"name": "CallFuncVec2Vector",
+			"funcName": "cross_call_worker.ExportClass.CallFuncVec2Vector",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncVec2Vector",
+						"paramTypes": [],
+						"retType": {
+							"type": "vec2[]"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "vec2[]"
+			}
+		},
+		{
+			"name": "CallFuncVec3Vector",
+			"funcName": "cross_call_worker.ExportClass.CallFuncVec3Vector",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncVec3Vector",
+						"paramTypes": [],
+						"retType": {
+							"type": "vec3[]"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "vec3[]"
+			}
+		},
+		{
+			"name": "CallFuncVec4Vector",
+			"funcName": "cross_call_worker.ExportClass.CallFuncVec4Vector",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncVec4Vector",
+						"paramTypes": [],
+						"retType": {
+							"type": "vec4[]"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "vec4[]"
+			}
+		},
+		{
+			"name": "CallFuncMat4x4Vector",
+			"funcName": "cross_call_worker.ExportClass.CallFuncMat4x4Vector",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncMat4x4Vector",
+						"paramTypes": [],
+						"retType": {
+							"type": "mat4x4[]"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "mat4x4[]"
+			}
+		},
+		{
+			"name": "CallFuncVec2",
+			"funcName": "cross_call_worker.ExportClass.CallFuncVec2",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncVec2",
+						"paramTypes": [],
+						"retType": {
+							"type": "vec2"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "vec2"
+			}
+		},
+		{
+			"name": "CallFuncVec3",
+			"funcName": "cross_call_worker.ExportClass.CallFuncVec3",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncVec3",
+						"paramTypes": [],
+						"retType": {
+							"type": "vec3"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "vec3"
+			}
+		},
+		{
+			"name": "CallFuncVec4",
+			"funcName": "cross_call_worker.ExportClass.CallFuncVec4",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncVec4",
+						"paramTypes": [],
+						"retType": {
+							"type": "vec4"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "vec4"
+			}
+		},
+		{
+			"name": "CallFuncMat4x4",
+			"funcName": "cross_call_worker.ExportClass.CallFuncMat4x4",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncMat4x4",
+						"paramTypes": [],
+						"retType": {
+							"type": "mat4x4"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "mat4x4"
+			}
+		},
+		{
+			"name": "CallFunc1",
+			"funcName": "cross_call_worker.ExportClass.CallFunc1",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "Func1",
+						"paramTypes": [
+							{
+								"name": "a",
+								"type": "vec3",
+								"ref": false
+							}
+						],
+						"retType": {
+							"type": "int32"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "int32"
+			}
+		},
+		{
+			"name": "CallFunc2",
+			"funcName": "cross_call_worker.ExportClass.CallFunc2",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "Func2",
+						"paramTypes": [
+							{
+								"name": "a",
+								"type": "float",
+								"ref": false
+							},
+							{
+								"name": "b",
+								"type": "int64",
+								"ref": false
+							}
+						],
+						"retType": {
+							"type": "char8"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "char8"
+			}
+		},
+		{
+			"name": "CallFunc3",
+			"funcName": "cross_call_worker.ExportClass.CallFunc3",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "Func3",
+						"paramTypes": [
+							{
+								"name": "a",
+								"type": "ptr64",
+								"ref": false
+							},
+							{
+								"name": "b",
+								"type": "vec4",
+								"ref": false
+							},
+							{
+								"name": "c",
+								"type": "string",
+								"ref": false
+							}
+						],
+						"retType": {
+							"type": "void"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "void"
+			}
+		},
+		{
+			"name": "CallFunc4",
+			"funcName": "cross_call_worker.ExportClass.CallFunc4",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "Func4",
+						"paramTypes": [
+							{
+								"name": "a",
+								"type": "bool",
+								"ref": false
+							},
+							{
+								"name": "b",
+								"type": "int32",
+								"ref": false
+							},
+							{
+								"name": "c",
+								"type": "char16",
+								"ref": false
+							},
+							{
+								"name": "d",
+								"type": "mat4x4",
+								"ref": false
+							}
+						],
+						"retType": {
+							"type": "vec4"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "vec4"
+			}
+		},
+		{
+			"name": "CallFunc5",
+			"funcName": "cross_call_worker.ExportClass.CallFunc5",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "Func5",
+						"paramTypes": [
+							{
+								"name": "a",
+								"type": "int8",
+								"ref": false
+							},
+							{
+								"name": "b",
+								"type": "vec2",
+								"ref": false
+							},
+							{
+								"name": "c",
+								"type": "ptr64",
+								"ref": false
+							},
+							{
+								"name": "d",
+								"type": "double",
+								"ref": false
+							},
+							{
+								"name": "e",
+								"type": "uint64[]",
+								"ref": false
+							}
+						],
+						"retType": {
+							"type": "bool"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "bool"
+			}
+		},
+		{
+			"name": "CallFunc6",
+			"funcName": "cross_call_worker.ExportClass.CallFunc6",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "Func6",
+						"paramTypes": [
+							{
+								"name": "a",
+								"type": "string",
+								"ref": false
+							},
+							{
+								"name": "b",
+								"type": "float",
+								"ref": false
+							},
+							{
+								"name": "c",
+								"type": "float[]",
+								"ref": false
+							},
+							{
+								"name": "d",
+								"type": "int16",
+								"ref": false
+							},
+							{
+								"name": "e",
+								"type": "uint8[]",
+								"ref": false
+							},
+							{
+								"name": "f",
+								"type": "ptr64",
+								"ref": false
+							}
+						],
+						"retType": {
+							"type": "int64"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "int64"
+			}
+		},
+		{
+			"name": "CallFunc7",
+			"funcName": "cross_call_worker.ExportClass.CallFunc7",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "Func7",
+						"paramTypes": [
+							{
+								"name": "vecC",
+								"type": "char8[]",
+								"ref": false
+							},
+							{
+								"name": "u16",
+								"type": "uint16",
+								"ref": false
+							},
+							{
+								"name": "ch16",
+								"type": "char16",
+								"ref": false
+							},
+							{
+								"name": "vecU32",
+								"type": "uint32[]",
+								"ref": false
+							},
+							{
+								"name": "vec4",
+								"type": "vec4",
+								"ref": false
+							},
+							{
+								"name": "b",
+								"type": "bool",
+								"ref": false
+							},
+							{
+								"name": "u64",
+								"type": "uint64",
+								"ref": false
+							}
+						],
+						"retType": {
+							"type": "double"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "double"
+			}
+		},
+		{
+			"name": "CallFunc8",
+			"funcName": "cross_call_worker.ExportClass.CallFunc8",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "Func8",
+						"paramTypes": [
+							{
+								"name": "vec3",
+								"type": "vec3",
+								"ref": false
+							},
+							{
+								"name": "vecU32",
+								"type": "uint32[]",
+								"ref": false
+							},
+							{
+								"name": "i16",
+								"type": "int16",
+								"ref": false
+							},
+							{
+								"name": "b",
+								"type": "bool",
+								"ref": false
+							},
+							{
+								"name": "vec4",
+								"type": "vec4",
+								"ref": false
+							},
+							{
+								"name": "vecC16",
+								"type": "char16[]",
+								"ref": false
+							},
+							{
+								"name": "ch16",
+								"type": "char16",
+								"ref": false
+							},
+							{
+								"name": "i32",
+								"type": "int32",
+								"ref": false
+							}
+						],
+						"retType": {
+							"type": "mat4x4"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "mat4x4"
+			}
+		},
+		{
+			"name": "CallFunc9",
+			"funcName": "cross_call_worker.ExportClass.CallFunc9",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "Func9",
+						"paramTypes": [
+							{
+								"name": "f",
+								"type": "float",
+								"ref": false
+							},
+							{
+								"name": "vec2",
+								"type": "vec2",
+								"ref": false
+							},
+							{
+								"name": "vecI8",
+								"type": "int8[]",
+								"ref": false
+							},
+							{
+								"name": "u64",
+								"type": "uint64",
+								"ref": false
+							},
+							{
+								"name": "b",
+								"type": "bool",
+								"ref": false
+							},
+							{
+								"name": "str",
+								"type": "string",
+								"ref": false
+							},
+							{
+								"name": "vec4",
+								"type": "vec4",
+								"ref": false
+							},
+							{
+								"name": "i16",
+								"type": "int16",
+								"ref": false
+							},
+							{
+								"name": "ptr",
+								"type": "ptr64",
+								"ref": false
+							}
+						],
+						"retType": {
+							"type": "void"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "void"
+			}
+		},
+		{
+			"name": "CallFunc10",
+			"funcName": "cross_call_worker.ExportClass.CallFunc10",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "Func10",
+						"paramTypes": [
+							{
+								"name": "vec4",
+								"type": "vec4",
+								"ref": false
+							},
+							{
+								"name": "mat",
+								"type": "mat4x4",
+								"ref": false
+							},
+							{
+								"name": "vecU32",
+								"type": "uint32[]",
+								"ref": false
+							},
+							{
+								"name": "u64",
+								"type": "uint64",
+								"ref": false
+							},
+							{
+								"name": "vecC",
+								"type": "char8[]",
+								"ref": false
+							},
+							{
+								"name": "i32",
+								"type": "int32",
+								"ref": false
+							},
+							{
+								"name": "b",
+								"type": "bool",
+								"ref": false
+							},
+							{
+								"name": "vec2",
+								"type": "vec2",
+								"ref": false
+							},
+							{
+								"name": "i64",
+								"type": "int64",
+								"ref": false
+							},
+							{
+								"name": "d",
+								"type": "double",
+								"ref": false
+							}
+						],
+						"retType": {
+							"type": "uint32"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "uint32"
+			}
+		},
+		{
+			"name": "CallFunc11",
+			"funcName": "cross_call_worker.ExportClass.CallFunc11",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "Func11",
+						"paramTypes": [
+							{
+								"name": "vecB",
+								"type": "bool[]",
+								"ref": false
+							},
+							{
+								"name": "ch16",
+								"type": "char16",
+								"ref": false
+							},
+							{
+								"name": "u8",
+								"type": "uint8",
+								"ref": false
+							},
+							{
+								"name": "d",
+								"type": "double",
+								"ref": false
+							},
+							{
+								"name": "vec3",
+								"type": "vec3",
+								"ref": false
+							},
+							{
+								"name": "vecI8",
+								"type": "int8[]",
+								"ref": false
+							},
+							{
+								"name": "i64",
+								"type": "int64",
+								"ref": false
+							},
+							{
+								"name": "u16",
+								"type": "uint16",
+								"ref": false
+							},
+							{
+								"name": "f",
+								"type": "float",
+								"ref": false
+							},
+							{
+								"name": "vec2",
+								"type": "vec2",
+								"ref": false
+							},
+							{
+								"name": "u32",
+								"type": "uint32",
+								"ref": false
+							}
+						],
+						"retType": {
+							"type": "ptr64"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "ptr64"
+			}
+		},
+		{
+			"name": "CallFunc12",
+			"funcName": "cross_call_worker.ExportClass.CallFunc12",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "Func12",
+						"paramTypes": [
+							{
+								"name": "ptr",
+								"type": "ptr64",
+								"ref": false
+							},
+							{
+								"name": "vecD",
+								"type": "double[]",
+								"ref": false
+							},
+							{
+								"name": "u32",
+								"type": "uint32",
+								"ref": false
+							},
+							{
+								"name": "d",
+								"type": "double",
+								"ref": false
+							},
+							{
+								"name": "b",
+								"type": "bool",
+								"ref": false
+							},
+							{
+								"name": "i32",
+								"type": "int32",
+								"ref": false
+							},
+							{
+								"name": "i8",
+								"type": "int8",
+								"ref": false
+							},
+							{
+								"name": "u64",
+								"type": "uint64",
+								"ref": false
+							},
+							{
+								"name": "f",
+								"type": "float",
+								"ref": false
+							},
+							{
+								"name": "vecPtr",
+								"type": "ptr64[]",
+								"ref": false
+							},
+							{
+								"name": "i64",
+								"type": "int64",
+								"ref": false
+							},
+							{
+								"name": "ch",
+								"type": "char8",
+								"ref": false
+							}
+						],
+						"retType": {
+							"type": "bool"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "bool"
+			}
+		},
+		{
+			"name": "CallFunc13",
+			"funcName": "cross_call_worker.ExportClass.CallFunc13",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "Func13",
+						"paramTypes": [
+							{
+								"name": "i64",
+								"type": "int64",
+								"ref": false
+							},
+							{
+								"name": "vecC",
+								"type": "char8[]",
+								"ref": false
+							},
+							{
+								"name": "d",
+								"type": "uint16",
+								"ref": false
+							},
+							{
+								"name": "f",
+								"type": "float",
+								"ref": false
+							},
+							{
+								"name": "b",
+								"type": "bool[]",
+								"ref": false
+							},
+							{
+								"name": "vec4",
+								"type": "vec4",
+								"ref": false
+							},
+							{
+								"name": "str",
+								"type": "string",
+								"ref": false
+							},
+							{
+								"name": "int32",
+								"type": "int32",
+								"ref": false
+							},
+							{
+								"name": "vec3",
+								"type": "vec3",
+								"ref": false
+							},
+							{
+								"name": "ptr",
+								"type": "ptr64",
+								"ref": false
+							},
+							{
+								"name": "vec2",
+								"type": "vec2",
+								"ref": false
+							},
+							{
+								"name": "arr",
+								"type": "uint8[]",
+								"ref": false
+							},
+							{
+								"name": "i16",
+								"type": "int16",
+								"ref": false
+							}
+						],
+						"retType": {
+							"type": "string"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "string"
+			}
+		},
+		{
+			"name": "CallFunc14",
+			"funcName": "cross_call_worker.ExportClass.CallFunc14",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "Func14",
+						"paramTypes": [
+							{
+								"name": "vecC",
+								"type": "char8[]",
+								"ref": false
+							},
+							{
+								"name": "vecU32",
+								"type": "uint32[]",
+								"ref": false
+							},
+							{
+								"name": "mat",
+								"type": "mat4x4",
+								"ref": false
+							},
+							{
+								"name": "b",
+								"type": "bool",
+								"ref": false
+							},
+							{
+								"name": "ch16",
+								"type": "char16",
+								"ref": false
+							},
+							{
+								"name": "i32",
+								"type": "int32",
+								"ref": false
+							},
+							{
+								"name": "vecF",
+								"type": "float[]",
+								"ref": false
+							},
+							{
+								"name": "u16",
+								"type": "uint16",
+								"ref": false
+							},
+							{
+								"name": "vecU8",
+								"type": "uint8[]",
+								"ref": false
+							},
+							{
+								"name": "i8",
+								"type": "int8",
+								"ref": false
+							},
+							{
+								"name": "vec3",
+								"type": "vec3",
+								"ref": false
+							},
+							{
+								"name": "vec4",
+								"type": "vec4",
+								"ref": false
+							},
+							{
+								"name": "d",
+								"type": "double",
+								"ref": false
+							},
+							{
+								"name": "ptr",
+								"type": "ptr64",
+								"ref": false
+							}
+						],
+						"retType": {
+							"type": "string[]"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "string[]"
+			}
+		},
+		{
+			"name": "CallFunc15",
+			"funcName": "cross_call_worker.ExportClass.CallFunc15",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "Func15",
+						"paramTypes": [
+							{
+								"name": "vecI16",
+								"type": "int16[]",
+								"ref": false
+							},
+							{
+								"name": "mat",
+								"type": "mat4x4",
+								"ref": false
+							},
+							{
+								"name": "vec4",
+								"type": "vec4",
+								"ref": false
+							},
+							{
+								"name": "ptr",
+								"type": "ptr64",
+								"ref": false
+							},
+							{
+								"name": "u64",
+								"type": "uint64",
+								"ref": false
+							},
+							{
+								"name": "vecU32",
+								"type": "uint32[]",
+								"ref": false
+							},
+							{
+								"name": "b",
+								"type": "bool",
+								"ref": false
+							},
+							{
+								"name": "f",
+								"type": "float",
+								"ref": false
+							},
+							{
+								"name": "vecC16",
+								"type": "char16[]",
+								"ref": false
+							},
+							{
+								"name": "u8",
+								"type": "uint8",
+								"ref": false
+							},
+							{
+								"name": "i32",
+								"type": "int32",
+								"ref": false
+							},
+							{
+								"name": "vec2",
+								"type": "vec2",
+								"ref": false
+							},
+							{
+								"name": "u16",
+								"type": "uint16",
+								"ref": false
+							},
+							{
+								"name": "d",
+								"type": "double",
+								"ref": false
+							},
+							{
+								"name": "vecU8",
+								"type": "uint8[]",
+								"ref": false
+							}
+						],
+						"retType": {
+							"type": "int16"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "int16"
+			}
+		},
+		{
+			"name": "CallFunc16",
+			"funcName": "cross_call_worker.ExportClass.CallFunc16",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "Func16",
+						"paramTypes": [
+							{
+								"name": "vecB",
+								"type": "bool[]",
+								"ref": false
+							},
+							{
+								"name": "i16",
+								"type": "int16",
+								"ref": false
+							},
+							{
+								"name": "vecI8",
+								"type": "int8[]",
+								"ref": false
+							},
+							{
+								"name": "vec4",
+								"type": "vec4",
+								"ref": false
+							},
+							{
+								"name": "mat",
+								"type": "mat4x4",
+								"ref": false
+							},
+							{
+								"name": "vec2",
+								"type": "vec2",
+								"ref": false
+							},
+							{
+								"name": "vecU64",
+								"type": "uint64[]",
+								"ref": false
+							},
+							{
+								"name": "vecC",
+								"type": "char8[]",
+								"ref": false
+							},
+							{
+								"name": "str",
+								"type": "string",
+								"ref": false
+							},
+							{
+								"name": "i64",
+								"type": "int64",
+								"ref": false
+							},
+							{
+								"name": "vecU32",
+								"type": "uint32[]",
+								"ref": false
+							},
+							{
+								"name": "vec3",
+								"type": "vec3",
+								"ref": false
+							},
+							{
+								"name": "f",
+								"type": "float",
+								"ref": false
+							},
+							{
+								"name": "d",
+								"type": "double",
+								"ref": false
+							},
+							{
+								"name": "i8",
+								"type": "int8",
+								"ref": false
+							},
+							{
+								"name": "u16",
+								"type": "uint16",
+								"ref": false
+							}
+						],
+						"retType": {
+							"type": "ptr64"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "ptr64"
+			}
+		},
+		{
+			"name": "CallFunc17",
+			"funcName": "cross_call_worker.ExportClass.CallFunc17",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "Func17",
+						"paramTypes": [
+							{
+								"name": "i32",
+								"type": "int32",
+								"ref": true
+							}
+						],
+						"retType": {
+							"type": "void"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "string"
+			}
+		},
+		{
+			"name": "CallFunc18",
+			"funcName": "cross_call_worker.ExportClass.CallFunc18",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "Func18",
+						"paramTypes": [
+							{
+								"name": "i8",
+								"type": "int8",
+								"ref": true
+							},
+							{
+								"name": "i16",
+								"type": "int16",
+								"ref": true
+							}
+						],
+						"retType": {
+							"type": "vec2"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "string"
+			}
+		},
+		{
+			"name": "CallFunc19",
+			"funcName": "cross_call_worker.ExportClass.CallFunc19",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "Func19",
+						"paramTypes": [
+							{
+								"name": "u32",
+								"type": "uint32",
+								"ref": true
+							},
+							{
+								"name": "vec3",
+								"type": "vec3",
+								"ref": true
+							},
+							{
+								"name": "vecU32",
+								"type": "uint32[]",
+								"ref": true
+							}
+						],
+						"retType": {
+							"type": "void"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "string"
+			}
+		},
+		{
+			"name": "CallFunc20",
+			"funcName": "cross_call_worker.ExportClass.CallFunc20",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "Func20",
+						"paramTypes": [
+							{
+								"name": "ch16",
+								"type": "char16",
+								"ref": true
+							},
+							{
+								"name": "vec4",
+								"type": "vec4",
+								"ref": true
+							},
+							{
+								"name": "vecU64",
+								"type": "uint64[]",
+								"ref": true
+							},
+							{
+								"name": "ch",
+								"type": "char8",
+								"ref": true
+							}
+						],
+						"retType": {
+							"type": "int32"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "string"
+			}
+		},
+		{
+			"name": "CallFunc21",
+			"funcName": "cross_call_worker.ExportClass.CallFunc21",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "Func21",
+						"paramTypes": [
+							{
+								"name": "mat",
+								"type": "mat4x4",
+								"ref": true
+							},
+							{
+								"name": "vecI32",
+								"type": "int32[]",
+								"ref": true
+							},
+							{
+								"name": "vec2",
+								"type": "vec2",
+								"ref": true
+							},
+							{
+								"name": "b",
+								"type": "bool",
+								"ref": true
+							},
+							{
+								"name": "extraParam",
+								"type": "double",
+								"ref": true
+							}
+						],
+						"retType": {
+							"type": "float"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "string"
+			}
+		},
+		{
+			"name": "CallFunc22",
+			"funcName": "cross_call_worker.ExportClass.CallFunc22",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "Func22",
+						"paramTypes": [
+							{
+								"name": "ptr64Ref",
+								"type": "ptr64",
+								"ref": true
+							},
+							{
+								"name": "uint32Ref",
+								"type": "uint32",
+								"ref": true
+							},
+							{
+								"name": "vectorDoubleRef",
+								"type": "double[]",
+								"ref": true
+							},
+							{
+								"name": "int16Ref",
+								"type": "int16",
+								"ref": true
+							},
+							{
+								"name": "plgStringRef",
+								"type": "string",
+								"ref": true
+							},
+							{
+								"name": "plgVector4Ref",
+								"type": "vec4",
+								"ref": true
+							}
+						],
+						"retType": {
+							"type": "uint64"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "string"
+			}
+		},
+		{
+			"name": "CallFunc23",
+			"funcName": "cross_call_worker.ExportClass.CallFunc23",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "Func23",
+						"paramTypes": [
+							{
+								"name": "uint64Ref",
+								"type": "uint64",
+								"ref": true
+							},
+							{
+								"name": "plgVector2Ref",
+								"type": "vec2",
+								"ref": true
+							},
+							{
+								"name": "vectorInt16Ref",
+								"type": "int16[]",
+								"ref": true
+							},
+							{
+								"name": "char16Ref",
+								"type": "char16",
+								"ref": true
+							},
+							{
+								"name": "floatRef",
+								"type": "float",
+								"ref": true
+							},
+							{
+								"name": "int8Ref",
+								"type": "int8",
+								"ref": true
+							},
+							{
+								"name": "vectorUInt8Ref",
+								"type": "uint8[]",
+								"ref": true
+							}
+						],
+						"retType": {
+							"type": "void"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "string"
+			}
+		},
+		{
+			"name": "CallFunc24",
+			"funcName": "cross_call_worker.ExportClass.CallFunc24",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "Func24",
+						"paramTypes": [
+							{
+								"name": "vectorCharRef",
+								"type": "char8[]",
+								"ref": true
+							},
+							{
+								"name": "int64Ref",
+								"type": "int64",
+								"ref": true
+							},
+							{
+								"name": "vectorUInt8Ref",
+								"type": "uint8[]",
+								"ref": true
+							},
+							{
+								"name": "plgVector4Ref",
+								"type": "vec4",
+								"ref": true
+							},
+							{
+								"name": "uint64Ref",
+								"type": "uint64",
+								"ref": true
+							},
+							{
+								"name": "vectorptr64Ref",
+								"type": "ptr64[]",
+								"ref": true
+							},
+							{
+								"name": "doubleRef",
+								"type": "double",
+								"ref": true
+							},
+							{
+								"name": "vectorptr64Ref2",
+								"type": "ptr64[]",
+								"ref": true
+							}
+						],
+						"retType": {
+							"type": "mat4x4"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "string"
+			}
+		},
+		{
+			"name": "CallFunc25",
+			"funcName": "cross_call_worker.ExportClass.CallFunc25",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "Func25",
+						"paramTypes": [
+							{
+								"name": "int32Ref",
+								"type": "int32",
+								"ref": true
+							},
+							{
+								"name": "vectorptr64Ref",
+								"type": "ptr64[]",
+								"ref": true
+							},
+							{
+								"name": "boolRef",
+								"type": "bool",
+								"ref": true
+							},
+							{
+								"name": "uint8Ref",
+								"type": "uint8",
+								"ref": true
+							},
+							{
+								"name": "plgStringRef",
+								"type": "string",
+								"ref": true
+							},
+							{
+								"name": "plgVector3Ref",
+								"type": "vec3",
+								"ref": true
+							},
+							{
+								"name": "int64Ref",
+								"type": "int64",
+								"ref": true
+							},
+							{
+								"name": "plgVector4Ref",
+								"type": "vec4",
+								"ref": true
+							},
+							{
+								"name": "uint16Ref",
+								"type": "uint16",
+								"ref": true
+							}
+						],
+						"retType": {
+							"type": "double"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "string"
+			}
+		},
+		{
+			"name": "CallFunc26",
+			"funcName": "cross_call_worker.ExportClass.CallFunc26",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "Func26",
+						"paramTypes": [
+							{
+								"name": "char16Ref",
+								"type": "char16",
+								"ref": true
+							},
+							{
+								"name": "plgVector2Ref",
+								"type": "vec2",
+								"ref": true
+							},
+							{
+								"name": "plgMatrix4x4Ref",
+								"type": "mat4x4",
+								"ref": true
+							},
+							{
+								"name": "vectorFloatRef",
+								"type": "float[]",
+								"ref": true
+							},
+							{
+								"name": "int16Ref",
+								"type": "int16",
+								"ref": true
+							},
+							{
+								"name": "uint64Ref",
+								"type": "uint64",
+								"ref": true
+							},
+							{
+								"name": "uint32Ref",
+								"type": "uint32",
+								"ref": true
+							},
+							{
+								"name": "vectorUInt16Ref",
+								"type": "uint16[]",
+								"ref": true
+							},
+							{
+								"name": "ptr64Ref",
+								"type": "ptr64",
+								"ref": true
+							},
+							{
+								"name": "boolRef",
+								"type": "bool",
+								"ref": true
+							}
+						],
+						"retType": {
+							"type": "char8"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "string"
+			}
+		},
+		{
+			"name": "CallFunc27",
+			"funcName": "cross_call_worker.ExportClass.CallFunc27",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "Func27",
+						"paramTypes": [
+							{
+								"name": "floatRef",
+								"type": "float",
+								"ref": true
+							},
+							{
+								"name": "plgVector3Ref",
+								"type": "vec3",
+								"ref": true
+							},
+							{
+								"name": "ptr64Ref",
+								"type": "ptr64",
+								"ref": true
+							},
+							{
+								"name": "plgVector2Ref",
+								"type": "vec2",
+								"ref": true
+							},
+							{
+								"name": "vectorInt16Ref",
+								"type": "int16[]",
+								"ref": true
+							},
+							{
+								"name": "plgMatrix4x4Ref",
+								"type": "mat4x4",
+								"ref": true
+							},
+							{
+								"name": "boolRef",
+								"type": "bool",
+								"ref": true
+							},
+							{
+								"name": "plgVector4Ref",
+								"type": "vec4",
+								"ref": true
+							},
+							{
+								"name": "int8Ref",
+								"type": "int8",
+								"ref": true
+							},
+							{
+								"name": "int32Ref",
+								"type": "int32",
+								"ref": true
+							},
+							{
+								"name": "vectorUInt8Ref",
+								"type": "uint8[]",
+								"ref": true
+							}
+						],
+						"retType": {
+							"type": "uint8"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "string"
+			}
+		},
+		{
+			"name": "CallFunc28",
+			"funcName": "cross_call_worker.ExportClass.CallFunc28",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "Func28",
+						"paramTypes": [
+							{
+								"name": "ptr64Ref",
+								"type": "ptr64",
+								"ref": true
+							},
+							{
+								"name": "uint16Ref",
+								"type": "uint16",
+								"ref": true
+							},
+							{
+								"name": "vectorUInt32Ref",
+								"type": "uint32[]",
+								"ref": true
+							},
+							{
+								"name": "plgMatrix4x4Ref",
+								"type": "mat4x4",
+								"ref": true
+							},
+							{
+								"name": "floatRef",
+								"type": "float",
+								"ref": true
+							},
+							{
+								"name": "plgVector4Ref",
+								"type": "vec4",
+								"ref": true
+							},
+							{
+								"name": "plgStringRef",
+								"type": "string",
+								"ref": true
+							},
+							{
+								"name": "vectorUInt64Ref",
+								"type": "uint64[]",
+								"ref": true
+							},
+							{
+								"name": "int64Ref",
+								"type": "int64",
+								"ref": true
+							},
+							{
+								"name": "boolRef",
+								"type": "bool",
+								"ref": true
+							},
+							{
+								"name": "plgVector3Ref",
+								"type": "vec3",
+								"ref": true
+							},
+							{
+								"name": "vectorFloatRef",
+								"type": "float[]",
+								"ref": true
+							}
+						],
+						"retType": {
+							"type": "string"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "string"
+			}
+		},
+		{
+			"name": "CallFunc29",
+			"funcName": "cross_call_worker.ExportClass.CallFunc29",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "Func29",
+						"paramTypes": [
+							{
+								"name": "plgVector4Ref",
+								"type": "vec4",
+								"ref": true
+							},
+							{
+								"name": "int32Ref",
+								"type": "int32",
+								"ref": true
+							},
+							{
+								"name": "vectorInt8Ref",
+								"type": "int8[]",
+								"ref": true
+							},
+							{
+								"name": "doubleRef",
+								"type": "double",
+								"ref": true
+							},
+							{
+								"name": "boolRef",
+								"type": "bool",
+								"ref": true
+							},
+							{
+								"name": "int8Ref",
+								"type": "int8",
+								"ref": true
+							},
+							{
+								"name": "vectorUInt16Ref",
+								"type": "uint16[]",
+								"ref": true
+							},
+							{
+								"name": "floatRef",
+								"type": "float",
+								"ref": true
+							},
+							{
+								"name": "plgStringRef",
+								"type": "string",
+								"ref": true
+							},
+							{
+								"name": "plgMatrix4x4Ref",
+								"type": "mat4x4",
+								"ref": true
+							},
+							{
+								"name": "uint64Ref",
+								"type": "uint64",
+								"ref": true
+							},
+							{
+								"name": "plgVector3Ref",
+								"type": "vec3",
+								"ref": true
+							},
+							{
+								"name": "vectorInt64Ref",
+								"type": "int64[]",
+								"ref": true
+							}
+						],
+						"retType": {
+							"type": "string[]"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "string"
+			}
+		},
+		{
+			"name": "CallFunc30",
+			"funcName": "cross_call_worker.ExportClass.CallFunc30",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "Func30",
+						"paramTypes": [
+							{
+								"name": "ptr64Ref",
+								"type": "ptr64",
+								"ref": true
+							},
+							{
+								"name": "plgVector4Ref",
+								"type": "vec4",
+								"ref": true
+							},
+							{
+								"name": "int64Ref",
+								"type": "int64",
+								"ref": true
+							},
+							{
+								"name": "vectorUInt32Ref",
+								"type": "uint32[]",
+								"ref": true
+							},
+							{
+								"name": "boolRef",
+								"type": "bool",
+								"ref": true
+							},
+							{
+								"name": "plgStringRef",
+								"type": "string",
+								"ref": true
+							},
+							{
+								"name": "plgVector3Ref",
+								"type": "vec3",
+								"ref": true
+							},
+							{
+								"name": "vectorUInt8Ref",
+								"type": "uint8[]",
+								"ref": true
+							},
+							{
+								"name": "floatRef",
+								"type": "float",
+								"ref": true
+							},
+							{
+								"name": "plgVector2Ref",
+								"type": "vec2",
+								"ref": true
+							},
+							{
+								"name": "plgMatrix4x4Ref",
+								"type": "mat4x4",
+								"ref": true
+							},
+							{
+								"name": "int8Ref",
+								"type": "int8",
+								"ref": true
+							},
+							{
+								"name": "vectorFloatRef",
+								"type": "float[]",
+								"ref": true
+							},
+							{
+								"name": "doubleRef",
+								"type": "double",
+								"ref": true
+							}
+						],
+						"retType": {
+							"type": "int32"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "string"
+			}
+		},
+		{
+			"name": "CallFunc31",
+			"funcName": "cross_call_worker.ExportClass.CallFunc31",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "Func31",
+						"paramTypes": [
+							{
+								"name": "charRef",
+								"type": "char8",
+								"ref": true
+							},
+							{
+								"name": "uint32Ref",
+								"type": "uint32",
+								"ref": true
+							},
+							{
+								"name": "vectorUInt64Ref",
+								"type": "uint64[]",
+								"ref": true
+							},
+							{
+								"name": "plgVector4Ref",
+								"type": "vec4",
+								"ref": true
+							},
+							{
+								"name": "plgStringRef",
+								"type": "string",
+								"ref": true
+							},
+							{
+								"name": "boolRef",
+								"type": "bool",
+								"ref": true
+							},
+							{
+								"name": "int64Ref",
+								"type": "int64",
+								"ref": true
+							},
+							{
+								"name": "vec2Ref",
+								"type": "vec2",
+								"ref": true
+							},
+							{
+								"name": "int8Ref",
+								"type": "int8",
+								"ref": true
+							},
+							{
+								"name": "uint16Ref",
+								"type": "uint16",
+								"ref": true
+							},
+							{
+								"name": "vectorInt16Ref",
+								"type": "int16[]",
+								"ref": true
+							},
+							{
+								"name": "mat4x4Ref",
+								"type": "mat4x4",
+								"ref": true
+							},
+							{
+								"name": "vec3Ref",
+								"type": "vec3",
+								"ref": true
+							},
+							{
+								"name": "floatRef",
+								"type": "float",
+								"ref": true
+							},
+							{
+								"name": "vectorDoubleRef",
+								"type": "double[]",
+								"ref": true
+							}
+						],
+						"retType": {
+							"type": "vec3"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "string"
+			}
+		},
+		{
+			"name": "CallFunc32",
+			"funcName": "cross_call_worker.ExportClass.CallFunc32",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "Func32",
+						"paramTypes": [
+							{
+								"name": "p1",
+								"type": "int32",
+								"ref": true
+							},
+							{
+								"name": "p2",
+								"type": "uint16",
+								"ref": true
+							},
+							{
+								"name": "p3",
+								"type": "int8[]",
+								"ref": true
+							},
+							{
+								"name": "p4",
+								"type": "vec4",
+								"ref": true
+							},
+							{
+								"name": "p5",
+								"type": "ptr64",
+								"ref": true
+							},
+							{
+								"name": "p6",
+								"type": "uint32[]",
+								"ref": true
+							},
+							{
+								"name": "p7",
+								"type": "mat4x4",
+								"ref": true
+							},
+							{
+								"name": "p8",
+								"type": "uint64",
+								"ref": true
+							},
+							{
+								"name": "p9",
+								"type": "string",
+								"ref": true
+							},
+							{
+								"name": "p10",
+								"type": "int64",
+								"ref": true
+							},
+							{
+								"name": "p11",
+								"type": "vec2",
+								"ref": true
+							},
+							{
+								"name": "p12",
+								"type": "int8[]",
+								"ref": true
+							},
+							{
+								"name": "p13",
+								"type": "bool",
+								"ref": true
+							},
+							{
+								"name": "p14",
+								"type": "vec3",
+								"ref": true
+							},
+							{
+								"name": "p15",
+								"type": "uint8",
+								"ref": true
+							},
+							{
+								"name": "p16",
+								"type": "char16[]",
+								"ref": true
+							}
+						],
+						"retType": {
+							"type": "double"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "string"
+			}
+		},
+		{
+			"name": "CallFunc33",
+			"funcName": "cross_call_worker.ExportClass.CallFunc33",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "Func33",
+						"paramTypes": [
+							{
+								"name": "variant",
+								"type": "any",
+								"ref": true
+							}
+						],
+						"retType": {
+							"type": "void"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "string"
+			}
+		},
+		{
+			"name": "CallFuncEnum",
+			"funcName": "cross_call_worker.ExportClass.CallFuncEnum",
+			"paramTypes": [
+				{
+					"name": "func",
+					"type": "function",
+					"ref": false,
+					"prototype": {
+						"name": "FuncEnum",
+						"paramTypes": [
+							{
+								"name": "p1",
+								"type": "int32",
+								"ref": false,
+								"enum": {
+									"name": "Example"
+								}
+							},
+							{
+								"name": "p2",
+								"type": "int32[]",
+								"ref": true,
+								"enum": {
+									"name": "Example"
+								}
+							}
+						],
+						"retType": {
+							"type": "int32[]",
+							"enum": {
+								"name": "Example"
+							}
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "string"
+			}
+		},
+		{
+			"name": "ReverseCall",
+			"funcName": "cross_call_worker.ExportClass.ReverseCall",
+			"paramTypes": [
+				{
+					"name": "test",
+					"type": "string",
+					"ref": false
+				}
+			],
+			"retType": {
+				"type": "void"
+			}
+		}
+	]
+}
