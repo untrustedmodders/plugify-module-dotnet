@@ -134,7 +134,7 @@ jobs:
         shell: bash
         run:
           echo "GITHUB_SHA_SHORT=${GITHUB_SHA::7}" >> $GITHUB_ENV
-          GITHUB_VERSION=${{ needs.setup.outputs.tag_name }}
+          GITHUB_VERSION="${{ needs.setup.outputs.tag_name }}"
           echo "GITHUB_VERSION=${GITHUB_VERSION:1}" >> $GITHUB_ENV
 
       - uses: actions/checkout@v4
@@ -171,7 +171,7 @@ jobs:
         shell: bash
         run:
           echo "GITHUB_SHA_SHORT=${GITHUB_SHA::7}" >> $GITHUB_ENV
-          GITHUB_VERSION=${{ needs.setup.outputs.tag_name }}
+          GITHUB_VERSION="${{ needs.setup.outputs.tag_name }}"
           echo "GITHUB_VERSION=${GITHUB_VERSION:1}" >> $GITHUB_ENV
 
       - uses: actions/download-artifact@v4
