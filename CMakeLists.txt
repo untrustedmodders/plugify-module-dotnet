@@ -91,10 +91,10 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
         NETLM_LIBRARY_PREFIX="${CMAKE_SHARED_LIBRARY_PREFIX}"
 )
 
-set(NETLM_VERSION "v0.1.0" CACHE STRING "Set version name")
+file(READ "${CMAKE_SOURCE_DIR}/version.txt" VERSION_FILE_CONTENTS)
+set(NETLM_VERSION "${VERSION_FILE_CONTENTS}" CACHE STRING "Set version name")
 set(NETLM_PACKAGE "${PROJECT_NAME}" CACHE STRING "Set package name")
 string(REPLACE "v" "" NETLM_VERSION "${NETLM_VERSION}")
-
 
 configure_file(
     ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.pmodule.in
