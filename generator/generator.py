@@ -539,7 +539,7 @@ def generate_name(name: str) -> str:
     """
     Generates a valid C# name by appending an underscore if the name is invalid.
     """
-    return f"{name}_" if name in INVALID_NAMES else name
+    return f'{name}_' if name in INVALID_NAMES else name
 
 
 class ParamGen(IntEnum):
@@ -713,7 +713,7 @@ def gen_paramscast(method: dict, tabs: str) -> str:
         """
         Generates the return value casting code for the method, if applicable.
         """
-        return f"{RET_TYPESCAST_MAP.get(param['type'], None)} __retVal_native"
+        return f'{RET_TYPESCAST_MAP.get(param['type'], None)} __retVal_native'
 
     output_parts = []
 
@@ -723,14 +723,14 @@ def gen_paramscast(method: dict, tabs: str) -> str:
         if is_obj_return(ret_type.get('type')):
             ret_val = gen_return(ret_type)
             if ret_val:
-                output_parts.append(f"{tabs}{ret_val};\n")
+                output_parts.append(f'{tabs}{ret_val};\n')
 
     # Handle casting for each parameter in the method
     if method.get('paramTypes'):
         for param in method['paramTypes']:
             param_cast = gen_param(param)
             if param_cast:
-                output_parts.append(f"{tabs}{param_cast}")
+                output_parts.append(f'{tabs}{param_cast}')
                 output_parts.append(';\n' if param_cast[-1] != '{' else '\n')
 
     # Return the full generated string of parameter and return type casting code
@@ -905,9 +905,7 @@ def gen_delegate_body(prototype: dict, delegates: set[str]) -> str:
     # Start building the delegate definition
     delegate_code = []
     if delegate_description:
-        delegate_code.append(f"\t/// <summary>")
-        delegate_code.append(f"\t/// {delegate_description}")
-        delegate_code.append(f"\t/// </summary>")
+        delegate_code.append(gen_documentation(prototype, tab_level=1))
     param_list = gen_params(prototype, ParamGen.TypesCastNames)
     delegate_code.append(f'\tpublic delegate {return_type} {delegate_name}({param_list});')
 
@@ -934,10 +932,10 @@ def gen_enum_body(enum: dict, enum_type: str, enums: set[str]) -> str:
     # Start building the enum definition
     enum_code = []
     if enum_description:
-        enum_code.append(f"\t/// <summary>")
-        enum_code.append(f"\t/// {enum_description}")
-        enum_code.append(f"\t/// </summary>")
-    enum_code.append(f"\tpublic enum {enum_name} : {convert_type(enum_type)}\n\t{{")
+        enum_code.append(f'\t/// <summary>')
+        enum_code.append(f'\t/// {enum_description}')
+        enum_code.append(f'\t/// </summary>')
+    enum_code.append(f'\tpublic enum {enum_name} : {convert_type(enum_type)}\n\t{{')
 
     # Iterate over the enum values and generate corresponding code
     for i, value in enumerate(enum_values):
@@ -947,10 +945,10 @@ def gen_enum_body(enum: dict, enum_type: str, enums: set[str]) -> str:
 
         # Add summary comment for each value
         if description:
-            enum_code.append(f"\t\t/// <summary>")
-            enum_code.append(f"\t\t/// {description}")
-            enum_code.append(f"\t\t/// </summary>")
-        enum_code.append(f"\t\t{name} = {enum_value},")
+            enum_code.append(f'\t\t/// <summary>')
+            enum_code.append(f'\t\t/// {description}')
+            enum_code.append(f'\t\t/// </summary>')
+        enum_code.append(f'\t\t{name} = {enum_value},')
 
     # Close the enum definition
     enum_code.append("\t}\n")
@@ -972,46 +970,19 @@ def gen_documentation(method: dict, tab_level: int = 0) -> str:
     tab = '\t' * tab_level
 
     # Start building the XML documentation comment
-    docstring = [f"{tab}/// <summary>\n"]
-    docstring.append(f"{tab}/// {description}\n")
-    docstring.append(f"{tab}/// </summary>\n")
+    docstring = [f'{tab}/// <summary>\n{tab}/// {description}\n{tab}/// </summary>\n']
 
     # Add parameters
     for param in param_types:
         param_name = param.get('name', 'UnnamedParam')
         param_type = param.get('type', 'Any')  # Optionally include type in the summary
         param_desc = param.get('description', 'No description available.')
-        docstring.append(f"{tab}/// <param name=\"{param_name}\">{param_desc}</param>\n")
+        docstring.append(f'{tab}/// <param name=\"{param_name}\">{param_desc}</param>\n')
 
     # Add return type
     if ret_type.lower() != 'void':
         ret_desc = method.get('retType', {}).get('description', 'No description available.')
-        docstring.append(f"{tab}/// <returns>{ret_desc}</returns>\n")
-
-    # Add callback prototype if present
-    for param in param_types:
-        if param.get('type') == 'function' and 'prototype' in param:
-            prototype = param['prototype']
-            proto_name = prototype.get('name', 'UnnamedCallback')
-            proto_desc = prototype.get('description', 'No description provided.')
-            proto_params = prototype.get('paramTypes', [])
-            proto_ret = prototype.get('retType', {})
-
-            # Document callback as part of the function summary
-            docstring.append(f"{tab}/// <remarks>\n")
-            docstring.append(f"{tab}/// Callback {proto_name}: {proto_desc}\n")
-
-            for proto_param in proto_params:
-                p_name = proto_param.get('name', 'UnnamedParam')
-                p_desc = proto_param.get('description', 'No description available.')
-                docstring.append(f"{tab}/// - Parameter {p_name}: {p_desc}\n")
-
-            if proto_ret:
-                proto_ret_type = proto_ret.get('type', 'void')
-                proto_ret_desc = proto_ret.get('description', 'No description available.')
-                docstring.append(f"{tab}/// - Returns: {proto_ret_desc} ({proto_ret_type})\n")
-
-            docstring.append(f"{tab}/// </remarks>\n")
+        docstring.append(f'{tab}/// <returns>{ret_desc}</returns>\n')
 
     return ''.join(docstring)
 
