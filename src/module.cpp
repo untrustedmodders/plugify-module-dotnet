@@ -248,7 +248,7 @@ MethodHandle DotnetLanguageModule::FindMethod(std::string_view name) {
 	if (separated.size() != 2)
 		return {};
 
-	auto plugin = g_netlm.GetProvider()->FindPlugin(separated[0]);
+	auto plugin = _provider->FindPlugin(separated[0]);
 	if (plugin) {
 		for (const auto& method : plugin.GetDescriptor().GetExportedMethods()) {
 			auto prototype = method.FindPrototype(separated[1]);
