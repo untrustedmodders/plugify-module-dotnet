@@ -618,11 +618,150 @@ public static unsafe partial class NativeMethods
 	[SuppressGCTransition]
 	public static partial void GetVectorDataVector4(Vector192* vec, [In, Out] Vector4[] arr);
 	
-	
 	[LibraryImport(DllName)]
 	[SuppressGCTransition]
 	public static partial void GetVectorDataMatrix4x4(Vector192* vec, [In, Out] Matrix4x4[] arr);
 
+	public static Bool8[] GetVectorDataBool(Vector192* vec)
+	{
+	    var arr = new Bool8[NativeMethods.GetVectorSizeBool(vec)];
+	    NativeMethods.GetVectorDataBool(vec, arr);
+	    return arr;
+	}
+
+	public static Char8[] GetVectorDataChar8(Vector192* vec)
+	{
+	    var arr = new Char8[NativeMethods.GetVectorSizeChar8(vec)];
+	    NativeMethods.GetVectorDataChar8(vec, arr);
+	    return arr;
+	}
+
+	public static Char16[] GetVectorDataChar16(Vector192* vec)
+	{
+	    var arr = new Char16[NativeMethods.GetVectorSizeChar16(vec)];
+	    NativeMethods.GetVectorDataChar16(vec, arr);
+	    return arr;
+	}
+
+	public static sbyte[] GetVectorDataInt8(Vector192* vec)
+	{
+	    var arr = new sbyte[NativeMethods.GetVectorSizeInt8(vec)];
+	    NativeMethods.GetVectorDataInt8(vec, arr);
+	    return arr;
+	}
+
+	public static short[] GetVectorDataInt16(Vector192* vec)
+	{
+	    var arr = new short[NativeMethods.GetVectorSizeInt16(vec)];
+	    NativeMethods.GetVectorDataInt16(vec, arr);
+	    return arr;
+	}
+
+	public static int[] GetVectorDataInt32(Vector192* vec)
+	{
+	    var arr = new int[NativeMethods.GetVectorSizeInt32(vec)];
+	    NativeMethods.GetVectorDataInt32(vec, arr);
+	    return arr;
+	}
+
+	public static long[] GetVectorDataInt64(Vector192* vec)
+	{
+	    var arr = new long[NativeMethods.GetVectorSizeInt64(vec)];
+	    NativeMethods.GetVectorDataInt64(vec, arr);
+	    return arr;
+	}
+
+	public static byte[] GetVectorDataUInt8(Vector192* vec)
+	{
+	    var arr = new byte[NativeMethods.GetVectorSizeUInt8(vec)];
+	    NativeMethods.GetVectorDataUInt8(vec, arr);
+	    return arr;
+	}
+
+	public static ushort[] GetVectorDataUInt16(Vector192* vec)
+	{
+	    var arr = new ushort[NativeMethods.GetVectorSizeUInt16(vec)];
+	    NativeMethods.GetVectorDataUInt16(vec, arr);
+	    return arr;
+	}
+
+	public static uint[] GetVectorDataUInt32(Vector192* vec)
+	{
+	    var arr = new uint[NativeMethods.GetVectorSizeUInt32(vec)];
+	    NativeMethods.GetVectorDataUInt32(vec, arr);
+	    return arr;
+	}
+
+	public static ulong[] GetVectorDataUInt64(Vector192* vec)
+	{
+	    var arr = new ulong[NativeMethods.GetVectorSizeUInt64(vec)];
+	    NativeMethods.GetVectorDataUInt64(vec, arr);
+	    return arr;
+	}
+
+	public static nint[] GetVectorDataIntPtr(Vector192* vec)
+	{
+	    var arr = new nint[NativeMethods.GetVectorSizeIntPtr(vec)];
+	    NativeMethods.GetVectorDataIntPtr(vec, arr);
+	    return arr;
+	}
+
+	public static float[] GetVectorDataFloat(Vector192* vec)
+	{
+	    var arr = new float[NativeMethods.GetVectorSizeFloat(vec)];
+	    NativeMethods.GetVectorDataFloat(vec, arr);
+	    return arr;
+	}
+
+	public static double[] GetVectorDataDouble(Vector192* vec)
+	{
+	    var arr = new double[NativeMethods.GetVectorSizeDouble(vec)];
+	    NativeMethods.GetVectorDataDouble(vec, arr);
+	    return arr;
+	}
+
+	public static string[] GetVectorDataString(Vector192* vec)
+	{
+	    var arr = new string[NativeMethods.GetVectorSizeString(vec)];
+	    NativeMethods.GetVectorDataString(vec, arr);
+	    return arr;
+	}
+
+	public static object[] GetVectorDataVariant(Vector192* vec)
+	{
+	    var arr = new object[NativeMethods.GetVectorSizeVariant(vec)];
+	    NativeMethods.GetVectorDataVariant(vec, arr);
+	    return arr;
+	}
+
+	public static Vector2[] GetVectorDataVector2(Vector192* vec)
+	{
+	    var arr = new Vector2[NativeMethods.GetVectorSizeVector2(vec)];
+	    NativeMethods.GetVectorDataVector2(vec, arr);
+	    return arr;
+	}
+
+	public static Vector3[] GetVectorDataVector3(Vector192* vec)
+	{
+	    var arr = new Vector3[NativeMethods.GetVectorSizeVector3(vec)];
+	    NativeMethods.GetVectorDataVector3(vec, arr);
+	    return arr;
+	}
+
+	public static Vector4[] GetVectorDataVector4(Vector192* vec)
+	{
+	    var arr = new Vector4[NativeMethods.GetVectorSizeVector4(vec)];
+	    NativeMethods.GetVectorDataVector4(vec, arr);
+	    return arr;
+	}
+
+	public static Matrix4x4[] GetVectorDataMatrix4x4(Vector192* vec)
+	{
+	    var arr = new Matrix4x4[NativeMethods.GetVectorSizeMatrix4x4(vec)];
+	    NativeMethods.GetVectorDataMatrix4x4(vec, arr);
+	    return arr;
+	}
+	
 	#endregion
 
 	#region ConstructVector Functions
