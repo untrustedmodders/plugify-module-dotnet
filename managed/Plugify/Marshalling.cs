@@ -244,9 +244,7 @@ public static class Marshalling
 				}
 				case ValueType.Any:
 				{
-					var var = (Variant256*)outValue;
-					NativeMethods.DestroyVariant(var);
-					NativeMethods.SetVariantData(var, paramValue);
+					NativeMethods.AssignVariant((Variant256*)outValue, paramValue);
 					return;
 				}
 				case ValueType.ArrayBool:
@@ -607,7 +605,7 @@ public static class Marshalling
 		JitCall call = new JitCall(funcAddress, parameterTypes, returnType);
 		if (call.Function == null)
 		{
-			throw new InvalidOperationException($"Method '{methodInfo.Name}' has JIT generation error: {call.Error}");
+			throw new InvalidOperationException($"{methodInfo.Name} (jit error: {call.Error})");
 		}
 		
 		return parameters =>
@@ -1579,7 +1577,7 @@ public static class Marshalling
 			nint function = callback.Function;
 			if (function == nint.Zero)
 			{
-				throw new InvalidOperationException($"Method '{methodInfo.Name}' has JIT generation error: {callback.Error}");
+				throw new InvalidOperationException($"{methodInfo.Name} (jit error: {callback.Error})");
 			}
 			
 			CachedDelegates.Add(d, callback);

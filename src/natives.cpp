@@ -53,7 +53,7 @@ PLUGIFY_FORCE_INLINE int GetVectorSize(plg::vector<T>* vector) {
 
 template<typename T> requires(!std::is_same_v<T, char*>)
 PLUGIFY_FORCE_INLINE void GetVectorData(plg::vector<T>* vector, T* arr) {
-	std::memcpy(arr, vector->data(), vector->size());
+	std::memcpy(arr, vector->data(), vector->size() * sizeof(T));
 }
 
 template<typename T> requires(std::is_same_v<T, char*>)

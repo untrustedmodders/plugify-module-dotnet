@@ -443,7 +443,7 @@ void DotnetLanguageModule::ExceptionCallback(std::string_view message) {
 
 	std::stringstream stream;
 	cpptrace::generate_trace().print(stream);
-	g_netlm._provider->Log(stream.str(), Severity::Debug);
+	g_netlm._provider->Log(stream.str(), Severity::Error);
 }
 
 void DotnetLanguageModule::MessageCallback(std::string_view message, MessageLevel level) {
