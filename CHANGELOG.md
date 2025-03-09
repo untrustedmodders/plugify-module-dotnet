@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.4](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v1.1.3...v1.1.4) (2025-03-09)
+
+
+### Bug Fixes
+
+* add cmake version strip ([bd376f0](https://github.com/untrustedmodders/plugify-module-dotnet/commit/bd376f0e5dc9ed402a0e35b26706f7be88fe3e44))
+* another small refactor ([4462c47](https://github.com/untrustedmodders/plugify-module-dotnet/commit/4462c477f20fe8ed459e2a419e731d582e19321a))
+* refactor some marhsalling ([d043c53](https://github.com/untrustedmodders/plugify-module-dotnet/commit/d043c53ffdb0c25d74d1d0a82e4e6aae479fe4ca))
+* small improvements ([f06e0b5](https://github.com/untrustedmodders/plugify-module-dotnet/commit/f06e0b5c8771c1c3b7c7e1472cf94b797786d3ff))
+* update plugify ([fae4922](https://github.com/untrustedmodders/plugify-module-dotnet/commit/fae4922f7f8c9ed7f826e51398c763d9a32937c2))
+* version ([de5e433](https://github.com/untrustedmodders/plugify-module-dotnet/commit/de5e433779fe00955280bd438cf79272d011aa0e))
+
 ## [1.1.3](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v1.1.2...v1.1.3) (2025-02-06)
 
 
