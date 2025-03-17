@@ -76,9 +76,9 @@ jobs:
       - name: Clean build directory
         shell: pwsh
         run: |
-          mkdir -p build/output/bin
-          cp build/${{ env.BUILD_TYPE }}/plugify-module-dotnet.dll build/output/bin
-          cp build/plugify-module-dotnet.pmodule build/output
+          New-Item -ItemType Directory -Force -Path build\output\bin
+          Move-Item -Path build\${{ env.BUILD_TYPE }}\plugify-module-dotnet.dll -Destination build\output\bin
+          Move-Item -Path build\plugify-module-dotnet.pmodule -Destination build\output
 
       - uses: actions/upload-artifact@v4
         with:
