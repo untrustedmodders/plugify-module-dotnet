@@ -10,6 +10,9 @@ public class Plugin : IEquatable<Plugin>, IComparable<Plugin>
 	public string Author { get; set; } = "";
 	public string Website { get; set; } = "";
 	public string BaseDir { get; set; } = "";
+	public string ConfigsDir { get; set; } = "";
+	public string DataDir { get; set; } = "";
+	public string LogsDir { get; set; } = "";
 	public string[] Dependencies { get; set; } = [];
 
 	public string? FindResource(string path)

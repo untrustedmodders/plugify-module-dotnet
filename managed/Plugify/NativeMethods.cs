@@ -12,9 +12,6 @@ public static unsafe partial class NativeMethods
 
 	[LibraryImport(DllName, StringMarshalling = StringMarshalling.Utf8)]
 	[SuppressGCTransition]
-	public static partial string GetBaseDir();
-	[LibraryImport(DllName, StringMarshalling = StringMarshalling.Utf8)]
-	[SuppressGCTransition]
 	[return: MarshalAs(UnmanagedType.I1)]
 	public static partial bool IsModuleLoaded(string moduleName, string versionName, [MarshalAs(UnmanagedType.I1)] bool minimum);
 	[LibraryImport(DllName, StringMarshalling = StringMarshalling.Utf8)]

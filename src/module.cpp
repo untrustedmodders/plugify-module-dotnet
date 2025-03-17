@@ -490,6 +490,9 @@ ScriptInstance::ScriptInstance(PluginHandle plugin, ManagedGuid assembly, Type& 
 	_instance.SetPropertyValue("Author", plg::string(desc.GetCreatedBy()));
 	_instance.SetPropertyValue("Website", plg::string(desc.GetCreatedByURL()));
 	_instance.SetPropertyValue("BaseDir", plg::string(NETLM_UTF8(plugin.GetBaseDir())));
+	_instance.SetPropertyValue("ConfigsDir", plg::string(NETLM_UTF8(plugin.GetConfigsDir())));
+	_instance.SetPropertyValue("DataDir", plg::string(NETLM_UTF8(plugin.GetDataDir())));
+	_instance.SetPropertyValue("LogsDir", plg::string(NETLM_UTF8(plugin.GetLogsDir())));
 	_instance.SetPropertyValue("Dependencies", deps);
 
 	_update = _instance.GetType().GetMethod("OnPluginUpdate");
@@ -530,10 +533,6 @@ namespace netlm {
 }
 
 extern "C" {
-	NETLM_EXPORT const char* GetBaseDir() {
-		return Memory::StringToHGlobalAnsi(NETLM_UTF8(g_netlm.GetProvider()->GetBaseDir()));
-	}
-
 	NETLM_EXPORT bool IsModuleLoaded(const char* moduleName, const char* versionName, bool minimum) {
 		if (std::string_view version = versionName; !version.empty())
 			return g_netlm.GetProvider()->IsModuleLoaded(moduleName, plg::version(version), minimum);
