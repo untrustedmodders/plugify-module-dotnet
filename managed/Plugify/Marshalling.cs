@@ -9,6 +9,8 @@ public static class Marshalling
 {
 	internal static readonly Dictionary<Delegate, JitCallback?> CachedDelegates = new();
 	internal static readonly Dictionary<nint, Delegate> CachedFunctions = new();
+	private static readonly Mutex MutexDelegates = new();
+	private static readonly Mutex MutexFunctions = new();
 
 	internal static unsafe object?[]? MarshalParameterArray(nint paramsPtr, int parameterCount, MethodBase methodInfo)
 	{
@@ -547,28 +549,38 @@ public static class Marshalling
 	
 	public static Delegate GetDelegateForFunctionPointer(nint funcAddress, Type? delegateType)
 	{
-		if (CachedFunctions.TryGetValue(funcAddress, out var d))
+		MutexFunctions.WaitOne();
+
+		try
 		{
+			if (CachedFunctions.TryGetValue(funcAddress, out var d))
+			{
+				return d;
+			}
+
+			if (delegateType == null)
+			{
+				throw new Exception("Type required to properly generate delegate at runtime");
+			}
+
+			MethodInfo methodInfo = delegateType.GetMethod("Invoke")!;
+			if (IsNeedMarshal(methodInfo.ReturnType) ||
+			    methodInfo.GetParameters().Any(p => IsNeedMarshal(p.ParameterType)))
+			{
+				d = MethodUtils.CreateObjectArrayDelegate(delegateType, ExternalInvoke(funcAddress, methodInfo));
+			}
+			else
+			{
+				d = Marshal.GetDelegateForFunctionPointer(funcAddress, delegateType);
+			}
+
+			CachedFunctions.Add(funcAddress, d);
 			return d;
 		}
-
-		if (delegateType == null)
+		finally
 		{
-			throw new Exception("Type required to properly generate delegate at runtime");
+			MutexFunctions.ReleaseMutex();
 		}
-
-		MethodInfo methodInfo = delegateType.GetMethod("Invoke")!;
-		if (IsNeedMarshal(methodInfo.ReturnType) || methodInfo.GetParameters().Any(p => IsNeedMarshal(p.ParameterType)))
-		{
-			d = MethodUtils.CreateObjectArrayDelegate(delegateType, ExternalInvoke(funcAddress, methodInfo));
-		}
-		else
-		{
-			d = Marshal.GetDelegateForFunctionPointer(funcAddress, delegateType);
-		}
-		
-		CachedFunctions.Add(funcAddress, d);
-		return d;
 	}
 
 	private static unsafe nint RCast<T>(T primitive) where T : struct
@@ -1564,29 +1576,39 @@ public static class Marshalling
 
 	public static nint GetFunctionPointerForDelegate(Delegate d)
 	{
-		if (CachedDelegates.TryGetValue(d, out var callback))
-		{
-			return callback?.Function ?? Marshal.GetFunctionPointerForDelegate(d);
-		}
+		MutexDelegates.WaitOne();
 
-		MethodInfo methodInfo = d.Method;
-		if (IsNeedMarshal(methodInfo.ReturnType) || methodInfo.GetParameters().Any(p => IsNeedMarshal(p.ParameterType)))
+		try
 		{
-			callback = new JitCallback(d);
-
-			nint function = callback.Function;
-			if (function == nint.Zero)
+			if (CachedDelegates.TryGetValue(d, out var callback))
 			{
-				throw new InvalidOperationException($"{methodInfo.Name} (jit error: {callback.Error})");
+				return callback?.Function ?? Marshal.GetFunctionPointerForDelegate(d);
 			}
-			
-			CachedDelegates.Add(d, callback);
-			return function;
-		}
 
-		// We must manually keep the delegate from being collected by the garbage collector from managed code.
-		CachedDelegates.Add(d, null);
-		return Marshal.GetFunctionPointerForDelegate(d);
+			MethodInfo methodInfo = d.Method;
+			if (IsNeedMarshal(methodInfo.ReturnType) ||
+			    methodInfo.GetParameters().Any(p => IsNeedMarshal(p.ParameterType)))
+			{
+				callback = new JitCallback(d);
+
+				nint function = callback.Function;
+				if (function == nint.Zero)
+				{
+					throw new InvalidOperationException($"{methodInfo.Name} (jit error: {callback.Error})");
+				}
+
+				CachedDelegates.Add(d, callback);
+				return function;
+			}
+
+			// We must manually keep the delegate from being collected by the garbage collector from managed code.
+			CachedDelegates.Add(d, null);
+			return Marshal.GetFunctionPointerForDelegate(d);
+		}
+		finally
+		{
+			MutexDelegates.ReleaseMutex();
+		}
 	}
 
 	private static bool IsNeedMarshal(Type paramType)
