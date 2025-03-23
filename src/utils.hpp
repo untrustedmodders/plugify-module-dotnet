@@ -1,7 +1,6 @@
 #pragma once
 
 #include <cstring>
-#include <plugify/method.hpp>
 
 #if NETLM_PLATFORM_WINDOWS
 #define NETLM_NSTR(str) L##str

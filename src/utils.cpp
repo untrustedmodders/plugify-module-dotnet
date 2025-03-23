@@ -1,12 +1,10 @@
 #include "utils.hpp"
 
-#include <dotnet/error_codes.h>
-
 using namespace netlm;
 
 #if NETLM_PLATFORM_WINDOWS
 
-#include <Windows.h>
+#include <windows.h>
 
 std::wstring Utils::ConvertUtf8ToWide(std::string_view str){
 	std::wstring ret;
