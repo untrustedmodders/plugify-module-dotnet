@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.2.1](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v1.2.0...v1.2.1) (2025-03-26)
+
+
+### Bug Fixes
+
+* added mutexes to delegate marshalling ([3afab70](https://github.com/untrustedmodders/plugify-module-dotnet/commit/3afab70474ff5b968949c1213c4d5ef3584a0cb9))
+* build when dep ([8c3da19](https://github.com/untrustedmodders/plugify-module-dotnet/commit/8c3da19cefda5749e604a6c280860c282ab5bbfb))
+* small refactor ([9ebc99a](https://github.com/untrustedmodders/plugify-module-dotnet/commit/9ebc99af4fc51d6972550ee166950ed3ae3145a0))
+* update action build ([6adeb91](https://github.com/untrustedmodders/plugify-module-dotnet/commit/6adeb913849310e6fd715c7a1bb354e212e89bfe))
+
 ## [1.2.0](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v1.1.3...v1.2.0) (2025-03-17)
 
 
