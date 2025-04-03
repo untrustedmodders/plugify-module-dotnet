@@ -5,8 +5,18 @@ if(POLICY CMP0092)
 endif()
 
 
+file(READ "${CMAKE_CURRENT_SOURCE_DIR}/version.txt" VERSION_FILE_CONTENTS)
+string(STRIP "${VERSION_FILE_CONTENTS}" VERSION_FILE_CONTENTS)
+set(NETLM_VERSION "${VERSION_FILE_CONTENTS}" CACHE STRING "Set version name")
+set(NETLM_PACKAGE "plugify-module-dotnet" CACHE STRING "Set package name")
+string(REPLACE "v" "" NETLM_VERSION "${NETLM_VERSION}")
+string(REGEX REPLACE "[.+-]" ";" NETLM_VERSION_LIST ${NETLM_VERSION})
+list(GET NETLM_VERSION_LIST 0 NETLM_VERSION_MAJOR)
+list(GET NETLM_VERSION_LIST 1 NETLM_VERSION_MINOR)
+list(GET NETLM_VERSION_LIST 2 NETLM_VERSION_PATCH)
+
 project(plugify-module-dotnet 
-        VERSION 1.0.0.0 
+        VERSION "${NETLM_VERSION_MAJOR}.${NETLM_VERSION_MINOR}.${NETLM_VERSION_PATCH}"
         DESCRIPTION "C# (.NET) Language Module"
         HOMEPAGE_URL "https://github.com/untrustedmodders/plugify-module-dotnet" 
         LANGUAGES C CXX)
@@ -26,11 +36,6 @@ endif()
 if(UNIX AND NOT APPLE)
     set(LINUX TRUE)
 endif()
-
-#
-# CPPtrace
-#
-include(cmake/cpptrace.cmake)
 
 #
 # Plugify
@@ -54,10 +59,14 @@ set(NETLM_PCH_FILE "src/pch.hpp")
 
 add_library(${PROJECT_NAME} SHARED ${NETLM_SOURCES})
 
-set(NETLM_LINK_LIBRARIES plugify::plugify plugify::plugify-jit plugify::plugify-assembly asmjit::asmjit cpptrace::cpptrace)
+set(NETLM_LINK_LIBRARIES plugify::plugify plugify::plugify-jit plugify::plugify-assembly asmjit::asmjit)
 
 if(NOT COMPILER_SUPPORTS_FORMAT)
     set(NETLM_LINK_LIBRARIES ${NETLM_LINK_LIBRARIES} fmt::fmt-header-only)
+endif()
+
+if(NOT COMPILER_SUPPORTS_STACKTRACE)
+    set(NETLM_LINK_LIBRARIES ${NETLM_LINK_LIBRARIES} cpptrace::cpptrace)
 endif()
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/external/dotnet/include)
@@ -90,12 +99,6 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
         NETLM_LIBRARY_SUFFIX="${CMAKE_SHARED_LIBRARY_SUFFIX}"
         NETLM_LIBRARY_PREFIX="${CMAKE_SHARED_LIBRARY_PREFIX}"
 )
-
-file(READ "${CMAKE_CURRENT_SOURCE_DIR}/version.txt" VERSION_FILE_CONTENTS)
-string(STRIP "${VERSION_FILE_CONTENTS}" VERSION_FILE_CONTENTS)
-set(NETLM_VERSION "${VERSION_FILE_CONTENTS}" CACHE STRING "Set version name")
-set(NETLM_PACKAGE "${PROJECT_NAME}" CACHE STRING "Set package name")
-string(REPLACE "v" "" NETLM_VERSION "${NETLM_VERSION}")
 
 configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}.pmodule.in
