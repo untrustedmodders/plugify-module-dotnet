@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.2](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v1.2.1...v1.2.2) (2025-04-03)
+
+
+### Bug Fixes
+
+* add cmake versioning ([6eae405](https://github.com/untrustedmodders/plugify-module-dotnet/commit/6eae405f8d39478558711ba1a6ac1d6e0e060437))
+* update plugify and clang tools ([4b1e8e1](https://github.com/untrustedmodders/plugify-module-dotnet/commit/4b1e8e1506adbff3ddf049db9834a19c31de14c7))
+
 ## [1.2.1](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v1.2.0...v1.2.1) (2025-03-26)
 
 
