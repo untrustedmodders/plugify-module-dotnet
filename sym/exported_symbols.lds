@@ -1,8 +1,5 @@
 _GetLanguageModule
 
-_Log
-_GetMethodPtr
-_GetBaseDir
 _IsModuleLoaded
 _IsPluginLoaded
 _FindPluginResource

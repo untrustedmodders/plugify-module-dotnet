@@ -85,6 +85,10 @@ fs::path GetHostFXRPath() {
 		fs::path("/usr/lib/dotnet/host/fxr/"),
 		fs::path("/usr/share/dotnet/host/fxr/"),
 	};
+#elif NETLM_PLATFORM_APPLE
+	auto searchPaths = std::array {
+		fs::path("/usr/local/share/dotnet/host/fxr/")
+	};
 #endif
 
 	auto name = fs::path(NETLM_LIBRARY_PREFIX "hostfxr" NETLM_LIBRARY_SUFFIX);

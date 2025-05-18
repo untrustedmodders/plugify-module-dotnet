@@ -2,9 +2,6 @@
     global:
         GetLanguageModule;
 
-        Log;
-        GetMethodPtr;
-        GetBaseDir;
         IsModuleLoaded;
         IsPluginLoaded;
         FindPluginResource;

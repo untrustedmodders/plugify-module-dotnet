@@ -33,7 +33,7 @@ using namespace plugify;
 using namespace netlm;
 
 InitResult DotnetLanguageModule::Initialize(std::weak_ptr<IPlugifyProvider> provider, ModuleHandle module) {
-	if (!(_provider = provider.lock())) {
+	if (!((_provider = provider.lock()))) {
 		return ErrorData{ "Provider not exposed" };
 	}
 
@@ -66,7 +66,7 @@ void DotnetLanguageModule::Shutdown() {
 	_provider.reset();
 }
 
-void DotnetLanguageModule::OnUpdate(plugify::DateTime /*dt*/) {
+void DotnetLanguageModule::OnUpdate(DateTime /*dt*/) {
 }
 
 LoadResult DotnetLanguageModule::OnPluginLoad(PluginHandle plugin) {
@@ -172,15 +172,15 @@ LoadResult DotnetLanguageModule::OnPluginLoad(PluginHandle plugin) {
 }
 
 void DotnetLanguageModule::OnPluginStart(PluginHandle plugin) {
-	plugin.GetData().CCast<ScriptInstance*>()->InvokeOnStart();
+	plugin.GetData().RCast<ScriptInstance*>()->InvokeOnStart();
 }
 
 void DotnetLanguageModule::OnPluginUpdate(PluginHandle plugin, DateTime dt) {
-	plugin.GetData().CCast<ScriptInstance*>()->InvokeOnUpdate(dt.AsSeconds());
+	plugin.GetData().RCast<ScriptInstance*>()->InvokeOnUpdate(dt.AsSeconds());
 }
 
 void DotnetLanguageModule::OnPluginEnd(PluginHandle plugin) {
-	plugin.GetData().CCast<ScriptInstance*>()->InvokeOnEnd();
+	plugin.GetData().RCast<ScriptInstance*>()->InvokeOnEnd();
 }
 
 bool DotnetLanguageModule::IsDebugBuild() {
@@ -251,8 +251,7 @@ MethodHandle DotnetLanguageModule::FindMethod(std::string_view name) {
 	auto plugin = _provider->FindPlugin(separated[0]);
 	if (plugin) {
 		for (const auto& method : plugin.GetDescriptor().GetExportedMethods()) {
-			auto prototype = method.FindPrototype(separated[1]);
-			if (prototype) {
+			if (auto prototype = method.FindPrototype(separated[1])) {
 				return prototype;
 			}
 		}
@@ -411,7 +410,7 @@ static void ManagedCall(MethodHandle method, MemAddr data, const JitCallback::Pa
 // C++ to C#
 void DotnetLanguageModule::InternalCall(MethodHandle method, MemAddr data, const JitCallback::Parameters* p, size_t count, const JitCallback::Return* ret) {
 	ManagedCall(method, data, p, count, ret, [](MemAddr dt, ArgumentList& args, std::optional<void*> retPtr) {
-		const auto& [typeHandle, methodHandle] = *dt.CCast<HandleData*>();
+		const auto& [typeHandle, methodHandle] = *dt.RCast<HandleData*>();
 		Type type(typeHandle);
 		if (retPtr.has_value()) {
 			type.InvokeStaticMethodRetInternal(methodHandle, args.data(), args.size(), *retPtr);
