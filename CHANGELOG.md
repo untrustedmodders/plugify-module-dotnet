@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.2.2](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v1.2.1...v1.2.2) (2025-06-01)
+
+
+### Bug Fixes
+
+* add apple arm fixes ([b0f89f2](https://github.com/untrustedmodders/plugify-module-dotnet/commit/b0f89f2071ddcf5f77a9f7f3b6547c82de56ce49))
+* add cmake versioning ([6eae405](https://github.com/untrustedmodders/plugify-module-dotnet/commit/6eae405f8d39478558711ba1a6ac1d6e0e060437))
+* arm build ([3b57ddc](https://github.com/untrustedmodders/plugify-module-dotnet/commit/3b57ddc6e7487b9d40176d45974ad6e30f0d8d2b))
+* make module compatible with x86 ([e3e182b](https://github.com/untrustedmodders/plugify-module-dotnet/commit/e3e182ba7bf30f0efdc073af75c434d4abf23ad6))
+* replace DllImport by LibraryImport ([2ef1c61](https://github.com/untrustedmodders/plugify-module-dotnet/commit/2ef1c615375917d3582c5684b940334348bdf18c))
+* some warnings ([0f353d9](https://github.com/untrustedmodders/plugify-module-dotnet/commit/0f353d96378958b9b921489a227a67809c959524))
+* update plugify ([f787c62](https://github.com/untrustedmodders/plugify-module-dotnet/commit/f787c62ed42e03a8d88115840a78ce0fc0bdcb41))
+* update plugify ([f2beb18](https://github.com/untrustedmodders/plugify-module-dotnet/commit/f2beb185fb22a60f67ed517c50753d474ee0d835))
+* update plugify and clang tools ([4b1e8e1](https://github.com/untrustedmodders/plugify-module-dotnet/commit/4b1e8e1506adbff3ddf049db9834a19c31de14c7))
+
 ## [1.2.1](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v1.2.0...v1.2.1) (2025-03-26)
 
 
