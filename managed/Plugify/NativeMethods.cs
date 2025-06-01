@@ -933,11 +933,11 @@ public static unsafe partial class NativeMethods
 	#endregion
 }
 
-public static unsafe class NativeMethodsT
+public static unsafe partial class NativeMethodsT
 {
-	[DllImport("plugify-module-dotnet", EntryPoint = "GetVectorDataInt8", ExactSpelling = true)]
+	[LibraryImport("plugify-module-dotnet", EntryPoint = "GetVectorDataInt8")]
 	[SuppressGCTransition]
-	private static extern void __GetVectorDataInt8(Vector192* vec, sbyte* arrNative);
+	private static partial void __GetVectorDataInt8(Vector192* vec, sbyte* arrNative);
 	
 	public static void GetVectorDataInt8<T>(Vector192* vec, [In, Out] T[] arr) where T : unmanaged
 	{
@@ -947,9 +947,9 @@ public static unsafe class NativeMethodsT
 		}
 	}
 	
-	[DllImport("plugify-module-dotnet", EntryPoint = "GetVectorDataInt16", ExactSpelling = true)]
+	[LibraryImport("plugify-module-dotnet", EntryPoint = "GetVectorDataInt16")]
 	[SuppressGCTransition]
-	private static extern void __GetVectorDataInt16(Vector192* vec, sbyte* arrNative);
+	private static partial void __GetVectorDataInt16(Vector192* vec, sbyte* arrNative);
 
 	public static void GetVectorDataInt16<T>(Vector192* vec, [In, Out] T[] arr) where T : unmanaged
 	{
@@ -959,9 +959,9 @@ public static unsafe class NativeMethodsT
 		}
 	}
 	
-	[DllImport("plugify-module-dotnet", EntryPoint = "GetVectorDataInt32", ExactSpelling = true)]
+	[LibraryImport("plugify-module-dotnet", EntryPoint = "GetVectorDataInt32")]
 	[SuppressGCTransition]
-	private static extern void __GetVectorDataInt32(Vector192* vec, sbyte* arrNative);
+	private static partial void __GetVectorDataInt32(Vector192* vec, sbyte* arrNative);
 	
 	public static void GetVectorDataInt32<T>(Vector192* vec, [In, Out] T[] arr) where T : unmanaged
 	{
@@ -971,9 +971,9 @@ public static unsafe class NativeMethodsT
 		}
 	}
 	
-	[DllImport("plugify-module-dotnet", EntryPoint = "GetVectorDataInt64", ExactSpelling = true)]
+	[LibraryImport("plugify-module-dotnet", EntryPoint = "GetVectorDataInt64")]
 	[SuppressGCTransition]
-	private static extern void __GetVectorDataInt64(Vector192* vec, sbyte* arrNative);
+	private static partial void __GetVectorDataInt64(Vector192* vec, sbyte* arrNative);
 
 	public static void GetVectorDataInt64<T>(Vector192* vec, [In, Out] T[] arr) where T : unmanaged
 	{
@@ -983,9 +983,9 @@ public static unsafe class NativeMethodsT
 		}
 	}
 	
-	[DllImport("plugify-module-dotnet", EntryPoint = "GetVectorDataUInt8", ExactSpelling = true)]
+	[LibraryImport("plugify-module-dotnet", EntryPoint = "GetVectorDataUInt8")]
 	[SuppressGCTransition]
-	private static extern void __GetVectorDataUInt8(Vector192* vec, sbyte* arrNative);
+	private static partial void __GetVectorDataUInt8(Vector192* vec, sbyte* arrNative);
 
 	public static void GetVectorDataUInt8<T>(Vector192* vec, [In, Out] T[] arr) where T : unmanaged
 	{
@@ -995,9 +995,9 @@ public static unsafe class NativeMethodsT
 		}
 	}
 	
-	[DllImport("plugify-module-dotnet", EntryPoint = "GetVectorDataUInt16", ExactSpelling = true)]
+	[LibraryImport("plugify-module-dotnet", EntryPoint = "GetVectorDataUInt16")]
 	[SuppressGCTransition]
-	private static extern void __GetVectorDataUInt16(Vector192* vec, sbyte* arrNative);
+	private static partial void __GetVectorDataUInt16(Vector192* vec, sbyte* arrNative);
 
 	public static void GetVectorDataUInt16<T>(Vector192* vec, [In, Out] T[] arr) where T : unmanaged
 	{
@@ -1007,9 +1007,9 @@ public static unsafe class NativeMethodsT
 		}
 	}
 	
-	[DllImport("plugify-module-dotnet", EntryPoint = "GetVectorDataUInt32", ExactSpelling = true)]
+	[LibraryImport("plugify-module-dotnet", EntryPoint = "GetVectorDataUInt32")]
 	[SuppressGCTransition]
-	private static extern void __GetVectorDataUInt32(Vector192* vec, sbyte* arrNative);
+	private static partial void __GetVectorDataUInt32(Vector192* vec, sbyte* arrNative);
 
 	public static void GetVectorDataUInt32<T>(Vector192* vec, [In, Out] T[] arr) where T : unmanaged
 	{
@@ -1019,9 +1019,9 @@ public static unsafe class NativeMethodsT
 		}
 	}
 	
-	[DllImport("plugify-module-dotnet", EntryPoint = "GetVectorDataUInt64", ExactSpelling = true)]
+	[LibraryImport("plugify-module-dotnet", EntryPoint = "GetVectorDataUInt64")]
 	[SuppressGCTransition]
-	private static extern void __GetVectorDataUInt64(Vector192* vec, sbyte* arrNative);
+	private static partial void __GetVectorDataUInt64(Vector192* vec, sbyte* arrNative);
 
 	public static void GetVectorDataUInt64<T>(Vector192* vec, [In, Out] T[] arr) where T : unmanaged
 	{
@@ -1032,9 +1032,9 @@ public static unsafe class NativeMethodsT
 	}
 	
 	
-	[DllImport(NativeMethods.DllName, EntryPoint = "ConstructVectorInt8", ExactSpelling = true)]
+	[LibraryImport(NativeMethods.DllName, EntryPoint = "ConstructVectorInt8")]
 	[SuppressGCTransition]
-	private static extern Vector192 __ConstructVectorInt8(sbyte* arrNative, int lenNative);
+	private static partial Vector192 __ConstructVectorInt8(sbyte* arrNative, int lenNative);
 
 	public static Vector192 ConstructVectorInt8<T>([In] T[] arr, int len) where T : unmanaged
 	{
@@ -1046,9 +1046,9 @@ public static unsafe class NativeMethodsT
 		return retVal;
 	}
 
-	[DllImport(NativeMethods.DllName, EntryPoint = "ConstructVectorInt16", ExactSpelling = true)]
+	[LibraryImport(NativeMethods.DllName, EntryPoint = "ConstructVectorInt16")]
 	[SuppressGCTransition]
-	private static extern Vector192 __ConstructVectorInt16(short* arrNative, int lenNative);
+	private static partial Vector192 __ConstructVectorInt16(short* arrNative, int lenNative);
 
 	public static Vector192 ConstructVectorInt16<T>([In] T[] arr, int len) where T : unmanaged
 	{
@@ -1060,9 +1060,9 @@ public static unsafe class NativeMethodsT
 		return retVal;
 	}
 
-	[DllImport(NativeMethods.DllName, EntryPoint = "ConstructVectorInt32", ExactSpelling = true)]
+	[LibraryImport(NativeMethods.DllName, EntryPoint = "ConstructVectorInt32")]
 	[SuppressGCTransition]
-	private static extern Vector192 __ConstructVectorInt32(int* arrNative, int lenNative);
+	private static partial Vector192 __ConstructVectorInt32(int* arrNative, int lenNative);
 
 	public static Vector192 ConstructVectorInt32<T>([In] T[] arr, int len) where T : unmanaged
 	{
@@ -1074,9 +1074,9 @@ public static unsafe class NativeMethodsT
 		return retVal;
 	}
 
-	[DllImport(NativeMethods.DllName, EntryPoint = "ConstructVectorInt64", ExactSpelling = true)]
+	[LibraryImport(NativeMethods.DllName, EntryPoint = "ConstructVectorInt64")]
 	[SuppressGCTransition]
-	private static extern Vector192 __ConstructVectorInt64(long* arrNative, int lenNative);
+	private static partial Vector192 __ConstructVectorInt64(long* arrNative, int lenNative);
 
 	public static Vector192 ConstructVectorInt64<T>([In] T[] arr, int len) where T : unmanaged
 	{
@@ -1088,9 +1088,9 @@ public static unsafe class NativeMethodsT
 		return retVal;
 	}
 
-	[DllImport(NativeMethods.DllName, EntryPoint = "ConstructVectorUInt8", ExactSpelling = true)]
+	[LibraryImport(NativeMethods.DllName, EntryPoint = "ConstructVectorUInt8")]
 	[SuppressGCTransition]
-	private static extern Vector192 __ConstructVectorUInt8(byte* arrNative, int lenNative);
+	private static partial Vector192 __ConstructVectorUInt8(byte* arrNative, int lenNative);
 
 	public static Vector192 ConstructVectorUInt8<T>([In] T[] arr, int len) where T : unmanaged
 	{
@@ -1102,9 +1102,9 @@ public static unsafe class NativeMethodsT
 		return retVal;
 	}
 
-	[DllImport(NativeMethods.DllName, EntryPoint = "ConstructVectorUInt16", ExactSpelling = true)]
+	[LibraryImport(NativeMethods.DllName, EntryPoint = "ConstructVectorUInt16")]
 	[SuppressGCTransition]
-	private static extern Vector192 __ConstructVectorUInt16(ushort* arrNative, int lenNative);
+	private static partial Vector192 __ConstructVectorUInt16(ushort* arrNative, int lenNative);
 
 	public static Vector192 ConstructVectorUInt16<T>([In] T[] arr, int len) where T : unmanaged
 	{
@@ -1116,9 +1116,9 @@ public static unsafe class NativeMethodsT
 		return retVal;
 	}
 
-	[DllImport(NativeMethods.DllName, EntryPoint = "ConstructVectorUInt32", ExactSpelling = true)]
+	[LibraryImport(NativeMethods.DllName, EntryPoint = "ConstructVectorUInt32")]
 	[SuppressGCTransition]
-	private static extern Vector192 __ConstructVectorUInt32(uint* arrNative, int lenNative);
+	private static partial Vector192 __ConstructVectorUInt32(uint* arrNative, int lenNative);
 
 	public static Vector192 ConstructVectorUInt32<T>([In] T[] arr, int len) where T : unmanaged
 	{
@@ -1130,9 +1130,9 @@ public static unsafe class NativeMethodsT
 		return retVal;
 	}
 
-	[DllImport(NativeMethods.DllName, EntryPoint = "ConstructVectorUInt64", ExactSpelling = true)]
+	[LibraryImport(NativeMethods.DllName, EntryPoint = "ConstructVectorUInt64")]
 	[SuppressGCTransition]
-	private static extern Vector192 __ConstructVectorUInt64(ulong* arrNative, int lenNative);
+	private static partial Vector192 __ConstructVectorUInt64(ulong* arrNative, int lenNative);
 
 	public static Vector192 ConstructVectorUInt64<T>([In] T[] arr, int len) where T : unmanaged
 	{
