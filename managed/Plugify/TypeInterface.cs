@@ -120,7 +120,7 @@ internal static class TypeInterface
 	{
 		try
 		{
-			var type = Type.GetType(name);
+			var type = Type.GetType(name!);
 
 			if (type == null)
 			{
@@ -419,7 +419,7 @@ internal static class TypeInterface
 			if (!CachedTypes.TryGetValue(typeHandle, out var type))
 				return;
 
-			MethodInfo method = type.GetMethod(name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+			MethodInfo? method = type.GetMethod(name!, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)!;
 
 			if (method == null)
 				return;
@@ -443,7 +443,7 @@ internal static class TypeInterface
 			if (!CachedTypes.TryGetValue(typeHandle, out var type))
 				return;
 
-			FieldInfo field = type.GetField(name, BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
+			FieldInfo? field = type.GetField(name!, BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
 
 			if (field == null)
 				return;
@@ -467,7 +467,7 @@ internal static class TypeInterface
 			if (!CachedTypes.TryGetValue(typeHandle, out var type))
 				return;
 
-			PropertyInfo property = type.GetProperty(name, BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
+			PropertyInfo? property = type.GetProperty(name!, BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
 
 			if (property == null)
 				return;
@@ -1059,7 +1059,7 @@ internal static class TypeInterface
 				return;
 
 			for (int i = 0; i < *outCount; i++)
-				outValueArrayPtr[i] = (int) values.GetValue(i);
+				outValueArrayPtr[i] = (int) (values.GetValue(i) ?? 0);
 		}
 		catch (Exception e)
 		{

@@ -99,30 +99,35 @@ internal static class AssemblyLoader
 			}
 
 			LogMessage($"Unloading assembly {wrapper.FullName}...", MessageLevel.Info);
-			
-			foreach (var assembly in wrapper.Assemblies)
+
+			if (wrapper.Assemblies != null)
 			{
-				var assemblyName = assembly.GetName();
-
-				if (!AllocatedHandles.TryGetValue(assemblyName, out var handles))
+				foreach (var assembly in wrapper.Assemblies)
 				{
-					continue;
-				}
+					var assemblyName = assembly.GetName();
 
-				foreach (var handle in handles)
-				{
-					if (!handle.IsAllocated || handle.Target == null)
+					if (!AllocatedHandles.TryGetValue(assemblyName, out var handles))
 					{
 						continue;
 					}
 
-					LogMessage($"Found unfreed object '{handle.Target}' from assembly '{assemblyName}'. Deallocating.", MessageLevel.Info);
-					handle.Free();
-				}
+					foreach (var handle in handles)
+					{
+						if (!handle.IsAllocated || handle.Target == null)
+						{
+							continue;
+						}
 
-				AllocatedHandles.Remove(assemblyName);
+						LogMessage(
+							$"Found unfreed object '{handle.Target}' from assembly '{assemblyName}'. Deallocating.",
+							MessageLevel.Info);
+						handle.Free();
+					}
+
+					AllocatedHandles.Remove(assemblyName);
+				}
 			}
-			
+
 			wrapper.Unload();
 
 			int startTimeMs = Environment.TickCount;

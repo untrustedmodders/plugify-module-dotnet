@@ -151,7 +151,7 @@ internal static class TypeUtils
 
 	internal static ValueType ConvertToValueType(Type type)
 	{
-		var baseType = type.IsByRef ? type.GetElementType() : type;
+		var baseType = type.IsByRef ? type.GetElementType()! : type;
 		
 		if (baseType.IsEnum)
 		{
@@ -159,7 +159,7 @@ internal static class TypeUtils
 		}
 		else if (baseType.IsArray)
 		{
-			var elementType = baseType.GetElementType();
+			var elementType = baseType.GetElementType()!;
 			if (elementType.IsEnum)
 			{
 				baseType = elementType.GetEnumUnderlyingType().MakeArrayType();
@@ -203,7 +203,7 @@ internal static class TypeUtils
 
 		for (int i = 0; i < array.Length; i++)
 		{
-			array[i] = (T) Enum.ToObject(enumType, enumArray.GetValue(i));
+			array[i] = (T) Enum.ToObject(enumType, enumArray.GetValue(i) ?? 0);
 		}
 
 		return array;

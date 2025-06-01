@@ -407,7 +407,7 @@ internal static class ManagedObject
 				return;
 			}
 
-			object value = Marshalling.MarshalPointer(inValue, fieldInfo.FieldType);
+			object? value = Marshalling.MarshalPointer(inValue, fieldInfo.FieldType);
 			fieldInfo.SetValue(target, value);
 		}
 		catch (Exception e)

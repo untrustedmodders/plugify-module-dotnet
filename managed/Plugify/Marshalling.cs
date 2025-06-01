@@ -375,6 +375,7 @@ public static class Marshalling
 	}
 
 	internal static unsafe object MarshalPointer(nint inValue, Type paramType)
+	internal static unsafe object? MarshalPointer(nint inValue, Type paramType)
 	{
 		ValueType valueType = TypeUtils.ConvertToValueType(paramType);
 		Type? enumType = paramType.GetEnumType();

@@ -5,7 +5,7 @@ namespace Plugify;
 
 internal static class MethodUtils
 {
-	private static readonly MethodInfo FuncInvoke = typeof(Func<object[], object>).GetMethod("Invoke");
+	private static readonly MethodInfo FuncInvoke = typeof(Func<object[], object>).GetMethod("Invoke")!;
 	private static readonly MethodInfo ArrayEmpty = typeof(Array).GetMethod(nameof(Array.Empty))!.MakeGenericMethod(typeof(object));
 
 	// https://github.com/mono/corefx/blob/main/src/System.Linq.Expressions/src/System/Dynamic/Utils/DelegateHelpers.cs
@@ -63,7 +63,7 @@ internal static class MethodUtils
 			bool paramIsByReference = paramType.IsByRef;
 			if (paramIsByReference)
 			{
-				paramType = paramType.GetElementType();
+				paramType = paramType.GetElementType()!;
 			}
 
 			hasRefArgs = hasRefArgs || paramIsByReference;
@@ -105,7 +105,7 @@ internal static class MethodUtils
 				var paramType = parameters[i].ParameterType;
 				if (paramType.IsByRef)
 				{
-					Type byrefToType = paramType.GetElementType();
+					Type byrefToType = paramType.GetElementType()!;
 
 					// update parameter
 					ilgen.Emit(OpCodes.Ldarg, i + 1);

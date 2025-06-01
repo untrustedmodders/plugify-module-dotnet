@@ -12,7 +12,7 @@ internal static class ExtensionMethods
 		Type baseType = type;
 		if (type.IsByRef)
 		{
-			baseType = type.GetElementType();
+			baseType = type.GetElementType()!;
 		}
 		
 		if (baseType.IsEnum)
@@ -22,7 +22,7 @@ internal static class ExtensionMethods
 
 		if (baseType.IsArray)
 		{
-			var elementType = baseType.GetElementType();
+			var elementType = baseType.GetElementType()!;
 			if (elementType.IsEnum)
 			{
 				return elementType;
