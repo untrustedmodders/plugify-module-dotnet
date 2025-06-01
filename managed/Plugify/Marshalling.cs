@@ -374,7 +374,6 @@ public static class Marshalling
 		throw new NotImplementedException($"Parameter type {paramType.Name} not implemented");
 	}
 
-	internal static unsafe object MarshalPointer(nint inValue, Type paramType)
 	internal static unsafe object? MarshalPointer(nint inValue, Type paramType)
 	{
 		ValueType valueType = TypeUtils.ConvertToValueType(paramType);
@@ -584,13 +583,9 @@ public static class Marshalling
 		}
 	}
 
-	private static unsafe nint RCast<T>(T primitive) where T : struct
-	{
-		return *(nint*)&primitive;
-	}
-	
+	private static readonly bool IsArm = RuntimeInformation.ProcessArchitecture == Architecture.Arm64 || RuntimeInformation.ProcessArchitecture == Architecture.Arm;
 	private static readonly bool X86 = RuntimeInformation.ProcessArchitecture == Architecture.X64 || RuntimeInformation.ProcessArchitecture == Architecture.X86;
-	private static readonly bool IsWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && X86;
+	private static readonly bool IsWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 	
 	private static unsafe Func<object[], object> ExternalInvoke(nint funcAddress, MethodInfo methodInfo)
 	{
@@ -602,7 +597,7 @@ public static class Marshalling
 		
 		if (!hasRet)
 		{
-			ValueType firstHidden = IsWindows ? ValueType.Vector3 : ValueType.Matrix4x4;
+			ValueType firstHidden = (IsWindows && !IsArm) || X86 ? ValueType.Vector3 : ValueType.Matrix4x4;
 			hasRet = returnType.ValueType >= firstHidden && returnType.ValueType <= ValueType.Matrix4x4;
 		}
 		
@@ -620,16 +615,27 @@ public static class Marshalling
 		{
 			throw new InvalidOperationException($"{methodInfo.Name} (jit error: {call.Error})");
 		}
-		
+
 		return parameters =>
 		{
 			int index = 0, pin = 0, handle = 0;
 			GCHandle* pins = stackalloc GCHandle[paramCount];
 			(nint, ValueType)* handlers = stackalloc (nint, ValueType)[objectCount];
-			nint* @params = stackalloc nint[paramCount];
-			nint* @return = stackalloc nint[2]{ 0, 0 }; // 128bits to fit Vector4
+			ulong* @params = stackalloc ulong[paramCount];
+			ulong* @return = stackalloc ulong[2]{ 0, 0 }; // 128bits to fit Vector4
 
 			object? ret = null;
+			
+			nint Pin(ref object paramValue, ref GCHandle handle)
+			{
+				handle = GCHandle.Alloc(paramValue, GCHandleType.Pinned);
+				return handle.AddrOfPinnedObject();
+			}
+
+			ulong Raw<T>(T primitive) where T : unmanaged
+			{
+				return *(ulong*)(&primitive);
+			}
 
 			try
 			{
@@ -638,10 +644,55 @@ public static class Marshalling
 				ValueType retType = returnType.ValueType;
 				if (hasRet)
 				{
-					var obj = CreateReturnStorage(retType);
+					object obj;
+					switch (retType)
+					{
+						case ValueType.String:
+							obj = new String192();
+							break;
+						case ValueType.Any:
+							obj = new Variant256();
+							break;
+						case ValueType.ArrayBool:
+						case ValueType.ArrayChar8:
+						case ValueType.ArrayChar16:
+						case ValueType.ArrayInt8:
+						case ValueType.ArrayInt16:
+						case ValueType.ArrayInt32:
+						case ValueType.ArrayInt64:
+						case ValueType.ArrayUInt8:
+						case ValueType.ArrayUInt16:
+						case ValueType.ArrayUInt32:
+						case ValueType.ArrayUInt64:
+						case ValueType.ArrayPointer:
+						case ValueType.ArrayFloat:
+						case ValueType.ArrayDouble:
+						case ValueType.ArrayString: 
+						case ValueType.ArrayAny: 
+						case ValueType.ArrayVector2: 
+						case ValueType.ArrayVector3: 
+						case ValueType.ArrayVector4: 
+						case ValueType.ArrayMatrix4x4: 
+							obj = new Vector192();
+							break;
+						case ValueType.Vector2:
+							obj = new Vector2();
+							break;
+						case ValueType.Vector3:
+							obj = new Vector3();
+							break;
+						case ValueType.Vector4:
+							obj = new Vector4();
+							break;
+						case ValueType.Matrix4x4:
+							obj = new Matrix4x4();
+							break;
+						default:
+							throw new TypeNotFoundException();
+					}
 					nint ptr = Pin(ref obj, ref pins[pin++]);
 					handlers[handle++] = (ptr, retType);
-					@params[index++] = ptr;
+					@params[index++] = (ulong)ptr;
 				}
 
 				#endregion
@@ -659,63 +710,63 @@ public static class Marshalling
 						switch (valueType)
 						{
 							case ValueType.Bool:
-								@params[index++] = Pin(ref paramValue, ref pins[pin++]);
+								@params[index++] = (ulong)Pin(ref paramValue, ref pins[pin++]);
 								break;
 							case ValueType.Char8:
-								@params[index++] = Pin(ref paramValue, ref pins[pin++]);
+								@params[index++] = (ulong)Pin(ref paramValue, ref pins[pin++]);
 								break;
 							case ValueType.Char16:
-								@params[index++] = Pin(ref paramValue, ref pins[pin++]);
+								@params[index++] = (ulong)Pin(ref paramValue, ref pins[pin++]);
 								break;
 							case ValueType.Int8:
-								@params[index++] = Pin(ref paramValue, ref pins[pin++]);
+								@params[index++] = (ulong)Pin(ref paramValue, ref pins[pin++]);
 								break;
 							case ValueType.Int16:
-								@params[index++] = Pin(ref paramValue, ref pins[pin++]);
+								@params[index++] = (ulong)Pin(ref paramValue, ref pins[pin++]);
 								break;
 							case ValueType.Int32:
-								@params[index++] = Pin(ref paramValue, ref pins[pin++]);
+								@params[index++] = (ulong)Pin(ref paramValue, ref pins[pin++]);
 								break;
 							case ValueType.Int64:
-								@params[index++] = Pin(ref paramValue, ref pins[pin++]);
+								@params[index++] = (ulong)Pin(ref paramValue, ref pins[pin++]);
 								break;
 							case ValueType.UInt8:
-								@params[index++] = Pin(ref paramValue, ref pins[pin++]);
+								@params[index++] = (ulong)Pin(ref paramValue, ref pins[pin++]);
 								break;
 							case ValueType.UInt16:
-								@params[index++] = Pin(ref paramValue, ref pins[pin++]);
+								@params[index++] = (ulong)Pin(ref paramValue, ref pins[pin++]);
 								break;
 							case ValueType.UInt32:
-								@params[index++] = Pin(ref paramValue, ref pins[pin++]);
+								@params[index++] = (ulong)Pin(ref paramValue, ref pins[pin++]);
 								break;
 							case ValueType.UInt64:
-								@params[index++] = Pin(ref paramValue, ref pins[pin++]);
+								@params[index++] = (ulong)Pin(ref paramValue, ref pins[pin++]);
 								break;
 							case ValueType.Pointer:
-								@params[index++] = Pin(ref paramValue, ref pins[pin++]);
+								@params[index++] = (ulong)Pin(ref paramValue, ref pins[pin++]);
 								break;
 							case ValueType.Float:
-								@params[index++] = Pin(ref paramValue, ref pins[pin++]);
+								@params[index++] = (ulong)Pin(ref paramValue, ref pins[pin++]);
 								break;
 							case ValueType.Double:
-								@params[index++] = Pin(ref paramValue, ref pins[pin++]);
+								@params[index++] = (ulong)Pin(ref paramValue, ref pins[pin++]);
 								break;
 							case ValueType.Vector2:
-								@params[index++] = Pin(ref paramValue, ref pins[pin++]);
+								@params[index++] = (ulong)Pin(ref paramValue, ref pins[pin++]);
 								break;
 							case ValueType.Vector3:
-								@params[index++] = Pin(ref paramValue, ref pins[pin++]);
+								@params[index++] = (ulong)Pin(ref paramValue, ref pins[pin++]);
 								break;
 							case ValueType.Vector4:
-								@params[index++] = Pin(ref paramValue, ref pins[pin++]);
+								@params[index++] = (ulong)Pin(ref paramValue, ref pins[pin++]);
 								break;
 							case ValueType.Matrix4x4:
-								@params[index++] = Pin(ref paramValue, ref pins[pin++]);
+								@params[index++] = (ulong)Pin(ref paramValue, ref pins[pin++]);
 								break;
 							case ValueType.Function:
 							{
 								object ptr = GetFunctionPointerForDelegate((Delegate)paramValue);
-								@params[index++] = Pin(ref ptr, ref pins[pin++]);
+								@params[index++] = (ulong)Pin(ref ptr, ref pins[pin++]);
 								break;
 							}
 							case ValueType.String:
@@ -723,7 +774,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructString((string)paramValue);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.Any:
@@ -731,7 +782,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVariant(paramValue);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.ArrayBool:
@@ -740,7 +791,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVectorBool(arr, arr.Length);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.ArrayChar8:
@@ -749,7 +800,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVectorChar8(arr, arr.Length);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.ArrayChar16:
@@ -758,7 +809,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVectorChar16(arr, arr.Length);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.ArrayInt8:
@@ -767,7 +818,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVectorInt8(arr, arr.Length);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.ArrayInt16:
@@ -776,7 +827,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVectorInt16(arr, arr.Length);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.ArrayInt32:
@@ -785,7 +836,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVectorInt32(arr, arr.Length);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.ArrayInt64:
@@ -794,7 +845,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVectorInt64(arr, arr.Length);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.ArrayUInt8:
@@ -803,7 +854,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVectorUInt8(arr, arr.Length);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.ArrayUInt16:
@@ -812,7 +863,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVectorUInt16(arr, arr.Length);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.ArrayUInt32:
@@ -821,7 +872,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVectorUInt32(arr, arr.Length);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.ArrayUInt64:
@@ -830,7 +881,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVectorUInt64(arr, arr.Length);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.ArrayPointer:
@@ -839,7 +890,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVectorIntPtr(arr, arr.Length);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.ArrayFloat:
@@ -848,7 +899,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVectorFloat(arr, arr.Length);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.ArrayDouble:
@@ -857,7 +908,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVectorDouble(arr, arr.Length);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.ArrayString:
@@ -866,7 +917,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVectorString(arr, arr.Length);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.ArrayAny:
@@ -875,7 +926,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVectorVariant(arr, arr.Length);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.ArrayVector2:
@@ -884,7 +935,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVectorVector2(arr, arr.Length);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.ArrayVector3:
@@ -893,7 +944,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVectorVector3(arr, arr.Length);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.ArrayVector4:
@@ -902,7 +953,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVectorVector4(arr, arr.Length);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.ArrayMatrix4x4:
@@ -911,7 +962,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVectorMatrix4x4(arr, arr.Length);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							default:
@@ -923,64 +974,64 @@ public static class Marshalling
 						switch (valueType)
 						{
 							case ValueType.Bool:
-								@params[index++] = RCast((Bool8)paramValue);
+								@params[index++] = Raw((Bool8)paramValue);
 								break;
 							case ValueType.Char8:
-								@params[index++] = RCast((Char8)paramValue);
+								@params[index++] = Raw((Char8)paramValue);
 								break;
 							case ValueType.Char16:
-								@params[index++] = RCast((Char16)paramValue);
+								@params[index++] = Raw((Char16)paramValue);
 								break;
 							case ValueType.Int8:
-								@params[index++] = RCast((sbyte)paramValue);
+								@params[index++] = Raw((sbyte)paramValue);
 								break;
 							case ValueType.Int16:
-								@params[index++] = RCast((short)paramValue);
+								@params[index++] = Raw((short)paramValue);
 								break;
 							case ValueType.Int32:
-								@params[index++] = RCast((int)paramValue);
+								@params[index++] = Raw((int)paramValue);
 								break;
 							case ValueType.Int64:
-								@params[index++] = RCast((long)paramValue);
+								@params[index++] = Raw((long)paramValue);
 								break;
 							case ValueType.UInt8:
-								@params[index++] = RCast((byte)paramValue);
+								@params[index++] = Raw((byte)paramValue);
 								break;
 							case ValueType.UInt16:
-								@params[index++] = RCast((ushort)paramValue);
+								@params[index++] = Raw((ushort)paramValue);
 								break;
 							case ValueType.UInt32:
-								@params[index++] = RCast((uint)paramValue);
+								@params[index++] = Raw((uint)paramValue);
 								break;
 							case ValueType.UInt64:
-								@params[index++] = RCast((ulong)paramValue);
+								@params[index++] = Raw((ulong)paramValue);
 								break;
 							case ValueType.Pointer:
-								@params[index++] = (nint)paramValue;
+								@params[index++] = Raw((nint)paramValue);
 								break;
 							case ValueType.Float:
-								@params[index++] = RCast((float)paramValue);
+								@params[index++] = Raw((float)paramValue);
 								break;
 							case ValueType.Double:
-								@params[index++] = RCast((double)paramValue);
+								@params[index++] = Raw((double)paramValue);
 								break;
 							case ValueType.Vector2:
-								@params[index++] = Pin(ref paramValue, ref pins[pin++]);
+								@params[index++] = (ulong)Pin(ref paramValue, ref pins[pin++]);
 								break;
 							case ValueType.Vector3:
-								@params[index++] = Pin(ref paramValue, ref pins[pin++]);
+								@params[index++] = (ulong)Pin(ref paramValue, ref pins[pin++]);
 								break;
 							case ValueType.Vector4:
-								@params[index++] = Pin(ref paramValue, ref pins[pin++]);
+								@params[index++] = (ulong)Pin(ref paramValue, ref pins[pin++]);
 								break;
 							case ValueType.Matrix4x4:
-								@params[index++] = Pin(ref paramValue, ref pins[pin++]);
+								@params[index++] = (ulong)Pin(ref paramValue, ref pins[pin++]);
 								break;
 
 							case ValueType.Function:
 							{
 								object ptr = GetFunctionPointerForDelegate((Delegate)paramValue);
-								@params[index++] = Pin(ref ptr, ref pins[pin++]);
+								@params[index++] = (ulong)Pin(ref ptr, ref pins[pin++]);
 								break;
 							}
 							case ValueType.String:
@@ -988,7 +1039,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructString((string)paramValue);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.Any:
@@ -996,7 +1047,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVariant(paramValue);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.ArrayBool:
@@ -1005,7 +1056,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVectorBool(arr, arr.Length);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.ArrayChar8:
@@ -1014,7 +1065,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVectorChar8(arr, arr.Length);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.ArrayChar16:
@@ -1023,7 +1074,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVectorChar16(arr, arr.Length);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.ArrayInt8:
@@ -1032,7 +1083,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVectorInt8(arr, arr.Length);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.ArrayInt16:
@@ -1041,7 +1092,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVectorInt16(arr, arr.Length);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.ArrayInt32:
@@ -1050,7 +1101,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVectorInt32(arr, arr.Length);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.ArrayInt64:
@@ -1059,7 +1110,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVectorInt64(arr, arr.Length);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.ArrayUInt8:
@@ -1068,7 +1119,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVectorUInt8(arr, arr.Length);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.ArrayUInt16:
@@ -1077,7 +1128,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVectorUInt16(arr, arr.Length);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.ArrayUInt32:
@@ -1086,7 +1137,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVectorUInt32(arr, arr.Length);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.ArrayUInt64:
@@ -1095,7 +1146,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVectorUInt64(arr, arr.Length);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.ArrayPointer:
@@ -1104,7 +1155,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVectorIntPtr(arr, arr.Length);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.ArrayFloat:
@@ -1113,7 +1164,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVectorFloat(arr, arr.Length);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.ArrayDouble:
@@ -1122,7 +1173,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVectorDouble(arr, arr.Length);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.ArrayString:
@@ -1131,7 +1182,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVectorString(arr, arr.Length);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.ArrayAny:
@@ -1140,7 +1191,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVectorVariant(arr, arr.Length);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.ArrayVector2:
@@ -1149,7 +1200,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVectorVector2(arr, arr.Length);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.ArrayVector3:
@@ -1158,7 +1209,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVectorVector3(arr, arr.Length);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.ArrayVector4:
@@ -1167,7 +1218,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVectorVector4(arr, arr.Length);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							case ValueType.ArrayMatrix4x4:
@@ -1176,7 +1227,7 @@ public static class Marshalling
 								object tmp = NativeMethods.ConstructVectorMatrix4x4(arr, arr.Length);
 								nint ptr = Pin(ref tmp, ref pins[pin++]);
 								handlers[handle++] = (ptr, valueType);
-								@params[index++] = ptr;
+								@params[index++] = (ulong)ptr;
 								break;
 							}
 							default:
@@ -1350,7 +1401,7 @@ public static class Marshalling
 										parameters[i] = NativeMethods.GetStringData((String192*)handlers[j++].Item1);
 										break;
 									case ValueType.Any:
-										parameters[i] = NativeMethods.GetVariantData((Variant256*)handlers[j++].Item1);
+										parameters[i] = NativeMethods.GetVariantData((Variant256*)handlers[j++].Item1)!;
 										break;
 									case ValueType.ArrayBool:
 										parameters[i] = NativeMethods.GetVectorDataBool((Vector192*)handlers[j++].Item1);
@@ -1428,7 +1479,87 @@ public static class Marshalling
 			
 			finally 
 			{
-				DestroyStorage(handlers, handle);
+				for (int i = 0; i < handle; i++)
+				{
+					var (ptr, type) = handlers[i];
+					switch (type)
+					{
+						case ValueType.Vector2:
+						case ValueType.Vector3:
+						case ValueType.Vector4:
+						case ValueType.Matrix4x4:
+							// no dtor
+							break;
+						case ValueType.String:
+							NativeMethods.DestroyString((String192*)ptr);
+							break;
+						case ValueType.Any:
+							NativeMethods.DestroyVariant((Variant256*)ptr);
+							break;
+						case ValueType.ArrayBool:
+							NativeMethods.DestroyVectorBool((Vector192*)ptr);
+							break;
+						case ValueType.ArrayChar8:
+							NativeMethods.DestroyVectorChar8((Vector192*)ptr);
+							break;
+						case ValueType.ArrayChar16:
+							NativeMethods.DestroyVectorChar16((Vector192*)ptr);
+							break;
+						case ValueType.ArrayInt8:
+							NativeMethods.DestroyVectorInt8((Vector192*)ptr);
+							break;
+						case ValueType.ArrayInt16:
+							NativeMethods.DestroyVectorInt16((Vector192*)ptr);
+							break;
+						case ValueType.ArrayInt32:
+							NativeMethods.DestroyVectorInt32((Vector192*)ptr);
+							break;
+						case ValueType.ArrayInt64:
+							NativeMethods.DestroyVectorInt64((Vector192*)ptr);
+							break;
+						case ValueType.ArrayUInt8:
+							NativeMethods.DestroyVectorUInt8((Vector192*)ptr);
+							break;
+						case ValueType.ArrayUInt16:
+							NativeMethods.DestroyVectorUInt16((Vector192*)ptr);
+							break;
+						case ValueType.ArrayUInt32:
+							NativeMethods.DestroyVectorUInt32((Vector192*)ptr);
+							break;
+						case ValueType.ArrayUInt64:
+							NativeMethods.DestroyVectorUInt64((Vector192*)ptr);
+							break;
+						case ValueType.ArrayPointer:
+							NativeMethods.DestroyVectorIntPtr((Vector192*)ptr);
+							break;
+						case ValueType.ArrayFloat:
+							NativeMethods.DestroyVectorFloat((Vector192*)ptr);
+							break;
+						case ValueType.ArrayDouble:
+							NativeMethods.DestroyVectorDouble((Vector192*)ptr);
+							break;
+						case ValueType.ArrayString:
+							NativeMethods.DestroyVectorString((Vector192*)ptr);
+							break;
+						case ValueType.ArrayAny:
+							NativeMethods.DestroyVectorVariant((Vector192*)ptr);
+							break;
+						case ValueType.ArrayVector2:
+							NativeMethods.DestroyVectorVector2((Vector192*)ptr);
+							break;
+						case ValueType.ArrayVector3:
+							NativeMethods.DestroyVectorVector3((Vector192*)ptr);
+							break;
+						case ValueType.ArrayVector4:
+							NativeMethods.DestroyVectorVector4((Vector192*)ptr);
+							break;
+						case ValueType.ArrayMatrix4x4:
+							NativeMethods.DestroyVectorMatrix4x4((Vector192*)ptr);
+							break;
+						default:
+							throw new TypeNotFoundException();
+					}
+				}
 
 				for (int i = 0; i < pin; ++i)
 				{
@@ -1438,141 +1569,8 @@ public static class Marshalling
 
 			#endregion
 
-			return ret;
+			return ret!;
 		};
-	}
-
-	private static object CreateReturnStorage(ValueType retType)
-	{
-		switch (retType)
-		{
-			case ValueType.String:
-				return new String192();
-			case ValueType.Any:
-				return new Variant256();
-			case ValueType.ArrayBool:
-			case ValueType.ArrayChar8:
-			case ValueType.ArrayChar16:
-			case ValueType.ArrayInt8:
-			case ValueType.ArrayInt16:
-			case ValueType.ArrayInt32:
-			case ValueType.ArrayInt64:
-			case ValueType.ArrayUInt8:
-			case ValueType.ArrayUInt16:
-			case ValueType.ArrayUInt32:
-			case ValueType.ArrayUInt64:
-			case ValueType.ArrayPointer:
-			case ValueType.ArrayFloat:
-			case ValueType.ArrayDouble:
-			case ValueType.ArrayString: 
-			case ValueType.ArrayAny: 
-			case ValueType.ArrayVector2: 
-			case ValueType.ArrayVector3: 
-			case ValueType.ArrayVector4: 
-			case ValueType.ArrayMatrix4x4: 
-				return new Vector192();
-			case ValueType.Vector2:
-				return new Vector2();
-			case ValueType.Vector3:
-				return new Vector3();
-			case ValueType.Vector4:
-				return new Vector4();
-			case ValueType.Matrix4x4:
-				return new Matrix4x4();
-			default:
-				throw new TypeNotFoundException();
-		}
-	}
-
-	private static nint Pin(ref object paramValue, ref GCHandle handle)
-	{
-		handle = GCHandle.Alloc(paramValue, GCHandleType.Pinned);
-		return handle.AddrOfPinnedObject();
-	}
-
-	private static unsafe void DestroyStorage((nint, ValueType)* handlers, int count)
-	{
-		for (int i = 0; i < count; i++)
-		{
-			var (ptr, type) = handlers[i];
-			switch (type)
-			{
-				case ValueType.Vector2:
-				case ValueType.Vector3:
-				case ValueType.Vector4:
-				case ValueType.Matrix4x4:
-					// no dtor
-					break;
-				case ValueType.String:
-					NativeMethods.DestroyString((String192*)ptr);
-					break;
-				case ValueType.Any:
-					NativeMethods.DestroyVariant((Variant256*)ptr);
-					break;
-				case ValueType.ArrayBool:
-					NativeMethods.DestroyVectorBool((Vector192*)ptr);
-					break;
-				case ValueType.ArrayChar8:
-					NativeMethods.DestroyVectorChar8((Vector192*)ptr);
-					break;
-				case ValueType.ArrayChar16:
-					NativeMethods.DestroyVectorChar16((Vector192*)ptr);
-					break;
-				case ValueType.ArrayInt8:
-					NativeMethods.DestroyVectorInt8((Vector192*)ptr);
-					break;
-				case ValueType.ArrayInt16:
-					NativeMethods.DestroyVectorInt16((Vector192*)ptr);
-					break;
-				case ValueType.ArrayInt32:
-					NativeMethods.DestroyVectorInt32((Vector192*)ptr);
-					break;
-				case ValueType.ArrayInt64:
-					NativeMethods.DestroyVectorInt64((Vector192*)ptr);
-					break;
-				case ValueType.ArrayUInt8:
-					NativeMethods.DestroyVectorUInt8((Vector192*)ptr);
-					break;
-				case ValueType.ArrayUInt16:
-					NativeMethods.DestroyVectorUInt16((Vector192*)ptr);
-					break;
-				case ValueType.ArrayUInt32:
-					NativeMethods.DestroyVectorUInt32((Vector192*)ptr);
-					break;
-				case ValueType.ArrayUInt64:
-					NativeMethods.DestroyVectorUInt64((Vector192*)ptr);
-					break;
-				case ValueType.ArrayPointer:
-					NativeMethods.DestroyVectorIntPtr((Vector192*)ptr);
-					break;
-				case ValueType.ArrayFloat:
-					NativeMethods.DestroyVectorFloat((Vector192*)ptr);
-					break;
-				case ValueType.ArrayDouble:
-					NativeMethods.DestroyVectorDouble((Vector192*)ptr);
-					break;
-				case ValueType.ArrayString:
-					NativeMethods.DestroyVectorString((Vector192*)ptr);
-					break;
-				case ValueType.ArrayAny:
-					NativeMethods.DestroyVectorVariant((Vector192*)ptr);
-					break;
-				case ValueType.ArrayVector2:
-					NativeMethods.DestroyVectorVector2((Vector192*)ptr);
-					break;
-				case ValueType.ArrayVector3:
-					NativeMethods.DestroyVectorVector3((Vector192*)ptr);
-					break;
-				case ValueType.ArrayVector4:
-					NativeMethods.DestroyVectorVector4((Vector192*)ptr);
-					break;
-				case ValueType.ArrayMatrix4x4:
-					NativeMethods.DestroyVectorMatrix4x4((Vector192*)ptr);
-					break;
-				default:
-					throw new TypeNotFoundException();
-			}
-		}
 	}
 
 	public static nint GetFunctionPointerForDelegate(Delegate d)

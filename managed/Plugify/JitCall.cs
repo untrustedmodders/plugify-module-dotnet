@@ -11,7 +11,7 @@ public partial class JitCall : SafeHandle
 
 	public override bool IsInvalid => handle == nint.Zero;
 
-	public unsafe delegate* unmanaged[Cdecl]<nint*, nint*, void> Function => (delegate* unmanaged[Cdecl]<nint*, nint*, void>) GetCallFunction(handle);
+	public unsafe delegate* unmanaged[Cdecl]<ulong*, ulong*, void> Function => (delegate* unmanaged[Cdecl]<ulong*, ulong*, void>) GetCallFunction(handle);
 	
 	public string Error => GetCallError(handle);
 
