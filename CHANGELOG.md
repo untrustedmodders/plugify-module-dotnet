@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.2.3](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v1.2.2...v1.2.3) (2025-06-03)
+
+
+### Bug Fixes
+
+* update dep ([7361b93](https://github.com/untrustedmodders/plugify-module-dotnet/commit/7361b935422fbcbd5fd2ffacf5583ddc508da257))
+* update deprecated call conv ([0f3a195](https://github.com/untrustedmodders/plugify-module-dotnet/commit/0f3a195e3fe438ed38269a47fe29acf7a2be95c9))
+* update version naming ([c9b14e9](https://github.com/untrustedmodders/plugify-module-dotnet/commit/c9b14e9f94162d92ebb344f6cf19a79d9f8132c5))
+
 ## [1.2.2](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v1.2.1...v1.2.2) (2025-06-01)
 
 
