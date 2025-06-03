@@ -268,7 +268,7 @@ extern "C" {
 #endif
 
 		bool retHidden = ValueUtils::IsHiddenParam(ret.type);
-		asmjit::FuncSignature sig(asmjit::CallConvId::kHost, asmjit::FuncSignature::kNoVarArgs, JitUtils::GetRetTypeId(retHidden ? typeHidden : ret.type));
+		asmjit::FuncSignature sig(asmjit::CallConvId::kCDecl, asmjit::FuncSignature::kNoVarArgs, JitUtils::GetRetTypeId(retHidden ? typeHidden : ret.type));
 
 #if !NETLM_ARCH_ARM
 		if (retHidden) {
