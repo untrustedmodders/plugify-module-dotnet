@@ -21,7 +21,8 @@
 #include <plugify/version.hpp>
 #include <plugify/plugin_descriptor.hpp>
 #include <plugify/plugin_reference_descriptor.hpp>
-#include <thread>
+
+#include <cpptrace/cpptrace.hpp>
 
 #if NETLM_PLATFORM_WINDOWS
 #undef FindResource

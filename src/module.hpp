@@ -7,9 +7,6 @@
 #include "host_instance.hpp"
 #include "managed_assembly.hpp"
 
-#include <asmjit/asmjit.h>
-#include <cpptrace/cpptrace.hpp>
-
 namespace netlm {
 	class ScriptInstance {
 	public:
