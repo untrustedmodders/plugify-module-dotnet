@@ -592,6 +592,8 @@ def gen_params(method: dict, param_gen: ParamGen) -> str:
 
     # Helper function to generate the parameter type and cast name for TypesNames
     def gen_param_type_name(param: dict) -> str:
+        if param.get('default'):
+            return f'{get_type_name(param)} {generate_name(param["name"])} = {param["default"]}'
         return f'{get_type_name(param)} {generate_name(param["name"])}'
 
     # Helper function to generate the parameter type and cast name for TypesCastNames
