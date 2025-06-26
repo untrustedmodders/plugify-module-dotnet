@@ -29,7 +29,8 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS OFF)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-if(NOT CMAKE_BUILD_TYPE)
+if(NOT CMAKE_BUILD_TYPE MATCHES "Debug|Devel|MinSizeRel|RelWithDebInfo|Release")
+    message(STATUS "CMAKE_BUILD_TYPE not set, defaulting to Debug.")
     set(CMAKE_BUILD_TYPE Debug)
 endif()
 
