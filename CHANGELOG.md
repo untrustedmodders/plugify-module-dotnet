@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.2.5](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v1.2.4...v1.2.5) (2025-06-26)
+
+
+### Bug Fixes
+
+* add new lines ([0da3f8a](https://github.com/untrustedmodders/plugify-module-dotnet/commit/0da3f8a221fa3a4f9c5be64c36025f68647b764b))
+* update cross_call_worker.csproj ([0409317](https://github.com/untrustedmodders/plugify-module-dotnet/commit/0409317ee73d025791d9e311cd08146619e45a27))
+* update README.md ([912ddad](https://github.com/untrustedmodders/plugify-module-dotnet/commit/912ddadd7f3bdc267fc04e6b31fc0e085a0124a7))
+
 ## [1.2.4](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v1.2.3...v1.2.4) (2025-06-26)
 
 
