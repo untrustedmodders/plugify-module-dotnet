@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.2.3](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v1.2.2...v1.2.3) (2025-06-26)
+
+
+### Bug Fixes
+
+* add default build type ([1f566b6](https://github.com/untrustedmodders/plugify-module-dotnet/commit/1f566b666eb600bc83ed9f9533000307a1dd2b0a))
+* add default param generator ([4012b1d](https://github.com/untrustedmodders/plugify-module-dotnet/commit/4012b1dbd2d7bbae6b60d4d7f25cbe7472f45f84))
+* update arch tags for action build ([b755c59](https://github.com/untrustedmodders/plugify-module-dotnet/commit/b755c59aa8efc157546def45ba8642dc67deeb84))
+* update dep ([7361b93](https://github.com/untrustedmodders/plugify-module-dotnet/commit/7361b935422fbcbd5fd2ffacf5583ddc508da257))
+* update deprecated call conv ([0f3a195](https://github.com/untrustedmodders/plugify-module-dotnet/commit/0f3a195e3fe438ed38269a47fe29acf7a2be95c9))
+* update plugify ([5185dce](https://github.com/untrustedmodders/plugify-module-dotnet/commit/5185dce72a3b8b79dc234a188fc31995cdc6685a))
+* update plugify ([ad4775f](https://github.com/untrustedmodders/plugify-module-dotnet/commit/ad4775f72efde6606ce18ab41c5998c78b0592ba))
+* update plugify ([c217394](https://github.com/untrustedmodders/plugify-module-dotnet/commit/c217394a9f5888a5fd8af1af3a8d079e018ace71))
+* update version naming ([c9b14e9](https://github.com/untrustedmodders/plugify-module-dotnet/commit/c9b14e9f94162d92ebb344f6cf19a79d9f8132c5))
+
 ## [1.2.2](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v1.2.1...v1.2.2) (2025-06-01)
 
 
