@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.4](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v1.2.3...v1.2.4) (2025-06-26)
+
+
+### Bug Fixes
+
+* link of dotnet for linux ([dd06646](https://github.com/untrustedmodders/plugify-module-dotnet/commit/dd06646842708118d21089f48c20082d4efe9047))
+
 ## [1.2.3](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v1.2.2...v1.2.3) (2025-06-26)
 
 
