@@ -214,8 +214,7 @@ jobs:
       - name: Add dotnet runtime
         run: |
           mkdir -p build/linux/dotnet
-          curl -s -L https://download.visualstudio.microsoft.com/download/pr/e4791376-b70d-431f-bd98-5397c876b946/64ffc29a4edc8fd70b151c2963b38b09/aspnetcore-runtime-9.0.0-steamrt_x64-x64.tar.gz \
-          | tar xvz -C build/linux/dotnet
+          curl -s -L https://download.visualstudio.microsoft.com/download/pr/e4791376-b70d-431f-bd98-5397c876b946/64ffc29a4edc8fd70b151c2963b38b09/aspnetcore-runtime-9.0.0-linux-x64.tar.gz | tar xvz -C build/linux/dotnet
           mkdir -p build/windows/dotnet
           curl -s -L https://download.visualstudio.microsoft.com/download/pr/6f43674a-fedb-414d-a709-6cd21f295ed3/6d041dd6f1812d804994a7c6c45a23bf/aspnetcore-runtime-9.0.0-win-x64.zip -o dotnet.zip
           unzip -qq dotnet.zip -d build/windows/dotnet
