@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.6](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v1.2.5...v1.2.6) (2025-06-28)
+
+
+### Bug Fixes
+
+* update readme and add missing permission ([0d58390](https://github.com/untrustedmodders/plugify-module-dotnet/commit/0d58390d317d5de9158c5a1fd660053d0d998c14))
+
 ## [1.2.5](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v1.2.4...v1.2.5) (2025-06-26)
 
 
