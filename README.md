@@ -68,7 +68,7 @@ plg install plugify-module-dotnet
 
 2. **Write C# Plugins**
 
-   Develop your plugins in C# using the Plugify C# API. Refer to the [Plugify C# Plugin Guide](https://untrustedmodders.github.io/en/developing/plugins/first-plugin) for detailed instructions.
+   Develop your plugins in C# using the Plugify C# API. Refer to the [Plugify C# Plugin Guide](https://untrustedmodders.github.io/languages/csharp/first-plugin) for detailed instructions.
 
 3. **Build and Install Plugins**
 
@@ -89,17 +89,17 @@ namespace ExamplePlugin
     {
         public void OnPluginStart()
         {
-            Console.WriteLine(".NET: OnStart");
+            Console.WriteLine(".NET: OnPluginStart");
         }
         
-        public void OnPluginUpdate()
+        public void OnPluginUpdate(float dt)
         {
-            Console.WriteLine(".NET: OnStart");
+            Console.WriteLine(".NET: OnPluginUpdate");
         }
     
         public void OnPluginEnd()
         {
-            Console.WriteLine(".NET: OnEnd");
+            Console.WriteLine(".NET: OnPluginEnd");
         }
     }
 }
