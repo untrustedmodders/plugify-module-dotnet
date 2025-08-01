@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.7](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v1.2.6...v1.2.7) (2025-08-01)
+
+
+### Bug Fixes
+
+* add stacktrace include ([77e2087](https://github.com/untrustedmodders/plugify-module-dotnet/commit/77e2087fa72838b6959dff64557bcbf7dd5dc027))
+
 ## [1.2.6](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v1.2.5...v1.2.6) (2025-08-01)
 
 
