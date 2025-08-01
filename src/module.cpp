@@ -22,7 +22,11 @@
 #include <plugify/plugin_descriptor.hpp>
 #include <plugify/plugin_reference_descriptor.hpp>
 
+#if PLUGIFY_STACKTRACE_SUPPORT
+#include <stacktrace>
+#else
 #include <cpptrace/cpptrace.hpp>
+#endif
 
 #if NETLM_PLATFORM_WINDOWS
 #undef FindResource
@@ -436,36 +440,39 @@ void DotnetLanguageModule::DelegateCall(MethodHandle method, MemAddr data, const
 /*_________________________________________________*/
 
 void DotnetLanguageModule::ExceptionCallback(std::string_view message) {
-	if (!g_netlm._provider)
-		return;
+	if (const auto& provider = g_netlm.GetProvider()) {
+		provider->Log(std::format(LOG_PREFIX "[Exception] {}", std::string_view(message)), Severity::Error);
 
-	g_netlm._provider->Log(std::format(LOG_PREFIX "[Exception] {}", message), Severity::Error);
-
-	std::stringstream stream;
-	cpptrace::generate_trace().print(stream);
-	g_netlm._provider->Log(stream.str(), Severity::Error);
+#if PLUGIFY_STACKTRACE_SUPPORT
+		auto trace = std::stacktrace::current();
+		provider->Log(std::to_string(trace), Severity::Error);
+#else
+		std::stringstream stream;
+		cpptrace::generate_trace().print(stream);
+		provider->Log(stream.str(), Severity::Error);
+#endif
+	}
 }
 
 void DotnetLanguageModule::MessageCallback(std::string_view message, MessageLevel level) {
-	if (!g_netlm._provider)
-		return;
+	if (const auto& provider = g_netlm.GetProvider()) {
+		Severity severity;
+		switch (level) {
+			case MessageLevel::Info:
+				severity = Severity::Info;
+				break;
+			case MessageLevel::Warning:
+				severity = Severity::Warning;
+				break;
+			case MessageLevel::Error:
+				severity = Severity::Error;
+				break;
+			default:
+				return;
+		}
 
-	Severity severity;
-	switch (level) {
-		case MessageLevel::Info:
-			severity = Severity::Info;
-			break;
-		case MessageLevel::Warning:
-			severity = Severity::Warning;
-			break;
-		case MessageLevel::Error:
-			severity = Severity::Error;
-			break;
-		default:
-			return;
+		provider->Log(std::format(LOG_PREFIX "{}", message), severity);
 	}
-
-	g_netlm._provider->Log(std::format(LOG_PREFIX "{}", message), severity);
 }
 
 /*_________________________________________________*/
