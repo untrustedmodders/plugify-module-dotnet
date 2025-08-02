@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.8](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v1.2.7...v1.2.8) (2025-08-02)
+
+
+### Bug Fixes
+
+* update plugify ([093d72e](https://github.com/untrustedmodders/plugify-module-dotnet/commit/093d72ef9b3a2dffb11f332bda7d48307a55fa37))
+
 ## [1.2.7](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v1.2.6...v1.2.7) (2025-08-01)
 
 
