@@ -13,14 +13,7 @@ public static unsafe partial class NativeMethods
 	[LibraryImport(DllName, StringMarshalling = StringMarshalling.Utf8)]
 	[SuppressGCTransition]
 	[return: MarshalAs(UnmanagedType.I1)]
-	public static partial bool IsModuleLoaded(string moduleName, string versionName, [MarshalAs(UnmanagedType.I1)] bool minimum);
-	[LibraryImport(DllName, StringMarshalling = StringMarshalling.Utf8)]
-	[SuppressGCTransition]
-	[return: MarshalAs(UnmanagedType.I1)]
-	public static partial bool IsPluginLoaded(string pluginName, string versionName, [MarshalAs(UnmanagedType.I1)] bool minimum);
-	[LibraryImport(DllName, StringMarshalling = StringMarshalling.Utf8)]
-	[SuppressGCTransition]
-	public static partial string? FindPluginResource(long pluginId, string path);
+	public static partial bool IsExtensionLoaded(string name, string? constraint);
 
 	#endregion
 	

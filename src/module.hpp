@@ -1,19 +1,27 @@
+#pragma once
+
 #include <plugify/language_module.hpp>
+#include <plugify/assembly_loader.hpp>
 #include <plugify/method.hpp>
-#include <plugify/plugin.hpp>
-#include <plugify/jit/call.hpp>
-#include <plugify/jit/callback.hpp>
+#include <plugify/logger.hpp>
+#include <plugify/mem_addr.hpp>
+#include <plugify/provider.hpp>
+#include <plugify/extension.hpp>
+#include <plugify/call.hpp>
+#include <plugify/callback.hpp>
 
 #include "host_instance.hpp"
 #include "managed_assembly.hpp"
 
+using namespace plugify;
+
 namespace netlm {
 	class ScriptInstance {
 	public:
-		ScriptInstance(plugify::PluginHandle plugin, ManagedGuid assembly, Type& type);
+		ScriptInstance(const Extension& plugin, ManagedGuid assembly, Type& type);
 		~ScriptInstance();
 
-		plugify::PluginHandle GetPlugin() const { return _plugin; }
+		const Extension& GetPlugin() const { return _plugin; }
 		const ManagedObject& GetManagedObject() const { return _instance; }
 		const ManagedGuid& GetAssemblyId() const { return _assembly; }
 
@@ -29,7 +37,7 @@ namespace netlm {
 		bool HasEnd() const;
 
 	private:
-		plugify::PluginHandle _plugin;
+		const Extension& _plugin;
 		ManagedGuid _assembly;
 		ManagedObject _instance;
 		MethodInfo _update;
@@ -37,43 +45,50 @@ namespace netlm {
 		MethodInfo _end;
 	};
 
-	using ScriptMap = std::unordered_map<plugify::UniqueId, ScriptInstance>;
+	struct SharpMethodData;
+
 	using HandleData = std::pair<ManagedHandle, ManagedHandle>;
-	using FunctionList = std::vector<std::pair<plugify::JitCallback, std::unique_ptr<HandleData>>>;
+	using ScriptMap = std::unordered_map<UniqueId, ScriptInstance>;
+	using FunctionList = std::vector<SharpMethodData>;
 	using ArgumentList = std::vector<const void*>;
 
-	class DotnetLanguageModule final : public plugify::ILanguageModule {
+	struct SharpMethodData {
+		JitCallback jitCallback;
+		std::unique_ptr<HandleData> sharpFunction;
+	};
+
+	class DotnetLanguageModule final : public ILanguageModule {
 	public:
 		DotnetLanguageModule() = default;
 
 		// ILanguageModule
-		plugify::InitResult Initialize(std::weak_ptr<plugify::IPlugifyProvider> provider, plugify::ModuleHandle module) override;
+		Result<InitData> Initialize(const Provider& provider, const Extension& module) override;
 		void Shutdown() override;
-		void OnUpdate(plugify::DateTime dt) override;
-		plugify::LoadResult OnPluginLoad(plugify::PluginHandle plugin) override;
-		void OnPluginStart(plugify::PluginHandle plugin) override;
-		void OnPluginUpdate(plugify::PluginHandle plugin, plugify::DateTime dt) override;
-		void OnPluginEnd(plugify::PluginHandle plugin) override;
-		void OnMethodExport(plugify::PluginHandle plugin) override;
+		void OnUpdate(std::chrono::milliseconds dt) override;
+
+		Result<LoadData> OnPluginLoad(const Extension& plugin) override;
+		void OnPluginStart(const Extension& plugin) override;
+		void OnPluginUpdate(const Extension& plugin, std::chrono::milliseconds dt) override;
+		void OnPluginEnd(const Extension& plugin) override;
+		void OnMethodExport(const Extension& plugin) override;
 		bool IsDebugBuild() override;
 
 		const ScriptMap& GetScripts() const { return _scripts; }
-		ScriptInstance* FindScript(plugify::UniqueId pluginId);
-		plugify::MethodHandle FindMethod(std::string_view name);
+		ScriptInstance* FindScript(UniqueId pluginId);
+		const Method* FindMethod(std::string_view name) const;
 
-		const std::shared_ptr<plugify::IPlugifyProvider>& GetProvider() { return _provider; }
-		const std::shared_ptr<asmjit::JitRuntime>& GetRuntime() { return _rt; }
+		const std::unique_ptr<Provider>& GetProvider() { return _provider; }
+		static Result<SharpMethodData> GenerateMethodExport(const Method& method, ManagedAssembly &assembly);
 
-		static void InternalCall(plugify::MethodHandle method, plugify::MemAddr data, const plugify::JitCallback::Parameters* p, size_t count, const plugify::JitCallback::Return* ret);
-		static void DelegateCall(plugify::MethodHandle method, plugify::MemAddr data, const plugify::JitCallback::Parameters* p, size_t count, const plugify::JitCallback::Return* ret);
+		static void InternalCall(const Method* method, MemAddr data, uint64_t* p, size_t count, void* ret);
+		static void DelegateCall(const Method* method, MemAddr data, uint64_t* p, size_t count, void* ret);
 
 	private:
 		static void ExceptionCallback(std::string_view message);
 		static void MessageCallback(std::string_view message, MessageLevel level);
 
 	private:
-		std::shared_ptr<plugify::IPlugifyProvider> _provider;
-		std::shared_ptr<asmjit::JitRuntime> _rt;
+		std::unique_ptr<Provider> _provider;
 
 		HostInstance _host;
 		AssemblyLoader _loader;

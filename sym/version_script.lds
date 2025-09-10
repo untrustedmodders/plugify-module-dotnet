@@ -2,9 +2,7 @@
     global:
         GetLanguageModule;
 
-        IsModuleLoaded;
-        IsPluginLoaded;
-        FindPluginResource;
+        IsExtensionLoaded;
 
         GetStringData;
         GetStringLength;

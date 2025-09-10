@@ -4,21 +4,20 @@ public class Plugin : IEquatable<Plugin>, IComparable<Plugin>
 {
 	public long Id { get; set; } = -1;
 	public string Name { get; set; } = "";
-	public string FullName { get; set; } = "";
 	public string Description { get; set; } = "";
 	public string Version { get; set; } = "";
 	public string Author { get; set; } = "";
 	public string Website { get; set; } = "";
+	public string License { get; set; } = "";
+	public string Location { get; set; } = "";
+    
 	public string BaseDir { get; set; } = "";
+	public string ExtensionsDir { get; set; } = "";
 	public string ConfigsDir { get; set; } = "";
 	public string DataDir { get; set; } = "";
 	public string LogsDir { get; set; } = "";
+	public string CacheDir { get; set; } = "";
 	public string[] Dependencies { get; set; } = [];
-
-	public string? FindResource(string path)
-	{
-		return NativeMethods.FindPluginResource(Id, path);
-	}
 
 	public static bool operator ==(Plugin lhs, Plugin rhs)
 	{

@@ -1,0 +1,55 @@
+{% set name = "plugify-module-dotnet" %}
+{% set version = "REPLACE_VERSION" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  path: .
+
+build:
+  number: 0
+  string: "{{ target_platform | replace('-', '_') }}"
+  missing_dso_whitelist:
+    - "*/ld-linux*.so.*"  # [linux]
+    - "*/libc.so.*"       # [linux]
+    - "*/libm.so.*"       # [linux]
+    - "*/libdl.so.*"      # [linux]
+    - "*/libpthread.so.*" # [linux]
+    - "*/librt.so.*"      # [linux]
+    - "*/libplugify.so*"  # [linux]
+    - "*/libhostfxr.so*"  # [linux]
+    - "*/plugify.dll"     # [win]
+    - "*/hostfxr.dll"     # [win]
+
+requirements:
+  run:
+    - __glibc >=2.17 # [linux64]
+
+test:
+  commands:
+    - test -f $PREFIX/bin/libplugify-module-dotnet.so  # [linux]
+    - test -d $PREFIX/api                              # [linux]
+    - test -d $PREFIX/dotnet                           # [linux]
+    - test -f $PREFIX/plugify-module-dotnet.pmodule    # [linux]
+    - if not exist %PREFIX%\\bin\\plugify-module-dotnet.dll exit 1  # [win]
+    - if not exist %PREFIX%\\api exit 1                             # [win]
+    - if not exist %PREFIX%\\dotnet exit 1                          # [win]
+    - if not exist %PREFIX%\\plugify-module-dotnet.pmodule exit 1   # [win]
+
+about:
+  home: https://github.com/{{ environ.get('GITHUB_REPOSITORY', 'your-org/your-repo') }}
+  license: MIT
+  license_family: MIT
+  license_file: LICENSE
+  summary: C# Language Module for Plugify
+  description: |
+    C# Language Module provides C# language support for the Plugify
+    plugin system, enabling dynamic loading and execution of .NET plugins.
+  doc_url: https://github.com/{{ environ.get('GITHUB_REPOSITORY', 'your-org/your-repo') }}/blob/main/README.md
+  dev_url: https://github.com/{{ environ.get('GITHUB_REPOSITORY', 'your-org/your-repo') }}
+
+extra:
+  recipe-maintainers:
+    - {{ environ.get('GITHUB_ACTOR', 'your-username') }}

@@ -4,6 +4,7 @@
 #include "utils.hpp"
 #include "native_string.hpp"
 
+#include <plg/format.hpp>
 #include <plugify/assembly.hpp>
 
 #include <dotnet/coreclr_delegates.h>
@@ -11,7 +12,9 @@
 #include <dotnet/hostfxr.h>
 
 #if NETLM_PLATFORM_WINDOWS
-#include <shlobj_core.h>
+	#include <ShlObj_core.h>
+#else
+	#include <dlfcn.h>
 #endif
 
 using namespace netlm;
@@ -41,9 +44,10 @@ void HandleDeleter::operator()(void* handle) const noexcept {
 	hostfxr_close(handle);
 }
 
-bool HostInstance::Initialize(HostSettings settings) {
-	if (_ctx)
-		return false;
+Res<void> HostInstance::Initialize(HostSettings settings) {
+	if (_ctx) {
+		return std::unexpected("Host instance already initialized");
+	}
 
 	// Setup settings
 	_settings = std::move(settings);
@@ -52,21 +56,38 @@ bool HostInstance::Initialize(HostSettings settings) {
 	MessageFilter = _settings.messageFilter;
 	ExceptionCallback = _settings.exceptionCallback;
 
-	if (!LoadHostFXR()) {
-		MessageCallback("Failed to initialize hostfxr", MessageLevel::Error);
-		return false;
+	// Load HostFXR
+	if (auto result = LoadHostFXR(); !result) {
+		MessageCallback(std::format("Failed to initialize hostfxr: {}", result.error()), MessageLevel::Error);
+		return result;
 	}
 
-	return InitializeRuntimeHost();
+	// Initialize runtime host
+	if (auto result = InitializeRuntimeHost(); !result) {
+		return result;
+	}
+
+	return {};
 }
 
 void HostInstance::Shutdown() {
 	MessageCallback("Shutting down .NET runtime", MessageLevel::Info);
 	Managed.ShutdownFptr();
 	_ctx.reset();
-	_dll.reset();
 	MessageCallback("Shut down .NET runtime", MessageLevel::Info);
 }
+
+#if NETLM_PLATFORM_WINDOWS
+template <typename TFunc>
+TFunc LoadFunctionPtr(void* libraryHandle, const char* functionName) {
+	return (TFunc)::GetProcAddress((HMODULE)libraryHandle, functionName);
+}
+#else
+template <typename TFunc>
+TFunc LoadFunctionPtr(void* libraryHandle, const char* functionName) {
+	return (TFunc)::dlsym(libraryHandle, functionName);
+}
+#endif
 
 fs::path GetHostFXRPath() {
 #if NETLM_PLATFORM_WINDOWS
@@ -115,105 +136,124 @@ fs::path GetHostFXRPath() {
 	return {};
 }
 
-bool HostInstance::LoadHostFXR() {
-	auto hostfxrPath = _settings.hostfxrPath;
-	if (!fs::exists(hostfxrPath)) {
-		hostfxrPath = GetHostFXRPath();
-		if (!fs::exists(hostfxrPath)) {
-			return false;
-		}
+Res<void> HostInstance::LoadHostFXR() {
+    auto hostfxrPath = _settings.hostfxrPath;
+    if (!fs::exists(hostfxrPath)) {
+        hostfxrPath = GetHostFXRPath();
+        if (!fs::exists(hostfxrPath)) {
+            return std::unexpected("Could not find hostfxr library");
+        }
+    }
+
+    MessageCallback(std::format("Loading hostfxr from: {}", hostfxrPath.string()), MessageLevel::Info);
+
+    // Load the CoreCLR library
+    void* libraryHandle = nullptr;
+
+#if NETLM_PLATFORM_WINDOWS
+    libraryHandle = ::LoadLibraryW(hostfxrPath.c_str());
+	HMODULE pinnedHandle = nullptr;
+	if (!::GetModuleHandleExW(
+		GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_PIN,
+		reinterpret_cast<LPCWSTR>(libraryHandle), &pinnedHandle)
+	) {
+		return std::unexpected(std::format("Failed to pin hostfxr library from: {}", hostfxrPath.string()));
 	}
-	
-	MessageCallback(std::format("Loading hostfxr from: {}", hostfxrPath.string()), MessageLevel::Info);
+#else
+    libraryHandle = ::dlopen(hostfxrPath.c_str(), RTLD_NOW | RTLD_GLOBAL | RTLD_NODELETE);
+#endif
 
-	_dll = std::make_unique<Assembly>(hostfxrPath, LoadFlag::Lazy | LoadFlag::Nodelete | LoadFlag::PinInMemory);
-	if (!_dll) {
-		return false;
-	}
+    if (!libraryHandle) {
+        return std::unexpected(std::format("Failed to load hostfxr library from: {}", hostfxrPath.string()));
+    }
 
-	hostfxr_initialize_for_runtime_config = _dll->GetFunctionByName("hostfxr_initialize_for_runtime_config").RCast<hostfxr_initialize_for_runtime_config_fn>();
-	hostfxr_get_runtime_delegate = _dll->GetFunctionByName("hostfxr_get_runtime_delegate").RCast<hostfxr_get_runtime_delegate_fn>();
-	hostfxr_set_runtime_property_value = _dll->GetFunctionByName("hostfxr_set_runtime_property_value").RCast<hostfxr_set_runtime_property_value_fn>();
-	hostfxr_close = _dll->GetFunctionByName("hostfxr_close").RCast<hostfxr_close_fn>();
-	hostfxr_set_error_writer = _dll->GetFunctionByName("hostfxr_set_error_writer").RCast<hostfxr_set_error_writer_fn>();
+    // Load all required functions
+    hostfxr_initialize_for_runtime_config = LoadFunctionPtr<hostfxr_initialize_for_runtime_config_fn>(libraryHandle, "hostfxr_initialize_for_runtime_config");
+    hostfxr_get_runtime_delegate = LoadFunctionPtr<hostfxr_get_runtime_delegate_fn>(libraryHandle, "hostfxr_get_runtime_delegate");
+    hostfxr_set_runtime_property_value = LoadFunctionPtr<hostfxr_set_runtime_property_value_fn>(libraryHandle, "hostfxr_set_runtime_property_value");
+    hostfxr_close = LoadFunctionPtr<hostfxr_close_fn>(libraryHandle, "hostfxr_close");
+    hostfxr_set_error_writer = LoadFunctionPtr<hostfxr_set_error_writer_fn>(libraryHandle, "hostfxr_set_error_writer");
 
-	MessageCallback("Loaded hostfxr functions", MessageLevel::Info);
+    // Validate all functions were loaded
+    if (!hostfxr_initialize_for_runtime_config) {
+        return std::unexpected("Failed to load hostfxr_initialize_for_runtime_config");
+    }
+    if (!hostfxr_get_runtime_delegate) {
+        return std::unexpected("Failed to load hostfxr_get_runtime_delegate");
+    }
+    if (!hostfxr_set_runtime_property_value) {
+        return std::unexpected("Failed to load hostfxr_set_runtime_property_value");
+    }
+    if (!hostfxr_close) {
+        return std::unexpected("Failed to load hostfxr_close");
+    }
+    if (!hostfxr_set_error_writer) {
+        return std::unexpected("Failed to load hostfxr_set_error_writer");
+    }
 
-	return hostfxr_initialize_for_runtime_config &&
-		   hostfxr_get_runtime_delegate &&
-		   hostfxr_set_runtime_property_value &&
-		   hostfxr_close &&
-		   hostfxr_set_error_writer;
+    MessageCallback("Loaded hostfxr functions", MessageLevel::Info);
+    return {};
 }
 
-bool HostInstance::InitializeRuntimeHost() {
-	auto rootAssemblyPath = _settings.rootDirectory / "Plugify.dll";
-	if (!fs::exists(rootAssemblyPath)) {
-		MessageCallback("Failed to find Plugify.dll", MessageLevel::Error);
-		return false;
-	}
-	
-	auto runtimeConfigPath = _settings.rootDirectory / "Plugify.runtimeconfig.json";
-	if (!fs::exists(runtimeConfigPath)) {
-		MessageCallback("Failed to find Plugify.runtimeconfig.json", MessageLevel::Error);
-		return false;
-	}
-	
-	hostfxr_handle cxt = nullptr;
-	int32_t result = hostfxr_initialize_for_runtime_config(runtimeConfigPath.c_str(), nullptr, &cxt);
-	std::unique_ptr<void, HandleDeleter> context(cxt);
+Res<void> HostInstance::InitializeRuntimeHost() {
+    auto rootAssemblyPath = _settings.rootDirectory / "Plugify.dll";
+    if (!fs::exists(rootAssemblyPath)) {
+        return std::unexpected("Failed to find Plugify.dll");
+    }
 
-	if ((result < 0 || result > 2) || cxt == nullptr) {
-		MessageCallback(std::format("Failed to initialize hostfxr: {:x} ({})", uint32_t(result), hostfxr_str_error(result)), MessageLevel::Error);
-		return false;
-	}
+    auto runtimeConfigPath = _settings.rootDirectory / "Plugify.runtimeconfig.json";
+    if (!fs::exists(runtimeConfigPath)) {
+        return std::unexpected("Failed to find Plugify.runtimeconfig.json");
+    }
 
-	result = hostfxr_get_runtime_delegate(cxt, hdt_load_assembly_and_get_function_pointer, reinterpret_cast<void**>(&load_assembly_and_get_function_pointer));
-	if (result != 0 || load_assembly_and_get_function_pointer == nullptr) {
-		MessageCallback(std::format("hdt_load_assembly_and_get_function_pointer failed: {:x} ({})", uint32_t(result), hostfxr_str_error(result)), MessageLevel::Error);
-		return false;
-	}
-	/*result = hostfxr_get_runtime_delegate(cxt, hdt_get_function_pointer, reinterpret_cast<void**>(&get_function_pointer));
-	if (result != 0 || get_function_pointer == nullptr) {
-		MessageCallback(std::format("hdt_get_function_pointer failed: {:x} ({})", uint32_t(result), hostfxr_str_error(result), MessageLevel::Error);
-		return false;
-	}
-	result = hostfxr_get_runtime_delegate(cxt, hdt_load_assembly, reinterpret_cast<void**>(&load_assembly));
-	if (result != 0 || load_assembly == nullptr) {
-		MessageCallback(std::format("hdt_load_assembly failed: {:x} ({})", uint32_t(result), hostfxr_str_error(result), MessageLevel::Error);
-		return false;
-	}*/
+    hostfxr_handle cxt = nullptr;
+    int32_t result = hostfxr_initialize_for_runtime_config(runtimeConfigPath.c_str(), nullptr, &cxt);
+    std::unique_ptr<void, HandleDeleter> context(cxt);
 
-	_ctx = std::move(context);
+    if ((result < 0 || result > 2) || !cxt) {
+        return std::unexpected(std::format("Failed to initialize hostfxr: {:x} ({})",
+                                          uint32_t(result), hostfxr_str_error(result)));
+    }
 
-	hostfxr_set_error_writer([](const char_t* message) {
-		MessageCallback(NETLM_UTF8(message), MessageLevel::Error);
-	});
+    result = hostfxr_get_runtime_delegate(cxt, hdt_load_assembly_and_get_function_pointer,
+                                         reinterpret_cast<void**>(&load_assembly_and_get_function_pointer));
+    if (result != 0 || !load_assembly_and_get_function_pointer) {
+        return std::unexpected(std::format("hdt_load_assembly_and_get_function_pointer failed: {:x} ({})",
+                                          uint32_t(result), hostfxr_str_error(result)));
+    }
 
-	LoadManagedFunctions(rootAssemblyPath);
+    _ctx = std::move(context);
 
-	Managed.InitializeFptr(
-		[](String msg, MessageLevel level)
-		{
-			if (int(MessageFilter) & int(level)) {
-				std::string message = msg;
-				MessageCallback(message, level);
-			}
-		},
-		[](String msg)
-		{
-			std::string message = msg;
-			if (!ExceptionCallback) {
-				MessageCallback(message, MessageLevel::Error);
-				return;
-			}
-			ExceptionCallback(message);
-		});
+    hostfxr_set_error_writer([](const char_t* message) {
+        MessageCallback(NETLM_UTF8(message), MessageLevel::Error);
+    });
 
-	return true;
+    // Load managed functions
+    if (auto res = LoadManagedFunctions(rootAssemblyPath); !res) {
+        return res;
+    }
+
+    // Initialize managed host
+    Managed.InitializeFptr(
+        [](String msg, MessageLevel level) {
+            if (int(MessageFilter) & int(level)) {
+                std::string message = msg;
+                MessageCallback(message, level);
+            }
+        },
+        [](String msg) {
+            std::string message = msg;
+            if (!ExceptionCallback) {
+                MessageCallback(message, MessageLevel::Error);
+                return;
+            }
+            ExceptionCallback(message);
+        });
+
+    return {};
 }
 
-void* HostInstance::GetDelegate(const char_t* assemblyPath, const char_t* typeName, const char_t* methodName, const char_t* delegateTypeName) const {
+Res<void*> HostInstance::GetDelegate(const char_t* assemblyPath, const char_t* typeName, const char_t* methodName, const char_t* delegateTypeName) {
 	void* delegatePtr = nullptr;
 
 	int32_t result = load_assembly_and_get_function_pointer(
@@ -225,89 +265,127 @@ void* HostInstance::GetDelegate(const char_t* assemblyPath, const char_t* typeNa
 			&delegatePtr);
 
 	if (result != 0) {
-		MessageCallback(std::format("Failed to get function pointer for .NET assembly: {}\\tType Name: {}\\tMethod Name: {} - {:x} ({})", NETLM_UTF8(assemblyPath), NETLM_UTF8(typeName), NETLM_UTF8(methodName), uint32_t(result), hostfxr_str_error(result)), MessageLevel::Error);
-		return nullptr;
+		return std::unexpected(std::format("Failed to get delegate: {}::{} - {:x} ({})", NETLM_UTF8(typeName), NETLM_UTF8(methodName), uint32_t(result), hostfxr_str_error(result)));
 	}
 
 	return delegatePtr;
 }
 
-void HostInstance::LoadManagedFunctions(const fs::path& assemblyPath) {
-	const char_t* path = assemblyPath.c_str();
+Res<void> HostInstance::LoadManagedFunctions(const fs::path& assemblyPath) {
+    const char_t* path = assemblyPath.c_str();
 
-	Managed.InitializeFptr = GetDelegate<InitializeFn>(path, NETLM_NSTR("Plugify.ManagedHost, Plugify"), NETLM_NSTR("Initialize"));
-	Managed.ShutdownFptr = GetDelegate<ShutdownFn>(path, NETLM_NSTR("Plugify.ManagedHost, Plugify"), NETLM_NSTR("Shutdown"));
+    // Define a macro to simplify delegate loading and checking
+    #define LOAD_DELEGATE(field, typeName, methodName) \
+        do { \
+            auto result = GetDelegate(path, typeName, methodName); \
+            if (!result) { \
+                return std::unexpected(result.error()); \
+            } \
+            Managed.field = reinterpret_cast<decltype(Managed.field)>(result.value()); \
+        } while(0)
 
-	Managed.LoadManagedAssemblyFptr = GetDelegate<LoadManagedAssemblyFn>(path, NETLM_NSTR("Plugify.AssemblyLoader, Plugify"), NETLM_NSTR("LoadAssembly"));
-	Managed.UnloadManagedAssemblyFptr = GetDelegate<UnloadManagedAssemblyFn>(path, NETLM_NSTR("Plugify.AssemblyLoader, Plugify"), NETLM_NSTR("UnloadAssembly"));
-	Managed.GetLastLoadStatusFptr = GetDelegate<GetLastLoadStatusFn>(path, NETLM_NSTR("Plugify.AssemblyLoader, Plugify"), NETLM_NSTR("GetLastLoadStatus"));
-	Managed.GetAssemblyNameFptr = GetDelegate<GetAssemblyNameFn>(path, NETLM_NSTR("Plugify.AssemblyLoader, Plugify"), NETLM_NSTR("GetAssemblyName"));
+    // Core functions
+    LOAD_DELEGATE(InitializeFptr, NETLM_NSTR("Plugify.ManagedHost, Plugify"), NETLM_NSTR("Initialize"));
+    LOAD_DELEGATE(ShutdownFptr, NETLM_NSTR("Plugify.ManagedHost, Plugify"), NETLM_NSTR("Shutdown"));
 
-	Managed.GetAssemblyTypesFptr = GetDelegate<GetAssemblyTypesFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetAssemblyTypes"));
-	Managed.GetTypeFptr = GetDelegate<GetTypeFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetType"));
-	Managed.GetFullTypeNameFptr = GetDelegate<GetFullTypeNameFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetFullTypeName"));
-	Managed.GetAssemblyQualifiedNameFptr = GetDelegate<GetAssemblyQualifiedNameFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetAssemblyQualifiedName"));
-	Managed.GetBaseTypeFptr = GetDelegate<GetBaseTypeFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetBaseType"));
-	Managed.GetTypeSizeFptr = GetDelegate<GetTypeSizeFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetTypeSize"));
-	Managed.IsTypeSubclassOfFptr = GetDelegate<IsTypeSubclassOfFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("IsTypeSubclassOf"));
-	Managed.IsTypeAssignableToFptr = GetDelegate<IsTypeAssignableToFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("IsTypeAssignableTo"));
-	Managed.IsTypeAssignableFromFptr = GetDelegate<IsTypeAssignableFromFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("IsTypeAssignableFrom"));
-	Managed.IsTypeSZArrayFptr = GetDelegate<IsTypeSZArrayFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("IsTypeSZArray"));
-	Managed.IsTypeByRefFptr = GetDelegate<IsTypeByRefFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("IsTypeByRef"));
-	Managed.GetElementTypeFptr = GetDelegate<GetElementTypeFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetElementType"));
-	Managed.GetTypeMethodsFptr = GetDelegate<GetTypeMethodsFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetTypeMethods"));
-	Managed.GetTypeFieldsFptr = GetDelegate<GetTypeFieldsFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetTypeFields"));
-	Managed.GetTypePropertiesFptr = GetDelegate<GetTypePropertiesFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetTypeProperties"));
-	Managed.GetTypeMethodFptr = GetDelegate<GetTypeMethodFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetTypeMethod"));
-	Managed.GetTypeFieldFptr = GetDelegate<GetTypeFieldFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetTypeField"));
-	Managed.GetTypePropertyFptr = GetDelegate<GetTypePropertyFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetTypeProperty"));
-	Managed.HasTypeAttributeFptr = GetDelegate<HasTypeAttributeFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("HasTypeAttribute"));
-	Managed.GetTypeAttributesFptr = GetDelegate<GetTypeAttributesFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetTypeAttributes"));
-	Managed.GetTypeManagedTypeFptr = GetDelegate<GetTypeManagedTypeFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetTypeManagedType"));
-	Managed.InvokeStaticMethodFptr = GetDelegate<InvokeStaticMethodFn>(path, NETLM_NSTR("Plugify.ManagedObject, Plugify"), NETLM_NSTR("InvokeStaticMethod"));
-	Managed.InvokeStaticMethodRetFptr = GetDelegate<InvokeStaticMethodRetFn>(path, NETLM_NSTR("Plugify.ManagedObject, Plugify"), NETLM_NSTR("InvokeStaticMethodRet"));
+    // Assembly loading functions
+    LOAD_DELEGATE(LoadManagedAssemblyFptr, NETLM_NSTR("Plugify.AssemblyLoader, Plugify"), NETLM_NSTR("LoadAssembly"));
+    LOAD_DELEGATE(UnloadManagedAssemblyFptr, NETLM_NSTR("Plugify.AssemblyLoader, Plugify"), NETLM_NSTR("UnloadAssembly"));
+    LOAD_DELEGATE(GetLastLoadStatusFptr, NETLM_NSTR("Plugify.AssemblyLoader, Plugify"), NETLM_NSTR("GetLastLoadStatus"));
+    LOAD_DELEGATE(GetAssemblyNameFptr, NETLM_NSTR("Plugify.AssemblyLoader, Plugify"), NETLM_NSTR("GetAssemblyName"));
 
-	Managed.GetMethodInfoNameFptr = GetDelegate<GetMethodInfoNameFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetMethodInfoName"));
-	Managed.GetMethodInfoFunctionAddressFptr = GetDelegate<GetMethodInfoFunctionAddressFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetMethodInfoFunctionAddress"));
-	Managed.GetMethodInfoReturnTypeFptr = GetDelegate<GetMethodInfoReturnTypeFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetMethodInfoReturnType"));
-	Managed.GetMethodInfoParameterTypesFptr = GetDelegate<GetMethodInfoParameterTypesFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetMethodInfoParameterTypes"));
-	Managed.GetMethodInfoAccessibilityFptr = GetDelegate<GetMethodInfoAccessibilityFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetMethodInfoAccessibility"));
-	Managed.GetMethodInfoAttributesFptr = GetDelegate<GetMethodInfoAttributesFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetMethodInfoAttributes"));
-	Managed.GetMethodInfoParameterAttributesFptr = GetDelegate<GetMethodInfoParameterAttributesFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetMethodInfoParameterAttributes"));
-	Managed.GetMethodInfoReturnAttributesFptr = GetDelegate<GetMethodInfoReturnAttributesFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetMethodInfoReturnAttributes"));
+    // Type interface functions
+    LOAD_DELEGATE(GetAssemblyTypesFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetAssemblyTypes"));
+    LOAD_DELEGATE(GetTypeFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetType"));
+    LOAD_DELEGATE(GetFullTypeNameFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetFullTypeName"));
+    LOAD_DELEGATE(GetAssemblyQualifiedNameFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetAssemblyQualifiedName"));
+    LOAD_DELEGATE(GetBaseTypeFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetBaseType"));
+    LOAD_DELEGATE(GetTypeSizeFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetTypeSize"));
+    LOAD_DELEGATE(IsTypeSubclassOfFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("IsTypeSubclassOf"));
+    LOAD_DELEGATE(IsTypeAssignableToFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("IsTypeAssignableTo"));
+    LOAD_DELEGATE(IsTypeAssignableFromFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("IsTypeAssignableFrom"));
+    LOAD_DELEGATE(IsTypeSZArrayFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("IsTypeSZArray"));
+    LOAD_DELEGATE(IsTypeByRefFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("IsTypeByRef"));
+    LOAD_DELEGATE(GetElementTypeFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetElementType"));
 
-	Managed.GetFieldInfoNameFptr = GetDelegate<GetFieldInfoNameFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetFieldInfoName"));
-	Managed.GetFieldInfoTypeFptr = GetDelegate<GetFieldInfoTypeFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetFieldInfoType"));
-	Managed.GetFieldInfoAccessibilityFptr = GetDelegate<GetFieldInfoAccessibilityFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetFieldInfoAccessibility"));
-	Managed.GetFieldInfoAttributesFptr = GetDelegate<GetFieldInfoAttributesFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetFieldInfoAttributes"));
+    // Method/Field/Property functions
+    LOAD_DELEGATE(GetTypeMethodsFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetTypeMethods"));
+    LOAD_DELEGATE(GetTypeFieldsFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetTypeFields"));
+    LOAD_DELEGATE(GetTypePropertiesFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetTypeProperties"));
+    LOAD_DELEGATE(GetTypeMethodFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetTypeMethod"));
+    LOAD_DELEGATE(GetTypeFieldFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetTypeField"));
+    LOAD_DELEGATE(GetTypePropertyFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetTypeProperty"));
 
-	Managed.GetPropertyInfoNameFptr = GetDelegate<GetPropertyInfoNameFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetPropertyInfoName"));
-	Managed.GetPropertyInfoTypeFptr = GetDelegate<GetPropertyInfoTypeFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetPropertyInfoType"));
-	Managed.GetPropertyInfoAttributesFptr = GetDelegate<GetPropertyInfoAttributesFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetPropertyInfoAttributes"));
+    // Attribute functions
+    LOAD_DELEGATE(HasTypeAttributeFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("HasTypeAttribute"));
+    LOAD_DELEGATE(GetTypeAttributesFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetTypeAttributes"));
+    LOAD_DELEGATE(GetTypeManagedTypeFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetTypeManagedType"));
 
-	Managed.GetAttributeFieldValueFptr = GetDelegate<GetAttributeFieldValueFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetAttributeFieldValue"));
-	Managed.GetAttributeTypeFptr = GetDelegate<GetAttributeTypeFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetAttributeType"));
+    // Static method invocation
+    LOAD_DELEGATE(InvokeStaticMethodFptr, NETLM_NSTR("Plugify.ManagedObject, Plugify"), NETLM_NSTR("InvokeStaticMethod"));
+    LOAD_DELEGATE(InvokeStaticMethodRetFptr, NETLM_NSTR("Plugify.ManagedObject, Plugify"), NETLM_NSTR("InvokeStaticMethodRet"));
 
-	Managed.SetInternalCallsFptr = GetDelegate<SetInternalCallsFn>(path, NETLM_NSTR("Plugify.Interop.InternalCallsManager, Plugify"), NETLM_NSTR("SetInternalCalls"));
-	Managed.CreateObjectFptr = GetDelegate<CreateObjectFn>(path, NETLM_NSTR("Plugify.ManagedObject, Plugify"), NETLM_NSTR("CreateObject"));
-	Managed.InvokeMethodFptr = GetDelegate<InvokeMethodFn>(path, NETLM_NSTR("Plugify.ManagedObject, Plugify"), NETLM_NSTR("InvokeMethod"));
-	Managed.InvokeMethodRetFptr = GetDelegate<InvokeMethodRetFn>(path, NETLM_NSTR("Plugify.ManagedObject, Plugify"), NETLM_NSTR("InvokeMethodRet"));
-	Managed.InvokeDelegateFptr = GetDelegate<InvokeDelegateFn>(path, NETLM_NSTR("Plugify.ManagedObject, Plugify"), NETLM_NSTR("InvokeDelegate"));
-	Managed.InvokeDelegateRetFptr = GetDelegate<InvokeDelegateRetFn>(path, NETLM_NSTR("Plugify.ManagedObject, Plugify"), NETLM_NSTR("InvokeDelegateRet"));
-	Managed.SetFieldValueFptr = GetDelegate<SetFieldValueFn>(path, NETLM_NSTR("Plugify.ManagedObject, Plugify"), NETLM_NSTR("SetFieldValue"));
-	Managed.GetFieldValueFptr = GetDelegate<GetFieldValueFn>(path, NETLM_NSTR("Plugify.ManagedObject, Plugify"), NETLM_NSTR("GetFieldValue"));
-	Managed.GetFieldPointerFptr = GetDelegate<GetFieldPointerFn>(path, NETLM_NSTR("Plugify.ManagedObject, Plugify"), NETLM_NSTR("GetFieldPointer"));
-	Managed.SetPropertyValueFptr = GetDelegate<SetFieldValueFn>(path, NETLM_NSTR("Plugify.ManagedObject, Plugify"), NETLM_NSTR("SetPropertyValue"));
-	Managed.GetPropertyValueFptr = GetDelegate<GetFieldValueFn>(path, NETLM_NSTR("Plugify.ManagedObject, Plugify"), NETLM_NSTR("GetPropertyValue"));
-	Managed.DestroyObjectFptr = GetDelegate<DestroyObjectFn>(path, NETLM_NSTR("Plugify.ManagedObject, Plugify"), NETLM_NSTR("DestroyObject"));
-	Managed.CollectGarbageFptr = GetDelegate<CollectGarbageFn>(path, NETLM_NSTR("Plugify.GarbageCollector, Plugify"), NETLM_NSTR("CollectGarbage"));
-	Managed.WaitForPendingFinalizersFptr = GetDelegate<WaitForPendingFinalizersFn>(path, NETLM_NSTR("Plugify.GarbageCollector, Plugify"), NETLM_NSTR("WaitForPendingFinalizers"));
+    // MethodInfo functions
+    LOAD_DELEGATE(GetMethodInfoNameFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetMethodInfoName"));
+    LOAD_DELEGATE(GetMethodInfoFunctionAddressFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetMethodInfoFunctionAddress"));
+    LOAD_DELEGATE(GetMethodInfoReturnTypeFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetMethodInfoReturnType"));
+    LOAD_DELEGATE(GetMethodInfoParameterTypesFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetMethodInfoParameterTypes"));
+    LOAD_DELEGATE(GetMethodInfoAccessibilityFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetMethodInfoAccessibility"));
+    LOAD_DELEGATE(GetMethodInfoAttributesFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetMethodInfoAttributes"));
+    LOAD_DELEGATE(GetMethodInfoParameterAttributesFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetMethodInfoParameterAttributes"));
+    LOAD_DELEGATE(GetMethodInfoReturnAttributesFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetMethodInfoReturnAttributes"));
 
-	Managed.IsClassFptr = GetDelegate<IsClassFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("IsClass"));
-	Managed.IsEnumFptr = GetDelegate<IsEnumFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("IsEnum"));
-	Managed.IsValueTypeFptr = GetDelegate<IsValueTypeFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("IsValueType"));
-	Managed.GetEnumNamesFptr = GetDelegate<GetEnumNamesFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetEnumNames"));
-	Managed.GetEnumValuesFptr = GetDelegate<GetEnumValuesFn>(path, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetEnumValues"));
+    // FieldInfo functions
+    LOAD_DELEGATE(GetFieldInfoNameFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetFieldInfoName"));
+    LOAD_DELEGATE(GetFieldInfoTypeFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetFieldInfoType"));
+    LOAD_DELEGATE(GetFieldInfoAccessibilityFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetFieldInfoAccessibility"));
+    LOAD_DELEGATE(GetFieldInfoAttributesFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetFieldInfoAttributes"));
+
+    // PropertyInfo functions
+    LOAD_DELEGATE(GetPropertyInfoNameFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetPropertyInfoName"));
+    LOAD_DELEGATE(GetPropertyInfoTypeFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetPropertyInfoType"));
+    LOAD_DELEGATE(GetPropertyInfoAttributesFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetPropertyInfoAttributes"));
+
+    // Attribute functions
+    LOAD_DELEGATE(GetAttributeFieldValueFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetAttributeFieldValue"));
+    LOAD_DELEGATE(GetAttributeTypeFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetAttributeType"));
+
+    // Interop and object management
+    LOAD_DELEGATE(SetInternalCallsFptr, NETLM_NSTR("Plugify.Interop.InternalCallsManager, Plugify"), NETLM_NSTR("SetInternalCalls"));
+    LOAD_DELEGATE(CreateObjectFptr, NETLM_NSTR("Plugify.ManagedObject, Plugify"), NETLM_NSTR("CreateObject"));
+    LOAD_DELEGATE(InvokeMethodFptr, NETLM_NSTR("Plugify.ManagedObject, Plugify"), NETLM_NSTR("InvokeMethod"));
+    LOAD_DELEGATE(InvokeMethodRetFptr, NETLM_NSTR("Plugify.ManagedObject, Plugify"), NETLM_NSTR("InvokeMethodRet"));
+    LOAD_DELEGATE(InvokeDelegateFptr, NETLM_NSTR("Plugify.ManagedObject, Plugify"), NETLM_NSTR("InvokeDelegate"));
+    LOAD_DELEGATE(InvokeDelegateRetFptr, NETLM_NSTR("Plugify.ManagedObject, Plugify"), NETLM_NSTR("InvokeDelegateRet"));
+
+    // Field operations
+    LOAD_DELEGATE(SetFieldValueFptr, NETLM_NSTR("Plugify.ManagedObject, Plugify"), NETLM_NSTR("SetFieldValue"));
+    LOAD_DELEGATE(GetFieldValueFptr, NETLM_NSTR("Plugify.ManagedObject, Plugify"), NETLM_NSTR("GetFieldValue"));
+    LOAD_DELEGATE(GetFieldPointerFptr, NETLM_NSTR("Plugify.ManagedObject, Plugify"), NETLM_NSTR("GetFieldPointer"));
+
+    // Property operations
+    LOAD_DELEGATE(SetPropertyValueFptr, NETLM_NSTR("Plugify.ManagedObject, Plugify"), NETLM_NSTR("SetPropertyValue"));
+    LOAD_DELEGATE(GetPropertyValueFptr, NETLM_NSTR("Plugify.ManagedObject, Plugify"), NETLM_NSTR("GetPropertyValue"));
+
+    // Object lifecycle
+    LOAD_DELEGATE(DestroyObjectFptr, NETLM_NSTR("Plugify.ManagedObject, Plugify"), NETLM_NSTR("DestroyObject"));
+
+    // Garbage collection
+    LOAD_DELEGATE(CollectGarbageFptr, NETLM_NSTR("Plugify.GarbageCollector, Plugify"), NETLM_NSTR("CollectGarbage"));
+    LOAD_DELEGATE(WaitForPendingFinalizersFptr, NETLM_NSTR("Plugify.GarbageCollector, Plugify"), NETLM_NSTR("WaitForPendingFinalizers"));
+
+    // Type checking functions
+    LOAD_DELEGATE(IsClassFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("IsClass"));
+    LOAD_DELEGATE(IsEnumFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("IsEnum"));
+    LOAD_DELEGATE(IsValueTypeFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("IsValueType"));
+
+    // Enum functions
+    LOAD_DELEGATE(GetEnumNamesFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetEnumNames"));
+    LOAD_DELEGATE(GetEnumValuesFptr, NETLM_NSTR("Plugify.TypeInterface, Plugify"), NETLM_NSTR("GetEnumValues"));
+
+    #undef LOAD_DELEGATE
+
+    return {};
 }
 
 // https://github.com/dotnet/runtime/blob/main/docs/design/features/host-error-codes.md

@@ -1,3 +1,5 @@
+[![Русский](https://img.shields.io/badge/Русский-%F0%9F%87%B7%F0%9F%87%BA-green?style=for-the-badge)](README_ru.md)
+
 # C# (.NET) Language Module for Plugify
 
 The C# (.NET) Language Module for Plugify facilitates the development of plugins in C# for the Plugify framework. With this module, you can seamlessly integrate C# plugins, allowing dynamic loading and management by the Plugify core.

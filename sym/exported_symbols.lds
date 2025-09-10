@@ -1,8 +1,6 @@
 _GetLanguageModule
 
-_IsModuleLoaded
-_IsPluginLoaded
-_FindPluginResource
+_IsExtensionLoaded
 
 _GetStringData
 _GetStringLength

@@ -15,8 +15,7 @@
 #include <span>
 #include <mutex>
 #include <cassert>
+#include <expected>
 
 #include <filesystem>
 namespace fs = std::filesystem;
-
-#include <plugify/compat_format.hpp>

@@ -3,10 +3,9 @@
 #include "module.hpp"
 #include "managed_type.hpp"
 #include <module_export.h>
-#include <plugify/jit/call.hpp>
-#include <plugify/jit/helpers.hpp>
-#include <plugify/numerics.hpp>
-#include <plugify/any.hpp>
+#include <plugify/call.hpp>
+#include <plg/numerics.hpp>
+#include <plg/any.hpp>
 
 PLUGIFY_WARN_PUSH()
 
@@ -268,20 +267,20 @@ extern "C" {
 #endif
 
 		bool retHidden = ValueUtils::IsHiddenParam(ret.type);
-		asmjit::FuncSignature sig(asmjit::CallConvId::kCDecl, asmjit::FuncSignature::kNoVarArgs, JitUtils::GetRetTypeId(retHidden ? typeHidden : ret.type));
+		Signature sig(CallConv::CDecl, retHidden ? typeHidden : ret.type);
 
 #if !NETLM_ARCH_ARM
 		if (retHidden) {
-			sig.addArg(JitUtils::GetValueTypeId(ret.type));
+			sig.AddArg(ret.type);
 		}
 #endif
 
 		for (int i = 0; i < count; ++i) {
 			const auto& [type, ref] = params[i];
-			sig.addArg(JitUtils::GetValueTypeId(ref ? ValueType::Pointer : type));
+			sig.AddArg(ref ? ValueType::Pointer : type);
 		}
 
-		JitCall* call = new JitCall(g_netlm.GetRuntime());
+		JitCall* call = new JitCall{};
 		call->GetJitFunc(sig, target, JitCall::WaitType::None, retHidden);
 		return call;
 	}
@@ -299,12 +298,12 @@ extern "C" {
 	}
 
 	NETLM_EXPORT JitCallback* NewCallback(const char* name, void* delegate) {
-		MethodHandle method = g_netlm.FindMethod(name);
+		const Method* method = g_netlm.FindMethod(name);
 		if (method == nullptr || delegate == nullptr)
 			return nullptr;
 
-		JitCallback* callback = new JitCallback(g_netlm.GetRuntime());
-		callback->GetJitFunc(method, &DotnetLanguageModule::DelegateCall, delegate);
+		JitCallback* callback = new JitCallback{};
+		callback->GetJitFunc(*method, &DotnetLanguageModule::DelegateCall, delegate);
 		return callback;
 	}
 

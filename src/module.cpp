@@ -7,57 +7,36 @@
 #include "type.hpp"
 #include "utils.hpp"
 
+#include <stacktrace>
 #include <module_export.h>
 
-#include <plugify/compat_format.hpp>
-#include <plugify/language_module.hpp>
-#include <plugify/log.hpp>
-#include <plugify/module.hpp>
-#include <plugify/string.hpp>
-#include <plugify/any.hpp>
-#include <plugify/vector.hpp>
-#include <plugify/plugify_provider.hpp>
-#include <plugify/plugin.hpp>
-#include <plugify/version.hpp>
-#include <plugify/plugin_descriptor.hpp>
-#include <plugify/plugin_reference_descriptor.hpp>
-
-#if PLUGIFY_STACKTRACE_SUPPORT
-#include <stacktrace>
-#else
-#include <cpptrace/cpptrace.hpp>
-#endif
-
-#if NETLM_PLATFORM_WINDOWS
-#undef FindResource
-#endif
+#include <plg/format.hpp>
+#include <plg/version.hpp>
+#include <plg/string.hpp>
+#include <plg/any.hpp>
+#include <plg/vector.hpp>
 
 #define LOG_PREFIX "[NETLM] "
 
 using namespace plugify;
 using namespace netlm;
 
-InitResult DotnetLanguageModule::Initialize(std::weak_ptr<IPlugifyProvider> provider, ModuleHandle module) {
-	if (!((_provider = provider.lock()))) {
-		return ErrorData{ "Provider not exposed" };
-	}
+Result<InitData> DotnetLanguageModule::Initialize(const Provider& provider, const Extension& module) {
+	_provider = std::make_unique<Provider>(provider);
 
-	fs::path baseDir(module.GetBaseDir());
-
-	if (!_host.Initialize({
-		.hostfxrPath = baseDir / "dotnet/host/fxr/9.0.0/" NETLM_LIBRARY_PREFIX "hostfxr" NETLM_LIBRARY_SUFFIX,
-		.rootDirectory = baseDir / "api",
+	auto result = _host.Initialize({
+		.hostfxrPath = module.GetLocation() / "dotnet/host/fxr/9.0.0/" NETLM_LIBRARY_PREFIX "hostfxr" NETLM_LIBRARY_SUFFIX,
+		.rootDirectory = module.GetLocation() / "api",
 		.messageCallback = MessageCallback,
 		.exceptionCallback = ExceptionCallback,
-	})) {
-		return ErrorData{ "Could not initialize hostfxr environment" };
+	});
+	if (!result) {
+		return MakeError(std::move(result.error()));
 	}
 
 	_provider->Log(LOG_PREFIX "Inited!", Severity::Debug);
 
-	_rt = std::make_shared<asmjit::JitRuntime>();
-
-	return InitResultData{{ .hasUpdate = false }};
+	return InitData{{ .hasUpdate = false }};
 }
 
 void DotnetLanguageModule::Shutdown() {
@@ -67,143 +46,140 @@ void DotnetLanguageModule::Shutdown() {
 	_loader.Unload();
 	_host.Shutdown();
 
-	_rt.reset();
 	_provider.reset();
 }
 
-void DotnetLanguageModule::OnUpdate(DateTime /*dt*/) {
+void DotnetLanguageModule::OnUpdate([[maybe_unused]] std::chrono::milliseconds dt) {
 }
 
-LoadResult DotnetLanguageModule::OnPluginLoad(PluginHandle plugin) {
-	fs::path assemblyPath(plugin.GetBaseDir());
-	assemblyPath /= plugin.GetDescriptor().GetEntryPoint();
+Result<SharpMethodData> DotnetLanguageModule::GenerateMethodExport(const Method &method, ManagedAssembly &assembly) {
+	auto separated = Utils::Split(method.GetFuncName(), ".");
+	size_t size = separated.size();
+	bool noNamespace = (size == 2);
+	if (size != 3 && !noNamespace) {
+		return MakeError("invalid function format: '{}'. Provide name in that format: 'Namespace.Class.Method' or 'Namespace.MyParentClass+MyNestedClass.Method' or 'Class.Method'", method.GetFuncName());
+	}
+
+	std::string_view className = noNamespace ? separated[size-2] : std::string_view(separated[0].data(), separated[size-1].data() - 1);
+	Type& type = assembly.GetType(className);
+	if (!type) {
+		return MakeError("failed to find class '{}'", className);
+	}
+
+	std::string_view methodName = separated[size-1];
+	MethodInfo methodInfo = type.GetMethod(methodName);
+	if (!methodInfo) {
+		return MakeError("failed to find method '{}'", methodName);
+	}
+
+	ValueType returnType = methodInfo.GetReturnType().GetManagedType().type;
+	ValueType methodReturnType = method.GetRetType().GetType();
+	if (returnType != methodReturnType) {
+		return MakeError("invalid return type '{}' when it should have '{}'", plg::enum_to_string(methodReturnType), plg::enum_to_string(returnType));
+	}
+
+	const auto& parameterTypes = methodInfo.GetParameterTypes();
+
+	size_t paramCount = parameterTypes.size();
+	const std::vector<Property>& paramTypes = method.GetParamTypes();
+	if (paramCount != paramTypes.size()) {
+		return MakeError("invalid parameter count {} when it should have {}", paramTypes.size(), paramCount);
+	}
+
+	for (size_t i = 0; i < paramCount; ++i) {
+		ValueType paramType = parameterTypes[i].GetManagedType().type;
+		ValueType methodParamType = paramTypes[i].GetType();
+		if (paramType != methodParamType) {
+			return MakeError("invalid param type '{}' at index {} when it should have '{}'", plg::enum_to_string(methodParamType), i, plg::enum_to_string(paramType));
+		}
+	}
+
+	auto data = std::make_unique<HandleData>(type.GetHandle(), methodInfo.GetHandle());
+
+	JitCallback callback{};
+	MemAddr methodAddr = callback.GetJitFunc(method, &InternalCall, data.get());
+	if (!methodAddr) {
+		return MakeError("jit error: {}", callback.GetError());
+	}
+
+	return SharpMethodData{ std::move(callback), std::move(data) };
+}
+
+Result<LoadData> DotnetLanguageModule::OnPluginLoad(const Extension& plugin) {
+	std::filesystem::path assemblyPath(plugin.GetLocation());
+	assemblyPath /= plugin.GetEntry();
 
 	ManagedAssembly& assembly = _loader.LoadAssembly(assemblyPath);
 	if (!assembly) {
-		return ErrorData{ _loader.GetError() };
+		return MakeError(_loader.GetError());
 	}
 
 	Type& pluginClassType = assembly.GetTypeByBaseType("Plugify.Plugin");
 	if (!pluginClassType) {
-		return ErrorData{"Failed to find 'Plugify.Plugin' class implementation"};
+		return MakeError("Failed to find 'Plugify.Plugin' class implementation");
 	}
 
 	std::vector<std::string> exportErrors;
 
-	std::span<const MethodHandle> exportedMethods = plugin.GetDescriptor().GetExportedMethods();
+	const std::vector<Method>& exportedMethods = plugin.GetMethods();
 	std::vector<MethodData> methods;
 	methods.reserve(exportedMethods.size());
 
-	for (const auto& method : exportedMethods) {
-		auto separated = Utils::Split(method.GetFunctionName(), ".");
-		size_t size = separated.size();
-		bool noNamespace = (size == 2);
-		if (size != 3 && !noNamespace) {
-			exportErrors.emplace_back(std::format("Invalid function format: '{}'. Please provide name in that format: 'Namespace.Class.Method' or 'Namespace.MyParentClass+MyNestedClass.Method' or 'Class.Method'", method.GetFunctionName()));
-			continue;
-		}
-
-		Type& type = assembly.GetType(noNamespace ? separated[size-2] : std::string_view(separated[0].data(), separated[size-1].data() - 1));
-		if (!type) {
-			exportErrors.emplace_back(std::format("Failed to find class '{}'", method.GetFunctionName()));
-			continue;
-		}
-
-		MethodInfo methodInfo = type.GetMethod(separated[size-1]);
-		if (!methodInfo) {
-			exportErrors.emplace_back(std::format("Failed to find method '{}'", method.GetFunctionName()));
-			continue;
-		}
-
-		ValueType returnType = methodInfo.GetReturnType().GetManagedType().type;
-		ValueType methodReturnType = method.GetReturnType().GetType();
-		if (returnType != methodReturnType) {
-			exportErrors.emplace_back(std::format("Method '{}' has invalid return type '{}' when it should have '{}'", method.GetFunctionName(), ValueUtils::ToString(methodReturnType), ValueUtils::ToString(returnType)));
-			continue;
-		}
-
-		const auto& parameterTypes = methodInfo.GetParameterTypes();
-
-		size_t paramCount = parameterTypes.size();
-		std::span<const PropertyHandle> paramTypes = method.GetParamTypes();
-		if (paramCount != paramTypes.size()) {
-			exportErrors.emplace_back(std::format("Method '{}' has invalid parameter count {} when it should have {}", method.GetFunctionName(), paramTypes.size(), paramCount));
-			continue;
-		}
-
-		bool methodFail = false;
-
-		for (size_t i = 0; i < paramCount; ++i) {
-			ValueType paramType = parameterTypes[i].GetManagedType().type;
-			ValueType methodParamType = paramTypes[i].GetType();
-			if (paramType != methodParamType) {
-				methodFail = true;
-				exportErrors.emplace_back(std::format("Method '{}' has invalid param type '{}' at index {} when it should have '{}'", method.GetFunctionName(), ValueUtils::ToString(methodParamType), i, ValueUtils::ToString(paramType)));
-				continue;
+	for (size_t i = 0; i < exportedMethods.size(); ++i) {
+		const auto& method = exportedMethods[i];
+		Result<SharpMethodData> generateResult = GenerateMethodExport(method, assembly);
+		if (!generateResult) {
+			exportErrors.emplace_back(std::format("{:>3}. {} {}", i + 1, method.GetName(), generateResult.error()));
+			if (constexpr size_t kMaxDisplay = 100; exportErrors.size() >= kMaxDisplay) {
+				exportErrors.emplace_back(std::format("... and {} more", exportedMethods.size() - kMaxDisplay));
+				break;
 			}
-		}
-
-		if (methodFail)
-			continue;
-
-		auto data = std::make_unique<HandleData>(type.GetHandle(), methodInfo.GetHandle());
-
-		JitCallback callback(_rt);
-		MemAddr methodAddr = callback.GetJitFunc(method, &InternalCall, data.get());
-		if (!methodAddr) {
-			exportErrors.emplace_back(std::format("Method '{}' has JIT generation error: {}", method.GetFunctionName(), callback.GetError()));
 			continue;
 		}
-		_functions.emplace_back(std::move(callback), std::move(data));
-
-		methods.emplace_back(method, methodAddr);
+		methods.emplace_back(method, generateResult->jitCallback.GetFunction());
+		_functions.emplace_back(std::move(*generateResult));
 	}
 
 	if (!exportErrors.empty()) {
-		std::string errorString = "Methods export error(s): " + exportErrors[0];
-		for (auto it = std::next(exportErrors.begin()); it != exportErrors.end(); ++it) {
-			std::format_to(std::back_inserter(errorString), ", {}", *it);
-		}
-		return ErrorData{ std::move(errorString) };
+		return MakeError("Invalid methods:\n{}", plg::join(exportErrors, "\n"));
 	}
 
 	const auto [it, result] = _scripts.try_emplace(plugin.GetId(), plugin, assembly.GetAssemblyID(), pluginClassType);
 	if (!result) {
-		return ErrorData{ std::format("Save plugin data to map unsuccessful") };
+		return MakeError("Save plugin data to map unsuccessful");
 	}
 
 	const auto& [_, script] = *it;
-	return LoadResultData{ std::move(methods), &script, { script.HasUpdate(), script.HasStart(), script.HasEnd(), !exportedMethods.empty() } };
+	return LoadData{ std::move(methods), &script, { script.HasUpdate(), script.HasStart(), script.HasEnd(), !exportedMethods.empty() } };
 }
 
-void DotnetLanguageModule::OnPluginStart(PluginHandle plugin) {
-	plugin.GetData().RCast<ScriptInstance*>()->InvokeOnStart();
+void DotnetLanguageModule::OnPluginStart(const Extension& plugin) {
+	plugin.GetUserData().RCast<ScriptInstance*>()->InvokeOnStart();
 }
 
-void DotnetLanguageModule::OnPluginUpdate(PluginHandle plugin, DateTime dt) {
-	plugin.GetData().RCast<ScriptInstance*>()->InvokeOnUpdate(dt.AsSeconds());
+void DotnetLanguageModule::OnPluginUpdate(const Extension& plugin, std::chrono::milliseconds dt) {
+	plugin.GetUserData().RCast<ScriptInstance*>()->InvokeOnUpdate(std::chrono::duration<float>(dt).count());
 }
 
-void DotnetLanguageModule::OnPluginEnd(PluginHandle plugin) {
-	plugin.GetData().RCast<ScriptInstance*>()->InvokeOnEnd();
+void DotnetLanguageModule::OnPluginEnd(const Extension& plugin) {
+	plugin.GetUserData().RCast<ScriptInstance*>()->InvokeOnEnd();
 }
 
 bool DotnetLanguageModule::IsDebugBuild() {
 	return NETLM_IS_DEBUG;
 }
 
-void DotnetLanguageModule::OnMethodExport(PluginHandle plugin) {
+void DotnetLanguageModule::OnMethodExport(const Extension& plugin) {
 	auto className = std::format("{}.{}", plugin.GetName(), plugin.GetName());
 
-	ScriptInstance* script = FindScript(plugin.GetId());
-	if (script) {
+	if (auto* script = FindScript(plugin.GetId())) {
 		auto& assemblyId = script->GetAssemblyId();
 		// Add as C# calls (direct)
 		auto& ownerAssembly = _loader.FindAssembly(assemblyId);
 		assert(ownerAssembly);
 
-		for (const auto& [method, _] : plugin.GetMethods()) {
-			auto separated= Utils::Split(method.GetFunctionName(), ".");
+		for (const auto& [method, _] : plugin.GetMethodsData()) {
+			auto separated= Utils::Split(method.GetFuncName(), ".");
 			size_t size = separated.size();
 
 			bool noNamespace = (size == 2);
@@ -223,10 +199,9 @@ void DotnetLanguageModule::OnMethodExport(PluginHandle plugin) {
 				assembly.AddInternalCall(className, method.GetName(), addr);
 			}
 		}
-
 	} else {
 		// Add as C++ calls
-		for (const auto& [method, addr] : plugin.GetMethods()) {
+		for (const auto& [method, addr] : plugin.GetMethodsData()) {
 			auto variableName = std::format("__{}", method.GetName());
 			for (auto& assembly : _loader.GetLoadedAssemblies()) {
 				assembly.AddInternalCall(className, variableName, addr);
@@ -248,35 +223,35 @@ ScriptInstance* DotnetLanguageModule::FindScript(UniqueId pluginId) {
 	return nullptr;
 }
 
-MethodHandle DotnetLanguageModule::FindMethod(std::string_view name) {
-	auto separated = Utils::Split(name, ".");
-	if (separated.size() != 2)
-		return {};
-
-	auto plugin = _provider->FindPlugin(separated[0]);
-	if (plugin) {
-		for (const auto& method : plugin.GetDescriptor().GetExportedMethods()) {
-			if (auto prototype = method.FindPrototype(separated[1])) {
-				return prototype;
+const Method* DotnetLanguageModule::FindMethod(std::string_view name) const {
+	if (auto separated = Utils::Split(name, "."); separated.size() == 2) {
+		if (auto plugin = _provider->FindExtension(separated[0])) {
+			for (const auto& method : plugin->GetMethods()) {
+				if (auto prototype = method.FindPrototype(separated[1])) {
+					return prototype;
+				}
 			}
 		}
 	}
+	_provider->Log(std::format(LOG_PREFIX "FindMethod failed to find: '{}'", name), Severity::Error);
 	return {};
 }
 
 template<typename TFunc>
-static void ManagedCall(MethodHandle method, MemAddr data, const JitCallback::Parameters* p, size_t count, const JitCallback::Return* ret, TFunc&& func) {
-	PropertyHandle retProp = method.GetReturnType();
-	ValueType retType = retProp.GetType();
-	std::span<const PropertyHandle> paramProps = method.GetParamTypes();
+static void ManagedCall(const Method& method, MemAddr data, uint64_t* p, size_t count, void* r, TFunc&& func) {
+	ValueType retType = method.GetRetType().GetType();
+	const std::vector<Property>& paramProps = method.GetParamTypes();
 
+	ParametersSpan params(p, count);
+	ReturnSlot ret(r, ValueUtils::SizeOf(retType));
+	
 	ArgumentList args;
 	args.reserve(count);
 
 	for (size_t i = 0; i < count; ++i) {
 		const auto& param = paramProps[i];
-		if (param.IsReference()) {
-			args.emplace_back(p->GetArgument<void*>(i));
+		if (param.IsRef()) {
+			args.emplace_back(params.Get<void*>(i));
 		} else {
 			switch (param.GetType()) {
 				// Value types
@@ -294,7 +269,7 @@ static void ManagedCall(MethodHandle method, MemAddr data, const JitCallback::Pa
 				case ValueType::Pointer:
 				case ValueType::Float:
 				case ValueType::Double:
-					args.emplace_back(p->GetArgumentPtr(i));
+					args.emplace_back(&p[i]);
 					break;
 				// Ref types
 				case ValueType::Function:
@@ -324,7 +299,7 @@ static void ManagedCall(MethodHandle method, MemAddr data, const JitCallback::Pa
 				case ValueType::ArrayVector3:
 				case ValueType::ArrayVector4:
 				case ValueType::ArrayMatrix4x4:
-					args.emplace_back(p->GetArgument<void*>(i));
+					args.emplace_back(params.Get<void*>(i));
 					break;
 				default:
 					std::puts(LOG_PREFIX "Unsupported types!\n");
@@ -336,85 +311,85 @@ static void ManagedCall(MethodHandle method, MemAddr data, const JitCallback::Pa
 
 	switch (retType) {
 		case ValueType::String:
-			ret->ConstructAt<plg::string>();
+			ret.Construct<plg::string>();
 			break;
 		case ValueType::Any:
-			ret->ConstructAt<plg::any>();
+			ret.Construct<plg::any>();
 			break;
 		case ValueType::ArrayBool:
-			ret->ConstructAt<plg::vector<bool>>();
+			ret.Construct<plg::vector<bool>>();
 			break;
 		case ValueType::ArrayChar8:
-			ret->ConstructAt<plg::vector<char>>();
+			ret.Construct<plg::vector<char>>();
 			break;
 		case ValueType::ArrayChar16:
-			ret->ConstructAt<plg::vector<char16_t>>();
+			ret.Construct<plg::vector<char16_t>>();
 			break;
 		case ValueType::ArrayInt8:
-			ret->ConstructAt<plg::vector<int8_t>>();
+			ret.Construct<plg::vector<int8_t>>();
 			break;
 		case ValueType::ArrayInt16:
-			ret->ConstructAt<plg::vector<int16_t>>();
+			ret.Construct<plg::vector<int16_t>>();
 			break;
 		case ValueType::ArrayInt32:
-			ret->ConstructAt<plg::vector<int32_t>>();
+			ret.Construct<plg::vector<int32_t>>();
 			break;
 		case ValueType::ArrayInt64:
-			ret->ConstructAt<plg::vector<int64_t>>();
+			ret.Construct<plg::vector<int64_t>>();
 			break;
 		case ValueType::ArrayUInt8:
-			ret->ConstructAt<plg::vector<uint8_t>>();
+			ret.Construct<plg::vector<uint8_t>>();
 			break;
 		case ValueType::ArrayUInt16:
-			ret->ConstructAt<plg::vector<uint16_t>>();
+			ret.Construct<plg::vector<uint16_t>>();
 			break;
 		case ValueType::ArrayUInt32:
-			ret->ConstructAt<plg::vector<uint32_t>>();
+			ret.Construct<plg::vector<uint32_t>>();
 			break;
 		case ValueType::ArrayUInt64:
-			ret->ConstructAt<plg::vector<uint64_t>>();
+			ret.Construct<plg::vector<uint64_t>>();
 			break;
 		case ValueType::ArrayPointer:
-			ret->ConstructAt<plg::vector<uintptr_t>>();
+			ret.Construct<plg::vector<uintptr_t>>();
 			break;
 		case ValueType::ArrayFloat:
-			ret->ConstructAt<plg::vector<float>>();
+			ret.Construct<plg::vector<float>>();
 			break;
 		case ValueType::ArrayDouble:
-			ret->ConstructAt<plg::vector<double>>();
+			ret.Construct<plg::vector<double>>();
 			break;
 		case ValueType::ArrayString:
-			ret->ConstructAt<plg::vector<plg::string>>();
+			ret.Construct<plg::vector<plg::string>>();
 			break;
 		case ValueType::ArrayAny:
-			ret->ConstructAt<plg::vector<plg::any>>();
+			ret.Construct<plg::vector<plg::any>>();
 			break;
 		case ValueType::ArrayVector2:
-			ret->ConstructAt<plg::vector<plg::vec2>>();
+			ret.Construct<plg::vector<plg::vec2>>();
 			break;
 		case ValueType::ArrayVector3:
-			ret->ConstructAt<plg::vector<plg::vec3>>();
+			ret.Construct<plg::vector<plg::vec3>>();
 			break;
 		case ValueType::ArrayVector4:
-			ret->ConstructAt<plg::vector<plg::vec4>>();
+			ret.Construct<plg::vector<plg::vec4>>();
 			break;
 		case ValueType::ArrayMatrix4x4:
-			ret->ConstructAt<plg::vector<plg::mat4x4>>();
+			ret.Construct<plg::vector<plg::mat4x4>>();
 			break;
 		default:
 			break;
 	}
 
 	if (retType != ValueType::Void) {
-		func(data, args, ret->GetReturnPtr());
+		func(data, args, r);
 	} else {
 		func(data, args, std::nullopt);
 	}
 }
 
 // C++ to C#
-void DotnetLanguageModule::InternalCall(MethodHandle method, MemAddr data, const JitCallback::Parameters* p, size_t count, const JitCallback::Return* ret) {
-	ManagedCall(method, data, p, count, ret, [](MemAddr dt, ArgumentList& args, std::optional<void*> retPtr) {
+void DotnetLanguageModule::InternalCall(const Method* method, MemAddr data, uint64_t* p, size_t count, void* ret) {
+	ManagedCall(*method, data, p, count, ret, [](MemAddr dt, ArgumentList& args, std::optional<void*> retPtr) {
 		const auto& [typeHandle, methodHandle] = *dt.RCast<HandleData*>();
 		Type type(typeHandle);
 		if (retPtr.has_value()) {
@@ -426,9 +401,9 @@ void DotnetLanguageModule::InternalCall(MethodHandle method, MemAddr data, const
 }
 
 // C++ to C#
-void DotnetLanguageModule::DelegateCall(MethodHandle method, MemAddr data, const JitCallback::Parameters* p, size_t count, const JitCallback::Return* ret) {
-	ManagedCall(method, data, p, count, ret, [](MemAddr dt, ArgumentList& args, std::optional<void*> retPtr) {
-		ManagedHandle delegateHandle = dt.CCast<ManagedHandle>();
+void DotnetLanguageModule::DelegateCall(const Method* method, MemAddr data, uint64_t* p, size_t count, void* ret) {
+	ManagedCall(*method, data, p, count, ret, [](MemAddr dt, ArgumentList& args, std::optional<void*> retPtr) {
+		auto delegateHandle = dt.CCast<ManagedHandle>();
 		if (retPtr.has_value()) {
 			ManagedObject::InvokeDelegateRetInternal(delegateHandle, args.data(), args.size(), *retPtr);
 		} else {
@@ -443,14 +418,8 @@ void DotnetLanguageModule::ExceptionCallback(std::string_view message) {
 	if (const auto& provider = g_netlm.GetProvider()) {
 		provider->Log(std::format(LOG_PREFIX "[Exception] {}", std::string_view(message)), Severity::Error);
 
-#if PLUGIFY_STACKTRACE_SUPPORT
 		auto trace = std::stacktrace::current();
 		provider->Log(std::to_string(trace), Severity::Error);
-#else
-		std::stringstream stream;
-		cpptrace::generate_trace().print(stream);
-		provider->Log(stream.str(), Severity::Error);
-#endif
 	}
 }
 
@@ -477,9 +446,8 @@ void DotnetLanguageModule::MessageCallback(std::string_view message, MessageLeve
 
 /*_________________________________________________*/
 
-ScriptInstance::ScriptInstance(PluginHandle plugin, ManagedGuid assembly, Type& type) : _plugin{plugin}, _assembly{assembly}, _instance{type.CreateInstance()} {
-	PluginDescriptorHandle desc = plugin.GetDescriptor();
-	std::span<const PluginReferenceDescriptorHandle> dependencies = desc.GetDependencies();
+ScriptInstance::ScriptInstance(const Extension& plugin, ManagedGuid assembly, Type& type) : _plugin{plugin}, _assembly{assembly}, _instance{type.CreateInstance()} {
+	const std::vector<Dependency>& dependencies = plugin.GetDependencies();
 
 	// use plg::string as currently plugify use custom string implementation
 
@@ -491,16 +459,21 @@ ScriptInstance::ScriptInstance(PluginHandle plugin, ManagedGuid assembly, Type& 
 
 	_instance.SetPropertyValue("Id", plg::to_string(plugin.GetId()));
 	_instance.SetPropertyValue("Name", plg::string(plugin.GetName()));
-	_instance.SetPropertyValue("FullName", plg::string(plugin.GetFriendlyName()));
-	_instance.SetPropertyValue("Description", plg::string(desc.GetDescription()));
-	_instance.SetPropertyValue("Version", plg::string(desc.GetVersionName()));
-	_instance.SetPropertyValue("Author", plg::string(desc.GetCreatedBy()));
-	_instance.SetPropertyValue("Website", plg::string(desc.GetCreatedByURL()));
-	_instance.SetPropertyValue("BaseDir", plg::string(NETLM_UTF8(plugin.GetBaseDir())));
-	_instance.SetPropertyValue("ConfigsDir", plg::string(NETLM_UTF8(plugin.GetConfigsDir())));
-	_instance.SetPropertyValue("DataDir", plg::string(NETLM_UTF8(plugin.GetDataDir())));
-	_instance.SetPropertyValue("LogsDir", plg::string(NETLM_UTF8(plugin.GetLogsDir())));
+	_instance.SetPropertyValue("Description", plg::string(plugin.GetDescription()));
+	_instance.SetPropertyValue("Version", plg::string(plugin.GetVersionString()));
+	_instance.SetPropertyValue("Author", plg::string(plugin.GetAuthor()));
+	_instance.SetPropertyValue("Website", plg::string(plugin.GetWebsite()));
+	_instance.SetPropertyValue("License", plg::string(plugin.GetLicense()));
+	_instance.SetPropertyValue("Location", plg::string(plg::as_string(plugin.GetLocation())));
 	_instance.SetPropertyValue("Dependencies", deps);
+
+	// TODO
+	_instance.SetPropertyValue("BaseDir", plg::string(plg::as_string(g_netlm.GetProvider()->GetBaseDir())));
+	_instance.SetPropertyValue("ExtensionsDir", plg::string(plg::as_string(g_netlm.GetProvider()->GetExtensionsDir())));
+	_instance.SetPropertyValue("ConfigsDir", plg::string(plg::as_string(g_netlm.GetProvider()->GetConfigsDir())));
+	_instance.SetPropertyValue("DataDir", plg::string(plg::as_string(g_netlm.GetProvider()->GetDataDir())));
+	_instance.SetPropertyValue("LogsDir", plg::string(plg::as_string(g_netlm.GetProvider()->GetLogsDir())));
+	_instance.SetPropertyValue("CacheDir", plg::string(plg::as_string(g_netlm.GetProvider()->GetCacheDir())));
 
 	_update = _instance.GetType().GetMethod("OnPluginUpdate");
 	_start = _instance.GetType().GetMethod("OnPluginStart");
@@ -540,29 +513,14 @@ namespace netlm {
 }
 
 extern "C" {
-	NETLM_EXPORT bool IsModuleLoaded(const char* moduleName, const char* versionName, bool minimum) {
-		if (std::string_view version = versionName; !version.empty())
-			return g_netlm.GetProvider()->IsModuleLoaded(moduleName, plg::version(version), minimum);
-		else
-			return g_netlm.GetProvider()->IsModuleLoaded(moduleName, std::nullopt, minimum);
-	}
-
-	NETLM_EXPORT bool IsPluginLoaded(const char* pluginName, const char* versionName, bool minimum) {
-		if (std::string_view version = versionName; !version.empty())
-			return g_netlm.GetProvider()->IsPluginLoaded(pluginName, plg::version(version), minimum);
-		else
-			return g_netlm.GetProvider()->IsPluginLoaded(pluginName, std::nullopt, minimum);
-	}
-
-	NETLM_EXPORT const char* FindPluginResource(UniqueId pluginId, const char* path) {
-		ScriptInstance* script = g_netlm.FindScript(pluginId);
-		if (script) {
-			auto resource = script->GetPlugin().FindResource(NETLM_PSTR(path));
-			if (resource.has_value()) {
-				return Memory::StringToHGlobalAnsi(NETLM_UTF8(*resource));
-			}
+	NETLM_EXPORT bool IsExtensionLoaded(const char* name, const char* constraint) {
+		if (constraint) {
+			plg::range_set<> range;
+			plg::parse(constraint, range);
+			return g_netlm.GetProvider()->IsExtensionLoaded(name, std::move(range));
 		}
-		return nullptr;
+		else
+			return g_netlm.GetProvider()->IsExtensionLoaded(name);
 	}
 
 	NETLM_EXPORT ILanguageModule* GetLanguageModule() {
