@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.0.0](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v1.2.8...v2.0.0) (2025-09-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* update for a new plugify
+
+### Features
+
+* update for a new plugify ([8f9ceee](https://github.com/untrustedmodders/plugify-module-dotnet/commit/8f9ceeebbf0c52858825edd0643972d877ffb20c))
+
+
+### Bug Fixes
+
+* update clang format ([80e581e](https://github.com/untrustedmodders/plugify-module-dotnet/commit/80e581ef5b05b60735655c122c574fcd18e28af6))
+
 ## [1.2.8](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v1.2.7...v1.2.8) (2025-08-02)
 
 
