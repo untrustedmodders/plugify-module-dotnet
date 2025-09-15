@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.0.0...v2.0.1) (2025-09-15)
+
+
+### Bug Fixes
+
+* sanitize version name for nuget ([41cfd1e](https://github.com/untrustedmodders/plugify-module-dotnet/commit/41cfd1e2c6aa7b0c54cc233eb1adea5cdcc9ce1d))
+
 ## [2.0.0](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v1.2.8...v2.0.0) (2025-09-14)
 
 
