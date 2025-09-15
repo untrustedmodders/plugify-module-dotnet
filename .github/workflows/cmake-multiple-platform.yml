@@ -147,17 +147,27 @@ jobs:
         with:
           dotnet-version: "9.0.x"
 
-      - name: Publish artifacts ${{ needs.setup.outputs.tag_name }}
+      - name: Sanitize version name
         shell: bash -el {0}
         run: |
-          dotnet publish -c ${{ env.BUILD_TYPE }} /p:Version=${{ needs.setup.outputs.tag_name }} managed/Plugify
-          dotnet pack -c ${{ env.BUILD_TYPE }} /p:Version=${{ needs.setup.outputs.tag_name }} managed/Plugify
+          TAG_VERSION=${{ needs.setup.outputs.tag_name }}
+          if [[ $TAG_VERSION} = v* ]]; then
+            echo "TAG_VERSION=${TAG_VERSION:1}" >> $GITHUB_ENV
+          else
+            echo "TAG_VERSION=${TAG_VERSION}" >> $GITHUB_ENV
+          fi
+
+      - name: Publish artifacts ${{ env.TAG_VERSION }}
+        shell: bash -el {0}
+        run: |
+          dotnet publish -c ${{ env.BUILD_TYPE }} /p:Version=${{ env.TAG_VERSION }} managed/Plugify
+          dotnet pack -c ${{ env.BUILD_TYPE }} /p:Version=${{ env.TAG_VERSION }} managed/Plugify
 
       - name: Publish NuGet package
         shell: bash -el {0}
         run: |
-          dotnet nuget push managed/Plugify/bin/${{ env.BUILD_TYPE }}/Plugify.${{ needs.setup.outputs.tag_name }}.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
-          dotnet nuget push managed/Plugify/bin/${{ env.BUILD_TYPE }}/Plugify.${{ needs.setup.outputs.tag_name }}.snupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+          dotnet nuget push managed/Plugify/bin/${{ env.BUILD_TYPE }}/Plugify.${{ env.TAG_VERSION }}.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+          dotnet nuget push managed/Plugify/bin/${{ env.BUILD_TYPE }}/Plugify.${{ env.TAG_VERSION }}.snupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
