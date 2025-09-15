@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.2](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.0.1...v2.0.2) (2025-09-15)
+
+
+### Bug Fixes
+
+* artifact name ([269ff8c](https://github.com/untrustedmodders/plugify-module-dotnet/commit/269ff8cc29aae0f639aa6481b5a0785b6a59a61b))
+
 ## [2.0.1](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.0.0...v2.0.1) (2025-09-15)
 
 
