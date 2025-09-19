@@ -209,7 +209,7 @@ jobs:
           path: conda/api/
 
       - name: Download dotnet runtime (Linux)
-        if: matrix.os == 'windows-latest'
+        if: matrix.os == 'ubuntu-latest'
         shell: bash -el {0}
         run: |
           mkdir -p "conda/dotnet"
@@ -217,7 +217,7 @@ jobs:
             | tar xvz -C "conda/dotnet/"
        
       - name: Download dotnet runtime (Windows)
-        if: matrix.os == 'ubuntu-latest'
+        if: matrix.os == 'windows-latest'
         shell: bash -el {0}
         run: |
           mkdir -p "conda/dotnet"
