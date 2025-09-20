@@ -81,7 +81,7 @@ Result<SharpMethodData> DotnetLanguageModule::GenerateMethodExport(const Method 
 	const auto& parameterTypes = methodInfo.GetParameterTypes();
 
 	size_t paramCount = parameterTypes.size();
-	const std::vector<Property>& paramTypes = method.GetParamTypes();
+	const std::inplace_vector<Property, Signature::kMaxFuncArgs>& paramTypes = method.GetParamTypes();
 	if (paramCount != paramTypes.size()) {
 		return MakeError("invalid parameter count {} when it should have {}", paramTypes.size(), paramCount);
 	}
@@ -240,7 +240,7 @@ const Method* DotnetLanguageModule::FindMethod(std::string_view name) const {
 template<typename TFunc>
 static void ManagedCall(const Method& method, MemAddr data, uint64_t* p, size_t count, void* r, TFunc&& func) {
 	ValueType retType = method.GetRetType().GetType();
-	const std::vector<Property>& paramProps = method.GetParamTypes();
+	const std::inplace_vector<Property, Signature::kMaxFuncArgs>& paramProps = method.GetParamTypes();
 
 	ParametersSpan params(p, count);
 	ReturnSlot ret(r, ValueUtils::SizeOf(retType));

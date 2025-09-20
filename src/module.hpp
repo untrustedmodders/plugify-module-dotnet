@@ -48,9 +48,9 @@ namespace netlm {
 	struct SharpMethodData;
 
 	using HandleData = std::pair<ManagedHandle, ManagedHandle>;
-	using ScriptMap = std::unordered_map<UniqueId, ScriptInstance>;
+	using ScriptMap = std::map<UniqueId, ScriptInstance>;
 	using FunctionList = std::vector<SharpMethodData>;
-	using ArgumentList = std::vector<const void*>;
+	using ArgumentList = std::inplace_vector<const void*, Signature::kMaxFuncArgs>;
 
 	struct SharpMethodData {
 		JitCallback jitCallback;
