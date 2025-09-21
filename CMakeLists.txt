@@ -79,7 +79,7 @@ elseif(UNIX)
     target_link_options(${PROJECT_NAME} PRIVATE "-Wl,--version-script,${CMAKE_CURRENT_SOURCE_DIR}/sym/version_script.lds")
 endif()
 
-if(PLUGIFY_COMPILER_GCC AND LINUX)
+if(LINUX)
     target_link_libraries(${PROJECT_NAME} PRIVATE -lstdc++exp)
 endif()
 
