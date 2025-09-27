@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.8](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.0.7...v2.0.8) (2025-09-27)
+
+
+### Bug Fixes
+
+* change default build type ([78d9f92](https://github.com/untrustedmodders/plugify-module-dotnet/commit/78d9f92e14f2dbb750ccfd89e83e91b6e7e1342c))
+
 ## [2.0.7](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.0.6...v2.0.7) (2025-09-27)
 
 
