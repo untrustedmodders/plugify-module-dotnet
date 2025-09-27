@@ -244,7 +244,7 @@ jobs:
         shell: bash -el {0}
         run: |
           mkdir -p "conda/dotnet"
-          curl -sSL https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/9.0.0/aspnetcore-runtime-9.0.0-osx-x64.tar.gz \
+          curl -sSL https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/9.0.0/aspnetcore-runtime-9.0.0-osx-arm64.tar.gz \
             | tar xvz -C "conda/dotnet/"
 
       - name: Setup Micromamba
