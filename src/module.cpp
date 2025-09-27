@@ -7,14 +7,20 @@
 #include "type.hpp"
 #include "utils.hpp"
 
-#include <stacktrace>
-#include <module_export.h>
-
 #include <plg/format.hpp>
 #include <plg/version.hpp>
 #include <plg/string.hpp>
 #include <plg/any.hpp>
 #include <plg/vector.hpp>
+
+#include <module_export.h>
+
+#if __has_include(<stacktrace>)
+#include <stacktrace>
+#define HAS_STACKTRACE 1
+#else
+#define HAS_STACKTRACE 0
+#endif
 
 #define LOG_PREFIX "[NETLM] "
 
@@ -417,9 +423,10 @@ void DotnetLanguageModule::DelegateCall(const Method* method, MemAddr data, uint
 void DotnetLanguageModule::ExceptionCallback(std::string_view message) {
 	if (const auto& provider = g_netlm.GetProvider()) {
 		provider->Log(std::format(LOG_PREFIX "[Exception] {}", std::string_view(message)), Severity::Error);
-
+#if HAS_STACKTRACE
 		auto trace = std::stacktrace::current();
 		provider->Log(std::to_string(trace), Severity::Error);
+#endif		
 	}
 }
 
