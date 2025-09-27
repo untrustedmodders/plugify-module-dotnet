@@ -3,6 +3,16 @@
 
 set -ex
 
+# Detect the platform and set the appropriate library extension
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    LIB_EXT="dylib"
+elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    LIB_EXT="so"
+else
+    echo "Unsupported platform: $OSTYPE"
+    exit 1
+fi
+
 # Create the target directories
 mkdir -p $PREFIX/bin
 mkdir -p $PREFIX/api
@@ -10,13 +20,13 @@ mkdir -p $PREFIX/dotnet
 mkdir -p $PREFIX
 
 # Copy the shared library and module file
-cp bin/libplugify-module-dotnet.so $PREFIX/bin/
+cp bin/libplugify-module-dotnet.$LIB_EXT $PREFIX/bin/
 cp -r api/* $PREFIX/api/
 cp -r dotnet/* $PREFIX/dotnet/
 cp plugify-module-dotnet.pmodule $PREFIX/
 
 # Set proper permissions
-chmod 755 $PREFIX/bin/libplugify-module-dotnet.so
+chmod 755 $PREFIX/bin/libplugify-module-dotnet.$LIB_EXT
 chmod -R 755 $PREFIX/api
 chmod -R 755 $PREFIX/dotnet
 chmod 644 $PREFIX/plugify-module-dotnet.pmodule

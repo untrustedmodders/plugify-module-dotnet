@@ -12,27 +12,52 @@ build:
   number: 0
   string: "{{ target_platform | replace('-', '_') }}"
   missing_dso_whitelist:
-    - "*/ld-linux*.so.*"  # [linux]
-    - "*/libc.so.*"       # [linux]
-    - "*/libm.so.*"       # [linux]
-    - "*/libdl.so.*"      # [linux]
-    - "*/libpthread.so.*" # [linux]
-    - "*/librt.so.*"      # [linux]
-    - "*/libplugify.so*"  # [linux]
-    - "*/libhostfxr.so*"  # [linux]
-    - "*/plugify.dll"     # [win]
-    - "*/hostfxr.dll"     # [win]
+    # Linux system libraries
+    - "*/ld-linux*.so.*"      # [linux]
+    - "*/libc.so.*"           # [linux]
+    - "*/libm.so.*"           # [linux]
+    - "*/libdl.so.*"          # [linux]
+    - "*/libpthread.so.*"     # [linux]
+    - "*/librt.so.*"          # [linux]
+    - "*/libplugify.so*"      # [linux]
+    - "*/libhostfxr.so*"      # [linux]
+    # macOS system libraries and frameworks
+    - "/usr/lib/libc++.1.dylib"        # [osx]
+    - "/usr/lib/libSystem.B.dylib"     # [osx]
+    - "/usr/lib/libc++abi.dylib"       # [osx]
+    - "/usr/lib/libutil.dylib"         # [osx]
+    - "/System/Library/Frameworks/*"   # [osx]
+    - "*/libplugify.dylib"             # [osx]
+    - "*/libplugify.*.dylib"           # [osx]
+    - "@rpath/libplugify.dylib"        # [osx]
+    - "@loader_path/libplugify.dylib"  # [osx]
+    - "*/libhostfxr.dylib"             # [osx]
+    - "*/libhostfxr.*.dylib"           # [osx]
+    - "@rpath/libhostfxr.dylib"        # [osx]
+    - "@loader_path/libhostfxr.dylib"  # [osx]
+    # Windows libraries
+    - "*/plugify.dll"         # [win]
+    - "*/hostfxr.dll"         # [win]
 
 requirements:
   run:
     - __glibc >=2.17 # [linux64]
+    - __osx >=11.0    # [osx and arm64]
 
 test:
   commands:
+	# Linux tests
     - test -f $PREFIX/bin/libplugify-module-dotnet.so  # [linux]
     - test -d $PREFIX/api                              # [linux]
     - test -d $PREFIX/dotnet                           # [linux]
     - test -f $PREFIX/plugify-module-dotnet.pmodule    # [linux]
+    # macOS tests
+    - test -f $PREFIX/bin/libplugify-module-dotnet.dylib  # [osx]
+    - test -d $PREFIX/api                                 # [osx]
+    - test -d $PREFIX/dotnet                              # [osx]
+    - test -f $PREFIX/plugify-module-dotnet.pmodule       # [osx]
+    - otool -L $PREFIX/bin/libplugify-module-dotnet.dylib # [osx]
+    # Windows tests
     - if not exist %PREFIX%\\bin\\plugify-module-dotnet.dll exit 1  # [win]
     - if not exist %PREFIX%\\api exit 1                             # [win]
     - if not exist %PREFIX%\\dotnet exit 1                          # [win]
