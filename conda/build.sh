@@ -1,5 +1,5 @@
 #!/bin/bash
-# build.sh - For Linux builds
+# build.sh - For Unix builds
 
 set -ex
 
