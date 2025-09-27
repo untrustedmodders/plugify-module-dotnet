@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.0.4](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.0.3...v2.0.4) (2025-09-27)
+
+
+### Bug Fixes
+
+* 32bit arch detection ([e01f349](https://github.com/untrustedmodders/plugify-module-dotnet/commit/e01f349d6d294bc8acd2cfa48dd465109ce6e822))
+* add mac build ([68e3d04](https://github.com/untrustedmodders/plugify-module-dotnet/commit/68e3d045b69e474a0409c1954c530536c071cf76))
+* disable stacktrace if not avail ([958732a](https://github.com/untrustedmodders/plugify-module-dotnet/commit/958732a0708788082644fac47289727aae32d63d))
+* dotnet link for mac ([5337f15](https://github.com/untrustedmodders/plugify-module-dotnet/commit/5337f15cb3b513939895211fb36914f93b373487))
+* linux stacktrace lib ([54a226e](https://github.com/untrustedmodders/plugify-module-dotnet/commit/54a226e56057621bc8d5d9ca0b536ba338d50db4))
+* supress sanitizer warning with nullptr ([2937229](https://github.com/untrustedmodders/plugify-module-dotnet/commit/293722985633746f1c27e1de7bcaedc86b0cbc71))
+* update plugify ([2c74ceb](https://github.com/untrustedmodders/plugify-module-dotnet/commit/2c74cebba25112654059dce07e28dd31948a6649))
+* update plugify ([9c4bc80](https://github.com/untrustedmodders/plugify-module-dotnet/commit/9c4bc80f7f6ffab4e8f903de3c0db86bf1ab64ee))
+
 ## [2.0.3](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.0.2...v2.0.3) (2025-09-19)
 
 
