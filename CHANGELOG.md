@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.7](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.0.6...v2.0.7) (2025-09-27)
+
+
+### Bug Fixes
+
+* add exception ([c69ee89](https://github.com/untrustedmodders/plugify-module-dotnet/commit/c69ee890de6742a9ad077da63fae5954f6bbc8d2))
+
 ## [2.0.6](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.0.5...v2.0.6) (2025-09-27)
 
 
