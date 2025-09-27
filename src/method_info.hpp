@@ -3,12 +3,16 @@
 #include "core.hpp"
 #include "native_string.hpp"
 
+#include "plg/inplace_vector.hpp"
+
 namespace netlm {
 	class Type;
 	class Attribute;
 
 	class MethodInfo {
 	public:
+		~MethodInfo();
+
 		std::string GetName() const;
 		void* GetFunctionAddress() const;
 
@@ -27,8 +31,8 @@ namespace netlm {
 
 	private:
 		ManagedHandle _handle{};
-		std::unique_ptr<Type> _returnType;
-		std::vector<Type> _parameterTypes;
+		Type* _returnType = nullptr;
+		std::vector<Type>* _parameterTypes = nullptr;
 
 		friend class Type;
 		friend class ManagedObject;

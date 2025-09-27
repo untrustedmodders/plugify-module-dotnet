@@ -118,8 +118,8 @@ namespace netlm {
 
 	private:
 		ManagedHandle _handle{};
-		std::unique_ptr<Type> _baseType;
-		std::unique_ptr<Type> _elementType;
+		Type* _baseType = nullptr;
+		Type* _elementType = nullptr;
 
 		friend class ManagedAssembly;
 		friend class MethodInfo;

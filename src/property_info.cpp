@@ -5,6 +5,10 @@
 
 using namespace netlm;
 
+PropertyInfo::~PropertyInfo() {
+	delete _type;
+}
+
 std::string PropertyInfo::GetName() const {
 	auto name = Managed.GetPropertyInfoNameFptr(_handle);
 	std::string str(name);
@@ -14,7 +18,7 @@ std::string PropertyInfo::GetName() const {
 
 Type& PropertyInfo::GetType() {
 	if (!_type) {
-		_type = std::make_unique<Type>();
+		_type = new Type();
 		Managed.GetPropertyInfoTypeFptr(_handle, &_type->_handle);
 	}
 

@@ -5,6 +5,10 @@
 
 using namespace netlm;
 
+FieldInfo::~FieldInfo() {
+	delete _type;
+}
+
 std::string FieldInfo::GetName() const {
 	auto name = Managed.GetFieldInfoNameFptr(_handle);
 	std::string str(name);
@@ -14,7 +18,7 @@ std::string FieldInfo::GetName() const {
 
 Type& FieldInfo::GetType() {
 	if (!_type) {
-		_type = std::make_unique<Type>();
+		_type = new Type();
 		Managed.GetFieldInfoTypeFptr(_handle, &_type->_handle);
 	}
 

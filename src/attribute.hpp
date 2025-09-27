@@ -7,6 +7,8 @@ namespace netlm {
 
 	class Attribute {
 	public:
+		~Attribute();
+
 		Type& GetType();
 
 		template<typename TReturn>
@@ -25,7 +27,7 @@ namespace netlm {
 
 	private:
 		ManagedHandle _handle{};
-		std::unique_ptr<Type> _type;
+		Type* _type = nullptr;
 
 		friend class Type;
 		friend class MethodInfo;

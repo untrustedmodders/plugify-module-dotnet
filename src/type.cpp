@@ -20,7 +20,7 @@ std::string Type::GetAssemblyQualifiedName() const {
 
 Type& Type::GetBaseType() {
 	if (!_baseType) {
-		_baseType = std::make_unique<Type>();
+		_baseType = new Type();
 		Managed.GetBaseTypeFptr(_handle, &_baseType->_handle);
 	}
 
@@ -183,7 +183,7 @@ std::vector<int> Type::GetEnumValues() const {
 
 Type& Type::GetElementType() {
 	if (!_elementType) {
-		_elementType = std::make_unique<Type>();
+		_elementType = new Type();
 		Managed.GetElementTypeFptr(_handle, &_elementType->_handle);
 	}
 

@@ -5,6 +5,11 @@
 
 using namespace netlm;
 
+MethodInfo::~MethodInfo() {
+	delete _parameterTypes;
+	delete _returnType;
+}
+
 std::string MethodInfo::GetName() const {
 	auto name = Managed.GetMethodInfoNameFptr(_handle);
 	std::string str(name);
@@ -18,7 +23,7 @@ void* MethodInfo::GetFunctionAddress() const {
 
 Type& MethodInfo::GetReturnType() {
 	if (!_returnType) {
-		_returnType = std::make_unique<Type>();
+		_returnType = new Type();
 		Managed.GetMethodInfoReturnTypeFptr(_handle, &_returnType->_handle);
 	}
 
@@ -26,20 +31,19 @@ Type& MethodInfo::GetReturnType() {
 }
 
 const std::vector<Type>& MethodInfo::GetParameterTypes() {
-	if (_parameterTypes.empty()) {
+	if (!_parameterTypes) {
 		int32_t parameterCount;
 		Managed.GetMethodInfoParameterTypesFptr(_handle, nullptr, &parameterCount);
 		std::vector<ManagedHandle> parameterTypes(static_cast<size_t>(parameterCount));
 		Managed.GetMethodInfoParameterTypesFptr(_handle, parameterTypes.data(), &parameterCount);
 
-		_parameterTypes.reserve(parameterTypes.size());
-
-		for (ManagedHandle parameterType : parameterTypes) {
-			_parameterTypes.emplace_back(parameterType);
-		}
+		_parameterTypes = new std::vector<Type>();
+		_parameterTypes->reserve(parameterTypes.size());
+		for (size_t i = 0; i < parameterTypes.size(); i++)
+			_parameterTypes->emplace_back(parameterTypes[i]);
 	}
 
-	return _parameterTypes;
+	return *_parameterTypes;
 }
 
 TypeAccessibility MethodInfo::GetAccessibility() const {

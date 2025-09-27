@@ -9,6 +9,8 @@ namespace netlm {
 
 	class PropertyInfo {
 	public:
+		~PropertyInfo();
+
 		std::string GetName() const;
 		Type& GetType();
 
@@ -20,7 +22,7 @@ namespace netlm {
 
 	private:
 		ManagedHandle _handle{};
-		std::unique_ptr<Type> _type;
+		Type* _type = nullptr;
 
 		friend class Type;
 		friend class ManagedObject;
