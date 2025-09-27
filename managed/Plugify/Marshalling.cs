@@ -584,7 +584,7 @@ public static class Marshalling
 	}
 
 	private static readonly bool IsArm = RuntimeInformation.ProcessArchitecture == Architecture.Arm64 || RuntimeInformation.ProcessArchitecture == Architecture.Arm;
-	private static readonly bool X86 = RuntimeInformation.ProcessArchitecture == Architecture.X64 || RuntimeInformation.ProcessArchitecture == Architecture.X86;
+	private static readonly bool Is32Bit = IntPtr.Size == 4;
 	private static readonly bool IsWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 	
 	private static unsafe Func<object[], object> ExternalInvoke(nint funcAddress, MethodInfo methodInfo)
@@ -597,7 +597,7 @@ public static class Marshalling
 		
 		if (!hasRet)
 		{
-			ValueType firstHidden = (IsWindows && !IsArm) || X86 ? ValueType.Vector3 : ValueType.Matrix4x4;
+			ValueType firstHidden = (IsWindows && !IsArm) || Is32Bit ? ValueType.Vector3 : ValueType.Matrix4x4;
 			hasRet = returnType.ValueType >= firstHidden && returnType.ValueType <= ValueType.Matrix4x4;
 		}
 		
