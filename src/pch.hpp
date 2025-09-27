@@ -16,7 +16,6 @@
 #include <mutex>
 #include <cassert>
 #include <expected>
-#include <exception>
 
 #include <filesystem>
 namespace fs = std::filesystem;

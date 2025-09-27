@@ -13,14 +13,15 @@
 #include <plg/any.hpp>
 #include <plg/vector.hpp>
 
-#include <module_export.h>
-
 #if __has_include(<stacktrace>)
 #include <stacktrace>
 #define HAS_STACKTRACE 1
 #else
 #define HAS_STACKTRACE 0
 #endif
+
+#include <exception>
+#include <module_export.h>
 
 #define LOG_PREFIX "[NETLM] "
 
