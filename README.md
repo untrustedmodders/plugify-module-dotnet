@@ -24,10 +24,10 @@ The C# (.NET) Language Module for Plugify facilitates the development of plugins
 
 #### Option 1: Install via Plugify Plugin Manager
 
-You can install the C++ Language Module using the Plugify plugin manager by running the following command:
+You can install the C++ Language Module using the Mamba package manager by running the following command:
 
 ```bash
-plg install plugify-module-dotnet
+mamba install -n your_env_name -c https://untrustedmodders.github.io/plugify-module-dotnet/ plugify-module-dotnet
 ```
 
 #### Option 2: Manual Installation

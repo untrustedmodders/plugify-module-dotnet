@@ -24,11 +24,11 @@
 
 #### Вариант 1: Установка через менеджер плагинов Plugify
 
-Вы можете установить модуль языка C# (.NET) с помощью менеджера плагинов Plugify, выполнив следующую команду:
+Вы можете установить модуль языка C# (.NET) с помощью менеджера пакетов Mamba, выполнив следующую команду:
 
 ```
 bash
-plg install plugify-module-dotnet
+mamba install -n your_env_name -c https://untrustedmodders.github.io/plugify-module-dotnet/ plugify-module-dotnet
 ```
 
 #### Вариант 2: Ручная установка
