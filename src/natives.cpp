@@ -300,7 +300,7 @@ extern "C" {
 	}
 
 	NETLM_EXPORT JitCallback* NewCallback(const char* name, void* delegate) {
-		const Method* method = g_netlm.FindMethod(name);
+		std::shared_ptr<Method> method = g_netlm.FindMethod(name);
 		if (method == nullptr || delegate == nullptr)
 			return nullptr;
 

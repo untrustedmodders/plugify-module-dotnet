@@ -230,7 +230,7 @@ ScriptInstance* DotnetLanguageModule::FindScript(UniqueId pluginId) {
 	return nullptr;
 }
 
-const Method* DotnetLanguageModule::FindMethod(std::string_view name) const {
+std::shared_ptr<Method> DotnetLanguageModule::FindMethod(std::string_view name) const {
 	if (auto separated = Utils::Split(name, "."); separated.size() == 2) {
 		if (auto plugin = _provider->FindExtension(separated[0])) {
 			for (const auto& method : plugin->GetMethods()) {

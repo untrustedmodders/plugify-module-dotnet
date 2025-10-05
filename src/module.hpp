@@ -75,7 +75,7 @@ namespace netlm {
 
 		const ScriptMap& GetScripts() const { return _scripts; }
 		ScriptInstance* FindScript(UniqueId pluginId);
-		const Method* FindMethod(std::string_view name) const;
+		std::shared_ptr<Method> FindMethod(std::string_view name) const;
 
 		const std::unique_ptr<Provider>& GetProvider() { return _provider; }
 		static Result<SharpMethodData> GenerateMethodExport(const Method& method, ManagedAssembly &assembly);
