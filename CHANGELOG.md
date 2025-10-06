@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.0.9](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.0.8...v2.0.9) (2025-10-06)
+
+
+### Bug Fixes
+
+* add delete cache for non marshalled delegates ([1a8e340](https://github.com/untrustedmodders/plugify-module-dotnet/commit/1a8e340398a32554867130b98bf9ebea5a455854))
+* disable asan in debug ([4e628fc](https://github.com/untrustedmodders/plugify-module-dotnet/commit/4e628fc9485bebf3ea4025bc3c9e0205673ffa4f))
+* improve san and debug symbols on windows ([c1715a7](https://github.com/untrustedmodders/plugify-module-dotnet/commit/c1715a787cc1063f9a6a456293b1407cb8100fce))
+* update plugify ([10a004a](https://github.com/untrustedmodders/plugify-module-dotnet/commit/10a004a7268d7466960b1fc6be2bda3d7e443b2b))
+* update plugify ([86c49f6](https://github.com/untrustedmodders/plugify-module-dotnet/commit/86c49f61b271c4d5b512a4fc7905f49ef938d9e0))
+* update plugify ([22216ea](https://github.com/untrustedmodders/plugify-module-dotnet/commit/22216ea74fb4984c38fc235986acdc88602842e5))
+
 ## [2.0.8](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.0.7...v2.0.8) (2025-09-27)
 
 
