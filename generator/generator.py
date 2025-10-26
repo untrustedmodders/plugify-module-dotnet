@@ -576,7 +576,7 @@ def gen_params(method: dict, param_gen: ParamGen) -> str:
     def gen_function_cast_name(param: dict) -> str:
         if is_need_marshal(param['prototype']):
             return f'__{generate_name(param["name"])}'
-        return f'Marshaling.GetFunctionPointerForDelegate({generate_name(param["name"])})'
+        return f'Marshalling.GetFunctionPointerForDelegate({generate_name(param["name"])})'
 
     # Helper function to generate the cast name for vector or matrix types
     def gen_vector_matrix_cast(param: dict) -> str:
