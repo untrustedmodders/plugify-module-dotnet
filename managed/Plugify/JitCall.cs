@@ -4,7 +4,7 @@ namespace Plugify;
 
 public partial class JitCall : SafeHandle
 {
-	public JitCall(nint target, ManagedType[] parameters, ManagedType ret) : base(nint.Zero, true)
+	public JitCall(nint target, ManagedType[] parameters, ManagedType ret) : base(nint.Zero, ownsHandle: true)
 	{
 		handle = NewCall(target, parameters, parameters.Length, ret);
 	}

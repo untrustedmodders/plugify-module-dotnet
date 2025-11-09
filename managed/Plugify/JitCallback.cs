@@ -4,7 +4,7 @@ namespace Plugify;
 
 public partial class JitCallback : SafeHandle
 {
-    public JitCallback(Delegate target) : base(nint.Zero, true)
+    public JitCallback(Delegate target) : base(nint.Zero, ownsHandle: true)
     {
         var targetType = target.GetType();
         var delegateHandle = GCHandle.Alloc(target, GCHandleType.Normal);
