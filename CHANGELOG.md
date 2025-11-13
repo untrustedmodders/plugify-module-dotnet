@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.0.10](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.0.9...v2.0.10) (2025-11-13)
+
+
+### Bug Fixes
+
+* small fixes in generator ([1e6dc46](https://github.com/untrustedmodders/plugify-module-dotnet/commit/1e6dc46f8ad98e7b2d2d259a03814e8631cdb80f))
+* typo in generator ([71f2ff5](https://github.com/untrustedmodders/plugify-module-dotnet/commit/71f2ff5cb9d78db9ee22eae6fce0787d7676094f))
+* update plugify ([cfade2f](https://github.com/untrustedmodders/plugify-module-dotnet/commit/cfade2f926a385f183c67a4ee964b273f03c7b00))
+
 ## [2.0.9](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.0.8...v2.0.9) (2025-10-06)
 
 
