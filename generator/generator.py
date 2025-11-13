@@ -909,7 +909,7 @@ def gen_delegate_body(prototype: dict, delegates: set[str]) -> str:
     if delegate_description:
         delegate_code.append(gen_documentation(prototype, tab_level=1))
     param_list = gen_params(prototype, ParamGen.TypesCastNames)
-    delegate_code.append(f'\tpublic delegate {return_type} {delegate_name}({param_list});')
+    delegate_code.append(f'\t\tpublic delegate {return_type} {delegate_name}({param_list});')
 
     # Join the list into a single formatted string
     return '\n'.join(delegate_code)
@@ -934,10 +934,10 @@ def gen_enum_body(enum: dict, enum_type: str, enums: set[str]) -> str:
     # Start building the enum definition
     enum_code = []
     if enum_description:
-        enum_code.append(f'\t/// <summary>')
-        enum_code.append(f'\t/// {enum_description}')
-        enum_code.append(f'\t/// </summary>')
-    enum_code.append(f'\tpublic enum {enum_name} : {convert_type(enum_type)}\n\t{{')
+        enum_code.append(f'\t\t/// <summary>')
+        enum_code.append(f'\t\t/// {enum_description}')
+        enum_code.append(f'\t\t/// </summary>')
+    enum_code.append(f'\t\tpublic enum {enum_name} : {convert_type(enum_type)}\n\t{{')
 
     # Iterate over the enum values and generate corresponding code
     for i, value in enumerate(enum_values):
@@ -947,10 +947,10 @@ def gen_enum_body(enum: dict, enum_type: str, enums: set[str]) -> str:
 
         # Add summary comment for each value
         if description:
-            enum_code.append(f'\t\t/// <summary>')
-            enum_code.append(f'\t\t/// {description}')
-            enum_code.append(f'\t\t/// </summary>')
-        enum_code.append(f'\t\t{name} = {enum_value},')
+            enum_code.append(f'\t\t\t/// <summary>')
+            enum_code.append(f'\t\t\t/// {description}')
+            enum_code.append(f'\t\t\t/// </summary>')
+        enum_code.append(f'\t\t\t{name} = {enum_value},')
 
     # Close the enum definition
     enum_code.append("\t}\n")
