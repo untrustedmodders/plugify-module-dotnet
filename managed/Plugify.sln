@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugify", "Plugify\Plugify.csproj", "{8B2E3DF2-1422-446B-B4F6-10467DD5DDAA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugify.Generators", "Plugify.Generators\Plugify.Generators.csproj", "{D62611D6-0EF7-4AF7-8506-2975AC8D2F60}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExamplePlugin", "ExamplePlugin\ExamplePlugin.csproj", "{E5A3F7C8-9D2A-4B3E-8F1C-6D4E5A2B9C7F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8B2E3DF2-1422-446B-B4F6-10467DD5DDAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B2E3DF2-1422-446B-B4F6-10467DD5DDAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B2E3DF2-1422-446B-B4F6-10467DD5DDAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B2E3DF2-1422-446B-B4F6-10467DD5DDAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D62611D6-0EF7-4AF7-8506-2975AC8D2F60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D62611D6-0EF7-4AF7-8506-2975AC8D2F60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D62611D6-0EF7-4AF7-8506-2975AC8D2F60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D62611D6-0EF7-4AF7-8506-2975AC8D2F60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5A3F7C8-9D2A-4B3E-8F1C-6D4E5A2B9C7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5A3F7C8-9D2A-4B3E-8F1C-6D4E5A2B9C7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5A3F7C8-9D2A-4B3E-8F1C-6D4E5A2B9C7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5A3F7C8-9D2A-4B3E-8F1C-6D4E5A2B9C7F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

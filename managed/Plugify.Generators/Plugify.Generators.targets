@@ -1,0 +1,63 @@
+<Project>
+  <!-- Define inline task to invoke WriteManifest method -->
+  <UsingTask TaskName="InvokePlugifyManifestWriter"
+             TaskFactory="RoslynCodeTaskFactory"
+             AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <AssemblyPath ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System"/>
+      <Using Namespace="System.IO"/>
+      <Using Namespace="System.Reflection"/>
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+        if (!File.Exists(AssemblyPath))
+        {
+            Log.LogMessage(MessageImportance.Low, "Assembly not found: " + AssemblyPath);
+            return true;
+        }
+
+        try
+        {
+            // Load assembly without locking the file
+            var assemblyBytes = File.ReadAllBytes(AssemblyPath);
+            var assembly = Assembly.Load(assemblyBytes);
+            var manifestType = assembly.GetType("Plugify.Generated.PlugifyManifest");
+
+            if (manifestType == null)
+            {
+                // No manifest generated (no [NativeExport] attributes found)
+                return true;
+            }
+
+            var writeMethod = manifestType.GetMethod("WriteManifest",
+                BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+
+            if (writeMethod != null)
+            {
+                writeMethod.Invoke(null, null);
+
+                var fileNameProp = manifestType.GetProperty("ManifestFileName");
+                var fileName = fileNameProp?.GetValue(null) as string;
+
+                Log.LogMessage(MessageImportance.High, "Generated Plugify manifest: " + fileName);
+            }
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Log.LogWarning("Failed to generate Plugify manifest: " + ex.Message);
+            return true; // Don't fail the build
+        }
+        ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+
+  <!-- Run after compile but before final copy to output -->
+  <Target Name="GeneratePlugifyManifest" AfterTargets="CoreCompile" BeforeTargets="CopyFilesToOutputDirectory" Condition="'$(TargetFramework)' != ''">
+    <InvokePlugifyManifestWriter AssemblyPath="@(IntermediateAssembly)" />
+  </Target>
+</Project>
