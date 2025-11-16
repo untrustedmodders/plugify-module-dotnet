@@ -13,7 +13,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Plugify" Version="1.2.5" />
+      <PackageReference Include="Plugify" Version="2.1.8" />
+      <PackageReference Include="Plugify.Generators" Version="2.1.8" 
+                        OutputItemType="Analyzer"
+                        ReferenceOutputAssembly="false" />
     </ItemGroup>
 
 </Project>

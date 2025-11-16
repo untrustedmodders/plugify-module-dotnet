@@ -175,25 +175,22 @@ jobs:
       - name: Publish artifacts ${{ env.TAG_VERSION }}
         shell: bash -el {0}
         run: |
+          # Publish Plugify (includes Plugify.Generators automatically)
           dotnet publish -c ${{ env.BUILD_TYPE }} /p:Version=${{ env.TAG_VERSION }} managed/Plugify
-          dotnet publish -c ${{ env.BUILD_TYPE }} /p:Version=${{ env.TAG_VERSION }} managed/Plugify.Generators
           dotnet pack -c ${{ env.BUILD_TYPE }} /p:Version=${{ env.TAG_VERSION }} managed/Plugify
+
+          # Also pack Plugify.Generators separately for users who want just the generator
           dotnet pack -c ${{ env.BUILD_TYPE }} /p:Version=${{ env.TAG_VERSION }} managed/Plugify.Generators
 
       - name: Publish NuGet packages
         shell: bash -el {0}
         run: |
-          # Publish Plugify package with symbols
+          # Publish Plugify package (includes generator) with symbols
           dotnet nuget push managed/Plugify/bin/${{ env.BUILD_TYPE }}/Plugify.${{ env.TAG_VERSION }}.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
           dotnet nuget push managed/Plugify/bin/${{ env.BUILD_TYPE }}/Plugify.${{ env.TAG_VERSION }}.snupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
 
-          # Publish Plugify.Generators package
+          # Publish standalone Plugify.Generators package (optional, for advanced users)
           dotnet nuget push managed/Plugify.Generators/bin/${{ env.BUILD_TYPE }}/Plugify.Generators.${{ env.TAG_VERSION }}.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
-
-          # Publish Plugify.Generators symbols package only if it exists
-          if [ -f "managed/Plugify.Generators/bin/${{ env.BUILD_TYPE }}/Plugify.Generators.${{ env.TAG_VERSION }}.snupkg" ]; then
-            dotnet nuget push managed/Plugify.Generators/bin/${{ env.BUILD_TYPE }}/Plugify.Generators.${{ env.TAG_VERSION }}.snupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
-          fi
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4

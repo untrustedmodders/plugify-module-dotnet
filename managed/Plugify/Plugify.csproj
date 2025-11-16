@@ -16,8 +16,8 @@
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <SelfContained>true</SelfContained>
     <Authors>untrustedmodders</Authors>
-    <Description>This package provides essential functionalities for creating simple plugins using the Plugify framework with the .NET Language Module. It offers a streamlined and efficient way to integrate .NET plugins into your applications to enhance your development workflow.</Description>
-    <PackageTags>plugify;plugify-module-dotnet</PackageTags>
+    <Description>This package provides essential functionalities for creating simple plugins using the Plugify framework with the .NET Language Module. Includes a Roslyn source generator that automatically creates .pplugin manifest files from C# code marked with [NativeExport] attributes.</Description>
+    <PackageTags>plugify;plugify-module-dotnet;source-generator</PackageTags>
     <PackageProjectUrl>https://github.com/untrustedmodders/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/untrustedmodders/plugify-module-dotnet.git</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -34,10 +34,9 @@
     <None Include="images\icon.png" Pack="true" PackagePath="\"/>
   </ItemGroup>
 
-  <!--
+  <!-- Include source generator in package -->
   <ItemGroup>
     <ProjectReference Include="..\Plugify.Generators\Plugify.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
-  -->
 
 </Project>
