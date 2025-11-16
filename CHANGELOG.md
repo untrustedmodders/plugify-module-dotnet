@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.9](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.1.8...v2.1.9) (2025-11-16)
+
+
+### Bug Fixes
+
+* change build of generators ([2b043eb](https://github.com/untrustedmodders/plugify-module-dotnet/commit/2b043eb2659e16fd323b11756812a8f6a23e851a))
+
 ## [2.1.8](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.1.7...v2.1.8) (2025-11-16)
 
 
