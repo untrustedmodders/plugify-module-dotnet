@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.7](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.1.6...v2.1.7) (2025-11-16)
+
+
+### Bug Fixes
+
+* not include symbols with generator ([56f5cc9](https://github.com/untrustedmodders/plugify-module-dotnet/commit/56f5cc9958190449ff77a270f7b8f9f938932942))
+
 ## [2.1.6](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.1.5...v2.1.6) (2025-11-16)
 
 
