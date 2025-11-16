@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -223,14 +224,34 @@ public class ManifestFileGenerator : IIncrementalGenerator
             return;
         }
 
-        // Get assembly info
-        var version = compilation.Assembly.Identity.Version.ToString();
+        var versionObj = compilation.Assembly.Identity.Version; // System.Version
+        var version = $"{versionObj.Major}.{versionObj.Minor}.{versionObj.Build}";
+        
+        var descriptionAttr = compilation.Assembly.GetAttributes()
+            .FirstOrDefault(a => a.AttributeClass?.ToDisplayString() == "System.Reflection.AssemblyDescriptionAttribute");
+        var authorAttr = compilation.Assembly.GetAttributes()
+            .FirstOrDefault(a => a.AttributeClass?.ToDisplayString() == "System.Reflection.AssemblyCompanyAttribute");
+        var copyrightAttr = compilation.Assembly.GetAttributes()
+            .FirstOrDefault(a => a.AttributeClass?.ToDisplayString() == "System.Reflection.AssemblyCopyrightAttribute");
+        var productAttr = compilation.Assembly.GetAttributes()
+            .FirstOrDefault(a => a.AttributeClass?.ToDisplayString() == "System.Reflection.AssemblyProductAttribute");
 
+        var description = descriptionAttr?.ConstructorArguments.FirstOrDefault().Value?.ToString() ?? "";
+        var author = authorAttr?.ConstructorArguments.FirstOrDefault().Value?.ToString() ?? "";
+        var copyright = copyrightAttr?.ConstructorArguments.FirstOrDefault().Value?.ToString() ?? "";
+        var product = productAttr?.ConstructorArguments.FirstOrDefault().Value?.ToString() ?? "";
+        
         // Build the manifest
         var manifest = new PluginManifest
         {
             Name = assemblyName,
             Version = version,
+            Description = description,
+            Author = author,
+            Website = product,
+            License = copyright,
+            Entry = $"{assemblyName}.dll",
+            Language = "dotnet",
             Methods = validMethods.Select(m => new ManifestMethod
             {
                 Name = m.ExportName,
@@ -328,16 +349,16 @@ public class ManifestFileGenerator : IIncrementalGenerator
             {
                 type = "function",
                 name = param.Name,
-                @ref = param.IsRef ? "ref" : null,
+                @ref = param.IsRef ? "t" : null,
                 prototype = new
                 {
                     name = param.Type.DelegateName,
-                    funcName = param.Type.DelegateName + "_Exported",
+                    //funcName = param.Type.DelegateName + "_Exported",
                     paramTypes = param.Type.DelegateParameters?.Select(p => new
                     {
                         type = p.Type.TypeName,
                         name = p.Name,
-                        @ref = p.IsRef ? "ref" : null
+                        @ref = p.IsRef
                     }).ToList(),
                     retType = new
                     {
@@ -347,17 +368,20 @@ public class ManifestFileGenerator : IIncrementalGenerator
             };
         }
 
-        if (param.Type.IsEnum)
+        // Handle enum or enum array
+        if (param.Type.IsEnum || (param.Type.IsArray && param.Type.ElementType?.IsEnum == true))
         {
+            var enumType = param.Type.IsEnum ? param.Type : param.Type.ElementType;
+
             return new
             {
                 type = param.Type.TypeName,
                 name = param.Name,
-                @ref = param.IsRef ? "ref" : null,
+                @ref = param.IsRef,
                 @enum = new
                 {
-                    name = param.Type.EnumName,
-                    values = param.Type.EnumValues?.Select(v => new
+                    name = enumType?.EnumName,
+                    values = enumType?.EnumValues?.Select(v => new
                     {
                         value = v.Value,
                         name = v.Name
@@ -370,21 +394,24 @@ public class ManifestFileGenerator : IIncrementalGenerator
         {
             type = param.Type.TypeName,
             name = param.Name,
-            @ref = param.IsRef ? "ref" : null
+            @ref = param.IsRef
         };
     }
 
     private static object ConvertReturnType(PlugifyType returnType)
     {
-        if (returnType.IsEnum)
+        // Handle enum or enum array
+        if (returnType.IsEnum || (returnType.IsArray && returnType.ElementType?.IsEnum == true))
         {
+            var enumType = returnType.IsEnum ? returnType : returnType.ElementType;
+
             return new
             {
                 type = returnType.TypeName,
                 @enum = new
                 {
-                    name = returnType.EnumName,
-                    values = returnType.EnumValues?.Select(v => new
+                    name = enumType?.EnumName,
+                    values = enumType?.EnumValues?.Select(v => new
                     {
                         value = v.Value,
                         name = v.Name
@@ -436,8 +463,16 @@ public class ManifestFileGenerator : IIncrementalGenerator
 
     private class PluginManifest
     {
+        [JsonPropertyName("$schema")]
+        public string Schema { get; set; } = "https://raw.githubusercontent.com/untrustedmodders/plugify/refs/heads/main/schemas/plugin.schema.json";
         public string Name { get; set; } = "";
         public string Version { get; set; } = "";
+        public string Description { get; set; } = "";
+        public string Author { get; set; } = "";
+        public string Website { get; set; } = "";
+        public string License { get; set; } = "";
+        public string Entry { get; set; } = "";
+        public string Language { get; set; } = "";
         public List<ManifestMethod> Methods { get; set; } = [];
     }
 
