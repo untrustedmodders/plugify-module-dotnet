@@ -1,5 +1,24 @@
 # Changelog
 
+## [2.1.0](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.0.9...v2.1.0) (2025-11-16)
+
+
+### Features
+
+* update module to .NET10 ([b6c4fff](https://github.com/untrustedmodders/plugify-module-dotnet/commit/b6c4fff6036f46d4f83dfee9dd555c0e6865c391))
+
+
+### Bug Fixes
+
+* add enum support ([ff6f271](https://github.com/untrustedmodders/plugify-module-dotnet/commit/ff6f2719210b82dd0c4eda0b082afbb43fdefd18))
+* add generator projects ([67f90a1](https://github.com/untrustedmodders/plugify-module-dotnet/commit/67f90a1d22400742e0095b9f2fa033c307aa984f))
+* add source generator ([3c8ff55](https://github.com/untrustedmodders/plugify-module-dotnet/commit/3c8ff554be38c63eb27cd0a2a666aa6398cc3c6f))
+* **claude:** add enum array support and extend generated manifest ([6b41572](https://github.com/untrustedmodders/plugify-module-dotnet/commit/6b41572ee9ee9cd3c5ef1f2b3e7b074e6dff44d3))
+* small fixes in generator ([1e6dc46](https://github.com/untrustedmodders/plugify-module-dotnet/commit/1e6dc46f8ad98e7b2d2d259a03814e8631cdb80f))
+* typo in generator ([71f2ff5](https://github.com/untrustedmodders/plugify-module-dotnet/commit/71f2ff5cb9d78db9ee22eae6fce0787d7676094f))
+* update notify ([8d0dc92](https://github.com/untrustedmodders/plugify-module-dotnet/commit/8d0dc9245367cfd2608804219158342da72f8632))
+* update plugify ([cfade2f](https://github.com/untrustedmodders/plugify-module-dotnet/commit/cfade2f926a385f183c67a4ee964b273f03c7b00))
+
 ## [2.0.9](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.0.8...v2.0.9) (2025-10-06)
 
 
