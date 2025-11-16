@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.4](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.1.3...v2.1.4) (2025-11-16)
+
+
+### Bug Fixes
+
+* add missing icon ([0757e9a](https://github.com/untrustedmodders/plugify-module-dotnet/commit/0757e9ab5718decff90d6dff5badc0da46bf31b2))
+
 ## [2.1.3](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.1.2...v2.1.3) (2025-11-16)
 
 
