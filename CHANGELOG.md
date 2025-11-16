@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.1](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.1.0...v2.1.1) (2025-11-16)
+
+
+### Bug Fixes
+
+* clang warning ([fdc4554](https://github.com/untrustedmodders/plugify-module-dotnet/commit/fdc4554537dcb6752189a675b4139ac9c1966e80))
+
 ## [2.1.0](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.0.9...v2.1.0) (2025-11-16)
 
 
