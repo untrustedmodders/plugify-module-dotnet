@@ -17,7 +17,7 @@
 
 ### Требования
 
-- Среда выполнения .NET [(.NET 9.0.0)](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)  
+- Среда выполнения .NET [(.NET 10.0.0)](https://dotnet.microsoft.com/en-us/download/dotnet/10.0)  
 - Установленный фреймворк Plugify
 
 ### Установка

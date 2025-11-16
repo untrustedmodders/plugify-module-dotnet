@@ -160,7 +160,7 @@ jobs:
       - name: Install .NET Core
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "9.0.x"
+          dotnet-version: "10.0.x"
 
       - name: Sanitize version name
         shell: bash -el {0}
@@ -177,18 +177,21 @@ jobs:
         run: |
           dotnet publish -c ${{ env.BUILD_TYPE }} /p:Version=${{ env.TAG_VERSION }} managed/Plugify
           dotnet pack -c ${{ env.BUILD_TYPE }} /p:Version=${{ env.TAG_VERSION }} managed/Plugify
+          dotnet pack -c ${{ env.BUILD_TYPE }} /p:Version=${{ env.TAG_VERSION }} managed/Plugify.Generators
 
-      - name: Publish NuGet package
+      - name: Publish NuGet packages
         shell: bash -el {0}
         run: |
           dotnet nuget push managed/Plugify/bin/${{ env.BUILD_TYPE }}/Plugify.${{ env.TAG_VERSION }}.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
           dotnet nuget push managed/Plugify/bin/${{ env.BUILD_TYPE }}/Plugify.${{ env.TAG_VERSION }}.snupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+          dotnet nuget push managed/Plugify.Generators/bin/${{ env.BUILD_TYPE }}/Plugify.Generators.${{ env.TAG_VERSION }}.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+          dotnet nuget push managed/Plugify.Generators/bin/${{ env.BUILD_TYPE }}/Plugify.Generators.${{ env.TAG_VERSION }}.snupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.PROJECT_NAME }}-build-api-${{ needs.setup.outputs.github_sha_short }}
-          path: managed/Plugify/bin/${{ env.BUILD_TYPE }}/net9.0/publish
+          path: managed/Plugify/bin/${{ env.BUILD_TYPE }}/net10.0/publish
 
   package:
     needs: ["setup", "build", "managed"]
@@ -230,7 +233,7 @@ jobs:
         shell: bash -el {0}
         run: |
           mkdir -p "conda/dotnet"
-          curl -sSL https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/9.0.0/aspnetcore-runtime-9.0.0-linux-x64.tar.gz \
+          curl -sSL https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/10.0.0/aspnetcore-runtime-10.0.0-linux-x64.tar.gz \
             | tar xvz -C "conda/dotnet/"
        
       - name: Download dotnet runtime (Windows)
@@ -238,7 +241,7 @@ jobs:
         shell: bash -el {0}
         run: |
           mkdir -p "conda/dotnet"
-          curl -sSL https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/9.0.0/aspnetcore-runtime-9.0.0-win-x64.zip -o dotnet.zip
+          curl -sSL https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/10.0.0/aspnetcore-runtime-10.0.0-win-x64.zip -o dotnet.zip
           unzip -qq dotnet.zip -d "conda/dotnet/"
        
       - name: Download dotnet runtime (macOS)
@@ -246,7 +249,7 @@ jobs:
         shell: bash -el {0}
         run: |
           mkdir -p "conda/dotnet"
-          curl -sSL https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/9.0.0/aspnetcore-runtime-9.0.0-osx-arm64.tar.gz \
+          curl -sSL https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/10.0.0/aspnetcore-runtime-10.0.0-osx-arm64.tar.gz \
             | tar xvz -C "conda/dotnet/"
 
       - name: Setup Micromamba

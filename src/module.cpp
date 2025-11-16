@@ -32,7 +32,7 @@ Result<InitData> DotnetLanguageModule::Initialize(const Provider& provider, cons
 	_provider = std::make_unique<Provider>(provider);
 
 	auto result = _host.Initialize({
-		.hostfxrPath = module.GetLocation() / "dotnet/host/fxr/9.0.0/" NETLM_LIBRARY_PREFIX "hostfxr" NETLM_LIBRARY_SUFFIX,
+		.hostfxrPath = module.GetLocation() / "dotnet/host/fxr/10.0.0/" NETLM_LIBRARY_PREFIX "hostfxr" NETLM_LIBRARY_SUFFIX,
 		.rootDirectory = module.GetLocation() / "api",
 		.messageCallback = MessageCallback,
 		.exceptionCallback = ExceptionCallback,

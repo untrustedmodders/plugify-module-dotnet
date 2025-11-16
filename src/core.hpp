@@ -42,6 +42,6 @@ namespace netlm {
 	template<typename T> inline const type_index type_id = type_id_seq++;
 }
 
-#define NETLM_DOTNET_TARGET_VERSION_MAJOR 9
-#define NETLM_DOTNET_TARGET_VERSION_MAJOR_STR '9'
+#define NETLM_DOTNET_TARGET_VERSION_MAJOR 10
+#define NETLM_DOTNET_TARGET_VERSION_MAJOR_STR '10'
 #define NETLM_UNMANAGED_CALLERS_ONLY (reinterpret_cast<const char_t*>(-1))

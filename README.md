@@ -17,7 +17,7 @@ The C# (.NET) Language Module for Plugify facilitates the development of plugins
 
 ### Prerequisites
 
-- .NET Runtime [(.NET 9.0.0)](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)
+- .NET Runtime [(.NET 10.0.0)](https://dotnet.microsoft.com/en-us/download/dotnet/10.0)
 - Plugify Framework Installed
 
 ### Installation
