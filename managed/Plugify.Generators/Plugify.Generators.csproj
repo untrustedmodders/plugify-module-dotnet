@@ -38,6 +38,10 @@
     <PackageReference Include="System.Text.Json" Version="8.0.5"/>
   </ItemGroup>
   
+  <ItemGroup>
+    <None Include="images\icon.png" Pack="true" PackagePath="\"/>
+  </ItemGroup>
+
   <!-- Include the .targets file so it's automatically imported -->
   <ItemGroup>
     <None Include="Plugify.Generators.targets" Pack="true" PackagePath="build" />
