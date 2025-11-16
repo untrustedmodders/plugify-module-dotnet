@@ -176,6 +176,7 @@ jobs:
         shell: bash -el {0}
         run: |
           dotnet publish -c ${{ env.BUILD_TYPE }} /p:Version=${{ env.TAG_VERSION }} managed/Plugify
+          dotnet publish -c ${{ env.BUILD_TYPE }} /p:Version=${{ env.TAG_VERSION }} managed/Plugify.Generators
           dotnet pack -c ${{ env.BUILD_TYPE }} /p:Version=${{ env.TAG_VERSION }} managed/Plugify
           dotnet pack -c ${{ env.BUILD_TYPE }} /p:Version=${{ env.TAG_VERSION }} managed/Plugify.Generators
 
