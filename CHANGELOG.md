@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.2](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.1.1...v2.1.2) (2025-11-16)
+
+
+### Bug Fixes
+
+* update plugify ([e69c107](https://github.com/untrustedmodders/plugify-module-dotnet/commit/e69c1074a20f9841aa6d3aab4af319f802f32375))
+
 ## [2.1.1](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.1.0...v2.1.1) (2025-11-16)
 
 
