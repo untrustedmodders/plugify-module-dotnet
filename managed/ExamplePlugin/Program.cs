@@ -117,4 +117,75 @@ namespace ExamplePlugin
     /// Example callback delegate
     /// </summary>
     public delegate string ExampleCallback(int a, string b);
+
+    /// <summary>
+    /// Example enum for testing enum support
+    /// </summary>
+    public enum ResultType
+    {
+        Continue = 0,
+        Changed = 1,
+        Handled = 2,
+        Stop = 3
+    }
+
+    /// <summary>
+    /// Examples demonstrating enum support
+    /// </summary>
+    public static class EnumExamples
+    {
+        /// <summary>
+        /// Function that returns an enum
+        /// </summary>
+        [NativeExport("GetResult")]
+        public static ResultType GetResult_Exported(int code)
+        {
+            return (ResultType)code;
+        }
+        
+        /// <summary>
+        /// Function that returns an enum array
+        /// </summary>
+        [NativeExport("GetResult")]
+        public static ResultType[] GetResult_ExportedArray(int code)
+        {
+            return [(ResultType)code];
+        }
+
+        /// <summary>
+        /// Function that takes an enum parameter
+        /// </summary>
+        [NativeExport("ProcessResult")]
+        public static string ProcessResult_Exported(ResultType result)
+        {
+            return $"Processing result: {result}";
+        }
+
+        /// <summary>
+        /// Function that takes an enum array
+        /// </summary>
+        [NativeExport("ProcessResult")]
+        public static string ProcessResult_ExportedArray(ResultType[] result)
+        {
+            return $"Processing result: {result}";
+        }
+
+        /// <summary>
+        /// Function with both enum parameter and return
+        /// </summary>
+        [NativeExport("TransformResult")]
+        public static ResultType TransformResult_Exported(ResultType input, bool invert)
+        {
+            if (invert)
+            {
+                return input switch
+                {
+                    ResultType.Continue => ResultType.Stop,
+                    ResultType.Stop => ResultType.Continue,
+                    _ => input
+                };
+            }
+            return input;
+        }
+    }
 }

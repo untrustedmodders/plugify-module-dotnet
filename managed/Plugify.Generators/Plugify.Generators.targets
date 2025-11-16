@@ -20,6 +20,8 @@
 
         try
         {
+            Log.LogMessage(MessageImportance.High, "Loading assembly: " + AssemblyPath);
+
             // Load assembly without locking the file
             var assemblyBytes = File.ReadAllBytes(AssemblyPath);
             var assembly = Assembly.Load(assemblyBytes);
@@ -27,6 +29,7 @@
 
             if (manifestType == null)
             {
+                Log.LogMessage(MessageImportance.Normal, "No PlugifyManifest type found in assembly");
                 // No manifest generated (no [NativeExport] attributes found)
                 return true;
             }
@@ -36,12 +39,18 @@
 
             if (writeMethod != null)
             {
-                writeMethod.Invoke(null, null);
+                Log.LogMessage(MessageImportance.High, "Invoking WriteManifest method...");
+                // Pass the assembly path so WriteManifest knows where to write the file
+                writeMethod.Invoke(null, new object[] { AssemblyPath });
 
-                var fileNameProp = manifestType.GetProperty("ManifestFileName");
-                var fileName = fileNameProp?.GetValue(null) as string;
+                var fileNameField = manifestType.GetField("ManifestFileName", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+                var fileName = fileNameField?.GetValue(null) as string;
 
-                Log.LogMessage(MessageImportance.High, "Generated Plugify manifest: " + fileName);
+                Log.LogMessage(MessageImportance.High, "Generated Plugify manifest: " + (fileName ?? "unknown"));
+            }
+            else
+            {
+                Log.LogMessage(MessageImportance.Normal, "WriteManifest method not found");
             }
 
             return true;
@@ -58,6 +67,9 @@
 
   <!-- Run after compile but before final copy to output -->
   <Target Name="GeneratePlugifyManifest" AfterTargets="CoreCompile" BeforeTargets="CopyFilesToOutputDirectory" Condition="'$(TargetFramework)' != ''">
-    <InvokePlugifyManifestWriter AssemblyPath="@(IntermediateAssembly)" />
+    <PropertyGroup>
+      <_PlugifyAssemblyPath>@(IntermediateAssembly)</_PlugifyAssemblyPath>
+    </PropertyGroup>
+    <InvokePlugifyManifestWriter AssemblyPath="$(_PlugifyAssemblyPath)" />
   </Target>
 </Project>

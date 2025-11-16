@@ -127,6 +127,38 @@ public class ManifestFileGenerator : IIncrementalGenerator
             }
         }
 
+        // Handle enums
+        if (typeSymbol.TypeKind == TypeKind.Enum)
+        {
+            var namedType = typeSymbol as INamedTypeSymbol;
+            var underlyingType = namedType?.EnumUnderlyingType;
+
+            if (underlyingType != null)
+            {
+                var underlyingPlugifyType = MapTypeToPlugify(underlyingType);
+
+                // Get enum values
+                var enumValues = typeSymbol.GetMembers()
+                    .OfType<IFieldSymbol>()
+                    .Where(f => f.IsConst && f.HasConstantValue)
+                    .Select(f => new EnumValue
+                    {
+                        Name = f.Name,
+                        Value = Convert.ToInt64(f.ConstantValue)
+                    })
+                    .OrderBy(v => v.Value)
+                    .ToList();
+
+                return new PlugifyType
+                {
+                    TypeName = underlyingPlugifyType.TypeName,
+                    IsEnum = true,
+                    EnumName = typeSymbol.Name,
+                    EnumValues = enumValues
+                };
+            }
+        }
+
         // Map basic types
         var typeName = typeSymbol.ToDisplayString();
         var plugifyTypeName = typeName switch
@@ -248,15 +280,27 @@ public class ManifestFileGenerator : IIncrementalGenerator
                                /// Writes the manifest file to the assembly directory.
                                /// This is invoked by the MSBuild post-build task.
                                /// </summary>
-                               internal static void WriteManifest()
+                               internal static void WriteManifest(string assemblyPath = null)
                                {
                                    try
                                    {
-                                       var assemblyLocation = typeof(PlugifyManifest).Assembly.Location;
-                                       if (string.IsNullOrEmpty(assemblyLocation))
-                                           return;
+                                       string directory;
 
-                                       var directory = Path.GetDirectoryName(assemblyLocation);
+                                       if (!string.IsNullOrEmpty(assemblyPath))
+                                       {
+                                           // Use provided path (from MSBuild task)
+                                           directory = Path.GetDirectoryName(assemblyPath);
+                                       }
+                                       else
+                                       {
+                                           // Fallback to assembly location
+                                           var assemblyLocation = typeof(PlugifyManifest).Assembly.Location;
+                                           if (string.IsNullOrEmpty(assemblyLocation))
+                                               return;
+
+                                           directory = Path.GetDirectoryName(assemblyLocation);
+                                       }
+
                                        if (string.IsNullOrEmpty(directory))
                                            return;
 
@@ -303,6 +347,25 @@ public class ManifestFileGenerator : IIncrementalGenerator
             };
         }
 
+        if (param.Type.IsEnum)
+        {
+            return new
+            {
+                type = param.Type.TypeName,
+                name = param.Name,
+                @ref = param.IsRef ? "ref" : null,
+                @enum = new
+                {
+                    name = param.Type.EnumName,
+                    values = param.Type.EnumValues?.Select(v => new
+                    {
+                        value = v.Value,
+                        name = v.Name
+                    }).ToList()
+                }
+            };
+        }
+
         return new
         {
             type = param.Type.TypeName,
@@ -313,6 +376,23 @@ public class ManifestFileGenerator : IIncrementalGenerator
 
     private static object ConvertReturnType(PlugifyType returnType)
     {
+        if (returnType.IsEnum)
+        {
+            return new
+            {
+                type = returnType.TypeName,
+                @enum = new
+                {
+                    name = returnType.EnumName,
+                    values = returnType.EnumValues?.Select(v => new
+                    {
+                        value = v.Value,
+                        name = v.Name
+                    }).ToList()
+                }
+            };
+        }
+
         return new
         {
             type = returnType.TypeName
@@ -339,10 +419,19 @@ public class ManifestFileGenerator : IIncrementalGenerator
         public string TypeName { get; set; } = "";
         public bool IsArray { get; set; }
         public bool IsDelegate { get; set; }
+        public bool IsEnum { get; set; }
         public PlugifyType? ElementType { get; set; }
         public string? DelegateName { get; set; }
         public PlugifyType? DelegateReturnType { get; set; }
         public List<MethodParameter>? DelegateParameters { get; set; }
+        public string? EnumName { get; set; }
+        public List<EnumValue>? EnumValues { get; set; }
+    }
+
+    private class EnumValue
+    {
+        public string Name { get; set; } = "";
+        public long Value { get; set; }
     }
 
     private class PluginManifest
