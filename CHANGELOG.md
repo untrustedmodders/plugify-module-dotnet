@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.10](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.1.9...v2.1.10) (2025-11-20)
+
+
+### Bug Fixes
+
+* add template overload for GetDelegateForFunctionPointer ([6c3f146](https://github.com/untrustedmodders/plugify-module-dotnet/commit/6c3f146a04a8ece20151fc96629bf2327f5c99e9))
+
 ## [2.1.9](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.1.8...v2.1.9) (2025-11-16)
 
 
