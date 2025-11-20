@@ -546,7 +546,12 @@ public static class Marshalling
 	private static int GetFieldOffset(this FieldInfo fieldInfo) => GetFieldOffset(fieldInfo.FieldHandle);
 
 	private static int GetFieldOffset(RuntimeFieldHandle handle) => Marshal.ReadInt32(handle.Value + (4 + IntPtr.Size)) & 0xFFFFFF;
-	
+
+	public static T GetDelegateForFunctionPointer<T>(nint funcAddress) where T : Delegate
+    {
+        return (T) GetDelegateForFunctionPointer(funcAddress, typeof(T));
+    }
+
 	public static Delegate GetDelegateForFunctionPointer(nint funcAddress, Type? delegateType)
 	{
 		MutexFunctions.WaitOne();
