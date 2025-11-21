@@ -1128,7 +1128,15 @@ public unsafe class ReverseClass
         { "CallFunc31", CallFunc31 },
         { "CallFunc32", CallFunc32 },
         { "CallFunc33", CallFunc33 },
-        { "CallFuncEnum", CallFuncEnum }
+        { "CallFuncEnum", CallFuncEnum },
+        
+        { "ClassBasicLifecycle", TestClass.BasicLifecycle },
+        { "ClassStateManagement", TestClass.StateManagement },
+        { "ClassMultipleInstances", TestClass.MultipleInstances },
+        { "ClassCounterWithoutDestructor", TestClass.CounterWithoutDestructor },
+        { "ClassStaticMethods", TestClass.StaticMethods },
+        { "ClassMemoryLeakDetection", TestClass.MemoryLeakDetection },
+        { "ClassExceptionHandling", TestClass.ExceptionHandling },
     };
     
 }
