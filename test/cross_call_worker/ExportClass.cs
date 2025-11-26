@@ -9,6 +9,7 @@ namespace cross_call_worker;
 
 public class ExportClass
 {
+    [NativeExport("NoParamReturnVoid")]
     public static void NoParamReturnVoid()
     {
         Console.WriteLine("NoParamReturnVoid");

@@ -8,7 +8,7 @@ namespace cross_call_worker;
 
 public class TestClass
 {
-    [Conditional("DEBUG")]
+    [Conditional("VERBOSE")]
     static void Log(string message)
     {
         Console.WriteLine(message);
@@ -187,21 +187,20 @@ public class TestClass
             return "false";
         }
     }
-    
+
     public static string MemoryLeakDetection()
     {
         Log("TEST 6: Memory Leak Detection");
         Log("______________________________");
-        
-        Log("!   Creating resource WITHOUT using statement (intentional leak test)");
-        
+
         int beforeAlive = ResourceHandle.GetAliveCount();
-        
-        // Intentionally don't use 'using' and don't call Dispose()
-        // This tests that finalizers work as a safety net
-        var leaked = new ResourceHandle(999, "IntentionalLeak");
-        Log($"v Created resource ID: {leaked.GetId()}");
-        leaked = null;  // Remove reference, let GC handle it
+
+        {
+            // Intentionally don't use 'using' and don't call Dispose()
+            // This tests that finalizers work as a safety net
+            var leaked = new ResourceHandle(999, "IntentionalLeak");
+            Log($"v Created resource ID: {leaked.GetId()}");
+        }
         
         // Force GC to run finalizers
         GC.Collect();
@@ -220,8 +219,7 @@ public class TestClass
         }
         else
         {
-            Log("!   TEST 6: Resource still alive (will be cleaned at plugin shutdown)\n");
-            Log("    This is expected behavior - finalizers are non-deterministic\n");
+            Log("x TEST 6 FAILED: Resource still alive (will be cleaned at plugin shutdown)\n");
             return "false";
         }
     }
@@ -247,5 +245,56 @@ public class TestClass
             Log("v TEST 7 PASSED: Exception handling working\n");
             return "true";
         }
+    }
+    
+    public static unsafe string OwnershipTransfer() 
+    {
+        Log("TEST 7: Ownership Transfer (get + release)");
+        Log("─────────────────────────────────────────");
+    
+        int initialAlive = ResourceHandle.GetAliveCount();
+        int initialCreated = ResourceHandle.GetTotalCreated();
+    
+        var resource = new ResourceHandle(42, "OwnershipTest");
+        Log($"✓ Created ResourceHandle ID: {resource.GetId()}");
+    
+        // Get internal wrapper (simulate internal pointer access)
+        var wrapper = resource.Get();
+        Log($"✓ get() returned internal wrapper: {wrapper.GetHashCode():X}");
+    
+        // Release ownership
+        var handle = resource.Release();
+        Log($"✓ release() returned handle: {handle.GetHashCode():X}");
+    
+        if (wrapper != handle) 
+        {
+            Log("✗ TEST 7 FAILED: get() did not return internal wrapper");
+            return "false";
+        }
+    
+        try 
+        {
+            resource.GetId();
+            Log("✗ TEST 7 FAILED: ResourceHandle still accessible after release()");
+            return "false";
+        } 
+        catch (Exception) 
+        {
+            Log("✓ ResourceHandle is invalid after release()");
+        }
+    
+        // Check that handle is now owned externally and alive count updated correctly
+        int aliveAfterRelease = ResourceHandle.GetAliveCount();
+        if (aliveAfterRelease != initialAlive + 1) 
+        {
+            Log($"✗ TEST 7 FAILED: Alive count mismatch after release. " +
+                $"Expected {initialAlive + 1}, got {aliveAfterRelease}");
+            return "false";
+        }
+    
+        cross_call_master.cross_call_master.ResourceHandleDestroy(handle);
+    
+        Log("✓ TEST 7 PASSED: Ownership transfer working correctly\n");
+        return "true";
     }
 }

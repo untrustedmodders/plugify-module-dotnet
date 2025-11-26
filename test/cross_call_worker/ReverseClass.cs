@@ -1137,6 +1137,7 @@ public unsafe class ReverseClass
         { "ClassStaticMethods", TestClass.StaticMethods },
         { "ClassMemoryLeakDetection", TestClass.MemoryLeakDetection },
         { "ClassExceptionHandling", TestClass.ExceptionHandling },
+        { "ClassOwnershipTransfer", TestClass.OwnershipTransfer },
     };
     
 }
