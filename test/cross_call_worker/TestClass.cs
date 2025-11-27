@@ -256,45 +256,45 @@ public class TestClass
         int initialCreated = ResourceHandle.GetTotalCreated();
     
         var resource = new ResourceHandle(42, "OwnershipTest");
-        Log($"✓ Created ResourceHandle ID: {resource.GetId()}");
+        Log($"v Created ResourceHandle ID: {resource.GetId()}");
     
         // Get internal wrapper (simulate internal pointer access)
         var wrapper = resource.Get();
-        Log($"✓ get() returned internal wrapper: {wrapper.GetHashCode():X}");
+        Log($"v get() returned internal wrapper: {wrapper.GetHashCode():X}");
     
         // Release ownership
         var handle = resource.Release();
-        Log($"✓ release() returned handle: {handle.GetHashCode():X}");
+        Log($"v release() returned handle: {handle.GetHashCode():X}");
     
         if (wrapper != handle) 
         {
-            Log("✗ TEST 7 FAILED: get() did not return internal wrapper");
+            Log("x TEST 7 FAILED: get() did not return internal wrapper");
             return "false";
         }
     
         try 
         {
             resource.GetId();
-            Log("✗ TEST 7 FAILED: ResourceHandle still accessible after release()");
+            Log("x TEST 7 FAILED: ResourceHandle still accessible after release()");
             return "false";
         } 
         catch (Exception) 
         {
-            Log("✓ ResourceHandle is invalid after release()");
+            Log("v ResourceHandle is invalid after release()");
         }
     
         // Check that handle is now owned externally and alive count updated correctly
         int aliveAfterRelease = ResourceHandle.GetAliveCount();
         if (aliveAfterRelease != initialAlive + 1) 
         {
-            Log($"✗ TEST 7 FAILED: Alive count mismatch after release. " +
+            Log($"x TEST 7 FAILED: Alive count mismatch after release. " +
                 $"Expected {initialAlive + 1}, got {aliveAfterRelease}");
             return "false";
         }
     
         cross_call_master.cross_call_master.ResourceHandleDestroy(handle);
     
-        Log("✓ TEST 7 PASSED: Ownership transfer working correctly\n");
+        Log("v TEST 7 PASSED: Ownership transfer working correctly\n");
         return "true";
     }
 }
