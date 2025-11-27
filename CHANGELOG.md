@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.1.11](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.1.10...v2.1.11) (2025-11-27)
+
+
+### Bug Fixes
+
+* add new class tests ([505f0d4](https://github.com/untrustedmodders/plugify-module-dotnet/commit/505f0d45d402677df522b71a663352a7fdca6e1a))
+* change success/fail symbols ([259e4d6](https://github.com/untrustedmodders/plugify-module-dotnet/commit/259e4d67150ae66c7acd990b1b32dc32f6d5e31f))
+* some improvements for test ([48d38c5](https://github.com/untrustedmodders/plugify-module-dotnet/commit/48d38c5eeafdbfa76eea024dfbb0b237a16046b2))
+
 ## [2.1.10](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.1.9...v2.1.10) (2025-11-20)
 
 
