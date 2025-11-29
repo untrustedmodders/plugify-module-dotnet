@@ -353,7 +353,7 @@ public class ManifestFileGenerator : IIncrementalGenerator
                 prototype = new
                 {
                     name = param.Type.DelegateName,
-                    //funcName = param.Type.DelegateName + "_Exported",
+                    funcName = "_",
                     paramTypes = param.Type.DelegateParameters?.Select(p => new
                     {
                         type = p.Type.TypeName,
