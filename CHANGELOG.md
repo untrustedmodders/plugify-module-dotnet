@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.12](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.1.11...v2.1.12) (2025-11-29)
+
+
+### Bug Fixes
+
+* add funcName to delegate to supress warnings ([6af12ad](https://github.com/untrustedmodders/plugify-module-dotnet/commit/6af12ad7826212496b3d84837293791ec8534315))
+
 ## [2.1.11](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.1.10...v2.1.11) (2025-11-27)
 
 
