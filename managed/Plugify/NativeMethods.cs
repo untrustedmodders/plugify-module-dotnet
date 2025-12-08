@@ -132,16 +132,13 @@ public static unsafe partial class NativeMethods
 				throw new TypeNotFoundException();
 		}
 	}
-	
-	public static void AssignVariant(Variant256* var, object? paramValue, bool cleanup = true)
+
+	public static void SetVariantData(Variant256* var, object? paramValue)
 	{
-		if (cleanup)
-		{
-			DestroyVariant(var);
-		}
-		
 		if (paramValue == null)
+		{
 			return;
+		}
 		
 		ValueType valueType = TypeUtils.ConvertToValueType(paramValue.GetType());
 		switch (valueType)
@@ -325,11 +322,17 @@ public static unsafe partial class NativeMethods
 		}
 		var->currect = (int)valueType;
 	}
+	
+	public static void AssignVariant(Variant256* var, object? paramValue)
+	{
+		DestroyVariant(var);
+		SetVariantData(var, paramValue);
+	}
 
 	public static Variant256 ConstructVariant(object? source)
 	{
 		Variant256 var;
-		AssignVariant(&var, source, false);
+		SetVariantData(&var, source);
 		return var;
 	}
 	
