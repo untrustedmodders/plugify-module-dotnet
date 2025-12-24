@@ -2,12 +2,12 @@ namespace Plugify;
 
 internal static class ExtensionMethods
 {
-	internal static bool IsDelegate(this Type type)
+	public static bool IsDelegate(this Type type)
 	{
 		return typeof(MulticastDelegate).IsAssignableFrom(type.BaseType);
 	}
 
-	internal static Type? GetEnumType(this Type type)
+	public static Type? GetEnumType(this Type type)
 	{
 		Type baseType = type;
 		if (type.IsByRef)

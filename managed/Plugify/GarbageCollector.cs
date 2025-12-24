@@ -7,7 +7,7 @@ using static ManagedHost;
 internal static class GarbageCollector
 {
 	[UnmanagedCallersOnly]
-	internal static void CollectGarbage(int generation, GCCollectionMode collectionMode, Bool32 blocking, Bool32 compacting)
+	public static void CollectGarbage(int generation, GCCollectionMode collectionMode, Bool32 blocking, Bool32 compacting)
 	{
 		try
 		{
@@ -23,7 +23,7 @@ internal static class GarbageCollector
 	}
 
 	[UnmanagedCallersOnly]
-	internal static void WaitForPendingFinalizers()
+	public static void WaitForPendingFinalizers()
 	{
 		try
 		{

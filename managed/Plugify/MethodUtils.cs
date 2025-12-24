@@ -22,7 +22,7 @@ internal static class MethodUtils
 	//	  param0 = (T0)args[0]; // only generated for each byref argument
 	// }
 	// return (TRet)ret;
-	internal static Delegate CreateObjectArrayDelegate(Type delegateType, Func<object[], object> handler)
+	public static Delegate CreateObjectArrayDelegate(Type delegateType, Func<object[], object> handler)
 	{
 		MethodInfo delegateInvokeMethod = delegateType.GetMethod("Invoke")!;
 

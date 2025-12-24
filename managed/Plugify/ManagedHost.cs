@@ -50,7 +50,7 @@ internal static class ManagedHost
 		}
 	}
 
-	internal static void LogMessage(string message, MessageLevel messageLevel)
+	public static void LogMessage(string message, MessageLevel messageLevel)
 	{
 		unsafe
 		{
@@ -59,7 +59,7 @@ internal static class ManagedHost
 		}
 	}
 
-	internal static void HandleException(Exception exception)
+	public static void HandleException(Exception exception)
 	{
 		unsafe
 		{

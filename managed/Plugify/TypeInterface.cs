@@ -8,13 +8,13 @@ using static ManagedHost;
 
 internal static class TypeInterface 
 {
-	internal static readonly UniqueIdList<Type> CachedTypes = new();
-	internal static readonly UniqueIdList<MethodInfo> CachedMethods = new();
-	internal static readonly UniqueIdList<FieldInfo> CachedFields = new();
-	internal static readonly UniqueIdList<PropertyInfo> CachedProperties = new();
-	internal static readonly UniqueIdList<Attribute> CachedAttributes = new();
+	public static readonly UniqueIdList<Type> CachedTypes = new();
+	public static readonly UniqueIdList<MethodInfo> CachedMethods = new();
+	public static readonly UniqueIdList<FieldInfo> CachedFields = new();
+	public static readonly UniqueIdList<PropertyInfo> CachedProperties = new();
+	public static readonly UniqueIdList<Attribute> CachedAttributes = new();
 	
-	internal static Type? FindType(string? typeName)
+	public static Type? FindType(string? typeName)
 	{
 		var type = Type.GetType(typeName!,
 			AssemblyLoader.ResolveAssembly,
@@ -23,7 +23,7 @@ internal static class TypeInterface
 		return type;
 	}
 
-	internal static object? CreateInstance(Type type, params object?[]? arguments)
+	public static object? CreateInstance(Type type, params object?[]? arguments)
 	{
 		return type.Assembly.CreateInstance(type.FullName ?? string.Empty, false, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, arguments!, null, null);
 	}
@@ -734,7 +734,7 @@ internal static class TypeInterface
 		}
 	}
 
-	internal enum TypeAccessibility
+	public enum TypeAccessibility
 	{
 		Public,
 		Private,

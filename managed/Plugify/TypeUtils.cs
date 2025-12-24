@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace Plugify;
 
-public enum ValueType : byte {
+internal enum ValueType : byte {
 	Invalid,
 
 	// C types
@@ -149,7 +149,7 @@ internal static class TypeUtils
 		[typeof(Matrix4x4)] = ValueType.Matrix4x4
 	};
 
-	internal static ValueType ConvertToValueType(Type type)
+	public static ValueType ConvertToValueType(Type type)
 	{
 		var baseType = type.IsByRef ? type.GetElementType()! : type;
 		
@@ -174,7 +174,7 @@ internal static class TypeUtils
 		return type.IsDelegate() ? ValueType.Function : ValueType.Invalid;
 	}
 	
-	internal static Array ConvertToEnumArray<T>(Type enumType, T[] array) where T : unmanaged
+	public static Array ConvertToEnumArray<T>(Type enumType, T[] array) where T : unmanaged
 	{
 		if (!enumType.IsEnum)
 		{
@@ -192,7 +192,7 @@ internal static class TypeUtils
 		return enumArray;
 	}
 	
-	internal static T[] ConvertFromEnumArray<T>(Type enumType, Array enumArray) where T : unmanaged
+	public static T[] ConvertFromEnumArray<T>(Type enumType, Array enumArray) where T : unmanaged
 	{
 		if (!enumType.IsEnum)
 		{
@@ -208,4 +208,58 @@ internal static class TypeUtils
 
 		return array;
 	}
+	
+	public static unsafe int SizeOf(ValueType valueType)
+    {
+        switch (valueType)
+        {
+            case ValueType.Void: return 0;
+            case ValueType.Bool: return sizeof(Bool8);
+            case ValueType.Char8: return sizeof(Char8);
+            case ValueType.Char16: return sizeof(Char16);
+            case ValueType.Int8: return sizeof(sbyte); 
+            case ValueType.Int16: return sizeof(short); 
+            case ValueType.Int32: return sizeof(int); 
+            case ValueType.Int64: return sizeof(long);
+            case ValueType.UInt8: return sizeof(byte);
+            case ValueType.UInt16: return sizeof(ushort);
+            case ValueType.UInt32: return sizeof(uint);
+            case ValueType.UInt64: return sizeof(ulong);
+            case ValueType.Float: return sizeof(float);
+            case ValueType.Double: return sizeof(double);
+            case ValueType.Function: return sizeof(void*);
+            case ValueType.Pointer: return sizeof(nint);
+            case ValueType.String: return sizeof(String192);
+            case ValueType.Any: return sizeof(Variant256);
+
+            case ValueType.ArrayBool:
+            case ValueType.ArrayChar8:
+            case ValueType.ArrayChar16:
+            case ValueType.ArrayInt8:
+            case ValueType.ArrayInt16:
+            case ValueType.ArrayInt32:
+            case ValueType.ArrayInt64:
+            case ValueType.ArrayUInt8:
+            case ValueType.ArrayUInt16:
+            case ValueType.ArrayUInt32:
+            case ValueType.ArrayUInt64:
+            case ValueType.ArrayPointer:
+            case ValueType.ArrayFloat:
+            case ValueType.ArrayDouble:
+            case ValueType.ArrayString:
+            case ValueType.ArrayAny:
+            case ValueType.ArrayVector2:
+            case ValueType.ArrayVector3:
+            case ValueType.ArrayVector4:
+            case ValueType.ArrayMatrix4x4:
+                return sizeof(Vector192);
+
+            case ValueType.Vector2: return sizeof(Vector2);
+            case ValueType.Vector3: return sizeof(Vector3);
+            case ValueType.Vector4: return sizeof(Vector4);
+            case ValueType.Matrix4x4: return sizeof(Matrix4x4);
+
+            default: return 0;
+        }
+    }
 }

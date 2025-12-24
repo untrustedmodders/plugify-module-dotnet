@@ -25,11 +25,11 @@ internal static class AssemblyLoader
 
 	private static readonly AssemblyNameEqualityComparer NameEqualityComparer = new();
 	
-	internal static readonly Dictionary<Guid, PluginLoadContextWrapper> LoadedAssemblies = new();
-	internal static readonly Dictionary<AssemblyName, List<GCHandle>> AllocatedHandles = new([], NameEqualityComparer);
+	public static readonly Dictionary<Guid, PluginLoadContextWrapper> LoadedAssemblies = new();
+	public static readonly Dictionary<AssemblyName, List<GCHandle>> AllocatedHandles = new([], NameEqualityComparer);
 	
-	internal static readonly AssemblyLoadContext MainLoadContext = AssemblyLoadContext.GetLoadContext(Assembly.GetExecutingAssembly()) ?? AssemblyLoadContext.Default;
-	internal static readonly HashSet<AssemblyName> SharedAssemblies = new([Assembly.GetExecutingAssembly().GetName()], NameEqualityComparer);
+	public static readonly AssemblyLoadContext MainLoadContext = AssemblyLoadContext.GetLoadContext(Assembly.GetExecutingAssembly()) ?? AssemblyLoadContext.Default;
+	public static readonly HashSet<AssemblyName> SharedAssemblies = new([Assembly.GetExecutingAssembly().GetName()], NameEqualityComparer);
 
 	static AssemblyLoader()
 	{
@@ -40,7 +40,7 @@ internal static class AssemblyLoader
 		AssemblyLoadErrorLookup.Add(typeof(ArgumentException), AssemblyLoadStatus.InvalidFilePath);
 	}
 
-	internal static bool TryGetAssembly(Guid guid, [MaybeNullWhen(false)] out PluginLoadContextWrapper context)
+	public static bool TryGetAssembly(Guid guid, [MaybeNullWhen(false)] out PluginLoadContextWrapper context)
 	{
 		return LoadedAssemblies.TryGetValue(guid, out context);
 	}
@@ -183,7 +183,7 @@ internal static class AssemblyLoader
 		return wrapper.FullName;
 	}
 
-	internal static void RegisterHandle(Assembly assembly, GCHandle handle)
+	public static void RegisterHandle(Assembly assembly, GCHandle handle)
 	{
 		var assemblyName = assembly.GetName();
 		
@@ -196,7 +196,7 @@ internal static class AssemblyLoader
 		handles.Add(handle);
 	}
 	
-	internal static Assembly? ResolveAssembly(AssemblyName assemblyName)
+	public static Assembly? ResolveAssembly(AssemblyName assemblyName)
 	{
 		foreach (var wrapper in LoadedAssemblies.Values)
 		{

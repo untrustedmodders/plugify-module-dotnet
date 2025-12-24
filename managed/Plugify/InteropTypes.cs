@@ -6,7 +6,7 @@ namespace Plugify;
 [StructLayout(LayoutKind.Sequential)]
 public struct NativeString : IDisposable
 {
-	internal nint _string;
+	private nint _string;
 	private int _length;
 	private Bool32 _disposed;
 
