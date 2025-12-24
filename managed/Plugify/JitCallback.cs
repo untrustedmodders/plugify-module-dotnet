@@ -2,7 +2,7 @@
 
 namespace Plugify;
 
-public partial class JitCallback : SafeHandle
+internal partial class JitCallback : SafeHandle
 {
     public JitCallback(Delegate target) : base(nint.Zero, ownsHandle: true)
     {

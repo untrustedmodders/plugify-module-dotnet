@@ -990,7 +990,72 @@ public static unsafe partial class NativeMethods
 	public static Vector192 ConstructVectorMatrix4x4([In] Matrix4x4[] arr) 
 	    => ConstructVectorMatrix4x4(arr, arr.Length);
 	
-	#endregion ConstructHelpers Functions
+	#endregion
+
+	#region AssignHelpers Functions
+
+	public static void AssignVectorBool(Vector192* vec, [In] Bool8[] arr) 
+	    => AssignVectorBool(vec, arr, arr.Length);
+
+	public static void AssignVectorChar8(Vector192* vec, [In] Char8[] arr) 
+	    => AssignVectorChar8(vec, arr, arr.Length);
+
+	public static void AssignVectorChar16(Vector192* vec, [In] Char16[] arr) 
+	    => AssignVectorChar16(vec, arr, arr.Length);
+
+	public static void AssignVectorInt8(Vector192* vec, [In] sbyte[] arr) 
+	    => AssignVectorInt8(vec, arr, arr.Length);
+
+	public static void AssignVectorInt16(Vector192* vec, [In] short[] arr) 
+	    => AssignVectorInt16(vec, arr, arr.Length);
+
+	public static void AssignVectorInt32(Vector192* vec, [In] int[] arr) 
+	    => AssignVectorInt32(vec, arr, arr.Length);
+
+	public static void AssignVectorInt64(Vector192* vec, [In] long[] arr) 
+	    => AssignVectorInt64(vec, arr, arr.Length);
+
+	public static void AssignVectorUInt8(Vector192* vec, [In] byte[] arr) 
+	    => AssignVectorUInt8(vec, arr, arr.Length);
+
+	public static void AssignVectorUInt16(Vector192* vec, [In] ushort[] arr) 
+	    => AssignVectorUInt16(vec, arr, arr.Length);
+
+	public static void AssignVectorUInt32(Vector192* vec, [In] uint[] arr) 
+	    => AssignVectorUInt32(vec, arr, arr.Length);
+
+	public static void AssignVectorUInt64(Vector192* vec, [In] ulong[] arr) 
+	    => AssignVectorUInt64(vec, arr, arr.Length);
+
+	public static void AssignVectorIntPtr(Vector192* vec, [In] nint[] arr) 
+	    => AssignVectorIntPtr(vec, arr, arr.Length);
+
+	public static void AssignVectorFloat(Vector192* vec, [In] float[] arr) 
+	    => AssignVectorFloat(vec, arr, arr.Length);
+
+	public static void AssignVectorDouble(Vector192* vec, [In] double[] arr) 
+	    => AssignVectorDouble(vec, arr, arr.Length);
+
+	public static void AssignVectorString(Vector192* vec, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr)] [In] string[] arr) 
+	    => AssignVectorString(vec, arr, arr.Length);
+
+	public static void AssignVectorVariant(Vector192* vec, [In] object?[] arr) 
+	    => AssignVectorVariant(vec, arr, arr.Length);
+
+	public static void AssignVectorVector2(Vector192* vec, [In] Vector2[] arr) 
+	    => AssignVectorVector2(vec, arr, arr.Length);
+
+	public static void AssignVectorVector3(Vector192* vec, [In] Vector3[] arr) 
+	    => AssignVectorVector3(vec, arr, arr.Length);
+
+	public static void AssignVectorVector4(Vector192* vec, [In] Vector4[] arr) 
+	    => AssignVectorVector4(vec, arr, arr.Length);
+
+	public static void AssignVectorMatrix4x4(Vector192* vec, [In] Matrix4x4[] arr) 
+	    => AssignVectorMatrix4x4(vec, arr, arr.Length);
+
+
+	#endregion
 }
 
 public static unsafe partial class NativeMethodsT
