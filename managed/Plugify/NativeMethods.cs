@@ -927,6 +927,70 @@ public static unsafe partial class NativeMethods
 	public static partial void AssignVectorMatrix4x4(Vector192* vec, [In] Matrix4x4[] arr, int len);
 	
 	#endregion
+	
+	#region ConstructHelpers Functions
+	
+	public static Vector192 ConstructVectorBool([In] Bool8[] arr) 
+		=> ConstructVectorBool(arr, arr.Length);
+
+	public static Vector192 ConstructVectorChar8([In] Char8[] arr) 
+	    => ConstructVectorChar8(arr, arr.Length);
+
+	public static Vector192 ConstructVectorChar16([In] Char16[] arr) 
+	    => ConstructVectorChar16(arr, arr.Length);
+
+	public static Vector192 ConstructVectorInt8([In] sbyte[] arr) 
+	    => ConstructVectorInt8(arr, arr.Length);
+
+	public static Vector192 ConstructVectorInt16([In] short[] arr) 
+	    => ConstructVectorInt16(arr, arr.Length);
+
+	public static Vector192 ConstructVectorInt32([In] int[] arr) 
+	    => ConstructVectorInt32(arr, arr.Length);
+
+	public static Vector192 ConstructVectorInt64([In] long[] arr) 
+	    => ConstructVectorInt64(arr, arr.Length);
+
+	public static Vector192 ConstructVectorUInt8([In] byte[] arr) 
+	    => ConstructVectorUInt8(arr, arr.Length);
+
+	public static Vector192 ConstructVectorUInt16([In] ushort[] arr) 
+	    => ConstructVectorUInt16(arr, arr.Length);
+
+	public static Vector192 ConstructVectorUInt32([In] uint[] arr) 
+	    => ConstructVectorUInt32(arr, arr.Length);
+
+	public static Vector192 ConstructVectorUInt64([In] ulong[] arr) 
+	    => ConstructVectorUInt64(arr, arr.Length);
+
+	public static Vector192 ConstructVectorIntPtr([In] nint[] arr) 
+	    => ConstructVectorIntPtr(arr, arr.Length);
+
+	public static Vector192 ConstructVectorFloat([In] float[] arr) 
+	    => ConstructVectorFloat(arr, arr.Length);
+
+	public static Vector192 ConstructVectorDouble([In] double[] arr) 
+	    => ConstructVectorDouble(arr, arr.Length);
+
+	public static Vector192 ConstructVectorString([MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr)] [In] string[] arr) 
+	    => ConstructVectorString(arr, arr.Length);
+
+	public static Vector192 ConstructVectorVariant([In] object?[] arr) 
+	    => ConstructVectorVariant(arr, arr.Length);
+
+	public static Vector192 ConstructVectorVector2([In] Vector2[] arr) 
+	    => ConstructVectorVector2(arr, arr.Length);
+
+	public static Vector192 ConstructVectorVector3([In] Vector3[] arr) 
+	    => ConstructVectorVector3(arr, arr.Length);
+
+	public static Vector192 ConstructVectorVector4([In] Vector4[] arr) 
+	    => ConstructVectorVector4(arr, arr.Length);
+
+	public static Vector192 ConstructVectorMatrix4x4([In] Matrix4x4[] arr) 
+	    => ConstructVectorMatrix4x4(arr, arr.Length);
+	
+	#endregion ConstructHelpers Functions
 }
 
 public static unsafe partial class NativeMethodsT

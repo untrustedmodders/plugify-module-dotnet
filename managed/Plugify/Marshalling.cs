@@ -598,7 +598,7 @@ public static class Marshalling
 		ManagedType[] parameterTypes = methodInfo.GetParameters().Select(p => new ManagedType(p.ParameterType)).ToArray();
 		
 		bool hasRet = returnType.ValueType is >= ValueType._ObjectStart and <= ValueType._ObjectEnd;
-		bool hasRefs = parameterTypes.Any(t => t.IsByRef);
+		//bool hasRefs = parameterTypes.Any(t => t.IsByRef);
 		
 		if (!hasRet)
 		{
@@ -607,11 +607,11 @@ public static class Marshalling
 		}
 		
 		int paramCount = parameterTypes.Length;
-		int objectCount = parameterTypes.Select(t => t.ValueType is >= ValueType._ObjectStart and <= ValueType._ObjectEnd).Count();
+		//int objectCount = parameterTypes.Select(t => t.ValueType is >= ValueType._ObjectStart and <= ValueType._ObjectEnd).Count();
 		
 		if (hasRet)
 		{
-			++objectCount;
+			//++objectCount;
 			++paramCount;
 		}
 
@@ -623,6 +623,690 @@ public static class Marshalling
 
 		return parameters =>
 		{
+			Arena arena = new Arena(stackalloc byte[4096]);
+			Defer defer = new Defer(paramCount);
+			ulong* @params = stackalloc ulong[paramCount];
+			ulong* @return = stackalloc ulong[2]{ 0, 0 }; // 128bits to fit Vector4
+					
+			object? ret = null;
+			
+			nint Pin<T>(T val, ref Arena arena, int size) where T : unmanaged
+			{
+				var tmp = (T*)arena.Alloc(size);
+				*tmp = val;
+				return (nint)tmp;
+			}
+
+			nint Raw<T>(T val) where T : unmanaged
+			{
+				return *(nint*)&val;
+			}
+
+			int index = 0;
+
+			try
+			{
+				var retType = returnType.ValueType;
+				if (hasRet)
+				{
+					var size = TypeUtils.SizeOf(retType);
+					var ptr = arena.Alloc(size);
+					switch (retType)
+					{
+						case ValueType.Vector2:
+						case ValueType.Vector3:
+						case ValueType.Vector4:
+						case ValueType.Matrix4x4:
+							break;
+						case ValueType.String:
+							defer.Add(() => NativeMethods.DestroyString((String192*)ptr));
+							break;
+						case ValueType.Any:
+							defer.Add(() => NativeMethods.DestroyVariant((Variant256*)ptr));
+							break;
+						case ValueType.ArrayBool:
+							defer.Add(() => NativeMethods.DestroyVectorBool((Vector192*)ptr));
+							break;
+						case ValueType.ArrayChar8:
+							defer.Add(() => NativeMethods.DestroyVectorChar8((Vector192*)ptr));
+							break;
+						case ValueType.ArrayChar16:
+							defer.Add(() => NativeMethods.DestroyVectorChar16((Vector192*)ptr));
+							break;
+						case ValueType.ArrayInt8:
+							defer.Add(() => NativeMethods.DestroyVectorInt8((Vector192*)ptr));
+							break;
+						case ValueType.ArrayInt16:
+							defer.Add(() => NativeMethods.DestroyVectorInt16((Vector192*)ptr));
+							break;
+						case ValueType.ArrayInt32:
+							defer.Add(() => NativeMethods.DestroyVectorInt32((Vector192*)ptr));
+							break;
+						case ValueType.ArrayInt64:
+							defer.Add(() => NativeMethods.DestroyVectorInt64((Vector192*)ptr));
+							break;
+						case ValueType.ArrayUInt8:
+							defer.Add(() => NativeMethods.DestroyVectorUInt8((Vector192*)ptr));
+							break;
+						case ValueType.ArrayUInt16:
+							defer.Add(() => NativeMethods.DestroyVectorUInt16((Vector192*)ptr));
+							break;
+						case ValueType.ArrayUInt32:
+							defer.Add(() => NativeMethods.DestroyVectorUInt32((Vector192*)ptr));
+							break;
+						case ValueType.ArrayUInt64:
+							defer.Add(() => NativeMethods.DestroyVectorUInt64((Vector192*)ptr));
+							break;
+						case ValueType.ArrayPointer:
+							defer.Add(() => NativeMethods.DestroyVectorIntPtr((Vector192*)ptr));
+							break;
+						case ValueType.ArrayFloat:
+							defer.Add(() => NativeMethods.DestroyVectorFloat((Vector192*)ptr));
+							break;
+						case ValueType.ArrayDouble:
+							defer.Add(() => NativeMethods.DestroyVectorDouble((Vector192*)ptr));
+							break;
+						case ValueType.ArrayString:
+							defer.Add(() => NativeMethods.DestroyVectorString((Vector192*)ptr));
+							break;
+						case ValueType.ArrayAny:
+							defer.Add(() => NativeMethods.DestroyVectorVariant((Vector192*)ptr));
+							break;
+						case ValueType.ArrayVector2:
+							defer.Add(() => NativeMethods.DestroyVectorVector2((Vector192*)ptr));
+							break;
+						case ValueType.ArrayVector3:
+							defer.Add(() => NativeMethods.DestroyVectorVector3((Vector192*)ptr));
+							break;
+						case ValueType.ArrayVector4:
+							defer.Add(() => NativeMethods.DestroyVectorVector4((Vector192*)ptr));
+							break;
+						case ValueType.ArrayMatrix4x4:
+							defer.Add(() => NativeMethods.DestroyVectorMatrix4x4((Vector192*)ptr));
+							break;
+						default:
+							throw new TypeNotFoundException();
+					}
+
+					@params[index++] = (ulong)ptr;
+				}
+
+				for (int i = 0; i < parameters.Length; i++)
+				{
+					object paramValue = parameters[i];
+					ManagedType paramType = parameterTypes[i];
+					ValueType valueType = paramType.ValueType;
+					var size = TypeUtils.SizeOf(valueType);
+					nint ptr;
+
+					if (paramType.IsByRef)
+					{
+						int at = i;
+						switch (valueType)
+						{
+							case ValueType.Bool:
+								ptr = Pin((Bool8)paramValue, ref arena, size);
+								defer.Add(() => { parameters[at] = *(Bool8*)ptr; });
+								break;
+							case ValueType.Char8:
+								ptr = Pin((Char8)paramValue, ref arena, size);
+								defer.Add(() => { parameters[at] = *(Char8*)ptr; });
+								break;
+							case ValueType.Char16:
+								ptr = Pin((Char16)paramValue, ref arena, size);
+								defer.Add(() => { parameters[at] = *(Char16*)ptr; });
+								break;
+							case ValueType.Int8:
+								ptr = Pin((sbyte)paramValue, ref arena, size);
+								defer.Add(() => { parameters[at] = *(sbyte*)ptr; });
+								break;
+							case ValueType.Int16:
+								ptr = Pin((short)paramValue, ref arena, size);
+								defer.Add(() => { parameters[at] = *(short*)ptr; });
+								break;
+							case ValueType.Int32:
+								ptr = Pin((int)paramValue, ref arena, size);
+								defer.Add(() => { parameters[at] = *(int*)ptr; });
+								break;
+							case ValueType.Int64:
+								ptr = Pin((long)paramValue, ref arena, size);
+								defer.Add(() => { parameters[at] = *(long*)ptr; });
+								break;
+							case ValueType.UInt8:
+								ptr = Pin((byte)paramValue, ref arena, size);
+								defer.Add(() => { parameters[at] = *(byte*)ptr; });
+								break;
+							case ValueType.UInt16:
+								ptr = Pin((ushort)paramValue, ref arena, size);
+								defer.Add(() => { parameters[at] = *(ushort*)ptr; });
+								break;
+							case ValueType.UInt32:
+								ptr = Pin((uint)paramValue, ref arena, size);
+								defer.Add(() => { parameters[at] = *(uint*)ptr; });
+								break;
+							case ValueType.UInt64:
+								ptr = Pin((ulong)paramValue, ref arena, size);
+								defer.Add(() => { parameters[at] = *(ulong*)ptr; });
+								break;
+							case ValueType.Pointer:
+								ptr = Pin((nint)paramValue, ref arena, size);
+								defer.Add(() => { parameters[at] = *(nint*)ptr; });
+								break;
+							case ValueType.Float:
+								ptr = Pin((float)paramValue, ref arena, size);
+								defer.Add(() => { parameters[at] = *(float*)ptr; });
+								break;
+							case ValueType.Double:
+								ptr = Pin((double)paramValue, ref arena, size);
+								defer.Add(() => { parameters[at] = *(double*)ptr; });
+								break;
+							case ValueType.Vector2:
+								ptr = Pin((Vector2)paramValue, ref arena, size);
+								defer.Add(() => { parameters[at] = *(Vector2*)ptr; });
+								break;
+							case ValueType.Vector3:
+								ptr = Pin((Vector3)paramValue, ref arena, size);
+								defer.Add(() => { parameters[at] = *(Vector3*)ptr; });
+								break;
+							case ValueType.Vector4:
+								ptr = Pin((Vector4)paramValue, ref arena, size);
+								defer.Add(() => { parameters[at] = *(Vector4*)ptr; });
+								break;
+							case ValueType.Matrix4x4:
+								ptr = Pin((Matrix4x4)paramValue, ref arena, size);
+								defer.Add(() => { parameters[at] = *(Matrix4x4*)ptr; });
+								break;
+							case ValueType.Function:
+								ptr = GetFunctionPointerForDelegate((Delegate)paramValue);
+								break;
+							case ValueType.String:
+								ptr = Pin(NativeMethods.ConstructString((string)paramValue), ref arena, size);
+								defer.Add(() =>
+								{
+									parameters[at] = NativeMethods.GetStringData((String192*)ptr);
+									NativeMethods.DestroyString((String192*)ptr);
+								});
+								break;
+							case ValueType.Any:
+								ptr = Pin(NativeMethods.ConstructVariant((object)paramValue), ref arena, size);
+								defer.Add(() =>
+								{
+									parameters[at] = NativeMethods.GetVariantData((Variant256*)ptr);
+									NativeMethods.DestroyVariant((Variant256*)ptr);
+								});
+								break;
+							case ValueType.ArrayBool:
+								ptr = Pin(NativeMethods.ConstructVectorBool((Bool8[])paramValue), ref arena, size);
+								defer.Add(() =>
+								{
+									parameters[at] = NativeMethods.GetVectorDataBool((Vector192*)ptr);
+									NativeMethods.DestroyVectorBool((Vector192*)ptr);
+								});
+								break;
+							case ValueType.ArrayChar8:
+								ptr = Pin(NativeMethods.ConstructVectorChar8((Char8[])paramValue), ref arena, size);
+								defer.Add(() =>
+								{
+									parameters[at] = NativeMethods.GetVectorDataChar8((Vector192*)ptr);
+									NativeMethods.DestroyVectorChar8((Vector192*)ptr);
+								});
+								break;
+							case ValueType.ArrayChar16:
+								ptr = Pin(NativeMethods.ConstructVectorChar16((Char16[])paramValue), ref arena, size);
+								defer.Add(() =>
+								{
+									parameters[at] = NativeMethods.GetVectorDataChar16((Vector192*)ptr);
+									NativeMethods.DestroyVectorChar16((Vector192*)ptr);
+								});
+								break;
+							case ValueType.ArrayInt8:
+								ptr = Pin(NativeMethods.ConstructVectorInt8((sbyte[])paramValue), ref arena, size);
+								defer.Add(() =>
+								{
+									parameters[at] = NativeMethods.GetVectorDataInt8((Vector192*)ptr);
+									NativeMethods.DestroyVectorInt8((Vector192*)ptr);
+								});
+								break;
+							case ValueType.ArrayInt16:
+								ptr = Pin(NativeMethods.ConstructVectorInt16((short[])paramValue), ref arena, size);
+								defer.Add(() =>
+								{
+									parameters[at] = NativeMethods.GetVectorDataInt16((Vector192*)ptr);
+									NativeMethods.DestroyVectorInt16((Vector192*)ptr);
+								});
+								break;
+							case ValueType.ArrayInt32:
+								ptr = Pin(NativeMethods.ConstructVectorInt32((int[])paramValue), ref arena, size);
+								defer.Add(() =>
+								{
+									parameters[at] = NativeMethods.GetVectorDataInt32((Vector192*)ptr);
+									NativeMethods.DestroyVectorInt32((Vector192*)ptr);
+								});
+								break;
+							case ValueType.ArrayInt64:
+								ptr = Pin(NativeMethods.ConstructVectorInt64((long[])paramValue), ref arena, size);
+								defer.Add(() =>
+								{
+									parameters[at] = NativeMethods.GetVectorDataInt64((Vector192*)ptr);
+									NativeMethods.DestroyVectorInt64((Vector192*)ptr);
+								});
+								break;
+							case ValueType.ArrayUInt8:
+								ptr = Pin(NativeMethods.ConstructVectorUInt8((byte[])paramValue), ref arena, size);
+								defer.Add(() =>
+								{
+									parameters[at] = NativeMethods.GetVectorDataUInt8((Vector192*)ptr);
+									NativeMethods.DestroyVectorUInt8((Vector192*)ptr);
+								});
+								break;
+							case ValueType.ArrayUInt16:
+								ptr = Pin(NativeMethods.ConstructVectorUInt16((ushort[])paramValue), ref arena, size);
+								defer.Add(() =>
+								{
+									parameters[at] = NativeMethods.GetVectorDataUInt16((Vector192*)ptr);
+									NativeMethods.DestroyVectorUInt16((Vector192*)ptr);
+								});
+								break;
+							case ValueType.ArrayUInt32:
+								ptr = Pin(NativeMethods.ConstructVectorUInt32((uint[])paramValue), ref arena, size);
+								defer.Add(() =>
+								{
+									parameters[at] = NativeMethods.GetVectorDataUInt32((Vector192*)ptr);
+									NativeMethods.DestroyVectorUInt32((Vector192*)ptr);
+								});
+								break;
+							case ValueType.ArrayUInt64:
+								ptr = Pin(NativeMethods.ConstructVectorUInt64((ulong[])paramValue), ref arena, size);
+								defer.Add(() =>
+								{
+									parameters[at] = NativeMethods.GetVectorDataUInt64((Vector192*)ptr);
+									NativeMethods.DestroyVectorUInt64((Vector192*)ptr);
+								});
+								break;
+							case ValueType.ArrayPointer:
+								ptr = Pin(NativeMethods.ConstructVectorIntPtr((nint[])paramValue), ref arena, size);
+								defer.Add(() =>
+								{
+									parameters[at] = NativeMethods.GetVectorDataIntPtr((Vector192*)ptr);
+									NativeMethods.DestroyVectorIntPtr((Vector192*)ptr);
+								});
+								break;
+							case ValueType.ArrayFloat:
+								ptr = Pin(NativeMethods.ConstructVectorFloat((float[])paramValue), ref arena, size);
+								defer.Add(() =>
+								{
+									parameters[at] = NativeMethods.GetVectorDataFloat((Vector192*)ptr);
+									NativeMethods.DestroyVectorFloat((Vector192*)ptr);
+								});
+								break;
+							case ValueType.ArrayDouble:
+								ptr = Pin(NativeMethods.ConstructVectorDouble((double[])paramValue), ref arena, size);
+								defer.Add(() =>
+								{
+									parameters[at] = NativeMethods.GetVectorDataDouble((Vector192*)ptr);
+									NativeMethods.DestroyVectorDouble((Vector192*)ptr);
+								});
+								break;
+							case ValueType.ArrayString:
+								ptr = Pin(NativeMethods.ConstructVectorString((string[])paramValue), ref arena, size);
+								defer.Add(() =>
+								{
+									parameters[at] = NativeMethods.GetVectorDataString((Vector192*)ptr);
+									NativeMethods.DestroyVectorString((Vector192*)ptr);
+								});
+								break;
+							case ValueType.ArrayAny:
+								ptr = Pin(NativeMethods.ConstructVectorVariant((object[])paramValue), ref arena, size);
+								defer.Add(() =>
+								{
+									parameters[at] = NativeMethods.GetVectorDataVariant((Vector192*)ptr);
+									NativeMethods.DestroyVectorVariant((Vector192*)ptr);
+								});
+								break;
+							case ValueType.ArrayVector2:
+								ptr = Pin(NativeMethods.ConstructVectorVector2((Vector2[])paramValue), ref arena, size);
+								defer.Add(() =>
+								{
+									parameters[at] = NativeMethods.GetVectorDataVector2((Vector192*)ptr);
+									NativeMethods.DestroyVectorVector2((Vector192*)ptr);
+								});
+								break;
+							case ValueType.ArrayVector3:
+								ptr = Pin(NativeMethods.ConstructVectorVector3((Vector3[])paramValue), ref arena, size);
+								defer.Add(() =>
+								{
+									parameters[at] = NativeMethods.GetVectorDataVector3((Vector192*)ptr);
+									NativeMethods.DestroyVectorVector3((Vector192*)ptr);
+								});
+								break;
+							case ValueType.ArrayVector4:
+								ptr = Pin(NativeMethods.ConstructVectorVector4((Vector4[])paramValue), ref arena, size);
+								defer.Add(() =>
+								{
+									parameters[at] = NativeMethods.GetVectorDataVector4((Vector192*)ptr);
+									NativeMethods.DestroyVectorVector4((Vector192*)ptr);
+								});
+								break;
+							case ValueType.ArrayMatrix4x4:
+								ptr = Pin(NativeMethods.ConstructVectorMatrix4x4((Matrix4x4[])paramValue), ref arena, size);
+								defer.Add(() =>
+								{
+									parameters[at] = NativeMethods.GetVectorDataMatrix4x4((Vector192*)ptr);
+									NativeMethods.DestroyVectorMatrix4x4((Vector192*)ptr);
+								});
+								break;
+							default:
+								throw new TypeNotFoundException($"Parameter '{parameterTypes[i].ValueType}' uses not supported type for marshalling!");
+						}
+					}
+					else
+					{
+						switch (valueType)
+						{
+							case ValueType.Bool:
+								ptr = Raw((Bool8)paramValue);
+								break;
+							case ValueType.Char8:
+								ptr = Raw((Char8)paramValue);
+								break;
+							case ValueType.Char16:
+								ptr = Raw((Char16)paramValue);
+								break;
+							case ValueType.Int8:
+								ptr = Raw((sbyte)paramValue);
+								break;
+							case ValueType.Int16:
+								ptr = Raw((short)paramValue);
+								break;
+							case ValueType.Int32:
+								ptr = Raw((int)paramValue);
+								break;
+							case ValueType.Int64:
+								ptr = Raw((long)paramValue);
+								break;
+							case ValueType.UInt8:
+								ptr = Raw((byte)paramValue);
+								break;
+							case ValueType.UInt16:
+								ptr = Raw((ushort)paramValue);
+								break;
+							case ValueType.UInt32:
+								ptr = Raw((uint)paramValue);
+								break;
+							case ValueType.UInt64:
+								ptr = Raw((ulong)paramValue);
+								break;
+							case ValueType.Pointer:
+								ptr = Raw((nint)paramValue);
+								break;
+							case ValueType.Float:
+								ptr = Raw((float)paramValue);
+								break;
+							case ValueType.Double:
+								ptr = Raw((double)paramValue);
+								break;
+							case ValueType.Vector2:
+								ptr = Pin((Vector2)paramValue, ref arena, size);
+								break;
+							case ValueType.Vector3:
+								ptr = Pin((Vector3)paramValue, ref arena, size);
+								break;
+							case ValueType.Vector4:
+								ptr = Pin((Vector4)paramValue, ref arena, size);
+								break;
+							case ValueType.Matrix4x4:
+								ptr = Pin((Matrix4x4)paramValue, ref arena, size);
+								break;
+							case ValueType.Function:
+								ptr = GetFunctionPointerForDelegate((Delegate)paramValue);
+								break;
+							case ValueType.String:
+								ptr = Pin(NativeMethods.ConstructString((string)paramValue), ref arena, size);
+								defer.Add(() => NativeMethods.DestroyString((String192*)ptr));
+								break;
+							case ValueType.Any:
+								ptr = Pin(NativeMethods.ConstructVariant((object)paramValue), ref arena, size);
+								defer.Add(() => NativeMethods.DestroyVariant((Variant256*)ptr));
+								break;
+							case ValueType.ArrayBool:
+								ptr = Pin(NativeMethods.ConstructVectorBool((Bool8[])paramValue), ref arena, size);
+								defer.Add(() => NativeMethods.DestroyVectorBool((Vector192*)ptr));
+								break;
+							case ValueType.ArrayChar8:
+								ptr = Pin(NativeMethods.ConstructVectorChar8((Char8[])paramValue), ref arena, size);
+								defer.Add(() => NativeMethods.DestroyVectorChar8((Vector192*)ptr));
+								break;
+							case ValueType.ArrayChar16:
+								ptr = Pin(NativeMethods.ConstructVectorChar16((Char16[])paramValue), ref arena, size);
+								defer.Add(() => NativeMethods.DestroyVectorChar16((Vector192*)ptr));
+								break;
+							case ValueType.ArrayInt8:
+								ptr = Pin(NativeMethods.ConstructVectorInt8((sbyte[])paramValue), ref arena, size);
+								defer.Add(() => NativeMethods.DestroyVectorInt8((Vector192*)ptr));
+								break;
+							case ValueType.ArrayInt16:
+								ptr = Pin(NativeMethods.ConstructVectorInt16((short[])paramValue), ref arena, size);
+								defer.Add(() => NativeMethods.DestroyVectorInt16((Vector192*)ptr));
+								break;
+							case ValueType.ArrayInt32:
+								ptr = Pin(NativeMethods.ConstructVectorInt32((int[])paramValue), ref arena, size);
+								defer.Add(() => NativeMethods.DestroyVectorInt32((Vector192*)ptr));
+								break;
+							case ValueType.ArrayInt64:
+								ptr = Pin(NativeMethods.ConstructVectorInt64((long[])paramValue), ref arena, size);
+								defer.Add(() => NativeMethods.DestroyVectorInt64((Vector192*)ptr));
+								break;
+							case ValueType.ArrayUInt8:
+								ptr = Pin(NativeMethods.ConstructVectorUInt8((byte[])paramValue), ref arena, size);
+								defer.Add(() => NativeMethods.DestroyVectorUInt8((Vector192*)ptr));
+								break;
+							case ValueType.ArrayUInt16:
+								ptr = Pin(NativeMethods.ConstructVectorUInt16((ushort[])paramValue), ref arena, size);
+								defer.Add(() => NativeMethods.DestroyVectorUInt16((Vector192*)ptr));
+								break;
+							case ValueType.ArrayUInt32:
+								ptr = Pin(NativeMethods.ConstructVectorUInt32((uint[])paramValue), ref arena, size);
+								defer.Add(() => NativeMethods.DestroyVectorUInt32((Vector192*)ptr));
+								break;
+							case ValueType.ArrayUInt64:
+								ptr = Pin(NativeMethods.ConstructVectorUInt64((ulong[])paramValue), ref arena, size);
+								defer.Add(() => NativeMethods.DestroyVectorUInt64((Vector192*)ptr));
+								break;
+							case ValueType.ArrayPointer:
+								ptr = Pin(NativeMethods.ConstructVectorIntPtr((nint[])paramValue), ref arena, size);
+								defer.Add(() => NativeMethods.DestroyVectorIntPtr((Vector192*)ptr));
+								break;
+							case ValueType.ArrayFloat:
+								ptr = Pin(NativeMethods.ConstructVectorFloat((float[])paramValue), ref arena, size);
+								defer.Add(() => NativeMethods.DestroyVectorFloat((Vector192*)ptr));
+								break;
+							case ValueType.ArrayDouble:
+								ptr = Pin(NativeMethods.ConstructVectorDouble((double[])paramValue), ref arena, size);
+								defer.Add(() => NativeMethods.DestroyVectorDouble((Vector192*)ptr));
+								break;
+							case ValueType.ArrayString:
+								ptr = Pin(NativeMethods.ConstructVectorString((string[])paramValue), ref arena, size);
+								defer.Add(() => NativeMethods.DestroyVectorString((Vector192*)ptr));
+								break;
+							case ValueType.ArrayAny:
+								ptr = Pin(NativeMethods.ConstructVectorVariant((object[])paramValue), ref arena, size);
+								defer.Add(() => NativeMethods.DestroyVectorVariant((Vector192*)ptr));
+								break;
+							case ValueType.ArrayVector2:
+								ptr = Pin(NativeMethods.ConstructVectorVector2((Vector2[])paramValue), ref arena, size);
+								defer.Add(() => NativeMethods.DestroyVectorVector2((Vector192*)ptr));
+								break;
+							case ValueType.ArrayVector3:
+								ptr = Pin(NativeMethods.ConstructVectorVector3((Vector3[])paramValue), ref arena, size);
+								defer.Add(() => NativeMethods.DestroyVectorVector3((Vector192*)ptr));
+								break;
+							case ValueType.ArrayVector4:
+								ptr = Pin(NativeMethods.ConstructVectorVector4((Vector4[])paramValue), ref arena, size);
+								defer.Add(() => NativeMethods.DestroyVectorVector4((Vector192*)ptr));
+								break;
+							case ValueType.ArrayMatrix4x4:
+								ptr = Pin(NativeMethods.ConstructVectorMatrix4x4((Matrix4x4[])paramValue), ref arena, size);
+								defer.Add(() => NativeMethods.DestroyVectorMatrix4x4((Vector192*)ptr));
+								break;
+							default:
+								throw new TypeNotFoundException($"Parameter '{parameterTypes[i].ValueType}' uses not supported type for marshalling!");
+						}
+					}
+
+					@params[index++] = (ulong)ptr;
+				}
+
+				call.Function(@params, @return);
+
+				switch (retType)
+				{
+					case ValueType.Void:
+						break;
+					case ValueType.Bool:
+						ret = *(Bool8*)@return;
+						break;
+					case ValueType.Char8:
+						ret = *(Char8*)@return;
+						break;
+					case ValueType.Char16:
+						ret = *(Char16*)@return;
+						break;
+					case ValueType.Int8:
+						ret = *(sbyte*)@return;
+						break;
+					case ValueType.Int16:
+						ret = *(short*)@return;
+						break;
+					case ValueType.Int32:
+						ret = *(int*)@return;
+						break;
+					case ValueType.Int64:
+						ret = *(long*)@return;
+						break;
+					case ValueType.UInt8:
+						ret = *(byte*)@return;
+						break;
+					case ValueType.UInt16:
+						ret = *(ushort*)@return;
+						break;
+					case ValueType.UInt32:
+						ret = *(uint*)@return;
+						break;
+					case ValueType.UInt64:
+						ret = *(ulong*)@return;
+						break;
+					case ValueType.Pointer:
+						ret = *(nint*)@return;
+						break;
+					case ValueType.Float:
+						ret = *(float*)@return;
+						break;
+					case ValueType.Double:
+						ret = *(double*)@return;
+						break;
+					case ValueType.Function:
+						ret = GetDelegateForFunctionPointer(*(nint*)@return, methodInfo.ReturnType);
+						break;
+					case ValueType.Vector2:
+						ret = *(Vector2*)@return;
+						break;
+					case ValueType.Vector3:
+						if (hasRet)
+							ret = *(Vector3*)@return[0];
+						else
+							ret = *(Vector3*)@return;
+						break;
+					case ValueType.Vector4:
+						if (hasRet)
+							ret = *(Vector4*)@return[0];
+						else
+							ret = *(Vector4*)@return;
+						break;
+					case ValueType.Matrix4x4:
+						ret = *(Matrix4x4*)@return[0];
+						break;
+					case ValueType.String:
+						ret = NativeMethods.GetStringData((String192*)@return[0]);
+						break;
+					case ValueType.Any:
+						ret = NativeMethods.GetVariantData((Variant256*)@return[0]);
+						break;
+					case ValueType.ArrayBool:
+						ret = NativeMethods.GetVectorDataBool((Vector192*)@return[0]);
+						break;
+					case ValueType.ArrayChar8:
+						ret = NativeMethods.GetVectorDataChar8((Vector192*)@return[0]);
+						break;
+					case ValueType.ArrayChar16:
+						ret = NativeMethods.GetVectorDataChar16((Vector192*)@return[0]);
+						break;
+					case ValueType.ArrayInt8:
+						ret = NativeMethods.GetVectorDataInt8((Vector192*)@return[0]);
+						break;
+					case ValueType.ArrayInt16:
+						ret = NativeMethods.GetVectorDataInt16((Vector192*)@return[0]);
+						break;
+					case ValueType.ArrayInt32:
+						ret = NativeMethods.GetVectorDataInt32((Vector192*)@return[0]);
+						break;
+					case ValueType.ArrayInt64:
+						ret = NativeMethods.GetVectorDataInt64((Vector192*)@return[0]);
+						break;
+					case ValueType.ArrayUInt8:
+						ret = NativeMethods.GetVectorDataUInt8((Vector192*)@return[0]);
+						break;
+					case ValueType.ArrayUInt16:
+						ret = NativeMethods.GetVectorDataUInt16((Vector192*)@return[0]);
+						break;
+					case ValueType.ArrayUInt32:
+						ret = NativeMethods.GetVectorDataUInt32((Vector192*)@return[0]);
+						break;
+					case ValueType.ArrayUInt64:
+						ret = NativeMethods.GetVectorDataUInt64((Vector192*)@return[0]);
+						break;
+					case ValueType.ArrayPointer:
+						ret = NativeMethods.GetVectorDataIntPtr((Vector192*)@return[0]);
+						break;
+					case ValueType.ArrayFloat:
+						ret = NativeMethods.GetVectorDataFloat((Vector192*)@return[0]);
+						break;
+					case ValueType.ArrayDouble:
+						ret = NativeMethods.GetVectorDataDouble((Vector192*)@return[0]);
+						break;
+					case ValueType.ArrayString:
+						ret = NativeMethods.GetVectorDataString((Vector192*)@return[0]);
+						break;
+					case ValueType.ArrayAny:
+						ret = NativeMethods.GetVectorDataVariant((Vector192*)@return[0]);
+						break;
+					case ValueType.ArrayVector2:
+						ret = NativeMethods.GetVectorDataVector2((Vector192*)@return[0]);
+						break;
+					case ValueType.ArrayVector3:
+						ret = NativeMethods.GetVectorDataVector3((Vector192*)@return[0]);
+						break;
+					case ValueType.ArrayVector4:
+						ret = NativeMethods.GetVectorDataVector4((Vector192*)@return[0]);
+						break;
+					case ValueType.ArrayMatrix4x4:
+						ret = NativeMethods.GetVectorDataMatrix4x4((Vector192*)@return[0]);
+						break;
+					default:
+						throw new TypeNotFoundException($"Return '{returnType.ValueType}' uses not supported type for marshalling!");
+				}
+			}
+			finally
+			{
+				defer.Execute();
+			}
+
+			return ret!;
+		};
+
+		// old approach using GCHandles 
+		// TODO remove after testing new approach
+		/*return parameters =>
+		{
 			int index = 0, pin = 0, handle = 0;
 			GCHandle* pins = stackalloc GCHandle[paramCount];
 			(nint, ValueType)* handlers = stackalloc (nint, ValueType)[objectCount];
@@ -630,7 +1314,7 @@ public static class Marshalling
 			ulong* @return = stackalloc ulong[2]{ 0, 0 }; // 128bits to fit Vector4
 
 			object? ret = null;
-			
+
 			nint Pin(ref object paramValue, ref GCHandle handle)
 			{
 				handle = GCHandle.Alloc(paramValue, GCHandleType.Pinned);
@@ -672,12 +1356,12 @@ public static class Marshalling
 						case ValueType.ArrayPointer:
 						case ValueType.ArrayFloat:
 						case ValueType.ArrayDouble:
-						case ValueType.ArrayString: 
-						case ValueType.ArrayAny: 
-						case ValueType.ArrayVector2: 
-						case ValueType.ArrayVector3: 
-						case ValueType.ArrayVector4: 
-						case ValueType.ArrayMatrix4x4: 
+						case ValueType.ArrayString:
+						case ValueType.ArrayAny:
+						case ValueType.ArrayVector2:
+						case ValueType.ArrayVector3:
+						case ValueType.ArrayVector4:
+						case ValueType.ArrayMatrix4x4:
 							obj = new Vector192();
 							break;
 						case ValueType.Vector2:
@@ -1479,10 +2163,10 @@ public static class Marshalling
 				#endregion
 
 			}
-			
+
 			#region Cleanup Temp Storage
-			
-			finally 
+
+			finally
 			{
 				for (int i = 0; i < handle; i++)
 				{
@@ -1575,7 +2259,7 @@ public static class Marshalling
 			#endregion
 
 			return ret!;
-		};
+		};*/
 	}
 
 	public static nint GetFunctionPointerForDelegate(Delegate d)
