@@ -1,12 +1,7 @@
 namespace Plugify;
 
 [AttributeUsage(AttributeTargets.Method)]
-public class NativeExportAttribute : Attribute
+public class NativeExportAttribute(string name) : Attribute
 {
-    public string Name { get; }
-
-    public NativeExportAttribute(string name)
-    {
-        Name = name;
-    }
+    public string Name { get; } = name;
 }

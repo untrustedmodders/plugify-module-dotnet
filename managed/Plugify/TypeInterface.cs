@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -13,6 +14,7 @@ internal static class TypeInterface
 	public static readonly UniqueIdList<FieldInfo> CachedFields = new();
 	public static readonly UniqueIdList<PropertyInfo> CachedProperties = new();
 	public static readonly UniqueIdList<Attribute> CachedAttributes = new();
+	public static readonly UniqueIdList<Delegate> CachedDelegates = new();
 	
 	public static Type? FindType(string? typeName)
 	{
@@ -734,7 +736,7 @@ internal static class TypeInterface
 		}
 	}
 
-	public enum TypeAccessibility
+	private enum TypeAccessibility
 	{
 		Public,
 		Private,
