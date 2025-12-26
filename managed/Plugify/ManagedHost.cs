@@ -36,6 +36,7 @@ internal static class ManagedHost
 		
 		Marshalling.CachedDelegates.Clear();
 		Marshalling.CachedFunctions.Clear();
+		Marshalling.CachedMethods.Clear();
 
 		if (AssemblyLoader.AllocatedHandles.Count > 0)
 		{

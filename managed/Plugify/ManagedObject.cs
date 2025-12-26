@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Concurrent;
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 namespace Plugify;
@@ -54,6 +55,8 @@ internal static class ManagedObject
 	}
 
 	public static Dictionary<MethodKey, MethodInfo> CachedMethods = new Dictionary<MethodKey, MethodInfo>();*/
+
+	private static readonly ConcurrentDictionary<MethodInfo, FastInvokeHandler> CachedInvokers = new();
 
 	[UnmanagedCallersOnly]
 	private static unsafe nint CreateObject(nint typeHandle, Bool32 weakRef, nint parameterPtr, ManagedType* parameterTypes, int parameterCount)
@@ -194,11 +197,15 @@ internal static class ManagedObject
 				LogMessage($"Cannot invoke method {methodInfo.Name} on a null type.", Severity.Error);
 				return;
 			}*/
+			
+			var methodInvoker = CachedInvokers.GetOrAdd(
+				methodInfo,
+				static key => MethodUtils.GetMethodInvoker(key)
+			);
 
-			//var methodInfo = TryGetMethodInfo(type, methodName, parameterTypes, parameterCount, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
 			var parameters = Marshalling.MarshalParameterArray(parameterPtr, parameterCount, methodInfo);
 
-			methodInfo.Invoke(null, parameters);
+			methodInvoker(null, parameters);
 			
 			Marshalling.MarshalParameterRefs(parameterPtr, parameterCount, methodInfo, parameters);
 		}
@@ -225,17 +232,16 @@ internal static class ManagedObject
 				return;
 			}*/
 
-			//var methodInfo = TryGetMethodInfo(type, methodName, parameterTypes, parameterCount, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
+			var methodInvoker = CachedInvokers.GetOrAdd(
+				methodInfo,
+				static key => MethodUtils.GetMethodInvoker(key)
+			);
+			
 			var parameters = Marshalling.MarshalParameterArray(parameterPtr, parameterCount, methodInfo);
 
-			object? returnValue = methodInfo.Invoke(null, parameters);
+			object? returnValue = methodInvoker(null, parameters);
 
 			Marshalling.MarshalParameterRefs(parameterPtr, parameterCount, methodInfo, parameters);
-			
-			/*if (returnValue == null)
-			{
-				return;
-			}*/
 
 			Type returnType = methodInfo.ReturnType;
 
@@ -266,11 +272,14 @@ internal static class ManagedObject
 				return;
 			}
 
-			//var targetType = target.GetType();
-			//var methodInfo = TryGetMethodInfo(targetType, methodName, parameterTypes, parameterCount, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+			var methodInvoker = CachedInvokers.GetOrAdd(
+				methodInfo,
+				static key => MethodUtils.GetMethodInvoker(key)
+			);
+			
 			var parameters = Marshalling.MarshalParameterArray(parameterPtr, parameterCount, methodInfo);
 
-			methodInfo.Invoke(target, parameters);
+			methodInvoker(target, parameters);
 			
 			Marshalling.MarshalParameterRefs(parameterPtr, parameterCount, methodInfo, parameters);
 		}
@@ -299,19 +308,17 @@ internal static class ManagedObject
 				return;
 			}
 
-			//var targetType = target.GetType();
-			//var methodInfo = TryGetMethodInfo(targetType, methodName, parameterTypes, parameterCount, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+			var methodInvoker = CachedInvokers.GetOrAdd(
+				methodInfo,
+				static key => MethodUtils.GetMethodInvoker(key)
+			);
+			
 			var parameters = Marshalling.MarshalParameterArray(parameterPtr, parameterCount, methodInfo);
 			
-			object? returnValue = methodInfo.Invoke(target, parameters);
+			object? returnValue = methodInvoker(target, parameters);
 
 			Marshalling.MarshalParameterRefs(parameterPtr, parameterCount, methodInfo, parameters);
-			
-			/*if (returnValue == null)
-			{
-				return;
-			}*/
-			
+
 			Type returnType = methodInfo.ReturnType;
 
 			Marshalling.MarshalReturnValue(returnValue, returnType, resultStorage);
@@ -335,8 +342,6 @@ internal static class ManagedObject
 
 			MethodInfo methodInfo = target.Method;
 			
-			//var targetType = target.GetType();
-			//var methodInfo = TryGetMethodInfo(targetType, methodName, parameterTypes, parameterCount, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 			var parameters = Marshalling.MarshalParameterArray(parameterPtr, parameterCount, methodInfo);
 
 			target.DynamicInvoke(parameters);
@@ -362,19 +367,12 @@ internal static class ManagedObject
 
 			MethodInfo methodInfo = target.Method;
             
-			//var targetType = target.GetType();
-			//var methodInfo = TryGetMethodInfo(targetType, methodName, parameterTypes, parameterCount, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 			var parameters = Marshalling.MarshalParameterArray(parameterPtr, parameterCount, methodInfo);
 			
 			object? returnValue = target.DynamicInvoke(parameters);
 
 			Marshalling.MarshalParameterRefs(parameterPtr, parameterCount, methodInfo, parameters);
-			
-			/*if (returnValue == null)
-			{
-				return;
-			}*/
-			
+
 			Type returnType = methodInfo.ReturnType;
 			
 			Marshalling.MarshalReturnValue(returnValue, returnType, resultStorage);

@@ -116,10 +116,10 @@ internal static class TypeUtils
 		[typeof(double)] = ValueType.Double,
 		[typeof(Delegate)] = ValueType.Function,
 		[typeof(MulticastDelegate)] = ValueType.Function,
-		// std::string
+		// plg::string
 		[typeof(string)] = ValueType.String,
 		[typeof(object)] = ValueType.Any,
-		// std::vector
+		// plg::vector
 		[typeof(Bool8[])] = ValueType.ArrayBool,
 		[typeof(Char8[])] = ValueType.ArrayChar8,
 		[typeof(Char16[])] = ValueType.ArrayChar16,
@@ -141,11 +141,11 @@ internal static class TypeUtils
 		[typeof(Vector3[])] = ValueType.ArrayVector3,
 		[typeof(Vector4[])] = ValueType.ArrayVector4,
 		[typeof(Matrix4x4[])] = ValueType.ArrayMatrix4x4,
-		// glm:vec
+		// plg:vec
 		[typeof(Vector2)] = ValueType.Vector2,
 		[typeof(Vector3)] = ValueType.Vector3,
 		[typeof(Vector4)] = ValueType.Vector4,
-		// glm:mat
+		// plg:mat
 		[typeof(Matrix4x4)] = ValueType.Matrix4x4
 	};
 
