@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.2.0](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.1.13...v2.2.0) (2025-12-26)
+
+
+### Features
+
+* add arena allocator for external calls ([c1174d8](https://github.com/untrustedmodders/plugify-module-dotnet/commit/c1174d8693bd546e40c6d28cbce999a14f49ad86))
+* add fast method invoker ([66eb49d](https://github.com/untrustedmodders/plugify-module-dotnet/commit/66eb49df81d013ef8b7e205bfef98272484743e4))
+
+
+### Bug Fixes
+
+* add ConcurrentDictionary for safety ([47f6f76](https://github.com/untrustedmodders/plugify-module-dotnet/commit/47f6f76f6d877147ec989dc3e973e9ffeb9b45e8))
+* some refactor ([81a5d83](https://github.com/untrustedmodders/plugify-module-dotnet/commit/81a5d83551bc51e727febaac9f7744d57d84001b))
+
 ## [2.1.13](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.1.12...v2.1.13) (2025-12-13)
 
 
