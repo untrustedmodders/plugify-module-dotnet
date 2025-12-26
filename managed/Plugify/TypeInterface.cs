@@ -14,7 +14,6 @@ internal static class TypeInterface
 	public static readonly UniqueIdList<FieldInfo> CachedFields = new();
 	public static readonly UniqueIdList<PropertyInfo> CachedProperties = new();
 	public static readonly UniqueIdList<Attribute> CachedAttributes = new();
-	public static readonly UniqueIdList<Delegate> CachedDelegates = new();
 	
 	public static Type? FindType(string? typeName)
 	{

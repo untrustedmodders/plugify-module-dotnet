@@ -1,11 +1,12 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections.Concurrent;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
 namespace Plugify;
 
 internal class UniqueIdList<T>
 {
-	private readonly Dictionary<nint, T> _objects = new();
+	private readonly ConcurrentDictionary<nint, T> _objects = new();
 
 	public nint Add(T? obj)
 	{
