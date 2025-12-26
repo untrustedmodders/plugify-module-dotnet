@@ -6,89 +6,89 @@ namespace Plugify;
 
 public static unsafe partial class NativeMethods
 {
-	public const string DllName = "plugify-module-dotnet";
+    public const string DllName = "plugify-module-dotnet";
 
-	#region Core functions
+    #region Core functions
 
-	[LibraryImport(DllName, StringMarshalling = StringMarshalling.Utf8)]
-	[SuppressGCTransition]
-	[return: MarshalAs(UnmanagedType.I1)]
-	public static partial bool IsExtensionLoaded(string name, string? constraint);
+    [LibraryImport(DllName, StringMarshalling = StringMarshalling.Utf8)]
+    [SuppressGCTransition]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool IsExtensionLoaded(string name, string? constraint);
 
-	#endregion
-	
-	#region String functions
+    #endregion
+    
+    #region String functions
 
-	[LibraryImport(DllName)]
-	[SuppressGCTransition]
-	public static partial int GetStringLength(String192* str);
+    [LibraryImport(DllName)]
+    [SuppressGCTransition]
+    public static partial int GetStringLength(String192* str);
 
-	[LibraryImport(DllName, StringMarshalling = StringMarshalling.Utf8)]
-	[SuppressGCTransition]
-	public static partial string GetStringData(String192* str);
+    [LibraryImport(DllName, StringMarshalling = StringMarshalling.Utf8)]
+    [SuppressGCTransition]
+    public static partial string GetStringData(String192* str);
 
-	[LibraryImport(DllName, StringMarshalling = StringMarshalling.Utf8)]
-	[SuppressGCTransition]
-	public static partial String192 ConstructString(string? source);
-	
-	[LibraryImport(DllName)]
-	[SuppressGCTransition]
-	public static partial void DestroyString(String192* str);
+    [LibraryImport(DllName, StringMarshalling = StringMarshalling.Utf8)]
+    [SuppressGCTransition]
+    public static partial String192 ConstructString(string? source);
+    
+    [LibraryImport(DllName)]
+    [SuppressGCTransition]
+    public static partial void DestroyString(String192* str);
 
-	[LibraryImport(DllName, StringMarshalling = StringMarshalling.Utf8)]
-	[SuppressGCTransition]
-	public static partial void AssignString(String192* str, string? source);
+    [LibraryImport(DllName, StringMarshalling = StringMarshalling.Utf8)]
+    [SuppressGCTransition]
+    public static partial void AssignString(String192* str, string? source);
 
-	#endregion
-	
-	#region Variant functions
+    #endregion
+    
+    #region Variant functions
 
-	public static object? GetVariantData(Variant256* var)
-	{
-		switch ((ValueType)var->currect)
-		{
-			case ValueType.Invalid:
-			case ValueType.Void:
-				return null;
-			case ValueType.Bool:
-				return var->boolean;
-			case ValueType.Char8:
-				return var->char8;
-			case ValueType.Char16:
-				return var->char16;
-			case ValueType.Int8:
-				return var->int8;
-			case ValueType.Int16:
-				return var->int16;
-			case ValueType.Int32:
-				return var->int32;
-			case ValueType.Int64:
-				return var->int64;
-			case ValueType.UInt8:
-				return var->uint8;
-			case ValueType.UInt16:
-				return var->uint16;
-			case ValueType.UInt32:
-				return var->uint32;
-			case ValueType.UInt64:
-				return var->uint64;
-			case ValueType.Pointer:
-				return var->ptr;
-			case ValueType.Float:
-				return var->flt;
-			case ValueType.Double:
-				return var->dbl;
-			case ValueType.String:
-				return GetStringData(&var->str);
-			case ValueType.Any:
-				throw new TypeNotFoundException("Any recursion is not supported");
-			case ValueType.ArrayBool:
-				return GetVectorDataBool(&var->vec);
-			case ValueType.ArrayChar8:
-				return GetVectorDataChar8(&var->vec);
-			case ValueType.ArrayChar16:
-				return GetVectorDataChar16(&var->vec);
-			case ValueType.ArrayInt8:
+    public static object? GetVariantData(Variant256* var)
+    {
+        switch ((ValueType)var->currect)
+        {
+            case ValueType.Invalid:
+            case ValueType.Void:
+                return null;
+            case ValueType.Bool:
+                return var->boolean;
+            case ValueType.Char8:
+                return var->char8;
+            case ValueType.Char16:
+                return var->char16;
+            case ValueType.Int8:
+                return var->int8;
+            case ValueType.Int16:
+                return var->int16;
+            case ValueType.Int32:
+                return var->int32;
+            case ValueType.Int64:
+                return var->int64;
+            case ValueType.UInt8:
+                return var->uint8;
+            case ValueType.UInt16:
+                return var->uint16;
+            case ValueType.UInt32:
+                return var->uint32;
+            case ValueType.UInt64:
+                return var->uint64;
+            case ValueType.Pointer:
+                return var->ptr;
+            case ValueType.Float:
+                return var->flt;
+            case ValueType.Double:
+                return var->dbl;
+            case ValueType.String:
+                return GetStringData(&var->str);
+            case ValueType.Any:
+                throw new TypeNotFoundException("Any recursion is not supported");
+            case ValueType.ArrayBool:
+                return GetVectorDataBool(&var->vec);
+            case ValueType.ArrayChar8:
+                return GetVectorDataChar8(&var->vec);
+            case ValueType.ArrayChar16:
+                return GetVectorDataChar16(&var->vec);
+    		case ValueType.ArrayInt8:
 				return GetVectorDataInt8(&var->vec);
 			case ValueType.ArrayInt16:
 				return GetVectorDataInt16(&var->vec);

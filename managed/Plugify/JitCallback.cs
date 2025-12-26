@@ -15,7 +15,7 @@ internal partial class JitCallback : SafeHandle
     public override bool IsInvalid => handle == nint.Zero;
 
     public nint Function => GetCallbackFunction(handle);
-	
+    
     public string Error => GetCallbackError(handle);
 
     protected override bool ReleaseHandle()
@@ -23,7 +23,7 @@ internal partial class JitCallback : SafeHandle
         DeleteCallback(handle);
         return true;
     }
-	
+    
     [LibraryImport(NativeMethods.DllName, StringMarshalling = StringMarshalling.Utf8)]
     [SuppressGCTransition]
     private static partial nint NewCallback(string delegateName, nint delegateHandle);

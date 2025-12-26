@@ -8,96 +8,96 @@ namespace Plugify;
 
 public static class Marshalling
 {
-	internal struct Callback(nint fn, Delegate del, JitCallback? jit)
-	{
-		public nint Function = fn;
-		public Delegate Delegate = del;
-		public JitCallback? Jit = jit;
-	}
-	
-	internal static readonly ConcurrentDictionary<Delegate, Callback> CachedDelegates = new();
-	internal static readonly ConcurrentDictionary<nint, Delegate> CachedFunctions = new();
-	internal static readonly ConcurrentDictionary<MethodInfo, bool> CachedMethods = new();
+    internal struct Callback(nint fn, Delegate del, JitCallback? jit)
+    {
+        public nint Function = fn;
+        public Delegate Delegate = del;
+        public JitCallback? Jit = jit;
+    }
+    
+    internal static readonly ConcurrentDictionary<Delegate, Callback> CachedDelegates = new();
+    internal static readonly ConcurrentDictionary<nint, Delegate> CachedFunctions = new();
+    internal static readonly ConcurrentDictionary<MethodInfo, bool> CachedMethods = new();
 
-	internal static unsafe object?[]? MarshalParameterArray(nint paramsPtr, int parameterCount, MethodBase methodInfo)
-	{
-		ParameterInfo[] parameterInfos = methodInfo.GetParameters();
-		int numParams = parameterInfos.Length;
+    internal static unsafe object?[]? MarshalParameterArray(nint paramsPtr, int parameterCount, MethodBase methodInfo)
+    {
+        ParameterInfo[] parameterInfos = methodInfo.GetParameters();
+        int numParams = parameterInfos.Length;
 
-		if (numParams == 0 || paramsPtr == nint.Zero || numParams != parameterCount)
-		{
-			return null;
-		}
+        if (numParams == 0 || paramsPtr == nint.Zero || numParams != parameterCount)
+        {
+            return null;
+        }
 
-		var parameters = new object?[numParams];
+        var parameters = new object?[numParams];
 
-		int paramsOffset = 0;
+        int paramsOffset = 0;
 
-		for (int i = 0; i < numParams; i++)
-		{
-			// params is stored as void**
-			nint paramPtr = *(nint*)((byte*)paramsPtr + paramsOffset);
-			paramsOffset += nint.Size;
+        for (int i = 0; i < numParams; i++)
+        {
+            // params is stored as void**
+            nint paramPtr = *(nint*)((byte*)paramsPtr + paramsOffset);
+            paramsOffset += nint.Size;
 
-			ParameterInfo parameterInfo = parameterInfos[i];
-			Type paramType = parameterInfo.ParameterType;
+            ParameterInfo parameterInfo = parameterInfos[i];
+            Type paramType = parameterInfo.ParameterType;
 
-			parameters[i] = MarshalPointer(paramPtr, paramType);
-		}
+            parameters[i] = MarshalPointer(paramPtr, paramType);
+        }
 
-		return parameters;
-	}
+        return parameters;
+    }
 
-	internal static unsafe void MarshalParameterRefs(nint paramsPtr, int parameterCount, MethodInfo methodInfo, object?[]? parameters)
-	{
-		if (parameters == null)
-		{
-			return;
-		}
+    internal static unsafe void MarshalParameterRefs(nint paramsPtr, int parameterCount, MethodInfo methodInfo, object?[]? parameters)
+    {
+        if (parameters == null)
+        {
+            return;
+        }
 
-		ParameterInfo[] parameterInfos = methodInfo.GetParameters();
-		int numParams = parameterInfos.Length;
+        ParameterInfo[] parameterInfos = methodInfo.GetParameters();
+        int numParams = parameterInfos.Length;
 
-		if (numParams != parameterCount)
-		{
-			return;
-		}
+        if (numParams != parameterCount)
+        {
+            return;
+        }
 
-		int paramsOffset = 0;
+        int paramsOffset = 0;
 
-		for (int i = 0; i < numParams; i++)
-		{
-			// params is stored as void**
-			nint paramPtr = *(nint*)((byte*)paramsPtr + paramsOffset);
-			paramsOffset += nint.Size;
+        for (int i = 0; i < numParams; i++)
+        {
+            // params is stored as void**
+            nint paramPtr = *(nint*)((byte*)paramsPtr + paramsOffset);
+            paramsOffset += nint.Size;
 
-			ParameterInfo parameterInfo = parameterInfos[i];
-			Type paramType = parameterInfo.ParameterType;
-			
-			if (!paramType.IsByRef)
-			{
-				continue;
-			}
+            ParameterInfo parameterInfo = parameterInfos[i];
+            Type paramType = parameterInfo.ParameterType;
+            
+            if (!paramType.IsByRef)
+            {
+                continue;
+            }
 
-			object? paramValue = parameters[i];
-			if (paramValue == null)
-			{
-				throw new Exception("Reference cannot be null");
-			}
-			
-			MarshalReturnValue(paramValue, paramType, paramPtr);
-		}
-	}
+            object? paramValue = parameters[i];
+            if (paramValue == null)
+            {
+                throw new Exception("Reference cannot be null");
+            }
+            
+            MarshalReturnValue(paramValue, paramType, paramPtr);
+        }
+    }
 
-	internal static unsafe void MarshalReturnValue(object? paramValue, Type paramType, nint outValue)
-	{
-		ValueType valueType = TypeUtils.ConvertToValueType(paramType);
-		Type? enumType = paramType.GetEnumType();
-		if (enumType != null)
-		{
-			switch (valueType)
-			{
-				case ValueType.Int8:
+    internal static unsafe void MarshalReturnValue(object? paramValue, Type paramType, nint outValue)
+    {
+        ValueType valueType = TypeUtils.ConvertToValueType(paramType);
+        Type? enumType = paramType.GetEnumType();
+        if (enumType != null)
+        {
+            switch (valueType)
+            {
+        		case ValueType.Int8:
 					*(sbyte*)outValue = (sbyte?)Convert.ChangeType(paramValue, Enum.GetUnderlyingType(enumType)) ?? default;
 					return;
 				case ValueType.Int16:

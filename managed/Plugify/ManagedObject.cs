@@ -8,85 +8,85 @@ using static ManagedHost;
 
 internal static class ManagedObject
 {
-	/*public readonly struct MethodKey : IEquatable<MethodKey>
-	{
-		public readonly string TypeName;
-		public readonly string Name;
-		public readonly ManagedType[] Types;
-		public readonly int ParameterCount;
+    /*public readonly struct MethodKey : IEquatable<MethodKey>
+    {
+        public readonly string TypeName;
+        public readonly string Name;
+        public readonly ManagedType[] Types;
+        public readonly int ParameterCount;
 
-		public MethodKey(string typeHandleName, string name, ManagedType[] typeHandles, int parameterCount)
-		{
-			TypeName = typeHandleName;
-			Name = name;
-			Types = typeHandles;
-			ParameterCount = parameterCount;
-		}
+        public MethodKey(string typeHandleName, string name, ManagedType[] typeHandles, int parameterCount)
+        {
+            TypeName = typeHandleName;
+            Name = name;
+            Types = typeHandles;
+            ParameterCount = parameterCount;
+        }
 
-		public override bool Equals([NotNullWhen(true)] object? obj) => obj is MethodKey other && Equals(other);
+        public override bool Equals([NotNullWhen(true)] object? obj) => obj is MethodKey other && Equals(other);
 
-		bool IEquatable<MethodKey>.Equals(MethodKey other)
-		{
-			if (TypeName != other.TypeName || Name != other.Name)
-				return false;
+        bool IEquatable<MethodKey>.Equals(MethodKey other)
+        {
+            if (TypeName != other.TypeName || Name != other.Name)
+                return false;
 
-			for (int i = 0; i < Types.Length; i++)
-			{
-				if (Types[i] != other.Types[i])
-					return false;
-			}
+            for (int i = 0; i < Types.Length; i++)
+            {
+                if (Types[i] != other.Types[i])
+                    return false;
+            }
 
-			return ParameterCount == other.ParameterCount;
-		}
+            return ParameterCount == other.ParameterCount;
+        }
 
-		public override int GetHashCode()
-		{
-			unchecked
-			{
-				int hash = 17;
-				hash = hash * 23 + TypeName.GetHashCode();
-				hash = hash * 23 + Name.GetHashCode();
-				foreach (var type in Types)
-					hash = hash * 23 + type.GetHashCode();
-				hash = hash * 23 + ParameterCount.GetHashCode();
-				return hash;
-			}
-		}
-	}
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hash = 17;
+                hash = hash * 23 + TypeName.GetHashCode();
+                hash = hash * 23 + Name.GetHashCode();
+                foreach (var type in Types)
+                    hash = hash * 23 + type.GetHashCode();
+                hash = hash * 23 + ParameterCount.GetHashCode();
+                return hash;
+            }
+        }
+    }
 
-	public static Dictionary<MethodKey, MethodInfo> CachedMethods = new Dictionary<MethodKey, MethodInfo>();*/
+    public static Dictionary<MethodKey, MethodInfo> CachedMethods = new Dictionary<MethodKey, MethodInfo>();*/
 
-	private static readonly ConcurrentDictionary<MethodInfo, FastInvokeHandler> CachedInvokers = new();
+    private static readonly ConcurrentDictionary<MethodInfo, FastInvokeHandler> CachedInvokers = new();
 
-	[UnmanagedCallersOnly]
-	private static unsafe nint CreateObject(nint typeHandle, Bool32 weakRef, nint parameterPtr, ManagedType* parameterTypes, int parameterCount)
-	{
-		try
-		{
-			if (!TypeInterface.CachedTypes.TryGetValue(typeHandle, out var type))
-			{
-				LogMessage($"Failed to find type with id '{typeHandle}'.", MessageLevel.Error);
-				return nint.Zero;
-			}
-			
-			ConstructorInfo? constructor = null;
+    [UnmanagedCallersOnly]
+    private static unsafe nint CreateObject(nint typeHandle, Bool32 weakRef, nint parameterPtr, ManagedType* parameterTypes, int parameterCount)
+    {
+        try
+        {
+            if (!TypeInterface.CachedTypes.TryGetValue(typeHandle, out var type))
+            {
+                LogMessage($"Failed to find type with id '{typeHandle}'.", MessageLevel.Error);
+                return nint.Zero;
+            }
+            
+            ConstructorInfo? constructor = null;
 
-			var currentType = type;
-			while (currentType != null)
-			{
-				ReadOnlySpan<ConstructorInfo> constructors = currentType.GetConstructors(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
-				
-				//constructor = TypeInterface.FindSuitableMethod(".ctor", parameterTypes, parameterCount, constructors);
+            var currentType = type;
+            while (currentType != null)
+            {
+                ReadOnlySpan<ConstructorInfo> constructors = currentType.GetConstructors(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+                
+                //constructor = TypeInterface.FindSuitableMethod(".ctor", parameterTypes, parameterCount, constructors);
 
-				// TODO: Rework
-				
-				constructor = constructors[0];
+                // TODO: Rework
+                
+                constructor = constructors[0];
 
-				if (constructor != null)
-					break;
+                if (constructor != null)
+                    break;
 
-				currentType = currentType.BaseType;
-			}
+                currentType = currentType.BaseType;
+            }
 
 			if (constructor == null)
 			{

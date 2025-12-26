@@ -9,92 +9,92 @@ using static ManagedHost;
 
 internal static class TypeInterface 
 {
-	public static readonly UniqueIdList<Type> CachedTypes = new();
-	public static readonly UniqueIdList<MethodInfo> CachedMethods = new();
-	public static readonly UniqueIdList<FieldInfo> CachedFields = new();
-	public static readonly UniqueIdList<PropertyInfo> CachedProperties = new();
-	public static readonly UniqueIdList<Attribute> CachedAttributes = new();
-	
-	public static Type? FindType(string? typeName)
-	{
-		var type = Type.GetType(typeName!,
-			AssemblyLoader.ResolveAssembly,
-			(assembly, name, ignore) => assembly != null ? assembly.GetType(name, false, ignore) : Type.GetType(name, false, ignore));
+    public static readonly UniqueIdList<Type> CachedTypes = new();
+    public static readonly UniqueIdList<MethodInfo> CachedMethods = new();
+    public static readonly UniqueIdList<FieldInfo> CachedFields = new();
+    public static readonly UniqueIdList<PropertyInfo> CachedProperties = new();
+    public static readonly UniqueIdList<Attribute> CachedAttributes = new();
+    
+    public static Type? FindType(string? typeName)
+    {
+        var type = Type.GetType(typeName!,
+            AssemblyLoader.ResolveAssembly,
+            (assembly, name, ignore) => assembly != null ? assembly.GetType(name, false, ignore) : Type.GetType(name, false, ignore));
 
-		return type;
-	}
+        return type;
+    }
 
-	public static object? CreateInstance(Type type, params object?[]? arguments)
-	{
-		return type.Assembly.CreateInstance(type.FullName ?? string.Empty, false, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, arguments!, null, null);
-	}
+    public static object? CreateInstance(Type type, params object?[]? arguments)
+    {
+        return type.Assembly.CreateInstance(type.FullName ?? string.Empty, false, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, arguments!, null, null);
+    }
 
-	/*internal static unsafe T? FindSuitableMethod<T>(string? methodName, ManagedType* parameterTypes, int parameterCount, ReadOnlySpan<T> methods) where T : MethodBase
-	{
-		if (methodName == null)
-			return null;
+    /*internal static unsafe T? FindSuitableMethod<T>(string? methodName, ManagedType* parameterTypes, int parameterCount, ReadOnlySpan<T> methods) where T : MethodBase
+    {
+        if (methodName == null)
+            return null;
 
-		T? result = null;
+        T? result = null;
 
-		foreach (var methodInfo in methods)
-		{
-			var parameters = methodInfo.GetParameters();
+        foreach (var methodInfo in methods)
+        {
+            var parameters = methodInfo.GetParameters();
 
-			if (parameters.Length != parameterCount)
-				continue;
+            if (parameters.Length != parameterCount)
+                continue;
 
-			// Check if the method name matches the signature of methodInfo, if so we ignore the automatic type checking
-			if (methodName == methodInfo.ToString())
-			{
-				result = methodInfo;
-				break;
-			}
+            // Check if the method name matches the signature of methodInfo, if so we ignore the automatic type checking
+            if (methodName == methodInfo.ToString())
+            {
+                result = methodInfo;
+                break;
+            }
 
-			if (methodInfo.Name != methodName)
-				continue;
+            if (methodInfo.Name != methodName)
+                continue;
 
-			int matchingTypes = 0;
+            int matchingTypes = 0;
 
-			for (int i = 0; i < parameters.Length; i++)
-			{
-				ManagedType paramType = new ManagedType(parameters[i].ParameterType);
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                ManagedType paramType = new ManagedType(parameters[i].ParameterType);
 
-				if (paramType == parameterTypes[i])
-				{
-					matchingTypes++;
-				}
-			}
+                if (paramType == parameterTypes[i])
+                {
+                    matchingTypes++;
+                }
+            }
 
-			if (matchingTypes == parameterCount)
-			{
-				result = methodInfo;
-				break;
-			}
-		}
+            if (matchingTypes == parameterCount)
+            {
+                result = methodInfo;
+                break;
+            }
+        }
 
-		return result;
-	}*/
-	
-	[UnmanagedCallersOnly]
-	private static unsafe void GetAssemblyTypes(Guid assemblyId, nint* outTypeArrayPtr, int* outTypeCount)
-	{
-		try
-		{
-			if (!AssemblyLoader.TryGetAssembly(assemblyId, out var wrapper))
-			{
-				LogMessage($"Couldn't get types for assembly '{assemblyId}', assembly not found.", MessageLevel.Error);
-				return;
-			}
+        return result;
+    }*/
+    
+    [UnmanagedCallersOnly]
+    private static unsafe void GetAssemblyTypes(Guid assemblyId, nint* outTypeArrayPtr, int* outTypeCount)
+    {
+        try
+        {
+            if (!AssemblyLoader.TryGetAssembly(assemblyId, out var wrapper))
+            {
+                LogMessage($"Couldn't get types for assembly '{assemblyId}', assembly not found.", MessageLevel.Error);
+                return;
+            }
 
-			if (!wrapper.IsAlive || !wrapper.Assembly.TryGetTarget(out var assembly))
-			{
-				LogMessage($"Couldn't get types for assembly '{assemblyId}', assembly was unloaded.", MessageLevel.Error);
-				return;
-			}
-			
-			Type[] assemblyTypes = assembly.GetTypes();
+            if (!wrapper.IsAlive || !wrapper.Assembly.TryGetTarget(out var assembly))
+            {
+                LogMessage($"Couldn't get types for assembly '{assemblyId}', assembly was unloaded.", MessageLevel.Error);
+                return;
+            }
+            
+            Type[] assemblyTypes = assembly.GetTypes();
 
-			if (assemblyTypes.Length == 0)
+            if (assemblyTypes.Length == 0)
 			{
 				*outTypeCount = 0;
 				return;
