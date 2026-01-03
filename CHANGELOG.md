@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.1](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.2.0...v2.2.1) (2026-01-03)
+
+
+### Bug Fixes
+
+* add build type to configure step ([7c085e0](https://github.com/untrustedmodders/plugify-module-dotnet/commit/7c085e0717d06ef67af895c3762ea5aed56bb925))
+
 ## [2.2.0](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.1.13...v2.2.0) (2025-12-26)
 
 
