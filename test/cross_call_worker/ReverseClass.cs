@@ -494,7 +494,81 @@ public unsafe class ReverseClass
         // Return the result as a string
         return $"{result}";
     } 
-    
+    	
+	public static string ReverseParamAllAliases()
+	{
+	    AliasBool aBool = true;
+	    AliasChar8 aChar8 = 'A';
+	    AliasChar16 aChar16 = '0';
+	    AliasInt8 aInt8 = 1;
+	    AliasInt16 aInt16 = 2;
+	    AliasInt32 aInt32 = 3;
+	    AliasInt64 aInt64 = 4;
+	    AliasPtr aPtr = nint.Zero;
+	    AliasFloat aFloat = 5.5f;
+	    AliasDouble aDouble = 6.6;
+	    AliasString aString = "seven";
+	    AliasAny aAny = "six";
+	    AliasVec2 aVec2 = new Vector2(0.1f, 0.2f);
+	    AliasVec3 aVec3 = new Vector3(0.3f, 0.4f, 0.5f);
+	    AliasVec4 aVec4 = new Vector4(0.6f, 0.7f, 0.8f, 0.9f);
+	    AliasMat4x4 aMat4x4 = new Matrix4x4(1.4f, 1.1f, 1.2f, 1.3f, 2.4f, 2.1f, 2.2f, 2.3f, 3.4f, 3.1f, 3.2f, 3.3f, 4.4f, 4.1f, 4.2f, 4.3f);
+	    AliasBoolVector aBoolVec = [aBool];
+	    AliasChar8Vector aChar8Vec = [aChar8];
+	    AliasChar16Vector aChar16Vec = [aChar16];
+	    AliasInt8Vector aInt8Vec = [aInt8];
+	    AliasInt16Vector aInt16Vec = [aInt16];
+	    AliasInt32Vector aInt32Vec = [aInt32];
+	    AliasInt64Vector aInt64Vec = [aInt64];
+	    AliasPtrVector aPtrVec = [aPtr];
+	    AliasFloatVector aFloatVec = [aFloat];
+	    AliasDoubleVector aDoubleVec = [aDouble];
+	    AliasStringVector aStringVec = [aString];
+	    AliasAnyVector aAnyVec = [aAny];
+	    AliasVec2Vector aVec2Vec = [aVec2];
+	    AliasVec3Vector aVec3Vec = [aVec3];
+	    AliasVec4Vector aVec4Vec = [aVec4];
+	    int result = ParamAllAliasesCallback(aBool, aChar8, aChar16, aInt8, aInt16, aInt32, aInt64, aPtr, aFloat, aDouble, aString, aAny, aVec2, aVec3, aVec4, aMat4x4, aBoolVec, aChar8Vec, aChar16Vec, aInt8Vec, aInt16Vec, aInt32Vec, aInt64Vec, aPtrVec, aFloatVec, aDoubleVec, aStringVec, aAnyVec, aVec2Vec, aVec3Vec, aVec4Vec);
+	    return result.ToString();
+	}
+
+	public static string ReverseParamAllRefAliases()
+	{
+	    AliasBool aBool = default;
+	    AliasChar8 aChar8 = default;
+	    AliasChar16 aChar16 = default;
+	    AliasInt8 aInt8 = default;
+	    AliasInt16 aInt16 = default;
+	    AliasInt32 aInt32 = default;
+	    AliasInt64 aInt64 = default;
+	    AliasPtr aPtr = default;
+	    AliasFloat aFloat = default;
+	    AliasDouble aDouble = default;
+	    AliasString aString = default;
+	    AliasAny aAny = default;
+	    AliasVec2 aVec2 = default;
+	    AliasVec3 aVec3 = default;
+	    AliasVec4 aVec4 = default;
+	    AliasMat4x4 aMat4x4 = default;
+	    AliasBoolVector aBoolVec = [];
+	    AliasChar8Vector aChar8Vec = [];
+	    AliasChar16Vector aChar16Vec = [];
+	    AliasInt8Vector aInt8Vec = [];
+	    AliasInt16Vector aInt16Vec = [];
+	    AliasInt32Vector aInt32Vec = [];
+	    AliasInt64Vector aInt64Vec = [];
+	    AliasPtrVector aPtrVec = [];
+	    AliasFloatVector aFloatVec = [];
+	    AliasDoubleVector aDoubleVec = [];
+	    AliasStringVector aStringVec = [];
+	    AliasAnyVector aAnyVec = [];
+	    AliasVec2Vector aVec2Vec = [];
+	    AliasVec3Vector aVec3Vec = [];
+	    AliasVec4Vector aVec4Vec = [];
+	    long result = ParamAllRefAliasesCallback(ref aBool, ref aChar8, ref aChar16, ref aInt8, ref aInt16, ref aInt32, ref aInt64, ref aPtr, ref aFloat, ref aDouble, ref aString, ref aAny, ref aVec2, ref aVec3, ref aVec4, ref aMat4x4, ref aBoolVec, ref aChar8Vec, ref aChar16Vec, ref aInt8Vec, ref aInt16Vec, ref aInt32Vec, ref aInt64Vec, ref aPtrVec, ref aFloatVec, ref aDoubleVec, ref aStringVec, ref aAnyVec, ref aVec2Vec, ref aVec3Vec, ref aVec4Vec);
+	    return result.ToString();
+	}
+
     public static string ReverseParamEnum()
     {
 	    // Call the method and get the result
@@ -552,7 +626,7 @@ public unsafe class ReverseClass
 	public static string CallFuncChar8()
 	{
 		var result = CallFuncChar8Callback(CallbackHolder.MockChar8);
-		return $"{(byte)result}";
+		return $"{result}";
 	}
 
 	public static string CallFuncChar16()
@@ -636,7 +710,7 @@ public unsafe class ReverseClass
 	public static string CallFuncAny()
 	{
 		var result = CallFuncAnyCallback(CallbackHolder.MockAny);
-		return ((char)(Char16)result).ToString();
+		return ((int)(Char16)result).ToString();
 	}
 
 	public static string CallFuncBoolVector()
@@ -987,6 +1061,258 @@ public unsafe class ReverseClass
 		return result;
 	}
 
+	public static string CallFuncAliasBool()
+	{
+	    bool result = CallFuncAliasBoolCallback(CallbackHolder.MockFuncAliasBool);
+	    return result.ToString().ToLower();
+	}
+
+	public static string CallFuncAliasChar8()
+	{
+	    char result = CallFuncAliasChar8Callback(CallbackHolder.MockFuncAliasChar8);
+	    return ((byte)result).ToString();
+	}
+
+	public static string CallFuncAliasChar16()
+	{
+	    char result = CallFuncAliasChar16Callback(CallbackHolder.MockFuncAliasChar16);
+	    return ((short)result).ToString();
+	}
+
+	public static string CallFuncAliasInt8()
+	{
+	    sbyte result = CallFuncAliasInt8Callback(CallbackHolder.MockFuncAliasInt8);
+	    return result.ToString();
+	}
+
+	public static string CallFuncAliasInt16()
+	{
+	    short result = CallFuncAliasInt16Callback(CallbackHolder.MockFuncAliasInt16);
+	    return result.ToString();
+	}
+
+	public static string CallFuncAliasInt32()
+	{
+	    int result = CallFuncAliasInt32Callback(CallbackHolder.MockFuncAliasInt32);
+	    return result.ToString();
+	}
+
+	public static string CallFuncAliasInt64()
+	{
+	    long result = CallFuncAliasInt64Callback(CallbackHolder.MockFuncAliasInt64);
+	    return result.ToString();
+	}
+
+	public static string CallFuncAliasUInt8()
+	{
+	    byte result = CallFuncAliasUInt8Callback(CallbackHolder.MockFuncAliasUInt8);
+	    return result.ToString();
+	}
+
+	public static string CallFuncAliasUInt16()
+	{
+	    ushort result = CallFuncAliasUInt16Callback(CallbackHolder.MockFuncAliasUInt16);
+	    return result.ToString();
+	}
+
+	public static string CallFuncAliasUInt32()
+	{
+	    uint result = CallFuncAliasUInt32Callback(CallbackHolder.MockFuncAliasUInt32);
+	    return result.ToString();
+	}
+
+	public static string CallFuncAliasUInt64()
+	{
+	    ulong result = CallFuncAliasUInt64Callback(CallbackHolder.MockFuncAliasUInt64);
+	    return result.ToString();
+	}
+
+	public static string CallFuncAliasPtr()
+	{
+	    nint result = CallFuncAliasPtrCallback(CallbackHolder.MockFuncAliasPtr);
+	    return result.ToString();
+	}
+
+	public static string CallFuncAliasFloat()
+	{
+	    float result = CallFuncAliasFloatCallback(CallbackHolder.MockFuncAliasFloat);
+	    return result.ToString();
+	}
+
+	public static string CallFuncAliasDouble()
+	{
+	    double result = CallFuncAliasDoubleCallback(CallbackHolder.MockFuncAliasDouble);
+	    return result.ToString();
+	}
+
+	/*public static string CallFuncAliasFunction()
+	{
+	    var result = CallFuncAliasFunctionCallback(CallbackHolder.MockFuncAliasFunction);
+	    return "0x0";
+	}*/
+
+	public static string CallFuncAliasString()
+	{
+	    string result = CallFuncAliasStringCallback(CallbackHolder.MockFuncAliasString);
+	    return result;
+	}
+
+	public static string CallFuncAliasAny()
+	{
+	    object result = CallFuncAliasAnyCallback(CallbackHolder.MockFuncAliasAny);
+	    return result?.ToString() ?? "null";
+	}
+
+	public static string CallFuncAliasBoolVector()
+	{
+	    Bool8[] result = CallFuncAliasBoolVectorCallback(CallbackHolder.MockFuncAliasBoolVector);
+	    return ExportClass.VectorToString(result);
+	}
+
+	public static string CallFuncAliasChar8Vector()
+	{
+		Char8[] result = CallFuncAliasChar8VectorCallback(CallbackHolder.MockFuncAliasChar8Vector);
+	    return ExportClass.VectorToString(result);
+	}
+
+	public static string CallFuncAliasChar16Vector()
+	{
+	    Char16[] result = CallFuncAliasChar16VectorCallback(CallbackHolder.MockFuncAliasChar16Vector);
+	    return ExportClass.VectorToString(result);
+	}
+
+	public static string CallFuncAliasInt8Vector()
+	{
+	    sbyte[] result = CallFuncAliasInt8VectorCallback(CallbackHolder.MockFuncAliasInt8Vector);
+	    return ExportClass.VectorToString(result);
+	}
+
+	public static string CallFuncAliasInt16Vector()
+	{
+	    short[] result = CallFuncAliasInt16VectorCallback(CallbackHolder.MockFuncAliasInt16Vector);
+	    return ExportClass.VectorToString(result);
+	}
+
+	public static string CallFuncAliasInt32Vector()
+	{
+	    int[] result = CallFuncAliasInt32VectorCallback(CallbackHolder.MockFuncAliasInt32Vector);
+	    return ExportClass.VectorToString(result);
+	}
+
+	public static string CallFuncAliasInt64Vector()
+	{
+	    long[] result = CallFuncAliasInt64VectorCallback(CallbackHolder.MockFuncAliasInt64Vector);
+	    return ExportClass.VectorToString(result);
+	}
+
+	public static string CallFuncAliasUInt8Vector()
+	{
+	    byte[] result = CallFuncAliasUInt8VectorCallback(CallbackHolder.MockFuncAliasUInt8Vector);
+	    return ExportClass.VectorToString(result);
+	}
+
+	public static string CallFuncAliasUInt16Vector()
+	{
+	    ushort[] result = CallFuncAliasUInt16VectorCallback(CallbackHolder.MockFuncAliasUInt16Vector);
+	    return ExportClass.VectorToString(result);
+	}
+
+	public static string CallFuncAliasUInt32Vector()
+	{
+	    uint[] result = CallFuncAliasUInt32VectorCallback(CallbackHolder.MockFuncAliasUInt32Vector);
+	    return ExportClass.VectorToString(result);
+	}
+
+	public static string CallFuncAliasUInt64Vector()
+	{
+	    ulong[] result = CallFuncAliasUInt64VectorCallback(CallbackHolder.MockFuncAliasUInt64Vector);
+	    return ExportClass.VectorToString(result);
+	}
+
+	public static string CallFuncAliasPtrVector()
+	{
+	    nint[] result = CallFuncAliasPtrVectorCallback(CallbackHolder.MockFuncAliasPtrVector);
+	    return ExportClass.VectorToString(result);
+	}
+
+	public static string CallFuncAliasFloatVector()
+	{
+	    float[] result = CallFuncAliasFloatVectorCallback(CallbackHolder.MockFuncAliasFloatVector);
+	    return ExportClass.VectorToString(result);
+	}
+
+	public static string CallFuncAliasDoubleVector()
+	{
+	    double[] result = CallFuncAliasDoubleVectorCallback(CallbackHolder.MockFuncAliasDoubleVector);
+	    return ExportClass.VectorToString(result);
+	}
+
+	public static string CallFuncAliasStringVector()
+	{
+	    string[] result = CallFuncAliasStringVectorCallback(CallbackHolder.MockFuncAliasStringVector);
+	    return ExportClass.VectorToString(result);
+	}
+
+	public static string CallFuncAliasAnyVector()
+	{
+	    object[] result = CallFuncAliasAnyVectorCallback(CallbackHolder.MockFuncAliasAnyVector);
+	    return ExportClass.VectorToString(result);
+	}
+
+	public static string CallFuncAliasVec2Vector()
+	{
+	    Vector2[] result = CallFuncAliasVec2VectorCallback(CallbackHolder.MockFuncAliasVec2Vector);
+	    return ExportClass.VectorToString(result);
+	}
+
+	public static string CallFuncAliasVec3Vector()
+	{
+	    Vector3[] result = CallFuncAliasVec3VectorCallback(CallbackHolder.MockFuncAliasVec3Vector);
+	    return ExportClass.VectorToString(result);
+	}
+
+	public static string CallFuncAliasVec4Vector()
+	{
+	    Vector4[] result = CallFuncAliasVec4VectorCallback(CallbackHolder.MockFuncAliasVec4Vector);
+	    return ExportClass.VectorToString(result);
+	}
+
+	public static string CallFuncAliasMat4x4Vector()
+	{
+	    Matrix4x4[] result = CallFuncAliasMat4x4VectorCallback(CallbackHolder.MockFuncAliasMat4x4Vector);
+	    return ExportClass.VectorToString(result);
+	}
+
+	public static string CallFuncAliasVec2()
+	{
+	    Vector2 result = CallFuncAliasVec2Callback(CallbackHolder.MockFuncAliasVec2);
+	    return ExportClass.PodToString(result);
+	}
+
+	public static string CallFuncAliasVec3()
+	{
+	    Vector3 result = CallFuncAliasVec3Callback(CallbackHolder.MockFuncAliasVec3);
+	    return ExportClass.PodToString(result);
+	}
+
+	public static string CallFuncAliasVec4()
+	{
+	    Vector4 result = CallFuncAliasVec4Callback(CallbackHolder.MockFuncAliasVec4);
+	    return ExportClass.PodToString(result);
+	}
+
+	public static string CallFuncAliasMat4x4()
+	{
+	    Matrix4x4 result = CallFuncAliasMat4x4Callback(CallbackHolder.MockFuncAliasMat4x4);
+	    return ExportClass.PodToString(result);
+	}
+
+	public static string CallFuncAliasAll()
+	{
+	    string result = CallFuncAliasAllCallback(CallbackHolder.MockFuncAliasAll);
+	    return result;
+	}
+
      // Define the dictionary mapping strings to methods
     public static readonly Dictionary<string, Func<string>> ReverseTest = new()
     {
@@ -1050,6 +1376,8 @@ public unsafe class ReverseClass
         { "ParamRef10", ReverseParamRef10 },
         { "ParamRefArrays", ReverseParamRefVectors },
         { "ParamAllPrimitives", ReverseParamAllPrimitives },
+        { "ParamAllAliases", ReverseParamAllAliases },
+        { "ParamAllRefAliases", ReverseParamAllRefAliases },
         { "ParamEnum", ReverseParamEnum },
         { "ParamEnumRef", ReverseParamEnumRef },
         { "ParamVariant", ReverseParamVariant },
@@ -1095,6 +1423,48 @@ public unsafe class ReverseClass
         { "CallFuncVec3", CallFuncVec3 },
         { "CallFuncVec4", CallFuncVec4 },
         { "CallFuncMat4x4", CallFuncMat4x4 },
+        { "CallFuncAliasBool", CallFuncAliasBool },
+	    { "CallFuncAliasChar8", CallFuncAliasChar8 },
+	    { "CallFuncAliasChar16", CallFuncAliasChar16 },
+	    { "CallFuncAliasInt8", CallFuncAliasInt8 },
+	    { "CallFuncAliasInt16", CallFuncAliasInt16 },
+	    { "CallFuncAliasInt32", CallFuncAliasInt32 },
+	    { "CallFuncAliasInt64", CallFuncAliasInt64 },
+	    { "CallFuncAliasUInt8", CallFuncAliasUInt8 },
+	    { "CallFuncAliasUInt16", CallFuncAliasUInt16 },
+	    { "CallFuncAliasUInt32", CallFuncAliasUInt32 },
+	    { "CallFuncAliasUInt64", CallFuncAliasUInt64 },
+	    { "CallFuncAliasPtr", CallFuncAliasPtr },
+	    { "CallFuncAliasFloat", CallFuncAliasFloat },
+	    { "CallFuncAliasDouble", CallFuncAliasDouble },
+	    //{ "CallFuncAliasFunction", CallFuncAliasFunction },
+	    { "CallFuncAliasString", CallFuncAliasString },
+	    { "CallFuncAliasAny", CallFuncAliasAny },
+	    { "CallFuncAliasBoolVector", CallFuncAliasBoolVector },
+	    { "CallFuncAliasChar8Vector", CallFuncAliasChar8Vector },
+	    { "CallFuncAliasChar16Vector", CallFuncAliasChar16Vector },
+	    { "CallFuncAliasInt8Vector", CallFuncAliasInt8Vector },
+	    { "CallFuncAliasInt16Vector", CallFuncAliasInt16Vector },
+	    { "CallFuncAliasInt32Vector", CallFuncAliasInt32Vector },
+	    { "CallFuncAliasInt64Vector", CallFuncAliasInt64Vector },
+	    { "CallFuncAliasUInt8Vector", CallFuncAliasUInt8Vector },
+	    { "CallFuncAliasUInt16Vector", CallFuncAliasUInt16Vector },
+	    { "CallFuncAliasUInt32Vector", CallFuncAliasUInt32Vector },
+	    { "CallFuncAliasUInt64Vector", CallFuncAliasUInt64Vector },
+	    { "CallFuncAliasPtrVector", CallFuncAliasPtrVector },
+	    { "CallFuncAliasFloatVector", CallFuncAliasFloatVector },
+	    { "CallFuncAliasDoubleVector", CallFuncAliasDoubleVector },
+	    { "CallFuncAliasStringVector", CallFuncAliasStringVector },
+	    { "CallFuncAliasAnyVector", CallFuncAliasAnyVector },
+	    { "CallFuncAliasVec2Vector", CallFuncAliasVec2Vector },
+	    { "CallFuncAliasVec3Vector", CallFuncAliasVec3Vector },
+	    { "CallFuncAliasVec4Vector", CallFuncAliasVec4Vector },
+	    { "CallFuncAliasMat4x4Vector", CallFuncAliasMat4x4Vector },
+	    { "CallFuncAliasVec2", CallFuncAliasVec2 },
+	    { "CallFuncAliasVec3", CallFuncAliasVec3 },
+	    { "CallFuncAliasVec4", CallFuncAliasVec4 },
+	    { "CallFuncAliasMat4x4", CallFuncAliasMat4x4 },
+	    { "CallFuncAliasAll", CallFuncAliasAll },
         { "CallFunc1", CallFunc1 },
         { "CallFunc2", CallFunc2 },
         { "CallFunc3", CallFunc3 },

@@ -514,6 +514,112 @@ public class ExportClass
         string buffer = $"{p1}{p2}{p3}{p4}{p5}{p6}{p7}{p8}{p9}{p10}{p11}{p12}{p13}{p14}";
         return 56;
     }
+    
+    public static int ParamAllAliases(
+	    AliasBool         aBool,
+	    AliasChar8        aChar8,
+	    AliasChar16       aChar16,
+	    AliasInt8         aInt8,
+	    AliasInt16        aInt16,
+	    AliasInt32        aInt32,
+	    AliasInt64        aInt64,
+	    AliasPtr          aPtr,
+	    AliasFloat        aFloat,
+	    AliasDouble       aDouble,
+	    AliasString       aString,
+	    AliasAny          aAny,
+	    AliasVec2         aVec2,
+	    AliasVec3         aVec3,
+	    AliasVec4         aVec4,
+	    AliasMat4x4       aMat4x4,
+	    AliasBoolVector   aBoolVec,
+	    AliasChar8Vector  aChar8Vec,
+	    AliasChar16Vector aChar16Vec,
+	    AliasInt8Vector   aInt8Vec,
+	    AliasInt16Vector  aInt16Vec,
+	    AliasInt32Vector  aInt32Vec,
+	    AliasInt64Vector  aInt64Vec,
+	    AliasPtrVector    aPtrVec,
+	    AliasFloatVector  aFloatVec,
+	    AliasDoubleVector aDoubleVec,
+	    AliasStringVector aStringVec,
+	    AliasAnyVector    aAnyVec,
+	    AliasVec2Vector   aVec2Vec,
+	    AliasVec3Vector   aVec3Vec,
+	    AliasVec4Vector   aVec4Vec
+    )
+    {
+        string buffer =
+            $"{aBool}|{aChar8}|{aChar16}|{aInt8}|{aInt16}|{aInt32}|{aInt64}|{aPtr}|{aFloat}|{aDouble}|{aString}|{aAny}|{aVec2}|{aVec3}|{aVec4}|{aMat4x4}|{aBoolVec}|{aChar8Vec}|{aChar16Vec}|{aInt8Vec}|{aInt16Vec}|{aInt32Vec}|{aInt64Vec}|{aPtrVec}|{aFloatVec}|{aDoubleVec}|{aStringVec}|{aAnyVec}|{aVec2Vec}|{aVec3Vec}|{aVec4Vec}";
+	    return -1;
+    }
+
+    public static long ParamAllRefAliases(
+	    ref AliasBool         aBool,
+	    ref AliasChar8        aChar8,
+	    ref AliasChar16       aChar16,
+	    ref AliasInt8         aInt8,
+	    ref AliasInt16        aInt16,
+	    ref AliasInt32        aInt32,
+	    ref AliasInt64        aInt64,
+	    ref AliasPtr          aPtr,
+	    ref AliasFloat        aFloat,
+	    ref AliasDouble       aDouble,
+	    ref AliasString       aString,
+	    ref AliasAny          aAny,
+	    ref AliasVec2         aVec2,
+	    ref AliasVec3         aVec3,
+	    ref AliasVec4         aVec4,
+	    ref AliasMat4x4       aMat4x4,
+	    ref AliasBoolVector   aBoolVec,
+	    ref AliasChar8Vector  aChar8Vec,
+	    ref AliasChar16Vector aChar16Vec,
+	    ref AliasInt8Vector   aInt8Vec,
+	    ref AliasInt16Vector  aInt16Vec,
+	    ref AliasInt32Vector  aInt32Vec,
+	    ref AliasInt64Vector  aInt64Vec,
+	    ref AliasPtrVector    aPtrVec,
+	    ref AliasFloatVector  aFloatVec,
+	    ref AliasDoubleVector aDoubleVec,
+	    ref AliasStringVector aStringVec,
+	    ref AliasAnyVector    aAnyVec,
+	    ref AliasVec2Vector   aVec2Vec,
+	    ref AliasVec3Vector   aVec3Vec,
+	    ref AliasVec4Vector   aVec4Vec
+    ) {
+	    aBool = true;
+	    aChar8 = 'A';
+	    aChar16 = '0';
+	    aInt8 = 1;
+	    aInt16 = 2;
+	    aInt32 = 3;
+	    aInt64 = 4;
+	    aPtr = nint.Zero;
+	    aFloat = 5.0f;
+	    aDouble = 5.0;
+	    aString = "seven";
+	    aAny = "six";
+	    aVec2 = new Vector2(0.1f, 0.2f);
+	    aVec3 = new Vector3(0.3f, 0.4f, 0.5f);
+	    aVec4 = new Vector4(0.6f, 0.7f, 0.8f, 0.9f);
+	    aMat4x4 = new Matrix4x4(1.4f, 1.1f, 1.2f, 1.3f, 2.4f, 2.1f, 2.2f, 2.3f, 3.4f, 3.1f, 3.2f, 3.3f, 4.4f, 4.1f, 4.2f, 4.3f);
+	    aBoolVec = [aBool];
+	    aChar8Vec = [aChar8];
+	    aChar16Vec = [aChar16];
+	    aInt8Vec = [aInt8];
+	    aInt16Vec = [aInt16];
+	    aInt32Vec = [aInt32];
+	    aInt64Vec = [aInt64];
+	    aPtrVec = [aPtr];
+	    aFloatVec = [aFloat];
+	    aDoubleVec = [aDouble];
+	    aStringVec = [aString];
+	    aAnyVec = [aAny];
+	    aVec2Vec = [aVec2];
+	    aVec3Vec = [aVec3];
+	    aVec4Vec = [aVec4];
+	    return 24;
+    }
 
     public static int ParamEnum(Example p1, Example[] p2) {
         return (int)p1 + p2.Sum(e => (int)e);
@@ -535,8 +641,8 @@ public class ExportClass
     
     public static void ParamVariantRef(ref object p1, ref object[] p2)
     {
-        p1 = 'Z';
-        p2 = [false, 6.28, new double[]{1, 2, 3}, IntPtr.Zero, 123456789];
+        p1 = (Char8)'Z';
+        p2 = [(Bool8)false, 6.28, new double[]{1, 2, 3}, IntPtr.Zero, 123456789];
     }
 
     // Call functions using the typedefs
@@ -615,8 +721,8 @@ public class ExportClass
     }
 
     public static nint CallFuncFunction(cross_call_master.FuncFunction func) {
-        nint result = func();
-        return result;
+        FuncFunctionInner result = func();
+        return 0;
     }
 
     public static string CallFuncString(cross_call_master.FuncString func) {
@@ -1433,6 +1539,251 @@ public class ExportClass
         Example[] p2 = [];
         Example[] ret = func(p1, ref p2);
         return $"{{{string.Join(", ", ret.Select(v => ((int)v).ToString()))}}}|{{{string.Join(", ", p2.Select(v => ((int)v).ToString()))}}}";
+    }
+    
+    // Alias callback functions
+
+    public static AliasBool CallFuncAliasBool(cross_call_master.FuncAliasBool func)
+    {
+        return func();
+    }
+
+    public static AliasChar8 CallFuncAliasChar8(cross_call_master.FuncAliasChar8 func)
+    {
+        return func();
+    }
+
+    public static AliasChar16 CallFuncAliasChar16(cross_call_master.FuncAliasChar16 func)
+    {
+        return func();
+    }
+
+    public static AliasInt8 CallFuncAliasInt8(cross_call_master.FuncAliasInt8 func)
+    {
+        return func();
+    }
+
+    public static AliasInt16 CallFuncAliasInt16(cross_call_master.FuncAliasInt16 func)
+    {
+        return func();
+    }
+
+    public static AliasInt32 CallFuncAliasInt32(cross_call_master.FuncAliasInt32 func)
+    {
+        return func();
+    }
+
+    public static AliasInt64 CallFuncAliasInt64(cross_call_master.FuncAliasInt64 func)
+    {
+        return func();
+    }
+
+    public static AliasUInt8 CallFuncAliasUInt8(cross_call_master.FuncAliasUInt8 func)
+    {
+        return func();
+    }
+
+    public static AliasUInt16 CallFuncAliasUInt16(cross_call_master.FuncAliasUInt16 func)
+    {
+        return func();
+    }
+
+    public static AliasUInt32 CallFuncAliasUInt32(cross_call_master.FuncAliasUInt32 func)
+    {
+        return func();
+    }
+
+    public static AliasUInt64 CallFuncAliasUInt64(cross_call_master.FuncAliasUInt64 func)
+    {
+        return func();
+    }
+
+    public static AliasPtr CallFuncAliasPtr(cross_call_master.FuncAliasPtr func)
+    {
+        return func();
+    }
+
+    public static AliasFloat CallFuncAliasFloat(cross_call_master.FuncAliasFloat func)
+    {
+        return func();
+    }
+
+    public static AliasDouble CallFuncAliasDouble(cross_call_master.FuncAliasDouble func)
+    {
+        return func();
+    }
+
+    public static AliasFunction CallFuncAliasFunction(cross_call_master.FuncAliasFunction func)
+    {
+        return func();
+    }
+
+    public static AliasString CallFuncAliasString(cross_call_master.FuncAliasString func)
+    {
+        return func();
+    }
+
+    public static AliasAny CallFuncAliasAny(cross_call_master.FuncAliasAny func)
+    {
+        return func();
+    }
+
+    public static AliasBoolVector CallFuncAliasBoolVector(cross_call_master.FuncAliasBoolVector func)
+    {
+        return func();
+    }
+
+    public static AliasChar8Vector CallFuncAliasChar8Vector(cross_call_master.FuncAliasChar8Vector func)
+    {
+        return func();
+    }
+
+    public static AliasChar16Vector CallFuncAliasChar16Vector(cross_call_master.FuncAliasChar16Vector func)
+    {
+        return func();
+    }
+
+    public static AliasInt8Vector CallFuncAliasInt8Vector(cross_call_master.FuncAliasInt8Vector func)
+    {
+        return func();
+    }
+
+    public static AliasInt16Vector CallFuncAliasInt16Vector(cross_call_master.FuncAliasInt16Vector func)
+    {
+        return func();
+    }
+
+    public static AliasInt32Vector CallFuncAliasInt32Vector(cross_call_master.FuncAliasInt32Vector func)
+    {
+        return func();
+    }
+
+    public static AliasInt64Vector CallFuncAliasInt64Vector(cross_call_master.FuncAliasInt64Vector func)
+    {
+        return func();
+    }
+
+    public static AliasUInt8Vector CallFuncAliasUInt8Vector(cross_call_master.FuncAliasUInt8Vector func)
+    {
+        return func();
+    }
+
+    public static AliasUInt16Vector CallFuncAliasUInt16Vector(cross_call_master.FuncAliasUInt16Vector func)
+    {
+        return func();
+    }
+
+    public static AliasUInt32Vector CallFuncAliasUInt32Vector(cross_call_master.FuncAliasUInt32Vector func)
+    {
+        return func();
+    }
+
+    public static AliasUInt64Vector CallFuncAliasUInt64Vector(cross_call_master.FuncAliasUInt64Vector func)
+    {
+        return func();
+    }
+
+    public static AliasPtrVector CallFuncAliasPtrVector(cross_call_master.FuncAliasPtrVector func)
+    {
+        return func();
+    }
+
+    public static AliasFloatVector CallFuncAliasFloatVector(cross_call_master.FuncAliasFloatVector func)
+    {
+        return func();
+    }
+
+    public static AliasDoubleVector CallFuncAliasDoubleVector(cross_call_master.FuncAliasDoubleVector func)
+    {
+        return func();
+    }
+
+    public static AliasStringVector CallFuncAliasStringVector(cross_call_master.FuncAliasStringVector func)
+    {
+        return func();
+    }
+
+    public static AliasAnyVector CallFuncAliasAnyVector(cross_call_master.FuncAliasAnyVector func)
+    {
+        return func();
+    }
+
+    public static AliasVec2Vector CallFuncAliasVec2Vector(cross_call_master.FuncAliasVec2Vector func)
+    {
+        return func();
+    }
+
+    public static AliasVec3Vector CallFuncAliasVec3Vector(cross_call_master.FuncAliasVec3Vector func)
+    {
+        return func();
+    }
+
+    public static AliasVec4Vector CallFuncAliasVec4Vector(cross_call_master.FuncAliasVec4Vector func)
+    {
+        return func();
+    }
+
+    public static AliasMat4x4Vector CallFuncAliasMat4x4Vector(cross_call_master.FuncAliasMat4x4Vector func)
+    {
+        return func();
+    }
+
+    public static AliasVec2 CallFuncAliasVec2(cross_call_master.FuncAliasVec2 func)
+    {
+        return func();
+    }
+
+    public static AliasVec3 CallFuncAliasVec3(cross_call_master.FuncAliasVec3 func)
+    {
+        return func();
+    }
+
+    public static AliasVec4 CallFuncAliasVec4(cross_call_master.FuncAliasVec4 func)
+    {
+        return func();
+    }
+
+    public static AliasMat4x4 CallFuncAliasMat4x4(cross_call_master.FuncAliasMat4x4 func)
+    {
+        return func();
+    }
+
+    public static string CallFuncAliasAll(cross_call_master.FuncAliasAll func)
+    {
+        AliasBool aBool = true;
+        AliasChar8 aChar8 = 'A';
+        AliasChar16 aChar16 = '0';
+        AliasInt8 aInt8 = 1;
+        AliasInt16 aInt16 = 2;
+        AliasInt32 aInt32 = 3;
+        AliasInt64 aInt64 = 4;
+        AliasPtr aPtr = nint.Zero;
+        AliasFloat aFloat = 5.5f;
+        AliasDouble aDouble = 6.6;
+        AliasString aString = "seven";
+        AliasAny aAny = "six";
+        AliasVec2 aVec2 = new Vector2(0.1f, 0.2f);
+        AliasVec3 aVec3 = new Vector3(0.3f, 0.4f, 0.5f);
+        AliasVec4 aVec4 = new Vector4(0.6f, 0.7f, 0.8f, 0.9f);
+        AliasMat4x4 aMat4x4 = new Matrix4x4(1.4f, 1.1f, 1.2f, 1.3f, 2.4f, 2.1f, 2.2f, 2.3f, 3.4f, 3.1f, 3.2f, 3.3f, 4.4f, 4.1f, 4.2f, 4.3f);
+        AliasBoolVector aBoolVec = [aBool];
+        AliasChar8Vector aChar8Vec = [aChar8];
+        AliasChar16Vector aChar16Vec = [aChar16];
+        AliasInt8Vector aInt8Vec = [aInt8];
+        AliasInt16Vector aInt16Vec = [aInt16];
+        AliasInt32Vector aInt32Vec = [aInt32];
+        AliasInt64Vector aInt64Vec = [aInt64];
+        AliasPtrVector aPtrVec = [aPtr];
+        AliasFloatVector aFloatVec = [aFloat];
+        AliasDoubleVector aDoubleVec = [aDouble];
+        AliasStringVector aStringVec = [aString];
+        AliasAnyVector aAnyVec = [aAny];
+        AliasVec2Vector aVec2Vec = [aVec2];
+        AliasVec3Vector aVec3Vec = [aVec3];
+        AliasVec4Vector aVec4Vec = [aVec4];
+        
+        string result = func(aBool, aChar8, aChar16, aInt8, aInt16, aInt32, aInt64, aPtr, aFloat, aDouble, aString, aAny, ref aVec2, ref aVec3, ref aVec4, ref aMat4x4, aBoolVec, aChar8Vec, aChar16Vec, aInt8Vec, aInt16Vec, aInt32Vec, aInt64Vec, aPtrVec, aFloatVec, aDoubleVec, aStringVec, aAnyVec, aVec2Vec, aVec3Vec, aVec4Vec);
+        return result;
     }
     
     static unsafe void ReverseCall(string test)

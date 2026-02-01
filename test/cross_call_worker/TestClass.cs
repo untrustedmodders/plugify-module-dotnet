@@ -128,7 +128,7 @@ public class TestClass
         Log("________________________________");
         
         // No using statement needed - Counter doesn't implement IDisposable
-        var counter = new Counter(100);
+        var counter = new Counter((long)100);
         Log($"v Created Counter with value: {counter.GetValue()}");
         
         counter.Increment();

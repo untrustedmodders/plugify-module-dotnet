@@ -475,13 +475,13 @@ ScriptInstance::ScriptInstance(const Extension& plugin, ManagedGuid assembly, Ty
 	_instance.SetPropertyValue("Location", plg::string(plg::as_string(plugin.GetLocation())));
 	_instance.SetPropertyValue("Dependencies", deps);
 
-	// TODO
-	_instance.SetPropertyValue("BaseDir", plg::string(plg::as_string(g_netlm.GetProvider()->GetBaseDir())));
-	_instance.SetPropertyValue("ExtensionsDir", plg::string(plg::as_string(g_netlm.GetProvider()->GetExtensionsDir())));
-	_instance.SetPropertyValue("ConfigsDir", plg::string(plg::as_string(g_netlm.GetProvider()->GetConfigsDir())));
-	_instance.SetPropertyValue("DataDir", plg::string(plg::as_string(g_netlm.GetProvider()->GetDataDir())));
-	_instance.SetPropertyValue("LogsDir", plg::string(plg::as_string(g_netlm.GetProvider()->GetLogsDir())));
-	_instance.SetPropertyValue("CacheDir", plg::string(plg::as_string(g_netlm.GetProvider()->GetCacheDir())));
+	const auto& provider = g_netlm.GetProvider();
+	_instance.SetPropertyValue("BaseDir", plg::string(plg::as_string(provider->GetBaseDir())));
+	_instance.SetPropertyValue("ExtensionsDir", plg::string(plg::as_string(provider->GetExtensionsDir())));
+	_instance.SetPropertyValue("ConfigsDir", plg::string(plg::as_string(provider->GetConfigsDir())));
+	_instance.SetPropertyValue("DataDir", plg::string(plg::as_string(provider->GetDataDir())));
+	_instance.SetPropertyValue("LogsDir", plg::string(plg::as_string(provider->GetLogsDir())));
+	_instance.SetPropertyValue("CacheDir", plg::string(plg::as_string(provider->GetCacheDir())));
 
 	_update = _instance.GetType().GetMethod("OnPluginUpdate");
 	_start = _instance.GetType().GetMethod("OnPluginStart");

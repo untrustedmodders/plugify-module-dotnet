@@ -125,6 +125,194 @@ public static unsafe class CallbackHolder
         );
     }
     
+    // Mock implementation for alias parameters functions
+
+    public static AliasBool MockFuncAliasBool() => true;
+
+    public static AliasChar8 MockFuncAliasChar8() => 'A';
+
+    public static AliasChar16 MockFuncAliasChar16() => 'Z';
+
+    public static AliasInt8 MockFuncAliasInt8() => 10;
+
+    public static AliasInt16 MockFuncAliasInt16() => 100;
+
+    public static AliasInt32 MockFuncAliasInt32() => 1000;
+
+    public static AliasInt64 MockFuncAliasInt64() => 10000;
+
+    public static AliasUInt8 MockFuncAliasUInt8() => 20;
+
+    public static AliasUInt16 MockFuncAliasUInt16() => 200;
+
+    public static AliasUInt32 MockFuncAliasUInt32() => 2000;
+
+    public static AliasUInt64 MockFuncAliasUInt64() => 20000;
+
+    public static AliasPtr MockFuncAliasPtr() => nint.Zero;
+
+    public static AliasFloat MockFuncAliasFloat() => 3.14f;
+
+    public static AliasDouble MockFuncAliasDouble() => 6.28;
+
+    //public static AliasFunction MockFuncAliasFunction() => ;
+
+    public static AliasString MockFuncAliasString() => "Test string";
+
+    public static AliasAny MockFuncAliasAny() => 'A';
+
+    public static AliasBoolVector MockFuncAliasBoolVector() => [true, false];
+
+    public static AliasChar8Vector MockFuncAliasChar8Vector() => ['A', 'B'];
+
+    public static AliasChar16Vector MockFuncAliasChar16Vector() => ['A', 'B'];
+
+    public static AliasInt8Vector MockFuncAliasInt8Vector() => [10, 20];
+
+    public static AliasInt16Vector MockFuncAliasInt16Vector() => [100, 200];
+
+    public static AliasInt32Vector MockFuncAliasInt32Vector() => [1000, 2000];
+
+    public static AliasInt64Vector MockFuncAliasInt64Vector() => [10000, 20000];
+
+    public static AliasUInt8Vector MockFuncAliasUInt8Vector() => [20, 30];
+
+    public static AliasUInt16Vector MockFuncAliasUInt16Vector() => [200, 300];
+
+    public static AliasUInt32Vector MockFuncAliasUInt32Vector() => [2000, 3000];
+
+    public static AliasUInt64Vector MockFuncAliasUInt64Vector() => [20000, 30000];
+
+    public static AliasPtrVector MockFuncAliasPtrVector() => [nint.Zero, new nint(1)];
+
+    public static AliasFloatVector MockFuncAliasFloatVector() => [1.1f, 2.2f];
+
+    public static AliasDoubleVector MockFuncAliasDoubleVector() => [3.3, 4.4];
+
+    public static AliasStringVector MockFuncAliasStringVector() => ["Hello", "World"];
+
+    public static AliasAnyVector MockFuncAliasAnyVector() => ["Hello", 3.14f, 6.28, 1, 0xDEADBEAF];
+
+    public static AliasVec2Vector MockFuncAliasVec2Vector()
+    {
+        return [
+            new Vector2(0.5f, -1.2f),
+            new Vector2(3.4f, 7.8f),
+            new Vector2(-6.7f, 2.3f),
+            new Vector2(8.9f, -4.5f),
+            new Vector2(0.0f, 0.0f)
+        ];
+    }
+
+    public static AliasVec3Vector MockFuncAliasVec3Vector()
+    {
+        return [
+            new Vector3(2.1f, 3.2f, 4.3f),
+            new Vector3(-5.4f, 6.5f, -7.6f),
+            new Vector3(8.7f, 9.8f, 0.1f),
+            new Vector3(1.2f, -3.3f, 4.4f),
+            new Vector3(-5.5f, 6.6f, -7.7f)
+        ];
+    }
+
+    public static AliasVec4Vector MockFuncAliasVec4Vector()
+    {
+        return [
+            new Vector4(0.1f, 1.2f, 2.3f, 3.4f),
+            new Vector4(-4.5f, 5.6f, 6.7f, -7.8f),
+            new Vector4(8.9f, -9.0f, 10.1f, -11.2f),
+            new Vector4(12.3f, 13.4f, 14.5f, 15.6f),
+            new Vector4(-16.7f, 17.8f, 18.9f, -19.0f)
+        ];
+    }
+
+    public static AliasMat4x4Vector MockFuncAliasMat4x4Vector()
+    {
+        return [
+            // Identity matrix
+            new Matrix4x4(
+                1.0f, 0.0f, 0.0f, 0.0f,
+                0.0f, 1.0f, 0.0f, 0.0f,
+                0.0f, 0.0f, 1.0f, 0.0f,
+                0.0f, 0.0f, 0.0f, 1.0f
+            ),
+            // Random matrix #1
+            new Matrix4x4(
+                0.5f, 1.0f, 1.5f, 2.0f,
+                2.5f, 3.0f, 3.5f, 4.0f,
+                4.5f, 5.0f, 5.5f, 6.0f,
+                6.5f, 7.0f, 7.5f, 8.0f
+            ),
+            // Random matrix #2
+            new Matrix4x4(
+                -1.0f, -2.0f, -3.0f, -4.0f,
+                -5.0f, -6.0f, -7.0f, -8.0f,
+                -9.0f, -10.0f, -11.0f, -12.0f,
+                -13.0f, -14.0f, -15.0f, -16.0f
+            ),
+            // Random matrix #3
+            new Matrix4x4(
+                1.1f, 2.2f, 3.3f, 4.4f,
+                5.5f, 6.6f, 7.7f, 8.8f,
+                9.9f, 10.0f, 11.1f, 12.2f,
+                13.3f, 14.4f, 15.5f, 16.6f
+            )
+        ];
+    }
+
+    public static AliasVec2 MockFuncAliasVec2() => new Vector2(1.0f, 2.0f);
+
+    public static AliasVec3 MockFuncAliasVec3() => new Vector3(1.0f, 2.0f, 3.0f);
+
+    public static AliasVec4 MockFuncAliasVec4() => new Vector4(1.0f, 2.0f, 3.0f, 4.0f);
+
+    public static AliasMat4x4 MockFuncAliasMat4x4()
+    {
+        return new Matrix4x4(
+            1.0f, 0.0f, 0.0f, 0.0f,
+            0.0f, 0.0f, 0.0f, 0.0f,
+            0.0f, 0.0f, 0.0f, 0.0f,
+            0.0f, 0.0f, 0.0f, 0.0f
+        );
+    }
+
+    public static string MockFuncAliasAll(
+        AliasBool aBool,
+        AliasChar8 aChar8,
+        AliasChar16 aChar16,
+        AliasInt8 aInt8,
+        AliasInt16 aInt16,
+        AliasInt32 aInt32,
+        AliasInt64 aInt64,
+        AliasPtr aPtr,
+        AliasFloat aFloat,
+        AliasDouble aDouble,
+        AliasString aString,
+        AliasAny aAny,
+        ref AliasVec2 aVec2,
+        ref AliasVec3 aVec3,
+        ref AliasVec4 aVec4,
+        ref AliasMat4x4 aMat4x4,
+        AliasBoolVector aBoolVec,
+        AliasChar8Vector aChar8Vec,
+        AliasChar16Vector aChar16Vec,
+        AliasInt8Vector aInt8Vec,
+        AliasInt16Vector aInt16Vec,
+        AliasInt32Vector aInt32Vec,
+        AliasInt64Vector aInt64Vec,
+        AliasPtrVector aPtrVec,
+        AliasFloatVector aFloatVec,
+        AliasDoubleVector aDoubleVec,
+        AliasStringVector aStringVec,
+        AliasAnyVector aAnyVec,
+        AliasVec2Vector aVec2Vec,
+        AliasVec3Vector aVec3Vec,
+        AliasVec4Vector aVec4Vec
+    )
+    {
+        return $"{ExportClass.BStr(aBool)}|{aChar8}|{(ushort)aChar16}|{aInt8}|{aInt16}|{aInt32}|{aInt64}|{aPtr}|{aFloat}|{aDouble}|{aString}|{aAny}|{ExportClass.PodToString(aVec2)}|{ExportClass.PodToString(aVec3)}|{ExportClass.PodToString(aVec4)}|{ExportClass.PodToString(aMat4x4)}|{ExportClass.VectorToString(aBoolVec)}|{ExportClass.VectorToString(aChar8Vec)}|{ExportClass.VectorToString(aChar16Vec)}|{ExportClass.VectorToString(aInt8Vec)}|{ExportClass.VectorToString(aInt16Vec)}|{ExportClass.VectorToString(aInt32Vec)}|{ExportClass.VectorToString(aInt64Vec)}|{ExportClass.VectorToString(aPtrVec)}|{ExportClass.VectorToString(aFloatVec)}|{ExportClass.VectorToString(aDoubleVec)}|{ExportClass.VectorToString(aStringVec)}|{ExportClass.VectorToString(aAnyVec)}|{ExportClass.VectorToString(aVec2Vec)}|{ExportClass.VectorToString(aVec3Vec)}|{ExportClass.VectorToString(aVec4Vec)}";
+    }
+    
     public static int MockFunc1(ref Vector3 v)
     {
         string buffer = string.Format("{0}{1}{2}", v.X, v.Y, v.Z);
