@@ -82,7 +82,7 @@ ManagedAssembly& AssemblyLoader::FindAssembly(ManagedGuid assemblyId) {
 void ManagedAssembly::AddInternalCall(std::string_view className, std::string_view variableName, void* functionPtr) {
 	assert(functionPtr != nullptr);
 
-	std::string assemblyQualifiedName(std::format("{}@{}, {}", className, variableName, _name));
+	std::string assemblyQualifiedName(std::format("{}@_{}, {}", className, variableName, _name));
 
 #if NETLM_PLATFORM_WINDOWS
 	const auto& name = _internalCallNameStorage.emplace_back(Utils::ConvertUtf8ToWide(assemblyQualifiedName));

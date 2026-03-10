@@ -13,13 +13,6 @@
 #include <plg/any.hpp>
 #include <plg/vector.hpp>
 
-#if __has_include(<stacktrace>)
-#include <stacktrace>
-#define HAS_STACKTRACE 1
-#else
-#define HAS_STACKTRACE 0
-#endif
-
 #include <exception>
 #include <module_export.h>
 
@@ -30,6 +23,7 @@ using namespace netlm;
 
 Result<InitData> DotnetLanguageModule::Initialize(const Provider& provider, const Extension& module) {
 	_provider = std::make_unique<Provider>(provider);
+	_logger = _provider->Resolve<ILogger>();
 
 	auto result = _host.Initialize({
 		.hostfxrPath = module.GetLocation() / "dotnet/host/fxr/10.0.0/" NETLM_LIBRARY_PREFIX "hostfxr" NETLM_LIBRARY_SUFFIX,
@@ -41,7 +35,7 @@ Result<InitData> DotnetLanguageModule::Initialize(const Provider& provider, cons
 		return MakeError(std::move(result.error()));
 	}
 
-	_provider->Log(LOG_PREFIX "Inited!", Severity::Debug);
+	_logger->Log(LOG_PREFIX "Inited!", Severity::Debug);
 
 	return InitData{{ .hasUpdate = false }};
 }
@@ -53,6 +47,7 @@ void DotnetLanguageModule::Shutdown() {
 	_loader.Unload();
 	_host.Shutdown();
 
+	_logger.reset();
 	_provider.reset();
 }
 
@@ -240,7 +235,7 @@ std::shared_ptr<Method> DotnetLanguageModule::FindMethod(std::string_view name) 
 			}
 		}
 	}
-	_provider->Log(std::format(LOG_PREFIX "FindMethod failed to find: '{}'", name), Severity::Error);
+	_logger->Log(std::format(LOG_PREFIX "FindMethod failed to find: '{}'", name), Severity::Error);
 	return {};
 }
 
@@ -422,17 +417,13 @@ void DotnetLanguageModule::DelegateCall(const Method* method, MemAddr data, uint
 /*_________________________________________________*/
 
 void DotnetLanguageModule::ExceptionCallback(std::string_view message) {
-	if (const auto& provider = g_netlm.GetProvider()) {
-		provider->Log(std::format(LOG_PREFIX "[Exception] {}", std::string_view(message)), Severity::Error);
-#if HAS_STACKTRACE
-		auto trace = std::stacktrace::current();
-		provider->Log(std::to_string(trace), Severity::Error);
-#endif		
+	if (const auto& logger = g_netlm.GetLogger()) {
+		logger->Log(std::format(LOG_PREFIX "{}", message), Severity::Error);
 	}
 }
 
 void DotnetLanguageModule::MessageCallback(std::string_view message, MessageLevel level) {
-	if (const auto& provider = g_netlm.GetProvider()) {
+	if (const auto& logger = g_netlm.GetLogger()) {
 		Severity severity;
 		switch (level) {
 			case MessageLevel::Info:
@@ -448,7 +439,7 @@ void DotnetLanguageModule::MessageCallback(std::string_view message, MessageLeve
 				return;
 		}
 
-		provider->Log(std::format(LOG_PREFIX "{}", message), severity);
+		logger->Log(std::format(LOG_PREFIX "{}", message), severity);
 	}
 }
 
@@ -522,13 +513,18 @@ namespace netlm {
 
 extern "C" {
 	NETLM_EXPORT bool IsExtensionLoaded(const char* name, const char* constraint) {
-		if (constraint) {
-			plg::range_set<> range;
-			plg::parse(constraint, range);
-			return g_netlm.GetProvider()->IsExtensionLoaded(name, std::move(range));
-		}
-		else
+		if (!constraint) {
 			return g_netlm.GetProvider()->IsExtensionLoaded(name);
+		}
+		plg::range_set<> range;
+		plg::parse(constraint, range);
+		return g_netlm.GetProvider()->IsExtensionLoaded(name, std::move(range));
+	}
+
+	NETLM_EXPORT void Log(const char* message, Severity severity, int line, const char* file, const char* function, const char* module) {
+		if (const auto& logger = g_netlm.GetLogger()) {
+			logger->Log(message, severity, plg::source_location(line, 0, file, function, module));
+		}
 	}
 
 	NETLM_EXPORT ILanguageModule* GetLanguageModule() {

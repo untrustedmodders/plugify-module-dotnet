@@ -3,6 +3,7 @@
         GetLanguageModule;
 
         IsExtensionLoaded;
+        Log;
 
         GetStringData;
         GetStringLength;

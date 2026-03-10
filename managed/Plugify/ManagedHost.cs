@@ -1,4 +1,6 @@
+using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace Plugify;
 
@@ -67,7 +69,29 @@ internal static class ManagedHost
             if (ExceptionCallback == null)
                 return;
 
-            using NativeString msg = exception.ToString();
+            var sb = new StringBuilder();
+
+            Exception? current = exception;
+            while (current != null)
+            {
+                sb.AppendLine(current.GetType().FullName);
+                sb.AppendLine(current.Message);
+
+                if (!string.IsNullOrEmpty(current.StackTrace))
+                    sb.AppendLine(current.StackTrace);
+
+                current = current.InnerException;
+                if (current != null)
+                    sb.AppendLine("Inner Exception:");
+            }
+
+            if (exception.StackTrace == null)
+            {
+                sb.AppendLine("Captured Stack:");
+                sb.AppendLine(new StackTrace(true).ToString());
+            }
+
+            using NativeString msg = sb.ToString();
             ExceptionCallback(msg);
         }
     }

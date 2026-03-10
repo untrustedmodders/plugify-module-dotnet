@@ -1,8 +1,20 @@
 ﻿using System.Numerics;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.Marshalling;
 
 namespace Plugify;
+    
+public enum Severity : int
+{
+	Unknown = 0,
+	Trace   = 1,
+	Debug   = 2,
+	Info    = 3,
+	Warning = 4,
+	Error   = 5,
+	Fatal   = 6
+}
 
 public static unsafe partial class NativeMethods
 {
@@ -14,6 +26,10 @@ public static unsafe partial class NativeMethods
     [SuppressGCTransition]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool IsExtensionLoaded(string name, string? constraint);
+
+    [LibraryImport(DllName, StringMarshalling = StringMarshalling.Utf8)]
+    [SuppressGCTransition]
+    public static partial void Log(string message, Severity severity = Severity.Debug, [CallerLineNumber] int line = 0, [CallerFilePath] string file = "",  [CallerMemberName] string function = "", string module = "");
 
     #endregion
     

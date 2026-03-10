@@ -78,6 +78,8 @@ namespace netlm {
 		std::shared_ptr<Method> FindMethod(std::string_view name) const;
 
 		const std::unique_ptr<Provider>& GetProvider() { return _provider; }
+		const std::shared_ptr<ILogger>& GetLogger() { return _logger; }
+
 		static Result<SharpMethodData> GenerateMethodExport(const Method& method, ManagedAssembly &assembly);
 
 		static void InternalCall(const Method* method, MemAddr data, uint64_t* p, size_t count, void* ret);
@@ -89,6 +91,7 @@ namespace netlm {
 
 	private:
 		std::unique_ptr<Provider> _provider;
+		std::shared_ptr<ILogger> _logger;
 
 		HostInstance _host;
 		AssemblyLoader _loader;
