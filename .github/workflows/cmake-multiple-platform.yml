@@ -158,9 +158,9 @@ jobs:
           sparse-checkout-cone-mode: false
 
       - name: Install .NET Core
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: "10.0.1"
+          dotnet-version: "10.0.x"
 
       - name: Sanitize version name
         shell: bash -el {0}
