@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.2](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.3.1...v2.3.2) (2026-03-10)
+
+
+### Bug Fixes
+
+* specify dotnet version in build ([89ea157](https://github.com/untrustedmodders/plugify-module-dotnet/commit/89ea157ba160766e1db65b9b7e8a38ad2e22cb22))
+
 ## [2.3.1](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.3.0...v2.3.1) (2026-03-10)
 
 
