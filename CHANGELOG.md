@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.3.0](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.2.1...v2.3.0) (2026-03-10)
+
+
+### Features
+
+* add new call logging ([63b8b39](https://github.com/untrustedmodders/plugify-module-dotnet/commit/63b8b3989afb27599cfa45a52359dd1e5c6c3fd3))
+
+
+### Bug Fixes
+
+* add new alias tests ([9588102](https://github.com/untrustedmodders/plugify-module-dotnet/commit/95881027d04a670b2e98b8b076805dae8553c94b))
+
 ## [2.2.1](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.2.0...v2.2.1) (2026-01-03)
 
 
