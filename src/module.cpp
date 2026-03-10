@@ -523,7 +523,7 @@ extern "C" {
 
 	NETLM_EXPORT void Log(const char* message, Severity severity, int line, const char* file, const char* function, const char* module) {
 		if (const auto& logger = g_netlm.GetLogger()) {
-			logger->Log(message, severity, plg::source_location(line, 0, file, function, module));
+			logger->Log(message, severity, plg::source_location(static_cast<size_t>(line), 0, file, function, module));
 		}
 	}
 
