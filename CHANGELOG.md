@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.1](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.3.0...v2.3.1) (2026-03-10)
+
+
+### Bug Fixes
+
+* mac build ([b7fce6a](https://github.com/untrustedmodders/plugify-module-dotnet/commit/b7fce6a64ef4ec8cc588549d71b96547ca53bfc3))
+
 ## [2.3.0](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.2.1...v2.3.0) (2026-03-10)
 
 
