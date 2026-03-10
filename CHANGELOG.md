@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.3](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.3.2...v2.3.3) (2026-03-10)
+
+
+### Bug Fixes
+
+* bump dotnet setup ([d5dfcec](https://github.com/untrustedmodders/plugify-module-dotnet/commit/d5dfcecbb9fed5ce637b7a3655ea79d1747cd4fc))
+
 ## [2.3.2](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.3.1...v2.3.2) (2026-03-10)
 
 
