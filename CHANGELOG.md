@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.5](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.3.4...v2.3.5) (2026-03-11)
+
+
+### Bug Fixes
+
+* update internal calls ([ee6004e](https://github.com/untrustedmodders/plugify-module-dotnet/commit/ee6004ee6cd37f3ab3504d8bb56974e385666e97))
+
 ## [2.3.4](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.3.3...v2.3.4) (2026-03-11)
 
 
