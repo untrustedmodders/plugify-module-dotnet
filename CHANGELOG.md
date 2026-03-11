@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.4](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.3.3...v2.3.4) (2026-03-11)
+
+
+### Bug Fixes
+
+* remove Plugin instance ([30f738b](https://github.com/untrustedmodders/plugify-module-dotnet/commit/30f738b0db773161edc208e0d10ea0c8e167732e))
+
 ## [2.3.3](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.3.2...v2.3.3) (2026-03-10)
 
 
