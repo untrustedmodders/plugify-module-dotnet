@@ -95,7 +95,7 @@ namespace cross_call_master {
 	public delegate Vector4 FuncVec4();
 
 	public delegate Matrix4x4 FuncMat4x4();
-	
+
 	public delegate AliasBool FuncAliasBool();
 
 	public delegate AliasChar8 FuncAliasChar8();

@@ -62,8 +62,6 @@ global using AliasVec3Vector = System.Numerics.Vector3[];
 
 global using AliasVec4Vector = System.Numerics.Vector4[];
 
-global using AliasMat4x4Vector = System.Numerics.Matrix4x4[];
-
 global using AliasUInt8 = byte;
 
 global using AliasUInt16 = ushort;
@@ -81,3 +79,7 @@ global using AliasUInt16Vector = ushort[];
 global using AliasUInt32Vector = uint[];
 
 global using AliasUInt64Vector = ulong[];
+
+global using AliasMat4x4Vector = System.Numerics.Matrix4x4[];
+
+
