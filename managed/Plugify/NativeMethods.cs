@@ -1076,7 +1076,7 @@ public static unsafe partial class NativeMethods
 
 public static unsafe partial class NativeMethodsT
 {
-	[LibraryImport("plugify-module-dotnet", EntryPoint = "GetVectorDataInt8")]
+	[LibraryImport(NativeMethods.DllName, EntryPoint = "GetVectorDataInt8")]
 	[SuppressGCTransition]
 	private static partial void __GetVectorDataInt8(Vector192* vec, sbyte* arrNative);
 	
@@ -1088,7 +1088,7 @@ public static unsafe partial class NativeMethodsT
 		}
 	}
 	
-	[LibraryImport("plugify-module-dotnet", EntryPoint = "GetVectorDataInt16")]
+	[LibraryImport(NativeMethods.DllName, EntryPoint = "GetVectorDataInt16")]
 	[SuppressGCTransition]
 	private static partial void __GetVectorDataInt16(Vector192* vec, sbyte* arrNative);
 
@@ -1100,7 +1100,7 @@ public static unsafe partial class NativeMethodsT
 		}
 	}
 	
-	[LibraryImport("plugify-module-dotnet", EntryPoint = "GetVectorDataInt32")]
+	[LibraryImport(NativeMethods.DllName, EntryPoint = "GetVectorDataInt32")]
 	[SuppressGCTransition]
 	private static partial void __GetVectorDataInt32(Vector192* vec, sbyte* arrNative);
 	
@@ -1112,7 +1112,7 @@ public static unsafe partial class NativeMethodsT
 		}
 	}
 	
-	[LibraryImport("plugify-module-dotnet", EntryPoint = "GetVectorDataInt64")]
+	[LibraryImport(NativeMethods.DllName, EntryPoint = "GetVectorDataInt64")]
 	[SuppressGCTransition]
 	private static partial void __GetVectorDataInt64(Vector192* vec, sbyte* arrNative);
 
@@ -1124,7 +1124,7 @@ public static unsafe partial class NativeMethodsT
 		}
 	}
 	
-	[LibraryImport("plugify-module-dotnet", EntryPoint = "GetVectorDataUInt8")]
+	[LibraryImport(NativeMethods.DllName, EntryPoint = "GetVectorDataUInt8")]
 	[SuppressGCTransition]
 	private static partial void __GetVectorDataUInt8(Vector192* vec, sbyte* arrNative);
 
@@ -1136,7 +1136,7 @@ public static unsafe partial class NativeMethodsT
 		}
 	}
 	
-	[LibraryImport("plugify-module-dotnet", EntryPoint = "GetVectorDataUInt16")]
+	[LibraryImport(NativeMethods.DllName, EntryPoint = "GetVectorDataUInt16")]
 	[SuppressGCTransition]
 	private static partial void __GetVectorDataUInt16(Vector192* vec, sbyte* arrNative);
 
@@ -1148,7 +1148,7 @@ public static unsafe partial class NativeMethodsT
 		}
 	}
 	
-	[LibraryImport("plugify-module-dotnet", EntryPoint = "GetVectorDataUInt32")]
+	[LibraryImport(NativeMethods.DllName, EntryPoint = "GetVectorDataUInt32")]
 	[SuppressGCTransition]
 	private static partial void __GetVectorDataUInt32(Vector192* vec, sbyte* arrNative);
 
@@ -1160,7 +1160,7 @@ public static unsafe partial class NativeMethodsT
 		}
 	}
 	
-	[LibraryImport("plugify-module-dotnet", EntryPoint = "GetVectorDataUInt64")]
+	[LibraryImport(NativeMethods.DllName, EntryPoint = "GetVectorDataUInt64")]
 	[SuppressGCTransition]
 	private static partial void __GetVectorDataUInt64(Vector192* vec, sbyte* arrNative);
 
