@@ -27,9 +27,23 @@ public static unsafe partial class NativeMethods
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool IsExtensionLoaded(string name, string? constraint);
 
-    [LibraryImport(DllName, StringMarshalling = StringMarshalling.Utf8)]
+    [LibraryImport(DllName, StringMarshalling = StringMarshalling.Utf8, EntryPoint = "Log")]
     [SuppressGCTransition]
-    public static partial void Log(string message, Severity severity = Severity.Debug, [CallerLineNumber] int line = 0, [CallerFilePath] string file = "",  [CallerMemberName] string function = "", string module = "");
+    private static partial void __Log(string message, Severity severity, int line, string file, string function, string module);
+
+    [LibraryImport(DllName)]
+    [SuppressGCTransition]
+    public static partial Severity GetSeverity();
+    
+    private static readonly Severity MinSeverity = GetSeverity();
+    
+    public static void Log(string message, Severity severity = Severity.Debug, [CallerLineNumber] int line = 0, [CallerFilePath] string file = "", [CallerMemberName] string function = "", string module = "")
+    {
+	    if (severity < MinSeverity)
+		    return;
+	    
+	    __Log(message, severity, line, file, function, module);
+    }
 
     #endregion
     

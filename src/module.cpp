@@ -527,6 +527,13 @@ extern "C" {
 		}
 	}
 
+	NETLM_EXPORT Severity GetSeverity() {
+		if (const auto& logger = g_netlm.GetLogger()) {
+			return logger->GetLogLevel();
+		}
+		return Severity::Unknown;
+	}
+
 	NETLM_EXPORT ILanguageModule* GetLanguageModule() {
 		return &g_netlm;
 	}
