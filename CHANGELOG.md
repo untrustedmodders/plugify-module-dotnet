@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.3.6](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.3.5...v2.3.6) (2026-04-03)
+
+
+### Bug Fixes
+
+* prevent calling log if severity is low ([ae0153e](https://github.com/untrustedmodders/plugify-module-dotnet/commit/ae0153e285405892167912638c6118405ba6a093))
+* update tests ([97abce8](https://github.com/untrustedmodders/plugify-module-dotnet/commit/97abce8614438eb41db3072a6787aa0034f0ee4f))
+
 ## [2.3.5](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.3.4...v2.3.5) (2026-03-11)
 
 
