@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.3.7](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.3.6...v2.3.7) (2026-04-23)
+
+
+### Bug Fixes
+
+* add missing export symbols for unix ([133ff78](https://github.com/untrustedmodders/plugify-module-dotnet/commit/133ff78341d060943dede6e368b0a841383226f9))
+* update test plugin ([9515881](https://github.com/untrustedmodders/plugify-module-dotnet/commit/9515881f9025d222a22dbb51ee459ca14c51f2d4))
+
 ## [2.3.6](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.3.5...v2.3.6) (2026-04-03)
 
 
