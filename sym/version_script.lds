@@ -4,6 +4,7 @@
 
         IsExtensionLoaded;
         Log;
+        GetSeverity;
 
         GetStringData;
         GetStringLength;

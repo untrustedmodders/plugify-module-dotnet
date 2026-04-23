@@ -1,6 +1,8 @@
 _GetLanguageModule
 
 _IsExtensionLoaded
+_Log
+_GetSeverity
 
 _GetStringData
 _GetStringLength
