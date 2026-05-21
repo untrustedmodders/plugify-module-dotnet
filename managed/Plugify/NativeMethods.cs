@@ -25,26 +25,30 @@ public static unsafe partial class NativeMethods
     [LibraryImport(DllName, StringMarshalling = StringMarshalling.Utf8)]
     [SuppressGCTransition]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool IsExtensionLoaded(string name, string? constraint);
+    public static partial bool IsLoaded(string name, string? constraint);
 
-    [LibraryImport(DllName, StringMarshalling = StringMarshalling.Utf8, EntryPoint = "Log")]
+    [LibraryImport(DllName, StringMarshalling = StringMarshalling.Utf8)]
     [SuppressGCTransition]
-    private static partial void __Log(string message, Severity severity, int line, string file, string function, string module);
+    public static partial void Log(string message, Severity severity, [CallerLineNumber] int line = 0, [CallerFilePath] string file = "", [CallerMemberName] string function = "", string module = "");
 
     [LibraryImport(DllName)]
     [SuppressGCTransition]
-    public static partial Severity GetSeverity();
-    
-    private static readonly Severity MinSeverity = GetSeverity();
-    
-    public static void Log(string message, Severity severity = Severity.Debug, [CallerLineNumber] int line = 0, [CallerFilePath] string file = "", [CallerMemberName] string function = "", string module = "")
-    {
-	    if (severity < MinSeverity)
-		    return;
-	    
-	    __Log(message, severity, line, file, function, module);
-    }
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool IsLogging();
 
+    [LibraryImport(DllName, StringMarshalling = StringMarshalling.Utf8)]
+    [SuppressGCTransition]
+    public static partial ulong BeginZone(string name, [CallerLineNumber] int line = 0, [CallerFilePath] string file = "", [CallerMemberName] string function = "");
+    
+    [LibraryImport(DllName)]
+    [SuppressGCTransition]
+    public static partial void EndZone(ulong handle);   
+    
+    [LibraryImport(DllName)]
+    [SuppressGCTransition]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static partial bool IsProfiling();
+    
     #endregion
     
     #region String functions

@@ -2,9 +2,12 @@
     global:
         GetLanguageModule;
 
-        IsExtensionLoaded;
+        IsLoaded;
         Log;
-        GetSeverity;
+        IsLogging;
+        BeginZone;
+        EndZone;
+        IsProfiling;
 
         GetStringData;
         GetStringLength;

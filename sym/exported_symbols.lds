@@ -1,8 +1,11 @@
 _GetLanguageModule
 
-_IsExtensionLoaded
+_IsLoaded
 _Log
-_GetSeverity
+_IsLogging
+_BeginZone
+_EndZone
+_IsProfiling
 
 _GetStringData
 _GetStringLength

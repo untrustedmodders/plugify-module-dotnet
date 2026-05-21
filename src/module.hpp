@@ -4,6 +4,7 @@
 #include <plugify/assembly_loader.hpp>
 #include <plugify/method.hpp>
 #include <plugify/logger.hpp>
+#include <plugify/profiler.hpp>
 #include <plugify/mem_addr.hpp>
 #include <plugify/provider.hpp>
 #include <plugify/extension.hpp>
@@ -79,6 +80,7 @@ namespace netlm {
 
 		const std::unique_ptr<Provider>& GetProvider() { return _provider; }
 		const std::shared_ptr<ILogger>& GetLogger() { return _logger; }
+		const std::shared_ptr<IProfiler>& GetProfiler() const { return _profiler; }
 
 		static Result<SharpMethodData> GenerateMethodExport(const Method& method, ManagedAssembly &assembly);
 
@@ -92,6 +94,7 @@ namespace netlm {
 	private:
 		std::unique_ptr<Provider> _provider;
 		std::shared_ptr<ILogger> _logger;
+		std::shared_ptr<IProfiler> _profiler;
 
 		HostInstance _host;
 		AssemblyLoader _loader;

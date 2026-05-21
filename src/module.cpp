@@ -24,6 +24,7 @@ using namespace netlm;
 Result<InitData> DotnetLanguageModule::Initialize(const Provider& provider, const Extension& module) {
 	_provider = std::make_unique<Provider>(provider);
 	_logger = _provider->Resolve<ILogger>();
+	_profiler = _provider->TryResolve<IProfiler>();
 
 	auto result = _host.Initialize({
 		.hostfxrPath = module.GetLocation() / "dotnet/host/fxr/10.0.0/" NETLM_LIBRARY_PREFIX "hostfxr" NETLM_LIBRARY_SUFFIX,
@@ -47,6 +48,7 @@ void DotnetLanguageModule::Shutdown() {
 	_loader.Unload();
 	_host.Shutdown();
 
+	_profiler.reset();
 	_logger.reset();
 	_provider.reset();
 }
@@ -512,7 +514,7 @@ namespace netlm {
 }
 
 extern "C" {
-	NETLM_EXPORT bool IsExtensionLoaded(const char* name, const char* constraint) {
+	NETLM_EXPORT bool IsLoaded(const char* name, const char* constraint) {
 		if (!constraint) {
 			return g_netlm.GetProvider()->IsExtensionLoaded(name);
 		}
@@ -527,11 +529,31 @@ extern "C" {
 		}
 	}
 
-	NETLM_EXPORT Severity GetSeverity() {
+	NETLM_EXPORT bool IsLogging() {
 		if (const auto& logger = g_netlm.GetLogger()) {
-			return logger->GetLogLevel();
+			return logger->GetLogLevel() <= Severity::Info;
 		}
-		return Severity::Unknown;
+		return false;
+	}
+
+	NETLM_EXPORT ZoneHandle BeginZone(const char* name, int line, const char* file, const char* function) {
+		if (const auto& profiler = g_netlm.GetProfiler()) {
+			return profiler->BeginZone(ZoneInfo{name, function, file, static_cast<size_t>(line), 0});
+		}
+		return {};
+	}
+
+	NETLM_EXPORT void EndZone(ZoneHandle handle) {
+		if (const auto& profiler = g_netlm.GetProfiler()) {
+			profiler->EndZone(handle);
+		}
+	}
+
+	NETLM_EXPORT bool IsProfiling() {
+		if (const auto& profiler = g_netlm.GetProfiler()) {
+			return profiler->IsActive();
+		}
+		return false;
 	}
 
 	NETLM_EXPORT ILanguageModule* GetLanguageModule() {
