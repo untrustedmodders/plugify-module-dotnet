@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.4.0](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.3.7...v2.4.0) (2026-05-24)
+
+
+### Features
+
+* add new error handling ([83ef314](https://github.com/untrustedmodders/plugify-module-dotnet/commit/83ef314b224bb2897c30f7a35b3a687f5d5e4af9))
+
+
+### Bug Fixes
+
+* add profiler ([0a21273](https://github.com/untrustedmodders/plugify-module-dotnet/commit/0a21273da8343748fe33c8131f893584b9d2e419))
+
 ## [2.3.7](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.3.6...v2.3.7) (2026-04-23)
 
 
