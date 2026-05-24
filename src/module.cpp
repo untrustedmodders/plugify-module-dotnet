@@ -41,7 +41,7 @@ Result<InitData> DotnetLanguageModule::Initialize(const Provider& provider, cons
 	return InitData{{ .hasUpdate = false }};
 }
 
-void DotnetLanguageModule::Shutdown() {
+Result<void> DotnetLanguageModule::Shutdown() {
 	_scripts.clear();
 	_functions.clear();
 
@@ -51,9 +51,12 @@ void DotnetLanguageModule::Shutdown() {
 	_profiler.reset();
 	_logger.reset();
 	_provider.reset();
+
+	return {};
 }
 
-void DotnetLanguageModule::OnUpdate([[maybe_unused]] std::chrono::milliseconds dt) {
+Result<void> DotnetLanguageModule::OnUpdate([[maybe_unused]] std::chrono::milliseconds dt) {
+	return {};
 }
 
 Result<SharpMethodData> DotnetLanguageModule::GenerateMethodExport(const Method &method, ManagedAssembly &assembly) {
@@ -157,23 +160,38 @@ Result<LoadData> DotnetLanguageModule::OnPluginLoad(const Extension& plugin) {
 	return LoadData{ std::move(methods), &script, { script.HasUpdate(), script.HasStart(), script.HasEnd(), !exportedMethods.empty() } };
 }
 
-void DotnetLanguageModule::OnPluginStart(const Extension& plugin) {
-	plugin.GetUserData().RCast<ScriptInstance*>()->InvokeOnStart();
+Result<void> DotnetLanguageModule::OnPluginStart(const Extension& plugin) {
+	auto result = plugin.GetUserData().RCast<ScriptInstance*>()->InvokeOnStart();
+	if (!result.empty()) {
+		_logger->Log(std::format(LOG_PREFIX "{}: call of 'OnPluginStart' failed\n{}", plugin.GetName(), result), Severity::Error);
+		return MakeError(std::string(result));
+	}
+	return {};
 }
 
-void DotnetLanguageModule::OnPluginUpdate(const Extension& plugin, std::chrono::milliseconds dt) {
-	plugin.GetUserData().RCast<ScriptInstance*>()->InvokeOnUpdate(std::chrono::duration<float>(dt).count());
+Result<void> DotnetLanguageModule::OnPluginUpdate(const Extension& plugin, std::chrono::milliseconds dt) {
+	auto result = plugin.GetUserData().RCast<ScriptInstance*>()->InvokeOnUpdate(std::chrono::duration<float>(dt).count());
+	if (!result.empty()) {
+		_logger->Log(std::format(LOG_PREFIX "{}: call of 'OnPluginUpdate' failed\n{}", plugin.GetName(), result), Severity::Error);
+		return MakeError(std::string(result));
+	}
+	return {};
 }
 
-void DotnetLanguageModule::OnPluginEnd(const Extension& plugin) {
-	plugin.GetUserData().RCast<ScriptInstance*>()->InvokeOnEnd();
+Result<void> DotnetLanguageModule::OnPluginEnd(const Extension& plugin) {
+	auto result = plugin.GetUserData().RCast<ScriptInstance*>()->InvokeOnEnd();
+	if (!result.empty()) {
+		_logger->Log(std::format(LOG_PREFIX "{}: call of 'OnPluginEnd' failed\n{}", plugin.GetName(), result), Severity::Error);
+		return MakeError(std::string(result));
+	}
+	return {};
 }
 
-bool DotnetLanguageModule::IsDebugBuild() {
+bool DotnetLanguageModule::IsDebugBuild() const noexcept {
 	return NETLM_IS_DEBUG;
 }
 
-void DotnetLanguageModule::OnMethodExport(const Extension& plugin) {
+Result<void> DotnetLanguageModule::OnMethodExport(const Extension& plugin) {
 	auto className = std::format("{}.{}", plugin.GetName(), plugin.GetName());
 
 	if (auto* script = FindScript(plugin.GetId())) {
@@ -218,6 +236,8 @@ void DotnetLanguageModule::OnMethodExport(const Extension& plugin) {
 	for (auto& assembly : _loader.GetLoadedAssemblies()) {
 		assembly.UploadInternalCalls(warnOnMissing);
 	}
+
+	return {};
 }
 
 ScriptInstance* DotnetLanguageModule::FindScript(UniqueId pluginId) {
@@ -447,7 +467,19 @@ void DotnetLanguageModule::MessageCallback(std::string_view message, MessageLeve
 
 /*_________________________________________________*/
 
-ScriptInstance::ScriptInstance(const Extension& plugin, ManagedGuid assembly, Type& type) : _plugin{plugin}, _assembly{assembly}, _instance{type.CreateInstance()} {
+ScriptMethod::ScriptMethod(ManagedObject instance, std::string_view methodName)
+	: method{instance.GetType().GetMethod(methodName)}
+	, error{method ? method.GetReturnType().GetFullName() == "System.String" : false}
+{}
+
+ScriptInstance::ScriptInstance(const Extension& plugin, ManagedGuid assembly, Type& type)
+	: _plugin{plugin}
+	, _assembly{assembly}
+	, _instance{type.CreateInstance()}
+	, _update{_instance, "OnPluginUpdate"}
+	, _start{_instance, "OnPluginStart"}
+	, _end{_instance, "OnPluginEnd"}
+{
 	const std::vector<Dependency>& dependencies = plugin.GetDependencies();
 
 	// use plg::string as currently plugify use custom string implementation
@@ -475,38 +507,46 @@ ScriptInstance::ScriptInstance(const Extension& plugin, ManagedGuid assembly, Ty
 	_instance.SetPropertyValue("DataDir", plg::string(plg::as_string(provider->GetDataDir())));
 	_instance.SetPropertyValue("LogsDir", plg::string(plg::as_string(provider->GetLogsDir())));
 	_instance.SetPropertyValue("CacheDir", plg::string(plg::as_string(provider->GetCacheDir())));
-
-	_update = _instance.GetType().GetMethod("OnPluginUpdate");
-	_start = _instance.GetType().GetMethod("OnPluginStart");
-	_end = _instance.GetType().GetMethod("OnPluginEnd");
 }
 
 ScriptInstance::~ScriptInstance() {
 	_instance.Destroy();
 };
 
-void ScriptInstance::InvokeOnStart() const {
-	_instance.InvokeMethodRaw(_start);
+ScriptResult ScriptInstance::InvokeOnStart() const {
+	if (_start.error) {
+		return _instance.InvokeMethodRaw<plg::string>(_start.method);
+	}
+	_instance.InvokeMethodRaw(_start.method);
+	return {};
 }
 
-void ScriptInstance::InvokeOnUpdate(float dt) const {
-	_instance.InvokeMethodRaw(_update, dt);
+ScriptResult ScriptInstance::InvokeOnUpdate(float dt) const {
+	if (_update.error) {
+		return _instance.InvokeMethodRaw<plg::string>(_update.method, dt);
+	}
+	_instance.InvokeMethodRaw(_update.method, dt);
+	return {};
 }
 
-void ScriptInstance::InvokeOnEnd() const {
-	_instance.InvokeMethodRaw(_end);
+ScriptResult ScriptInstance::InvokeOnEnd() const {
+	if (_end.error) {
+		return _instance.InvokeMethodRaw<plg::string>(_end.method);
+	}
+	_instance.InvokeMethodRaw(_end.method);
+	return {};
 }
 
 bool ScriptInstance::HasStart() const {
-	return _start;
+	return static_cast<bool>(_start.method);
 }
 
 bool ScriptInstance::HasUpdate() const {
-	return _update;
+	return static_cast<bool>(_update.method);
 }
 
 bool ScriptInstance::HasEnd() const {
-	return _end;
+	return static_cast<bool>(_end.method);
 }
 
 namespace netlm {

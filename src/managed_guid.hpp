@@ -9,7 +9,7 @@ namespace netlm {
 			uint64_t high;
 
 			bool operator==(const ManagedGuid&) const = default;
-			operator bool() const { return low || high; }
+			explicit operator bool() const { return low || high; }
 		};
 	}
 

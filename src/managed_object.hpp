@@ -31,7 +31,7 @@ namespace netlm {
 				const void* parameterValues[] = { &parameters ... };
 				InvokeMethodRetInternal(methodInfo._handle, parameterValues, parameterCount, &result);
 			} else {
-				InvokeMethodRetInternal(methodInfo._handle, nullptr, nullptr, 0, &result);
+				InvokeMethodRetInternal(methodInfo._handle, nullptr, 0, &result);
 			}
 
 			return result;
@@ -94,7 +94,7 @@ namespace netlm {
 		void Destroy();
 
 		bool operator==(const ManagedObject& other) const { return _handle == other._handle; }
-		operator bool() const { return _handle != nullptr; }
+		explicit operator bool() const { return _handle != nullptr; }
 		//void* GetHandle() const { return _handle; }
 
 	//private:

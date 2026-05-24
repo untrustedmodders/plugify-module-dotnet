@@ -19,7 +19,7 @@ namespace netlm {
 		std::vector<Attribute> GetAttributes() const;
 
 		bool operator==(const FieldInfo& other) const { return _handle == other._handle; }
-		operator bool() const { return _handle; }
+		explicit operator bool() const { return _handle; }
 		ManagedHandle GetHandle() const { return _handle; }
 
 	private:

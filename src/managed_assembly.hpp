@@ -28,7 +28,7 @@ namespace netlm {
 		Type& GetTypeByBaseType(std::string_view baseName);
 
 		bool operator==(const ManagedAssembly& other) const { return _assemblyId == other._assemblyId; }
-		operator bool() const { return _assemblyId; }
+		explicit operator bool() const { return static_cast<bool>(_assemblyId); }
 
 	private:
 		ManagedGuid _assemblyId{};

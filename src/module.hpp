@@ -17,6 +17,15 @@
 using namespace plugify;
 
 namespace netlm {
+	using ScriptResult = plg::string;
+
+	struct ScriptMethod {
+		MethodInfo method;
+		bool error;
+
+		ScriptMethod(ManagedObject instance, std::string_view methodName);
+	};
+
 	class ScriptInstance {
 	public:
 		ScriptInstance(const Extension& plugin, ManagedGuid assembly, Type& type);
@@ -27,11 +36,11 @@ namespace netlm {
 		const ManagedGuid& GetAssemblyId() const { return _assembly; }
 
 		bool operator==(const ScriptInstance& other) const { return _instance == other._instance; }
-		operator bool() const { return _instance; }
+		explicit operator bool() const { return static_cast<bool>(_instance); }
 
-		void InvokeOnStart() const;
-		void InvokeOnUpdate(float dt) const;
-		void InvokeOnEnd() const;
+		ScriptResult InvokeOnStart() const;
+		ScriptResult InvokeOnUpdate(float dt) const;
+		ScriptResult InvokeOnEnd() const;
 
 		bool HasStart() const;
 		bool HasUpdate() const;
@@ -41,9 +50,9 @@ namespace netlm {
 		const Extension& _plugin;
 		ManagedGuid _assembly;
 		ManagedObject _instance;
-		MethodInfo _update;
-		MethodInfo _start;
-		MethodInfo _end;
+		ScriptMethod _update;
+		ScriptMethod _start;
+		ScriptMethod _end;
 	};
 
 	struct SharpMethodData;
@@ -64,15 +73,16 @@ namespace netlm {
 
 		// ILanguageModule
 		Result<InitData> Initialize(const Provider& provider, const Extension& module) override;
-		void Shutdown() override;
-		void OnUpdate(std::chrono::milliseconds dt) override;
+		Result<void> Shutdown() override;
+		Result<void> OnUpdate(std::chrono::milliseconds dt) override;
 
 		Result<LoadData> OnPluginLoad(const Extension& plugin) override;
-		void OnPluginStart(const Extension& plugin) override;
-		void OnPluginUpdate(const Extension& plugin, std::chrono::milliseconds dt) override;
-		void OnPluginEnd(const Extension& plugin) override;
-		void OnMethodExport(const Extension& plugin) override;
-		bool IsDebugBuild() override;
+		Result<void> OnPluginStart(const Extension& plugin) override;
+		Result<void> OnPluginUpdate(const Extension& plugin, std::chrono::milliseconds dt) override;
+		Result<void> OnPluginEnd(const Extension& plugin) override;
+		Result<void> OnMethodExport(const Extension& plugin) override;
+
+		bool IsDebugBuild() const noexcept override;
 
 		const ScriptMap& GetScripts() const { return _scripts; }
 		ScriptInstance* FindScript(UniqueId pluginId);
