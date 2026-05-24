@@ -32,7 +32,7 @@ namespace cross_call_master {
 		/// <param name="returnString">returnString</param>
 		internal static void ReverseReturn(string returnString, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::ReverseReturn", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::ReverseReturn", callerLine, callerFile, callerFunction, callerModule);
 			_ReverseReturn(returnString);
 		}
 
@@ -49,7 +49,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static void NoParamReturnVoidCallback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnVoidCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnVoidCallback", callerLine, callerFile, callerFunction, callerModule);
 			_NoParamReturnVoidCallback();
 		}
 
@@ -67,7 +67,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static Bool8 NoParamReturnBoolCallback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnBoolCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnBoolCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _NoParamReturnBoolCallback();
 		}
 
@@ -85,7 +85,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static Char8 NoParamReturnChar8Callback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnChar8Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnChar8Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _NoParamReturnChar8Callback();
 		}
 
@@ -103,7 +103,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static Char16 NoParamReturnChar16Callback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnChar16Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnChar16Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _NoParamReturnChar16Callback();
 		}
 
@@ -121,7 +121,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static sbyte NoParamReturnInt8Callback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnInt8Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnInt8Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _NoParamReturnInt8Callback();
 		}
 
@@ -139,7 +139,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static short NoParamReturnInt16Callback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnInt16Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnInt16Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _NoParamReturnInt16Callback();
 		}
 
@@ -157,7 +157,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static int NoParamReturnInt32Callback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnInt32Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnInt32Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _NoParamReturnInt32Callback();
 		}
 
@@ -175,7 +175,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static long NoParamReturnInt64Callback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnInt64Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnInt64Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _NoParamReturnInt64Callback();
 		}
 
@@ -193,7 +193,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static byte NoParamReturnUInt8Callback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnUInt8Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnUInt8Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _NoParamReturnUInt8Callback();
 		}
 
@@ -211,7 +211,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static ushort NoParamReturnUInt16Callback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnUInt16Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnUInt16Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _NoParamReturnUInt16Callback();
 		}
 
@@ -229,7 +229,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static uint NoParamReturnUInt32Callback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnUInt32Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnUInt32Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _NoParamReturnUInt32Callback();
 		}
 
@@ -247,7 +247,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static ulong NoParamReturnUInt64Callback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnUInt64Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnUInt64Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _NoParamReturnUInt64Callback();
 		}
 
@@ -265,7 +265,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static nint NoParamReturnPointerCallback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnPointerCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnPointerCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _NoParamReturnPointerCallback();
 		}
 
@@ -283,7 +283,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static float NoParamReturnFloatCallback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnFloatCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnFloatCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _NoParamReturnFloatCallback();
 		}
 
@@ -301,7 +301,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static double NoParamReturnDoubleCallback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnDoubleCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnDoubleCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _NoParamReturnDoubleCallback();
 		}
 
@@ -319,7 +319,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static NoParamReturnFunctionCallbackFunc NoParamReturnFunctionCallback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnFunctionCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnFunctionCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _NoParamReturnFunctionCallback();
 		}
 
@@ -347,7 +347,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static string NoParamReturnStringCallback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnStringCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnStringCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _NoParamReturnStringCallback();
 		}
 
@@ -375,7 +375,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static object NoParamReturnAnyCallback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnAnyCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnAnyCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _NoParamReturnAnyCallback();
 		}
 
@@ -404,7 +404,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static Bool8[] NoParamReturnArrayBoolCallback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnArrayBoolCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnArrayBoolCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _NoParamReturnArrayBoolCallback();
 		}
 
@@ -433,7 +433,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static Char8[] NoParamReturnArrayChar8Callback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnArrayChar8Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnArrayChar8Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _NoParamReturnArrayChar8Callback();
 		}
 
@@ -462,7 +462,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static Char16[] NoParamReturnArrayChar16Callback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnArrayChar16Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnArrayChar16Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _NoParamReturnArrayChar16Callback();
 		}
 
@@ -491,7 +491,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static sbyte[] NoParamReturnArrayInt8Callback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnArrayInt8Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnArrayInt8Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _NoParamReturnArrayInt8Callback();
 		}
 
@@ -520,7 +520,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static short[] NoParamReturnArrayInt16Callback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnArrayInt16Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnArrayInt16Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _NoParamReturnArrayInt16Callback();
 		}
 
@@ -549,7 +549,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static int[] NoParamReturnArrayInt32Callback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnArrayInt32Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnArrayInt32Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _NoParamReturnArrayInt32Callback();
 		}
 
@@ -578,7 +578,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static long[] NoParamReturnArrayInt64Callback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnArrayInt64Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnArrayInt64Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _NoParamReturnArrayInt64Callback();
 		}
 
@@ -607,7 +607,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static byte[] NoParamReturnArrayUInt8Callback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnArrayUInt8Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnArrayUInt8Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _NoParamReturnArrayUInt8Callback();
 		}
 
@@ -636,7 +636,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static ushort[] NoParamReturnArrayUInt16Callback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnArrayUInt16Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnArrayUInt16Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _NoParamReturnArrayUInt16Callback();
 		}
 
@@ -665,7 +665,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static uint[] NoParamReturnArrayUInt32Callback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnArrayUInt32Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnArrayUInt32Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _NoParamReturnArrayUInt32Callback();
 		}
 
@@ -694,7 +694,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static ulong[] NoParamReturnArrayUInt64Callback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnArrayUInt64Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnArrayUInt64Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _NoParamReturnArrayUInt64Callback();
 		}
 
@@ -723,7 +723,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static nint[] NoParamReturnArrayPointerCallback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnArrayPointerCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnArrayPointerCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _NoParamReturnArrayPointerCallback();
 		}
 
@@ -752,7 +752,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static float[] NoParamReturnArrayFloatCallback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnArrayFloatCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnArrayFloatCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _NoParamReturnArrayFloatCallback();
 		}
 
@@ -781,7 +781,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static double[] NoParamReturnArrayDoubleCallback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnArrayDoubleCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnArrayDoubleCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _NoParamReturnArrayDoubleCallback();
 		}
 
@@ -810,7 +810,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static string[] NoParamReturnArrayStringCallback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnArrayStringCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnArrayStringCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _NoParamReturnArrayStringCallback();
 		}
 
@@ -839,7 +839,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static object[] NoParamReturnArrayAnyCallback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnArrayAnyCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnArrayAnyCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _NoParamReturnArrayAnyCallback();
 		}
 
@@ -868,7 +868,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static Vector2[] NoParamReturnArrayVector2Callback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnArrayVector2Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnArrayVector2Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _NoParamReturnArrayVector2Callback();
 		}
 
@@ -897,7 +897,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static Vector3[] NoParamReturnArrayVector3Callback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnArrayVector3Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnArrayVector3Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _NoParamReturnArrayVector3Callback();
 		}
 
@@ -926,7 +926,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static Vector4[] NoParamReturnArrayVector4Callback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnArrayVector4Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnArrayVector4Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _NoParamReturnArrayVector4Callback();
 		}
 
@@ -955,7 +955,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static Matrix4x4[] NoParamReturnArrayMatrix4x4Callback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnArrayMatrix4x4Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnArrayMatrix4x4Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _NoParamReturnArrayMatrix4x4Callback();
 		}
 
@@ -973,7 +973,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static Vector2 NoParamReturnVector2Callback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnVector2Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnVector2Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _NoParamReturnVector2Callback();
 		}
 
@@ -991,7 +991,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static Vector3 NoParamReturnVector3Callback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnVector3Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnVector3Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _NoParamReturnVector3Callback();
 		}
 
@@ -1009,7 +1009,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static Vector4 NoParamReturnVector4Callback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnVector4Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnVector4Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _NoParamReturnVector4Callback();
 		}
 
@@ -1027,7 +1027,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static Matrix4x4 NoParamReturnMatrix4x4Callback([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::NoParamReturnMatrix4x4Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::NoParamReturnMatrix4x4Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _NoParamReturnMatrix4x4Callback();
 		}
 
@@ -1045,7 +1045,7 @@ namespace cross_call_master {
 		/// <param name="a">a</param>
 		internal static void Param1Callback(int a, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::Param1Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::Param1Callback", callerLine, callerFile, callerFunction, callerModule);
 			_Param1Callback(a);
 		}
 
@@ -1064,7 +1064,7 @@ namespace cross_call_master {
 		/// <param name="b">b</param>
 		internal static void Param2Callback(int a, float b, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::Param2Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::Param2Callback", callerLine, callerFile, callerFunction, callerModule);
 			_Param2Callback(a, b);
 		}
 
@@ -1084,7 +1084,7 @@ namespace cross_call_master {
 		/// <param name="c">c</param>
 		internal static void Param3Callback(int a, float b, double c, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::Param3Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::Param3Callback", callerLine, callerFile, callerFunction, callerModule);
 			_Param3Callback(a, b, c);
 		}
 
@@ -1105,7 +1105,7 @@ namespace cross_call_master {
 		/// <param name="d">d</param>
 		internal static void Param4Callback(int a, float b, double c, Vector4 d, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::Param4Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::Param4Callback", callerLine, callerFile, callerFunction, callerModule);
 			_Param4Callback(a, b, c, d);
 		}
 
@@ -1134,7 +1134,7 @@ namespace cross_call_master {
 		/// <param name="e">e</param>
 		internal static void Param5Callback(int a, float b, double c, Vector4 d, long[] e, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::Param5Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::Param5Callback", callerLine, callerFile, callerFunction, callerModule);
 			_Param5Callback(a, b, c, d, e);
 		}
 
@@ -1164,7 +1164,7 @@ namespace cross_call_master {
 		/// <param name="f">f</param>
 		internal static void Param6Callback(int a, float b, double c, Vector4 d, long[] e, Char8 f, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::Param6Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::Param6Callback", callerLine, callerFile, callerFunction, callerModule);
 			_Param6Callback(a, b, c, d, e, f);
 		}
 
@@ -1197,7 +1197,7 @@ namespace cross_call_master {
 		/// <param name="g">g</param>
 		internal static void Param7Callback(int a, float b, double c, Vector4 d, long[] e, Char8 f, string g, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::Param7Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::Param7Callback", callerLine, callerFile, callerFunction, callerModule);
 			_Param7Callback(a, b, c, d, e, f, g);
 		}
 
@@ -1231,7 +1231,7 @@ namespace cross_call_master {
 		/// <param name="h">h</param>
 		internal static void Param8Callback(int a, float b, double c, Vector4 d, long[] e, Char8 f, string g, Char16 h, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::Param8Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::Param8Callback", callerLine, callerFile, callerFunction, callerModule);
 			_Param8Callback(a, b, c, d, e, f, g, h);
 		}
 
@@ -1266,7 +1266,7 @@ namespace cross_call_master {
 		/// <param name="k">k</param>
 		internal static void Param9Callback(int a, float b, double c, Vector4 d, long[] e, Char8 f, string g, Char16 h, short k, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::Param9Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::Param9Callback", callerLine, callerFile, callerFunction, callerModule);
 			_Param9Callback(a, b, c, d, e, f, g, h, k);
 		}
 
@@ -1302,7 +1302,7 @@ namespace cross_call_master {
 		/// <param name="l">l</param>
 		internal static void Param10Callback(int a, float b, double c, Vector4 d, long[] e, Char8 f, string g, Char16 h, short k, nint l, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::Param10Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::Param10Callback", callerLine, callerFile, callerFunction, callerModule);
 			_Param10Callback(a, b, c, d, e, f, g, h, k, l);
 		}
 
@@ -1322,7 +1322,7 @@ namespace cross_call_master {
 		/// <param name="a">a</param>
 		internal static void ParamRef1Callback(ref int a, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::ParamRef1Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::ParamRef1Callback", callerLine, callerFile, callerFunction, callerModule);
 			_ParamRef1Callback(ref a);
 		}
 
@@ -1345,7 +1345,7 @@ namespace cross_call_master {
 		/// <param name="b">b</param>
 		internal static void ParamRef2Callback(ref int a, ref float b, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::ParamRef2Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::ParamRef2Callback", callerLine, callerFile, callerFunction, callerModule);
 			_ParamRef2Callback(ref a, ref b);
 		}
 
@@ -1371,7 +1371,7 @@ namespace cross_call_master {
 		/// <param name="c">c</param>
 		internal static void ParamRef3Callback(ref int a, ref float b, ref double c, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::ParamRef3Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::ParamRef3Callback", callerLine, callerFile, callerFunction, callerModule);
 			_ParamRef3Callback(ref a, ref b, ref c);
 		}
 
@@ -1400,7 +1400,7 @@ namespace cross_call_master {
 		/// <param name="d">d</param>
 		internal static void ParamRef4Callback(ref int a, ref float b, ref double c, ref Vector4 d, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::ParamRef4Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::ParamRef4Callback", callerLine, callerFile, callerFunction, callerModule);
 			_ParamRef4Callback(ref a, ref b, ref c, ref d);
 		}
 
@@ -1440,7 +1440,7 @@ namespace cross_call_master {
 		/// <param name="e">e</param>
 		internal static void ParamRef5Callback(ref int a, ref float b, ref double c, ref Vector4 d, ref long[] e, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::ParamRef5Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::ParamRef5Callback", callerLine, callerFile, callerFunction, callerModule);
 			_ParamRef5Callback(ref a, ref b, ref c, ref d, ref e);
 		}
 
@@ -1483,7 +1483,7 @@ namespace cross_call_master {
 		/// <param name="f">f</param>
 		internal static void ParamRef6Callback(ref int a, ref float b, ref double c, ref Vector4 d, ref long[] e, ref Char8 f, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::ParamRef6Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::ParamRef6Callback", callerLine, callerFile, callerFunction, callerModule);
 			_ParamRef6Callback(ref a, ref b, ref c, ref d, ref e, ref f);
 		}
 
@@ -1530,7 +1530,7 @@ namespace cross_call_master {
 		/// <param name="g">g</param>
 		internal static void ParamRef7Callback(ref int a, ref float b, ref double c, ref Vector4 d, ref long[] e, ref Char8 f, ref string g, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::ParamRef7Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::ParamRef7Callback", callerLine, callerFile, callerFunction, callerModule);
 			_ParamRef7Callback(ref a, ref b, ref c, ref d, ref e, ref f, ref g);
 		}
 
@@ -1580,7 +1580,7 @@ namespace cross_call_master {
 		/// <param name="h">h</param>
 		internal static void ParamRef8Callback(ref int a, ref float b, ref double c, ref Vector4 d, ref long[] e, ref Char8 f, ref string g, ref Char16 h, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::ParamRef8Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::ParamRef8Callback", callerLine, callerFile, callerFunction, callerModule);
 			_ParamRef8Callback(ref a, ref b, ref c, ref d, ref e, ref f, ref g, ref h);
 		}
 
@@ -1633,7 +1633,7 @@ namespace cross_call_master {
 		/// <param name="k">k</param>
 		internal static void ParamRef9Callback(ref int a, ref float b, ref double c, ref Vector4 d, ref long[] e, ref Char8 f, ref string g, ref Char16 h, ref short k, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::ParamRef9Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::ParamRef9Callback", callerLine, callerFile, callerFunction, callerModule);
 			_ParamRef9Callback(ref a, ref b, ref c, ref d, ref e, ref f, ref g, ref h, ref k);
 		}
 
@@ -1689,7 +1689,7 @@ namespace cross_call_master {
 		/// <param name="l">l</param>
 		internal static void ParamRef10Callback(ref int a, ref float b, ref double c, ref Vector4 d, ref long[] e, ref Char8 f, ref string g, ref Char16 h, ref short k, ref nint l, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::ParamRef10Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::ParamRef10Callback", callerLine, callerFile, callerFunction, callerModule);
 			_ParamRef10Callback(ref a, ref b, ref c, ref d, ref e, ref f, ref g, ref h, ref k, ref l);
 		}
 
@@ -1787,7 +1787,7 @@ namespace cross_call_master {
 		/// <param name="p15">p15</param>
 		internal static void ParamRefVectorsCallback(ref Bool8[] p1, ref Char8[] p2, ref Char16[] p3, ref sbyte[] p4, ref short[] p5, ref int[] p6, ref long[] p7, ref byte[] p8, ref ushort[] p9, ref uint[] p10, ref ulong[] p11, ref nint[] p12, ref float[] p13, ref double[] p14, ref string[] p15, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::ParamRefVectorsCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::ParamRefVectorsCallback", callerLine, callerFile, callerFunction, callerModule);
 			_ParamRefVectorsCallback(ref p1, ref p2, ref p3, ref p4, ref p5, ref p6, ref p7, ref p8, ref p9, ref p10, ref p11, ref p12, ref p13, ref p14, ref p15);
 		}
 
@@ -1819,7 +1819,7 @@ namespace cross_call_master {
 		/// <param name="p14">p14</param>
 		internal static long ParamAllPrimitivesCallback(Bool8 p1, Char8 p2, Char16 p3, sbyte p4, short p5, int p6, long p7, byte p8, ushort p9, uint p10, ulong p11, nint p12, float p13, double p14, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::ParamAllPrimitivesCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::ParamAllPrimitivesCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _ParamAllPrimitivesCallback(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14);
 		}
 
@@ -1908,7 +1908,7 @@ namespace cross_call_master {
 		/// <param name="aVec4Vec">aVec4Vec</param>
 		internal static int ParamAllAliasesCallback(AliasBool aBool, AliasChar8 aChar8, AliasChar16 aChar16, AliasInt8 aInt8, AliasInt16 aInt16, AliasInt32 aInt32, AliasInt64 aInt64, AliasPtr aPtr, AliasFloat aFloat, AliasDouble aDouble, AliasString aString, AliasAny aAny, AliasVec2 aVec2, AliasVec3 aVec3, AliasVec4 aVec4, AliasMat4x4 aMat4x4, AliasBoolVector aBoolVec, AliasChar8Vector aChar8Vec, AliasChar16Vector aChar16Vec, AliasInt8Vector aInt8Vec, AliasInt16Vector aInt16Vec, AliasInt32Vector aInt32Vec, AliasInt64Vector aInt64Vec, AliasPtrVector aPtrVec, AliasFloatVector aFloatVec, AliasDoubleVector aDoubleVec, AliasStringVector aStringVec, AliasAnyVector aAnyVec, AliasVec2Vector aVec2Vec, AliasVec3Vector aVec3Vec, AliasVec4Vector aVec4Vec, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::ParamAllAliasesCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::ParamAllAliasesCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _ParamAllAliasesCallback(aBool, aChar8, aChar16, aInt8, aInt16, aInt32, aInt64, aPtr, aFloat, aDouble, aString, aAny, aVec2, aVec3, aVec4, aMat4x4, aBoolVec, aChar8Vec, aChar16Vec, aInt8Vec, aInt16Vec, aInt32Vec, aInt64Vec, aPtrVec, aFloatVec, aDoubleVec, aStringVec, aAnyVec, aVec2Vec, aVec3Vec, aVec4Vec);
 		}
 
@@ -2058,7 +2058,7 @@ namespace cross_call_master {
 		/// <param name="aVec4Vec">aVec4Vec</param>
 		internal static long ParamAllRefAliasesCallback(ref AliasBool aBool, ref AliasChar8 aChar8, ref AliasChar16 aChar16, ref AliasInt8 aInt8, ref AliasInt16 aInt16, ref AliasInt32 aInt32, ref AliasInt64 aInt64, ref AliasPtr aPtr, ref AliasFloat aFloat, ref AliasDouble aDouble, ref AliasString aString, ref AliasAny aAny, ref AliasVec2 aVec2, ref AliasVec3 aVec3, ref AliasVec4 aVec4, ref AliasMat4x4 aMat4x4, ref AliasBoolVector aBoolVec, ref AliasChar8Vector aChar8Vec, ref AliasChar16Vector aChar16Vec, ref AliasInt8Vector aInt8Vec, ref AliasInt16Vector aInt16Vec, ref AliasInt32Vector aInt32Vec, ref AliasInt64Vector aInt64Vec, ref AliasPtrVector aPtrVec, ref AliasFloatVector aFloatVec, ref AliasDoubleVector aDoubleVec, ref AliasStringVector aStringVec, ref AliasAnyVector aAnyVec, ref AliasVec2Vector aVec2Vec, ref AliasVec3Vector aVec3Vec, ref AliasVec4Vector aVec4Vec, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::ParamAllRefAliasesCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::ParamAllRefAliasesCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _ParamAllRefAliasesCallback(ref aBool, ref aChar8, ref aChar16, ref aInt8, ref aInt16, ref aInt32, ref aInt64, ref aPtr, ref aFloat, ref aDouble, ref aString, ref aAny, ref aVec2, ref aVec3, ref aVec4, ref aMat4x4, ref aBoolVec, ref aChar8Vec, ref aChar16Vec, ref aInt8Vec, ref aInt16Vec, ref aInt32Vec, ref aInt64Vec, ref aPtrVec, ref aFloatVec, ref aDoubleVec, ref aStringVec, ref aAnyVec, ref aVec2Vec, ref aVec3Vec, ref aVec4Vec);
 		}
 
@@ -2086,7 +2086,7 @@ namespace cross_call_master {
 		/// <param name="p2">p2</param>
 		internal static int ParamEnumCallback(Example p1, Example[] p2, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::ParamEnumCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::ParamEnumCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _ParamEnumCallback(p1, p2);
 		}
 
@@ -2119,7 +2119,7 @@ namespace cross_call_master {
 		/// <param name="p2">p2</param>
 		internal static int ParamEnumRefCallback(ref Example p1, ref Example[] p2, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::ParamEnumRefCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::ParamEnumRefCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _ParamEnumRefCallback(ref p1, ref p2);
 		}
 
@@ -2147,7 +2147,7 @@ namespace cross_call_master {
 		/// <param name="p2">p2</param>
 		internal static void ParamVariantCallback(object p1, object[] p2, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::ParamVariantCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::ParamVariantCallback", callerLine, callerFile, callerFunction, callerModule);
 			_ParamVariantCallback(p1, p2);
 		}
 
@@ -2179,7 +2179,7 @@ namespace cross_call_master {
 		/// <param name="p2">p2</param>
 		internal static void ParamVariantRefCallback(ref object p1, ref object[] p2, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::ParamVariantRefCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::ParamVariantRefCallback", callerLine, callerFile, callerFunction, callerModule);
 			_ParamVariantRefCallback(ref p1, ref p2);
 		}
 
@@ -2197,7 +2197,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static void CallFuncVoidCallback(FuncVoid func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncVoidCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncVoidCallback", callerLine, callerFile, callerFunction, callerModule);
 			_CallFuncVoidCallback(func);
 		}
 
@@ -2216,7 +2216,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static Bool8 CallFuncBoolCallback(FuncBool func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncBoolCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncBoolCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncBoolCallback(func);
 		}
 
@@ -2235,7 +2235,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static Char8 CallFuncChar8Callback(FuncChar8 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncChar8Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncChar8Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncChar8Callback(func);
 		}
 
@@ -2254,7 +2254,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static Char16 CallFuncChar16Callback(FuncChar16 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncChar16Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncChar16Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncChar16Callback(func);
 		}
 
@@ -2273,7 +2273,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static sbyte CallFuncInt8Callback(FuncInt8 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncInt8Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncInt8Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncInt8Callback(func);
 		}
 
@@ -2292,7 +2292,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static short CallFuncInt16Callback(FuncInt16 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncInt16Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncInt16Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncInt16Callback(func);
 		}
 
@@ -2311,7 +2311,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static int CallFuncInt32Callback(FuncInt32 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncInt32Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncInt32Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncInt32Callback(func);
 		}
 
@@ -2330,7 +2330,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static long CallFuncInt64Callback(FuncInt64 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncInt64Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncInt64Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncInt64Callback(func);
 		}
 
@@ -2349,7 +2349,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static byte CallFuncUInt8Callback(FuncUInt8 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncUInt8Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncUInt8Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncUInt8Callback(func);
 		}
 
@@ -2368,7 +2368,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static ushort CallFuncUInt16Callback(FuncUInt16 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncUInt16Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncUInt16Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncUInt16Callback(func);
 		}
 
@@ -2387,7 +2387,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static uint CallFuncUInt32Callback(FuncUInt32 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncUInt32Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncUInt32Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncUInt32Callback(func);
 		}
 
@@ -2406,7 +2406,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static ulong CallFuncUInt64Callback(FuncUInt64 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncUInt64Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncUInt64Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncUInt64Callback(func);
 		}
 
@@ -2425,7 +2425,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static nint CallFuncPtrCallback(FuncPtr func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncPtrCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncPtrCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncPtrCallback(func);
 		}
 
@@ -2444,7 +2444,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static float CallFuncFloatCallback(FuncFloat func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncFloatCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncFloatCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncFloatCallback(func);
 		}
 
@@ -2463,7 +2463,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static double CallFuncDoubleCallback(FuncDouble func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncDoubleCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncDoubleCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncDoubleCallback(func);
 		}
 
@@ -2492,7 +2492,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static string CallFuncStringCallback(FuncString func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncStringCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncStringCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncStringCallback(func);
 		}
 
@@ -2521,7 +2521,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static object CallFuncAnyCallback(FuncAny func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAnyCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAnyCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAnyCallback(func);
 		}
 
@@ -2540,7 +2540,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static nint CallFuncFunctionCallback(FuncFunction func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncFunctionCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncFunctionCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncFunctionCallback(func);
 		}
 
@@ -2570,7 +2570,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static Bool8[] CallFuncBoolVectorCallback(FuncBoolVector func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncBoolVectorCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncBoolVectorCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncBoolVectorCallback(func);
 		}
 
@@ -2600,7 +2600,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static Char8[] CallFuncChar8VectorCallback(FuncChar8Vector func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncChar8VectorCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncChar8VectorCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncChar8VectorCallback(func);
 		}
 
@@ -2630,7 +2630,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static Char16[] CallFuncChar16VectorCallback(FuncChar16Vector func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncChar16VectorCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncChar16VectorCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncChar16VectorCallback(func);
 		}
 
@@ -2660,7 +2660,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static sbyte[] CallFuncInt8VectorCallback(FuncInt8Vector func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncInt8VectorCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncInt8VectorCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncInt8VectorCallback(func);
 		}
 
@@ -2690,7 +2690,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static short[] CallFuncInt16VectorCallback(FuncInt16Vector func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncInt16VectorCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncInt16VectorCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncInt16VectorCallback(func);
 		}
 
@@ -2720,7 +2720,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static int[] CallFuncInt32VectorCallback(FuncInt32Vector func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncInt32VectorCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncInt32VectorCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncInt32VectorCallback(func);
 		}
 
@@ -2750,7 +2750,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static long[] CallFuncInt64VectorCallback(FuncInt64Vector func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncInt64VectorCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncInt64VectorCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncInt64VectorCallback(func);
 		}
 
@@ -2780,7 +2780,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static byte[] CallFuncUInt8VectorCallback(FuncUInt8Vector func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncUInt8VectorCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncUInt8VectorCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncUInt8VectorCallback(func);
 		}
 
@@ -2810,7 +2810,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static ushort[] CallFuncUInt16VectorCallback(FuncUInt16Vector func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncUInt16VectorCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncUInt16VectorCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncUInt16VectorCallback(func);
 		}
 
@@ -2840,7 +2840,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static uint[] CallFuncUInt32VectorCallback(FuncUInt32Vector func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncUInt32VectorCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncUInt32VectorCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncUInt32VectorCallback(func);
 		}
 
@@ -2870,7 +2870,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static ulong[] CallFuncUInt64VectorCallback(FuncUInt64Vector func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncUInt64VectorCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncUInt64VectorCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncUInt64VectorCallback(func);
 		}
 
@@ -2900,7 +2900,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static nint[] CallFuncPtrVectorCallback(FuncPtrVector func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncPtrVectorCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncPtrVectorCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncPtrVectorCallback(func);
 		}
 
@@ -2930,7 +2930,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static float[] CallFuncFloatVectorCallback(FuncFloatVector func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncFloatVectorCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncFloatVectorCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncFloatVectorCallback(func);
 		}
 
@@ -2960,7 +2960,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static double[] CallFuncDoubleVectorCallback(FuncDoubleVector func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncDoubleVectorCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncDoubleVectorCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncDoubleVectorCallback(func);
 		}
 
@@ -2990,7 +2990,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static string[] CallFuncStringVectorCallback(FuncStringVector func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncStringVectorCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncStringVectorCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncStringVectorCallback(func);
 		}
 
@@ -3020,7 +3020,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static object[] CallFuncAnyVectorCallback(FuncAnyVector func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAnyVectorCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAnyVectorCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAnyVectorCallback(func);
 		}
 
@@ -3050,7 +3050,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static Vector2[] CallFuncVec2VectorCallback(FuncVec2Vector func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncVec2VectorCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncVec2VectorCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncVec2VectorCallback(func);
 		}
 
@@ -3080,7 +3080,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static Vector3[] CallFuncVec3VectorCallback(FuncVec3Vector func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncVec3VectorCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncVec3VectorCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncVec3VectorCallback(func);
 		}
 
@@ -3110,7 +3110,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static Vector4[] CallFuncVec4VectorCallback(FuncVec4Vector func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncVec4VectorCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncVec4VectorCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncVec4VectorCallback(func);
 		}
 
@@ -3140,7 +3140,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static Matrix4x4[] CallFuncMat4x4VectorCallback(FuncMat4x4Vector func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncMat4x4VectorCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncMat4x4VectorCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncMat4x4VectorCallback(func);
 		}
 
@@ -3159,7 +3159,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static Vector2 CallFuncVec2Callback(FuncVec2 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncVec2Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncVec2Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncVec2Callback(func);
 		}
 
@@ -3178,7 +3178,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static Vector3 CallFuncVec3Callback(FuncVec3 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncVec3Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncVec3Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncVec3Callback(func);
 		}
 
@@ -3197,7 +3197,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static Vector4 CallFuncVec4Callback(FuncVec4 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncVec4Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncVec4Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncVec4Callback(func);
 		}
 
@@ -3216,7 +3216,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static Matrix4x4 CallFuncMat4x4Callback(FuncMat4x4 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncMat4x4Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncMat4x4Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncMat4x4Callback(func);
 		}
 
@@ -3235,7 +3235,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static AliasBool CallFuncAliasBoolCallback(FuncAliasBool func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasBoolCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasBoolCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasBoolCallback(func);
 		}
 
@@ -3254,7 +3254,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static AliasChar8 CallFuncAliasChar8Callback(FuncAliasChar8 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasChar8Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasChar8Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasChar8Callback(func);
 		}
 
@@ -3273,7 +3273,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static AliasChar16 CallFuncAliasChar16Callback(FuncAliasChar16 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasChar16Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasChar16Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasChar16Callback(func);
 		}
 
@@ -3292,7 +3292,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static AliasInt8 CallFuncAliasInt8Callback(FuncAliasInt8 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasInt8Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasInt8Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasInt8Callback(func);
 		}
 
@@ -3311,7 +3311,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static AliasInt16 CallFuncAliasInt16Callback(FuncAliasInt16 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasInt16Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasInt16Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasInt16Callback(func);
 		}
 
@@ -3330,7 +3330,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static AliasInt32 CallFuncAliasInt32Callback(FuncAliasInt32 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasInt32Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasInt32Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasInt32Callback(func);
 		}
 
@@ -3349,7 +3349,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static AliasInt64 CallFuncAliasInt64Callback(FuncAliasInt64 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasInt64Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasInt64Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasInt64Callback(func);
 		}
 
@@ -3368,7 +3368,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static AliasUInt8 CallFuncAliasUInt8Callback(FuncAliasUInt8 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasUInt8Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasUInt8Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasUInt8Callback(func);
 		}
 
@@ -3387,7 +3387,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static AliasUInt16 CallFuncAliasUInt16Callback(FuncAliasUInt16 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasUInt16Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasUInt16Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasUInt16Callback(func);
 		}
 
@@ -3406,7 +3406,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static AliasUInt32 CallFuncAliasUInt32Callback(FuncAliasUInt32 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasUInt32Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasUInt32Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasUInt32Callback(func);
 		}
 
@@ -3425,7 +3425,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static AliasUInt64 CallFuncAliasUInt64Callback(FuncAliasUInt64 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasUInt64Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasUInt64Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasUInt64Callback(func);
 		}
 
@@ -3444,7 +3444,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static AliasPtr CallFuncAliasPtrCallback(FuncAliasPtr func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasPtrCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasPtrCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasPtrCallback(func);
 		}
 
@@ -3463,7 +3463,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static AliasFloat CallFuncAliasFloatCallback(FuncAliasFloat func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasFloatCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasFloatCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasFloatCallback(func);
 		}
 
@@ -3482,7 +3482,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static AliasDouble CallFuncAliasDoubleCallback(FuncAliasDouble func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasDoubleCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasDoubleCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasDoubleCallback(func);
 		}
 
@@ -3511,7 +3511,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static AliasString CallFuncAliasStringCallback(FuncAliasString func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasStringCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasStringCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasStringCallback(func);
 		}
 
@@ -3540,7 +3540,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static AliasAny CallFuncAliasAnyCallback(FuncAliasAny func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasAnyCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasAnyCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasAnyCallback(func);
 		}
 
@@ -3559,7 +3559,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static AliasFunction CallFuncAliasFunctionCallback(FuncAliasFunction func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasFunctionCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasFunctionCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasFunctionCallback(func);
 		}
 
@@ -3589,7 +3589,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static AliasBoolVector CallFuncAliasBoolVectorCallback(FuncAliasBoolVector func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasBoolVectorCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasBoolVectorCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasBoolVectorCallback(func);
 		}
 
@@ -3619,7 +3619,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static AliasChar8Vector CallFuncAliasChar8VectorCallback(FuncAliasChar8Vector func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasChar8VectorCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasChar8VectorCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasChar8VectorCallback(func);
 		}
 
@@ -3649,7 +3649,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static AliasChar16Vector CallFuncAliasChar16VectorCallback(FuncAliasChar16Vector func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasChar16VectorCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasChar16VectorCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasChar16VectorCallback(func);
 		}
 
@@ -3679,7 +3679,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static AliasInt8Vector CallFuncAliasInt8VectorCallback(FuncAliasInt8Vector func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasInt8VectorCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasInt8VectorCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasInt8VectorCallback(func);
 		}
 
@@ -3709,7 +3709,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static AliasInt16Vector CallFuncAliasInt16VectorCallback(FuncAliasInt16Vector func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasInt16VectorCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasInt16VectorCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasInt16VectorCallback(func);
 		}
 
@@ -3739,7 +3739,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static AliasInt32Vector CallFuncAliasInt32VectorCallback(FuncAliasInt32Vector func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasInt32VectorCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasInt32VectorCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasInt32VectorCallback(func);
 		}
 
@@ -3769,7 +3769,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static AliasInt64Vector CallFuncAliasInt64VectorCallback(FuncAliasInt64Vector func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasInt64VectorCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasInt64VectorCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasInt64VectorCallback(func);
 		}
 
@@ -3799,7 +3799,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static AliasUInt8Vector CallFuncAliasUInt8VectorCallback(FuncAliasUInt8Vector func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasUInt8VectorCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasUInt8VectorCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasUInt8VectorCallback(func);
 		}
 
@@ -3829,7 +3829,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static AliasUInt16Vector CallFuncAliasUInt16VectorCallback(FuncAliasUInt16Vector func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasUInt16VectorCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasUInt16VectorCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasUInt16VectorCallback(func);
 		}
 
@@ -3859,7 +3859,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static AliasUInt32Vector CallFuncAliasUInt32VectorCallback(FuncAliasUInt32Vector func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasUInt32VectorCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasUInt32VectorCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasUInt32VectorCallback(func);
 		}
 
@@ -3889,7 +3889,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static AliasUInt64Vector CallFuncAliasUInt64VectorCallback(FuncAliasUInt64Vector func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasUInt64VectorCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasUInt64VectorCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasUInt64VectorCallback(func);
 		}
 
@@ -3919,7 +3919,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static AliasPtrVector CallFuncAliasPtrVectorCallback(FuncAliasPtrVector func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasPtrVectorCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasPtrVectorCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasPtrVectorCallback(func);
 		}
 
@@ -3949,7 +3949,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static AliasFloatVector CallFuncAliasFloatVectorCallback(FuncAliasFloatVector func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasFloatVectorCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasFloatVectorCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasFloatVectorCallback(func);
 		}
 
@@ -3979,7 +3979,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static AliasDoubleVector CallFuncAliasDoubleVectorCallback(FuncAliasDoubleVector func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasDoubleVectorCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasDoubleVectorCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasDoubleVectorCallback(func);
 		}
 
@@ -4009,7 +4009,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static AliasStringVector CallFuncAliasStringVectorCallback(FuncAliasStringVector func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasStringVectorCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasStringVectorCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasStringVectorCallback(func);
 		}
 
@@ -4039,7 +4039,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static AliasAnyVector CallFuncAliasAnyVectorCallback(FuncAliasAnyVector func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasAnyVectorCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasAnyVectorCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasAnyVectorCallback(func);
 		}
 
@@ -4069,7 +4069,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static AliasVec2Vector CallFuncAliasVec2VectorCallback(FuncAliasVec2Vector func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasVec2VectorCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasVec2VectorCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasVec2VectorCallback(func);
 		}
 
@@ -4099,7 +4099,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static AliasVec3Vector CallFuncAliasVec3VectorCallback(FuncAliasVec3Vector func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasVec3VectorCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasVec3VectorCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasVec3VectorCallback(func);
 		}
 
@@ -4129,7 +4129,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static AliasVec4Vector CallFuncAliasVec4VectorCallback(FuncAliasVec4Vector func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasVec4VectorCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasVec4VectorCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasVec4VectorCallback(func);
 		}
 
@@ -4159,7 +4159,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static AliasMat4x4Vector CallFuncAliasMat4x4VectorCallback(FuncAliasMat4x4Vector func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasMat4x4VectorCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasMat4x4VectorCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasMat4x4VectorCallback(func);
 		}
 
@@ -4178,7 +4178,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static AliasVec2 CallFuncAliasVec2Callback(FuncAliasVec2 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasVec2Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasVec2Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasVec2Callback(func);
 		}
 
@@ -4197,7 +4197,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static AliasVec3 CallFuncAliasVec3Callback(FuncAliasVec3 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasVec3Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasVec3Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasVec3Callback(func);
 		}
 
@@ -4216,7 +4216,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static AliasVec4 CallFuncAliasVec4Callback(FuncAliasVec4 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasVec4Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasVec4Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasVec4Callback(func);
 		}
 
@@ -4235,7 +4235,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static AliasMat4x4 CallFuncAliasMat4x4Callback(FuncAliasMat4x4 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasMat4x4Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasMat4x4Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasMat4x4Callback(func);
 		}
 
@@ -4264,7 +4264,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static string CallFuncAliasAllCallback(FuncAliasAll func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncAliasAllCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncAliasAllCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasAllCallback(func);
 		}
 
@@ -4283,7 +4283,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static int CallFunc1Callback(Func1 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFunc1Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFunc1Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFunc1Callback(func);
 		}
 
@@ -4302,7 +4302,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static Char8 CallFunc2Callback(Func2 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFunc2Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFunc2Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFunc2Callback(func);
 		}
 
@@ -4320,7 +4320,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static void CallFunc3Callback(Func3 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFunc3Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFunc3Callback", callerLine, callerFile, callerFunction, callerModule);
 			_CallFunc3Callback(func);
 		}
 
@@ -4339,7 +4339,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static Vector4 CallFunc4Callback(Func4 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFunc4Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFunc4Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFunc4Callback(func);
 		}
 
@@ -4358,7 +4358,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static Bool8 CallFunc5Callback(Func5 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFunc5Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFunc5Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFunc5Callback(func);
 		}
 
@@ -4377,7 +4377,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static long CallFunc6Callback(Func6 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFunc6Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFunc6Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFunc6Callback(func);
 		}
 
@@ -4396,7 +4396,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static double CallFunc7Callback(Func7 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFunc7Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFunc7Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFunc7Callback(func);
 		}
 
@@ -4415,7 +4415,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static Matrix4x4 CallFunc8Callback(Func8 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFunc8Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFunc8Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFunc8Callback(func);
 		}
 
@@ -4433,7 +4433,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static void CallFunc9Callback(Func9 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFunc9Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFunc9Callback", callerLine, callerFile, callerFunction, callerModule);
 			_CallFunc9Callback(func);
 		}
 
@@ -4452,7 +4452,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static uint CallFunc10Callback(Func10 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFunc10Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFunc10Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFunc10Callback(func);
 		}
 
@@ -4471,7 +4471,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static nint CallFunc11Callback(Func11 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFunc11Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFunc11Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFunc11Callback(func);
 		}
 
@@ -4490,7 +4490,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static Bool8 CallFunc12Callback(Func12 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFunc12Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFunc12Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFunc12Callback(func);
 		}
 
@@ -4519,7 +4519,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static string CallFunc13Callback(Func13 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFunc13Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFunc13Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFunc13Callback(func);
 		}
 
@@ -4549,7 +4549,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static string[] CallFunc14Callback(Func14 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFunc14Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFunc14Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFunc14Callback(func);
 		}
 
@@ -4568,7 +4568,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static short CallFunc15Callback(Func15 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFunc15Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFunc15Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFunc15Callback(func);
 		}
 
@@ -4587,7 +4587,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static nint CallFunc16Callback(Func16 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFunc16Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFunc16Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFunc16Callback(func);
 		}
 
@@ -4616,7 +4616,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static string CallFunc17Callback(Func17 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFunc17Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFunc17Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFunc17Callback(func);
 		}
 
@@ -4645,7 +4645,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static string CallFunc18Callback(Func18 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFunc18Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFunc18Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFunc18Callback(func);
 		}
 
@@ -4674,7 +4674,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static string CallFunc19Callback(Func19 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFunc19Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFunc19Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFunc19Callback(func);
 		}
 
@@ -4703,7 +4703,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static string CallFunc20Callback(Func20 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFunc20Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFunc20Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFunc20Callback(func);
 		}
 
@@ -4732,7 +4732,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static string CallFunc21Callback(Func21 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFunc21Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFunc21Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFunc21Callback(func);
 		}
 
@@ -4761,7 +4761,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static string CallFunc22Callback(Func22 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFunc22Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFunc22Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFunc22Callback(func);
 		}
 
@@ -4790,7 +4790,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static string CallFunc23Callback(Func23 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFunc23Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFunc23Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFunc23Callback(func);
 		}
 
@@ -4819,7 +4819,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static string CallFunc24Callback(Func24 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFunc24Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFunc24Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFunc24Callback(func);
 		}
 
@@ -4848,7 +4848,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static string CallFunc25Callback(Func25 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFunc25Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFunc25Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFunc25Callback(func);
 		}
 
@@ -4877,7 +4877,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static string CallFunc26Callback(Func26 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFunc26Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFunc26Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFunc26Callback(func);
 		}
 
@@ -4906,7 +4906,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static string CallFunc27Callback(Func27 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFunc27Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFunc27Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFunc27Callback(func);
 		}
 
@@ -4935,7 +4935,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static string CallFunc28Callback(Func28 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFunc28Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFunc28Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFunc28Callback(func);
 		}
 
@@ -4964,7 +4964,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static string CallFunc29Callback(Func29 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFunc29Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFunc29Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFunc29Callback(func);
 		}
 
@@ -4993,7 +4993,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static string CallFunc30Callback(Func30 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFunc30Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFunc30Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFunc30Callback(func);
 		}
 
@@ -5022,7 +5022,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static string CallFunc31Callback(Func31 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFunc31Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFunc31Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFunc31Callback(func);
 		}
 
@@ -5051,7 +5051,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static string CallFunc32Callback(Func32 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFunc32Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFunc32Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFunc32Callback(func);
 		}
 
@@ -5080,7 +5080,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static string CallFunc33Callback(Func33 func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFunc33Callback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFunc33Callback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFunc33Callback(func);
 		}
 
@@ -5109,7 +5109,7 @@ namespace cross_call_master {
 		/// <param name="func">func</param>
 		internal static string CallFuncEnumCallback(FuncEnum func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CallFuncEnumCallback", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CallFuncEnumCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncEnumCallback(func);
 		}
 

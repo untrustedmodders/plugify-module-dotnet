@@ -26,7 +26,7 @@ namespace cross_call_master {
 		/// <param name="initialValue">initialValue</param>
 		internal static nint CounterCreate(long initialValue, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CounterCreate", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CounterCreate", callerLine, callerFile, callerFunction, callerModule);
 			return _CounterCreate(initialValue);
 		}
 
@@ -44,7 +44,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static nint CounterCreateZero([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CounterCreateZero", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CounterCreateZero", callerLine, callerFile, callerFunction, callerModule);
 			return _CounterCreateZero();
 		}
 
@@ -63,7 +63,7 @@ namespace cross_call_master {
 		/// <param name="counter">counter</param>
 		internal static long CounterGetValue(nint counter, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CounterGetValue", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CounterGetValue", callerLine, callerFile, callerFunction, callerModule);
 			return _CounterGetValue(counter);
 		}
 
@@ -82,7 +82,7 @@ namespace cross_call_master {
 		/// <param name="value">value</param>
 		internal static void CounterSetValue(nint counter, long value, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CounterSetValue", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CounterSetValue", callerLine, callerFile, callerFunction, callerModule);
 			_CounterSetValue(counter, value);
 		}
 
@@ -100,7 +100,7 @@ namespace cross_call_master {
 		/// <param name="counter">counter</param>
 		internal static void CounterIncrement(nint counter, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CounterIncrement", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CounterIncrement", callerLine, callerFile, callerFunction, callerModule);
 			_CounterIncrement(counter);
 		}
 
@@ -118,7 +118,7 @@ namespace cross_call_master {
 		/// <param name="counter">counter</param>
 		internal static void CounterDecrement(nint counter, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CounterDecrement", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CounterDecrement", callerLine, callerFile, callerFunction, callerModule);
 			_CounterDecrement(counter);
 		}
 
@@ -137,7 +137,7 @@ namespace cross_call_master {
 		/// <param name="amount">amount</param>
 		internal static void CounterAdd(nint counter, long amount, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CounterAdd", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CounterAdd", callerLine, callerFile, callerFunction, callerModule);
 			_CounterAdd(counter, amount);
 		}
 
@@ -155,7 +155,7 @@ namespace cross_call_master {
 		/// <param name="counter">counter</param>
 		internal static void CounterReset(nint counter, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CounterReset", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CounterReset", callerLine, callerFile, callerFunction, callerModule);
 			_CounterReset(counter);
 		}
 
@@ -174,7 +174,7 @@ namespace cross_call_master {
 		/// <param name="counter">counter</param>
 		internal static Bool8 CounterIsPositive(nint counter, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CounterIsPositive", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CounterIsPositive", callerLine, callerFile, callerFunction, callerModule);
 			return _CounterIsPositive(counter);
 		}
 
@@ -194,7 +194,7 @@ namespace cross_call_master {
 		/// <param name="value2">value2</param>
 		internal static int CounterCompare(long value1, long value2, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CounterCompare", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CounterCompare", callerLine, callerFile, callerFunction, callerModule);
 			return _CounterCompare(value1, value2);
 		}
 
@@ -221,7 +221,7 @@ namespace cross_call_master {
 		/// <param name="values">values</param>
 		internal static long CounterSum(long[] values, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::CounterSum", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::CounterSum", callerLine, callerFile, callerFunction, callerModule);
 			return _CounterSum(values);
 		}
 

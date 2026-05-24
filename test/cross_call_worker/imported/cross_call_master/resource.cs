@@ -35,7 +35,7 @@ namespace cross_call_master {
 		/// <param name="name">name</param>
 		internal static nint ResourceHandleCreate(int id, string name, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::ResourceHandleCreate", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::ResourceHandleCreate", callerLine, callerFile, callerFunction, callerModule);
 			return _ResourceHandleCreate(id, name);
 		}
 
@@ -53,7 +53,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static nint ResourceHandleCreateDefault([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::ResourceHandleCreateDefault", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::ResourceHandleCreateDefault", callerLine, callerFile, callerFunction, callerModule);
 			return _ResourceHandleCreateDefault();
 		}
 
@@ -71,7 +71,7 @@ namespace cross_call_master {
 		/// <param name="handle">handle</param>
 		internal static void ResourceHandleDestroy(nint handle, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::ResourceHandleDestroy", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::ResourceHandleDestroy", callerLine, callerFile, callerFunction, callerModule);
 			_ResourceHandleDestroy(handle);
 		}
 
@@ -90,7 +90,7 @@ namespace cross_call_master {
 		/// <param name="handle">handle</param>
 		internal static int ResourceHandleGetId(nint handle, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::ResourceHandleGetId", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::ResourceHandleGetId", callerLine, callerFile, callerFunction, callerModule);
 			return _ResourceHandleGetId(handle);
 		}
 
@@ -119,7 +119,7 @@ namespace cross_call_master {
 		/// <param name="handle">handle</param>
 		internal static string ResourceHandleGetName(nint handle, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::ResourceHandleGetName", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::ResourceHandleGetName", callerLine, callerFile, callerFunction, callerModule);
 			return _ResourceHandleGetName(handle);
 		}
 
@@ -145,7 +145,7 @@ namespace cross_call_master {
 		/// <param name="name">name</param>
 		internal static void ResourceHandleSetName(nint handle, string name, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::ResourceHandleSetName", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::ResourceHandleSetName", callerLine, callerFile, callerFunction, callerModule);
 			_ResourceHandleSetName(handle, name);
 		}
 
@@ -163,7 +163,7 @@ namespace cross_call_master {
 		/// <param name="handle">handle</param>
 		internal static void ResourceHandleIncrementCounter(nint handle, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::ResourceHandleIncrementCounter", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::ResourceHandleIncrementCounter", callerLine, callerFile, callerFunction, callerModule);
 			_ResourceHandleIncrementCounter(handle);
 		}
 
@@ -182,7 +182,7 @@ namespace cross_call_master {
 		/// <param name="handle">handle</param>
 		internal static int ResourceHandleGetCounter(nint handle, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::ResourceHandleGetCounter", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::ResourceHandleGetCounter", callerLine, callerFile, callerFunction, callerModule);
 			return _ResourceHandleGetCounter(handle);
 		}
 
@@ -201,7 +201,7 @@ namespace cross_call_master {
 		/// <param name="value">value</param>
 		internal static void ResourceHandleAddData(nint handle, float value, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::ResourceHandleAddData", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::ResourceHandleAddData", callerLine, callerFile, callerFunction, callerModule);
 			_ResourceHandleAddData(handle, value);
 		}
 
@@ -231,7 +231,7 @@ namespace cross_call_master {
 		/// <param name="handle">handle</param>
 		internal static float[] ResourceHandleGetData(nint handle, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::ResourceHandleGetData", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::ResourceHandleGetData", callerLine, callerFile, callerFunction, callerModule);
 			return _ResourceHandleGetData(handle);
 		}
 
@@ -249,7 +249,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static int ResourceHandleGetAliveCount([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::ResourceHandleGetAliveCount", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::ResourceHandleGetAliveCount", callerLine, callerFile, callerFunction, callerModule);
 			return _ResourceHandleGetAliveCount();
 		}
 
@@ -267,7 +267,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static int ResourceHandleGetTotalCreated([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::ResourceHandleGetTotalCreated", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::ResourceHandleGetTotalCreated", callerLine, callerFile, callerFunction, callerModule);
 			return _ResourceHandleGetTotalCreated();
 		}
 
@@ -285,7 +285,7 @@ namespace cross_call_master {
 		/// </summary>
 		internal static int ResourceHandleGetTotalDestroyed([CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
-			NativeMethods.Log("cross_call_master::ResourceHandleGetTotalDestroyed", Severity.Trace, callerLine, callerFile, callerFunction, callerModule);
+			using var scope = new Scope("cross_call_master::ResourceHandleGetTotalDestroyed", callerLine, callerFile, callerFunction, callerModule);
 			return _ResourceHandleGetTotalDestroyed();
 		}
 
