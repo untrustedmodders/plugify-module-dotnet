@@ -240,10 +240,10 @@ Result<void> DotnetLanguageModule::OnMethodExport(const Extension& plugin) {
 	return {};
 }
 
-ScriptInstance* DotnetLanguageModule::FindScript(UniqueId pluginId) {
+const ScriptInstance* DotnetLanguageModule::FindScript(UniqueId pluginId) const {
 	auto it = _scripts.find(pluginId);
 	if (it != _scripts.end())
-		return &std::get<ScriptInstance>(*it);
+		return &it->second;
 	return nullptr;
 }
 

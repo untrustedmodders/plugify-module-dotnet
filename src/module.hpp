@@ -85,7 +85,7 @@ namespace netlm {
 		bool IsDebugBuild() const noexcept override;
 
 		const ScriptMap& GetScripts() const { return _scripts; }
-		ScriptInstance* FindScript(UniqueId pluginId);
+		const ScriptInstance* FindScript(UniqueId pluginId) const;
 		std::shared_ptr<Method> FindMethod(std::string_view name) const;
 
 		const std::unique_ptr<Provider>& GetProvider() { return _provider; }
