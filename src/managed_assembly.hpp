@@ -34,7 +34,7 @@ namespace netlm {
 		ManagedGuid _assemblyId{};
 		AssemblyLoadStatus _loadStatus = AssemblyLoadStatus::UnknownError;
 		std::string _name;
-		std::vector<string_t> _internalCallNameStorage;
+		std::deque<string_t> _internalCallNameStorage;
 		std::vector<InternalCall> _internalCalls;
 		std::vector<Type> _types;
 
