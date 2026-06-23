@@ -109,6 +109,7 @@ fs::path GetHostFXRPath() {
 #elif NETLM_PLATFORM_APPLE
 	auto searchPaths = std::array {
 		fs::path("/usr/local/share/dotnet/host/fxr/")
+		fs::path("/usr/share/dotnet/host/fxr/")
 	};
 #endif
 
