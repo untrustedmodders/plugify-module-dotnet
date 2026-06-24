@@ -1,13 +1,13 @@
-﻿using System.Reflection;
+﻿using System.Linq.Expressions;
+using System.Reflection;
 using System.Reflection.Emit;
+using System.Text;
 
 namespace Plugify;
 
-public delegate object FastInvokeHandler(object? target, object?[]? parameters);
-
-internal static class MethodUtils
+internal static class DelegateHelpers
 {
-    private static readonly MethodInfo FuncInvoke = typeof(Func<object[], object>).GetMethod("Invoke")!;
+    private static readonly MethodInfo FuncInvoke = typeof(Func<object?[], object?>).GetInvokeMethod();
     private static readonly MethodInfo ArrayEmpty = typeof(Array).GetMethod(nameof(Array.Empty))!.MakeGenericMethod(typeof(object));
 
     // https://github.com/mono/corefx/blob/main/src/System.Linq.Expressions/src/System/Dynamic/Utils/DelegateHelpers.cs
@@ -24,22 +24,35 @@ internal static class MethodUtils
     //      param0 = (T0)args[0]; // only generated for each byref argument
     // }
     // return (TRet)ret;
-    public static Delegate CreateObjectArrayDelegate(Type delegateType, Func<object[], object> handler)
+    public static Delegate CreateObjectArrayDelegate(Type delegateType, Func<object?[], object?> handler, string name = "")
     {
-        MethodInfo delegateInvokeMethod = delegateType.GetMethod("Invoke")!;
+        MethodInfo delegateInvokeMethod = delegateType.GetInvokeMethod();
 
         Type returnType = delegateInvokeMethod.ReturnType;
         bool hasReturnValue = returnType != typeof(void);
 
-        ParameterInfo[] parameters = delegateInvokeMethod.GetParameters();
-        Type[] paramTypes = new Type[parameters.Length + 1];
-        paramTypes[0] = typeof(Func<object[], object>);
-        for (int i = 0; i < parameters.Length; i++)
+        StringBuilder thunkName = new StringBuilder();
+        thunkName.Append("Thunk_");
+        thunkName.Append(name);
+        if (hasReturnValue)
         {
-            paramTypes[i + 1] = parameters[i].ParameterType;
+            thunkName.Append("_ret_");
+            thunkName.Append(returnType.Name);
         }
 
-        DynamicMethod thunkMethod = new DynamicMethod(string.Empty, returnType, paramTypes);
+        ParameterInfo[] parameters = delegateInvokeMethod.GetParameters();
+        Type[] paramTypes = new Type[parameters.Length + 1];
+        paramTypes[0] = typeof(Func<object?[], object?>);
+
+        for (int i = 0; i < parameters.Length; i++)
+        {
+            Type paramType = parameters[i].ParameterType;
+            thunkName.Append('_');
+            thunkName.Append(paramType.Name);
+            paramTypes[i + 1] = paramType;
+        }
+
+        DynamicMethod thunkMethod = new DynamicMethod(thunkName.ToString(), returnType, paramTypes);
         ILGenerator ilgen = thunkMethod.GetILGenerator();
 
         LocalBuilder argArray = ilgen.DeclareLocal(typeof(object[]));
@@ -129,20 +142,19 @@ internal static class MethodUtils
 
         ilgen.Emit(OpCodes.Ret);
 
-        // TODO: we need to cache these.
         return thunkMethod.CreateDelegate(delegateType, handler);
     }
 
-    private static Type ConvertToBoxableType(Type t)
+    private static Type ConvertToBoxableType(Type type)
     {
-        return t.IsPointer ? typeof(nint) : t;
+        return type.IsPointer ? typeof(nint) : type;
     }
 
     // https://www.codeproject.com/articles/A-General-Fast-Method-Invoker#comments-section
     
-    public static FastInvokeHandler GetMethodInvoker(MethodInfo methodInfo)
+    public static Func<object?, object?[]?, object?> CreateInvokeDelegate(MethodInfo methodInfo)
     {
-        DynamicMethod dynamicMethod = new DynamicMethod(string.Empty, typeof(object), [typeof(object), typeof(object[])], methodInfo.DeclaringType!.Module);
+        DynamicMethod dynamicMethod = new DynamicMethod("FastInvoker_" + methodInfo.Name, typeof(object), [typeof(object), typeof(object[])], methodInfo.DeclaringType!.Module);
         ILGenerator il = dynamicMethod.GetILGenerator();
         ParameterInfo[] parameters = methodInfo.GetParameters();
         Type[] paramTypes = new Type[parameters.Length];
@@ -201,8 +213,8 @@ internal static class MethodUtils
         }
 
         il.Emit(OpCodes.Ret);
-        FastInvokeHandler invoder = (FastInvokeHandler)dynamicMethod.CreateDelegate(typeof(FastInvokeHandler));
-        return invoder;
+        
+        return (Func<object?, object?[]?, object?>)dynamicMethod.CreateDelegate(typeof(Func<object?, object?[]?, object?>));
     }
     
     private static void EmitCastToReference(ILGenerator il, Type type)

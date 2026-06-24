@@ -1,5 +1,6 @@
-﻿using System.Numerics;
-using System.Runtime.InteropServices;
+﻿using System.Diagnostics;
+using System.Numerics;
+using System.Reflection;
 
 namespace Plugify;
 
@@ -96,6 +97,42 @@ internal enum ValueType : byte {
 
 internal static class TypeUtils
 {
+	public static bool IsDelegate(this Type type)
+	{
+		return typeof(MulticastDelegate).IsAssignableFrom(type.BaseType);
+	}
+    
+	public static MethodInfo GetInvokeMethod(this Type type)
+	{
+		Debug.Assert(typeof(Delegate).IsAssignableFrom(type));
+		return type.GetMethod("Invoke", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)!;
+	}
+    
+	public static Type? GetEnumType(this Type type)
+	{
+		Type baseType = type;
+		if (type.IsByRef)
+		{
+			baseType = type.GetElementType()!;
+		}
+        
+		if (baseType.IsEnum)
+		{
+			return baseType;
+		}
+
+		if (baseType.IsArray)
+		{
+			var elementType = baseType.GetElementType()!;
+			if (elementType.IsEnum)
+			{
+				return elementType;
+			}
+		}
+
+		return null;
+	}
+	
     private static readonly Dictionary<Type, ValueType> TypeSwitcher = new()
     {
         [typeof(void)] = ValueType.Void,
@@ -118,6 +155,7 @@ internal static class TypeUtils
         [typeof(MulticastDelegate)] = ValueType.Function,
         // plg::string
         [typeof(string)] = ValueType.String,
+        // plg::any
         [typeof(object)] = ValueType.Any,
         // plg::vector
         [typeof(Bool8[])] = ValueType.ArrayBool,
@@ -149,7 +187,7 @@ internal static class TypeUtils
         [typeof(Matrix4x4)] = ValueType.Matrix4x4
     };
 
-    public static ValueType ConvertToValueType(Type type)
+    public static ValueType ToValueType(this Type type)
     {
         var baseType = type.IsByRef ? type.GetElementType()! : type;
         

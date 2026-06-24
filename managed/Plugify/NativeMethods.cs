@@ -174,7 +174,7 @@ public static unsafe partial class NativeMethods
 			return;
 		}
 		
-		ValueType valueType = TypeUtils.ConvertToValueType(paramValue.GetType());
+		ValueType valueType = paramValue.GetType().ToValueType();
 		switch (valueType)
 		{
 			case ValueType.Bool:

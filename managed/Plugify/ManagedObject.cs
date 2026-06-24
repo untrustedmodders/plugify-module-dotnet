@@ -56,8 +56,13 @@ internal static class ManagedObject
 
     public static Dictionary<MethodKey, MethodInfo> CachedMethods = new Dictionary<MethodKey, MethodInfo>();*/
 
-    private static readonly ConcurrentDictionary<MethodInfo, FastInvokeHandler> CachedInvokers = new();
+    private static readonly ConcurrentDictionary<MethodInfo, Func<object?, object?[]?, object?>> CachedInvokers = new();
 
+    private static Func<object?, object?[]?, object?> GetInvoker(this MethodInfo methodInfo)
+    {
+        return CachedInvokers.GetOrAdd(methodInfo, DelegateHelpers.CreateInvokeDelegate);
+    }
+    
     [UnmanagedCallersOnly]
     private static unsafe nint CreateObject(nint typeHandle, Bool32 weakRef, nint parameterPtr, ManagedType* parameterTypes, int parameterCount)
     {
@@ -198,10 +203,7 @@ internal static class ManagedObject
                 return;
             }*/
             
-            var methodInvoker = CachedInvokers.GetOrAdd(
-                methodInfo,
-                static key => MethodUtils.GetMethodInvoker(key)
-            );
+            var methodInvoker = methodInfo.GetInvoker();
 
             var parameters = Marshalling.MarshalParameterArray(parameterPtr, parameterCount, methodInfo);
 
@@ -232,10 +234,7 @@ internal static class ManagedObject
                 return;
             }*/
 
-            var methodInvoker = CachedInvokers.GetOrAdd(
-                methodInfo,
-                static key => MethodUtils.GetMethodInvoker(key)
-            );
+            var methodInvoker = methodInfo.GetInvoker();
             
             var parameters = Marshalling.MarshalParameterArray(parameterPtr, parameterCount, methodInfo);
 
@@ -272,10 +271,7 @@ internal static class ManagedObject
                 return;
             }
 
-            var methodInvoker = CachedInvokers.GetOrAdd(
-                methodInfo,
-                static key => MethodUtils.GetMethodInvoker(key)
-            );
+            var methodInvoker = methodInfo.GetInvoker();
             
             var parameters = Marshalling.MarshalParameterArray(parameterPtr, parameterCount, methodInfo);
 
@@ -308,10 +304,7 @@ internal static class ManagedObject
                 return;
             }
 
-            var methodInvoker = CachedInvokers.GetOrAdd(
-                methodInfo,
-                static key => MethodUtils.GetMethodInvoker(key)
-            );
+            var methodInvoker = methodInfo.GetInvoker();
             
             var parameters = Marshalling.MarshalParameterArray(parameterPtr, parameterCount, methodInfo);
             

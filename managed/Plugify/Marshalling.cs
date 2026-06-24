@@ -91,7 +91,7 @@ public static class Marshalling
 
     internal static unsafe void MarshalReturnValue(object? paramValue, Type paramType, nint outValue)
     {
-        ValueType valueType = TypeUtils.ConvertToValueType(paramType);
+	    ValueType valueType = paramType.ToValueType();
         Type? enumType = paramType.GetEnumType();
         if (enumType != null)
         {
@@ -289,7 +289,7 @@ public static class Marshalling
 
 	internal static unsafe object? MarshalPointer(nint inValue, Type paramType)
 	{
-		ValueType valueType = TypeUtils.ConvertToValueType(paramType);
+		ValueType valueType = paramType.ToValueType();
 		Type? enumType = paramType.GetEnumType();
 		if (enumType != null)
 		{
@@ -450,10 +450,10 @@ public static class Marshalling
 				throw new Exception("Type required to properly generate delegate at runtime");
 			}
 
-			MethodInfo methodInfo = delegateType.GetMethod("Invoke")!;
+			MethodInfo methodInfo = delegateType.GetInvokeMethod();
 			if (CachedMethods.GetOrAdd(methodInfo, CheckIfNeedsMarshal))
 			{
-				return MethodUtils.CreateObjectArrayDelegate(delegateType, ExternalInvoke(address, methodInfo));
+				return DelegateHelpers.CreateObjectArrayDelegate(delegateType, ExternalInvoke(address, methodInfo), $"0x{address:X}");
 			}
 			else
 			{
@@ -466,7 +466,7 @@ public static class Marshalling
 	private static readonly bool Is32Bit = IntPtr.Size == 4;
 	private static readonly bool IsWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 	
-	private static unsafe Func<object[], object> ExternalInvoke(nint funcAddress, MethodInfo methodInfo)
+	private static unsafe Func<object?[], object?> ExternalInvoke(nint funcAddress, MethodInfo methodInfo)
 	{
 		ManagedType returnType =  new ManagedType(methodInfo.ReturnParameter.ParameterType);
 		ManagedType[] parameterTypes = methodInfo.GetParameters().Select(p => new ManagedType(p.ParameterType)).ToArray();
@@ -607,7 +607,7 @@ public static class Marshalling
 
 				for (int i = 0; i < parameters.Length; i++)
 				{
-					object paramValue = parameters[i];
+					object paramValue = parameters[i]!;
 					ManagedType paramType = parameterTypes[i];
 					ValueType valueType = paramType.ValueType;
 					var size = TypeUtils.SizeOf(valueType);
@@ -2167,10 +2167,10 @@ public static class Marshalling
 	
 	private static bool IsNeedMarshal(Type paramType)
 	{
-		ValueType valueType = TypeUtils.ConvertToValueType(paramType);
+		ValueType valueType = paramType.ToValueType();
 		if (valueType == ValueType.Function)
 		{
-			var methodInfo = paramType.GetMethod("Invoke")!;
+			var methodInfo = paramType.GetInvokeMethod();
 			if (IsNeedMarshal(methodInfo.ReturnType) || methodInfo.GetParameters().Any(p => IsNeedMarshal(p.ParameterType)))
 			{
 				return true;
