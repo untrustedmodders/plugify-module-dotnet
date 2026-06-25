@@ -12,8 +12,8 @@ namespace cross_call_master {
 	internal static unsafe partial class cross_call_master {
 
 #region CounterCreate
-		internal static delegate*<long, nint> _CounterCreate = &___CounterCreate;
-		internal static delegate* unmanaged[Cdecl]<long, nint> __CounterCreate;
+		private static delegate*<long, nint> _CounterCreate = &___CounterCreate;
+		private static delegate* unmanaged[Cdecl]<long, nint> __CounterCreate;
 		private static nint ___CounterCreate(long initialValue)
 		{
 			nint __retVal = __CounterCreate(initialValue);
@@ -31,8 +31,8 @@ namespace cross_call_master {
 		}
 
 #region CounterCreateZero
-		internal static delegate*<nint> _CounterCreateZero = &___CounterCreateZero;
-		internal static delegate* unmanaged[Cdecl]<nint> __CounterCreateZero;
+		private static delegate*<nint> _CounterCreateZero = &___CounterCreateZero;
+		private static delegate* unmanaged[Cdecl]<nint> __CounterCreateZero;
 		private static nint ___CounterCreateZero()
 		{
 			nint __retVal = __CounterCreateZero();
@@ -49,8 +49,8 @@ namespace cross_call_master {
 		}
 
 #region CounterGetValue
-		internal static delegate*<nint, long> _CounterGetValue = &___CounterGetValue;
-		internal static delegate* unmanaged[Cdecl]<nint, long> __CounterGetValue;
+		private static delegate*<nint, long> _CounterGetValue = &___CounterGetValue;
+		private static delegate* unmanaged[Cdecl]<nint, long> __CounterGetValue;
 		private static long ___CounterGetValue(nint counter)
 		{
 			long __retVal = __CounterGetValue(counter);
@@ -68,8 +68,8 @@ namespace cross_call_master {
 		}
 
 #region CounterSetValue
-		internal static delegate*<nint, long, void> _CounterSetValue = &___CounterSetValue;
-		internal static delegate* unmanaged[Cdecl]<nint, long, void> __CounterSetValue;
+		private static delegate*<nint, long, void> _CounterSetValue = &___CounterSetValue;
+		private static delegate* unmanaged[Cdecl]<nint, long, void> __CounterSetValue;
 		private static void ___CounterSetValue(nint counter, long value)
 		{
 			__CounterSetValue(counter, value);
@@ -87,8 +87,8 @@ namespace cross_call_master {
 		}
 
 #region CounterIncrement
-		internal static delegate*<nint, void> _CounterIncrement = &___CounterIncrement;
-		internal static delegate* unmanaged[Cdecl]<nint, void> __CounterIncrement;
+		private static delegate*<nint, void> _CounterIncrement = &___CounterIncrement;
+		private static delegate* unmanaged[Cdecl]<nint, void> __CounterIncrement;
 		private static void ___CounterIncrement(nint counter)
 		{
 			__CounterIncrement(counter);
@@ -105,8 +105,8 @@ namespace cross_call_master {
 		}
 
 #region CounterDecrement
-		internal static delegate*<nint, void> _CounterDecrement = &___CounterDecrement;
-		internal static delegate* unmanaged[Cdecl]<nint, void> __CounterDecrement;
+		private static delegate*<nint, void> _CounterDecrement = &___CounterDecrement;
+		private static delegate* unmanaged[Cdecl]<nint, void> __CounterDecrement;
 		private static void ___CounterDecrement(nint counter)
 		{
 			__CounterDecrement(counter);
@@ -123,8 +123,8 @@ namespace cross_call_master {
 		}
 
 #region CounterAdd
-		internal static delegate*<nint, long, void> _CounterAdd = &___CounterAdd;
-		internal static delegate* unmanaged[Cdecl]<nint, long, void> __CounterAdd;
+		private static delegate*<nint, long, void> _CounterAdd = &___CounterAdd;
+		private static delegate* unmanaged[Cdecl]<nint, long, void> __CounterAdd;
 		private static void ___CounterAdd(nint counter, long amount)
 		{
 			__CounterAdd(counter, amount);
@@ -142,8 +142,8 @@ namespace cross_call_master {
 		}
 
 #region CounterReset
-		internal static delegate*<nint, void> _CounterReset = &___CounterReset;
-		internal static delegate* unmanaged[Cdecl]<nint, void> __CounterReset;
+		private static delegate*<nint, void> _CounterReset = &___CounterReset;
+		private static delegate* unmanaged[Cdecl]<nint, void> __CounterReset;
 		private static void ___CounterReset(nint counter)
 		{
 			__CounterReset(counter);
@@ -160,8 +160,8 @@ namespace cross_call_master {
 		}
 
 #region CounterIsPositive
-		internal static delegate*<nint, Bool8> _CounterIsPositive = &___CounterIsPositive;
-		internal static delegate* unmanaged[Cdecl]<nint, Bool8> __CounterIsPositive;
+		private static delegate*<nint, Bool8> _CounterIsPositive = &___CounterIsPositive;
+		private static delegate* unmanaged[Cdecl]<nint, Bool8> __CounterIsPositive;
 		private static Bool8 ___CounterIsPositive(nint counter)
 		{
 			Bool8 __retVal = __CounterIsPositive(counter);
@@ -179,8 +179,8 @@ namespace cross_call_master {
 		}
 
 #region CounterCompare
-		internal static delegate*<long, long, int> _CounterCompare = &___CounterCompare;
-		internal static delegate* unmanaged[Cdecl]<long, long, int> __CounterCompare;
+		private static delegate*<long, long, int> _CounterCompare = &___CounterCompare;
+		private static delegate* unmanaged[Cdecl]<long, long, int> __CounterCompare;
 		private static int ___CounterCompare(long value1, long value2)
 		{
 			int __retVal = __CounterCompare(value1, value2);
@@ -199,8 +199,8 @@ namespace cross_call_master {
 		}
 
 #region CounterSum
-		internal static delegate*<long[], long> _CounterSum = &___CounterSum;
-		internal static delegate* unmanaged[Cdecl]<Vector192*, long> __CounterSum;
+		private static delegate*<long[], long> _CounterSum = &___CounterSum;
+		private static delegate* unmanaged[Cdecl]<Vector192*, long> __CounterSum;
 		private static long ___CounterSum(long[] values)
 		{
 			long __retVal;

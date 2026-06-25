@@ -12,8 +12,8 @@ namespace cross_call_master {
 	internal static unsafe partial class cross_call_master {
 
 #region ReverseReturn
-		internal static delegate*<string, void> _ReverseReturn = &___ReverseReturn;
-		internal static delegate* unmanaged[Cdecl]<String192*, void> __ReverseReturn;
+		private static delegate*<string, void> _ReverseReturn = &___ReverseReturn;
+		private static delegate* unmanaged[Cdecl]<String192*, void> __ReverseReturn;
 		private static void ___ReverseReturn(string returnString)
 		{
 			var __returnString = NativeMethods.ConstructString(returnString);
@@ -37,8 +37,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnVoidCallback
-		internal static delegate*<void> _NoParamReturnVoidCallback = &___NoParamReturnVoidCallback;
-		internal static delegate* unmanaged[Cdecl]<void> __NoParamReturnVoidCallback;
+		private static delegate*<void> _NoParamReturnVoidCallback = &___NoParamReturnVoidCallback;
+		private static delegate* unmanaged[Cdecl]<void> __NoParamReturnVoidCallback;
 		private static void ___NoParamReturnVoidCallback()
 		{
 			__NoParamReturnVoidCallback();
@@ -54,8 +54,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnBoolCallback
-		internal static delegate*<Bool8> _NoParamReturnBoolCallback = &___NoParamReturnBoolCallback;
-		internal static delegate* unmanaged[Cdecl]<Bool8> __NoParamReturnBoolCallback;
+		private static delegate*<Bool8> _NoParamReturnBoolCallback = &___NoParamReturnBoolCallback;
+		private static delegate* unmanaged[Cdecl]<Bool8> __NoParamReturnBoolCallback;
 		private static Bool8 ___NoParamReturnBoolCallback()
 		{
 			Bool8 __retVal = __NoParamReturnBoolCallback();
@@ -72,8 +72,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnChar8Callback
-		internal static delegate*<Char8> _NoParamReturnChar8Callback = &___NoParamReturnChar8Callback;
-		internal static delegate* unmanaged[Cdecl]<Char8> __NoParamReturnChar8Callback;
+		private static delegate*<Char8> _NoParamReturnChar8Callback = &___NoParamReturnChar8Callback;
+		private static delegate* unmanaged[Cdecl]<Char8> __NoParamReturnChar8Callback;
 		private static Char8 ___NoParamReturnChar8Callback()
 		{
 			Char8 __retVal = __NoParamReturnChar8Callback();
@@ -90,8 +90,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnChar16Callback
-		internal static delegate*<Char16> _NoParamReturnChar16Callback = &___NoParamReturnChar16Callback;
-		internal static delegate* unmanaged[Cdecl]<Char16> __NoParamReturnChar16Callback;
+		private static delegate*<Char16> _NoParamReturnChar16Callback = &___NoParamReturnChar16Callback;
+		private static delegate* unmanaged[Cdecl]<Char16> __NoParamReturnChar16Callback;
 		private static Char16 ___NoParamReturnChar16Callback()
 		{
 			Char16 __retVal = __NoParamReturnChar16Callback();
@@ -108,8 +108,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnInt8Callback
-		internal static delegate*<sbyte> _NoParamReturnInt8Callback = &___NoParamReturnInt8Callback;
-		internal static delegate* unmanaged[Cdecl]<sbyte> __NoParamReturnInt8Callback;
+		private static delegate*<sbyte> _NoParamReturnInt8Callback = &___NoParamReturnInt8Callback;
+		private static delegate* unmanaged[Cdecl]<sbyte> __NoParamReturnInt8Callback;
 		private static sbyte ___NoParamReturnInt8Callback()
 		{
 			sbyte __retVal = __NoParamReturnInt8Callback();
@@ -126,8 +126,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnInt16Callback
-		internal static delegate*<short> _NoParamReturnInt16Callback = &___NoParamReturnInt16Callback;
-		internal static delegate* unmanaged[Cdecl]<short> __NoParamReturnInt16Callback;
+		private static delegate*<short> _NoParamReturnInt16Callback = &___NoParamReturnInt16Callback;
+		private static delegate* unmanaged[Cdecl]<short> __NoParamReturnInt16Callback;
 		private static short ___NoParamReturnInt16Callback()
 		{
 			short __retVal = __NoParamReturnInt16Callback();
@@ -144,8 +144,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnInt32Callback
-		internal static delegate*<int> _NoParamReturnInt32Callback = &___NoParamReturnInt32Callback;
-		internal static delegate* unmanaged[Cdecl]<int> __NoParamReturnInt32Callback;
+		private static delegate*<int> _NoParamReturnInt32Callback = &___NoParamReturnInt32Callback;
+		private static delegate* unmanaged[Cdecl]<int> __NoParamReturnInt32Callback;
 		private static int ___NoParamReturnInt32Callback()
 		{
 			int __retVal = __NoParamReturnInt32Callback();
@@ -162,8 +162,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnInt64Callback
-		internal static delegate*<long> _NoParamReturnInt64Callback = &___NoParamReturnInt64Callback;
-		internal static delegate* unmanaged[Cdecl]<long> __NoParamReturnInt64Callback;
+		private static delegate*<long> _NoParamReturnInt64Callback = &___NoParamReturnInt64Callback;
+		private static delegate* unmanaged[Cdecl]<long> __NoParamReturnInt64Callback;
 		private static long ___NoParamReturnInt64Callback()
 		{
 			long __retVal = __NoParamReturnInt64Callback();
@@ -180,8 +180,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnUInt8Callback
-		internal static delegate*<byte> _NoParamReturnUInt8Callback = &___NoParamReturnUInt8Callback;
-		internal static delegate* unmanaged[Cdecl]<byte> __NoParamReturnUInt8Callback;
+		private static delegate*<byte> _NoParamReturnUInt8Callback = &___NoParamReturnUInt8Callback;
+		private static delegate* unmanaged[Cdecl]<byte> __NoParamReturnUInt8Callback;
 		private static byte ___NoParamReturnUInt8Callback()
 		{
 			byte __retVal = __NoParamReturnUInt8Callback();
@@ -198,8 +198,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnUInt16Callback
-		internal static delegate*<ushort> _NoParamReturnUInt16Callback = &___NoParamReturnUInt16Callback;
-		internal static delegate* unmanaged[Cdecl]<ushort> __NoParamReturnUInt16Callback;
+		private static delegate*<ushort> _NoParamReturnUInt16Callback = &___NoParamReturnUInt16Callback;
+		private static delegate* unmanaged[Cdecl]<ushort> __NoParamReturnUInt16Callback;
 		private static ushort ___NoParamReturnUInt16Callback()
 		{
 			ushort __retVal = __NoParamReturnUInt16Callback();
@@ -216,8 +216,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnUInt32Callback
-		internal static delegate*<uint> _NoParamReturnUInt32Callback = &___NoParamReturnUInt32Callback;
-		internal static delegate* unmanaged[Cdecl]<uint> __NoParamReturnUInt32Callback;
+		private static delegate*<uint> _NoParamReturnUInt32Callback = &___NoParamReturnUInt32Callback;
+		private static delegate* unmanaged[Cdecl]<uint> __NoParamReturnUInt32Callback;
 		private static uint ___NoParamReturnUInt32Callback()
 		{
 			uint __retVal = __NoParamReturnUInt32Callback();
@@ -234,8 +234,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnUInt64Callback
-		internal static delegate*<ulong> _NoParamReturnUInt64Callback = &___NoParamReturnUInt64Callback;
-		internal static delegate* unmanaged[Cdecl]<ulong> __NoParamReturnUInt64Callback;
+		private static delegate*<ulong> _NoParamReturnUInt64Callback = &___NoParamReturnUInt64Callback;
+		private static delegate* unmanaged[Cdecl]<ulong> __NoParamReturnUInt64Callback;
 		private static ulong ___NoParamReturnUInt64Callback()
 		{
 			ulong __retVal = __NoParamReturnUInt64Callback();
@@ -252,8 +252,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnPointerCallback
-		internal static delegate*<nint> _NoParamReturnPointerCallback = &___NoParamReturnPointerCallback;
-		internal static delegate* unmanaged[Cdecl]<nint> __NoParamReturnPointerCallback;
+		private static delegate*<nint> _NoParamReturnPointerCallback = &___NoParamReturnPointerCallback;
+		private static delegate* unmanaged[Cdecl]<nint> __NoParamReturnPointerCallback;
 		private static nint ___NoParamReturnPointerCallback()
 		{
 			nint __retVal = __NoParamReturnPointerCallback();
@@ -270,8 +270,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnFloatCallback
-		internal static delegate*<float> _NoParamReturnFloatCallback = &___NoParamReturnFloatCallback;
-		internal static delegate* unmanaged[Cdecl]<float> __NoParamReturnFloatCallback;
+		private static delegate*<float> _NoParamReturnFloatCallback = &___NoParamReturnFloatCallback;
+		private static delegate* unmanaged[Cdecl]<float> __NoParamReturnFloatCallback;
 		private static float ___NoParamReturnFloatCallback()
 		{
 			float __retVal = __NoParamReturnFloatCallback();
@@ -288,8 +288,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnDoubleCallback
-		internal static delegate*<double> _NoParamReturnDoubleCallback = &___NoParamReturnDoubleCallback;
-		internal static delegate* unmanaged[Cdecl]<double> __NoParamReturnDoubleCallback;
+		private static delegate*<double> _NoParamReturnDoubleCallback = &___NoParamReturnDoubleCallback;
+		private static delegate* unmanaged[Cdecl]<double> __NoParamReturnDoubleCallback;
 		private static double ___NoParamReturnDoubleCallback()
 		{
 			double __retVal = __NoParamReturnDoubleCallback();
@@ -306,8 +306,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnFunctionCallback
-		internal static delegate*<NoParamReturnFunctionCallbackFunc> _NoParamReturnFunctionCallback = &___NoParamReturnFunctionCallback;
-		internal static delegate* unmanaged[Cdecl]<nint> __NoParamReturnFunctionCallback;
+		private static delegate*<NoParamReturnFunctionCallbackFunc> _NoParamReturnFunctionCallback = &___NoParamReturnFunctionCallback;
+		private static delegate* unmanaged[Cdecl]<nint> __NoParamReturnFunctionCallback;
 		private static NoParamReturnFunctionCallbackFunc ___NoParamReturnFunctionCallback()
 		{
 			nint __retVal = __NoParamReturnFunctionCallback();
@@ -324,8 +324,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnStringCallback
-		internal static delegate*<string> _NoParamReturnStringCallback = &___NoParamReturnStringCallback;
-		internal static delegate* unmanaged[Cdecl]<String192> __NoParamReturnStringCallback;
+		private static delegate*<string> _NoParamReturnStringCallback = &___NoParamReturnStringCallback;
+		private static delegate* unmanaged[Cdecl]<String192> __NoParamReturnStringCallback;
 		private static string ___NoParamReturnStringCallback()
 		{
 			string __retVal;
@@ -352,8 +352,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnAnyCallback
-		internal static delegate*<object> _NoParamReturnAnyCallback = &___NoParamReturnAnyCallback;
-		internal static delegate* unmanaged[Cdecl]<Variant256> __NoParamReturnAnyCallback;
+		private static delegate*<object> _NoParamReturnAnyCallback = &___NoParamReturnAnyCallback;
+		private static delegate* unmanaged[Cdecl]<Variant256> __NoParamReturnAnyCallback;
 		private static object ___NoParamReturnAnyCallback()
 		{
 			object __retVal;
@@ -380,8 +380,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnArrayBoolCallback
-		internal static delegate*<Bool8[]> _NoParamReturnArrayBoolCallback = &___NoParamReturnArrayBoolCallback;
-		internal static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayBoolCallback;
+		private static delegate*<Bool8[]> _NoParamReturnArrayBoolCallback = &___NoParamReturnArrayBoolCallback;
+		private static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayBoolCallback;
 		private static Bool8[] ___NoParamReturnArrayBoolCallback()
 		{
 			Bool8[] __retVal;
@@ -409,8 +409,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnArrayChar8Callback
-		internal static delegate*<Char8[]> _NoParamReturnArrayChar8Callback = &___NoParamReturnArrayChar8Callback;
-		internal static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayChar8Callback;
+		private static delegate*<Char8[]> _NoParamReturnArrayChar8Callback = &___NoParamReturnArrayChar8Callback;
+		private static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayChar8Callback;
 		private static Char8[] ___NoParamReturnArrayChar8Callback()
 		{
 			Char8[] __retVal;
@@ -438,8 +438,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnArrayChar16Callback
-		internal static delegate*<Char16[]> _NoParamReturnArrayChar16Callback = &___NoParamReturnArrayChar16Callback;
-		internal static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayChar16Callback;
+		private static delegate*<Char16[]> _NoParamReturnArrayChar16Callback = &___NoParamReturnArrayChar16Callback;
+		private static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayChar16Callback;
 		private static Char16[] ___NoParamReturnArrayChar16Callback()
 		{
 			Char16[] __retVal;
@@ -467,8 +467,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnArrayInt8Callback
-		internal static delegate*<sbyte[]> _NoParamReturnArrayInt8Callback = &___NoParamReturnArrayInt8Callback;
-		internal static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayInt8Callback;
+		private static delegate*<sbyte[]> _NoParamReturnArrayInt8Callback = &___NoParamReturnArrayInt8Callback;
+		private static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayInt8Callback;
 		private static sbyte[] ___NoParamReturnArrayInt8Callback()
 		{
 			sbyte[] __retVal;
@@ -496,8 +496,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnArrayInt16Callback
-		internal static delegate*<short[]> _NoParamReturnArrayInt16Callback = &___NoParamReturnArrayInt16Callback;
-		internal static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayInt16Callback;
+		private static delegate*<short[]> _NoParamReturnArrayInt16Callback = &___NoParamReturnArrayInt16Callback;
+		private static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayInt16Callback;
 		private static short[] ___NoParamReturnArrayInt16Callback()
 		{
 			short[] __retVal;
@@ -525,8 +525,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnArrayInt32Callback
-		internal static delegate*<int[]> _NoParamReturnArrayInt32Callback = &___NoParamReturnArrayInt32Callback;
-		internal static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayInt32Callback;
+		private static delegate*<int[]> _NoParamReturnArrayInt32Callback = &___NoParamReturnArrayInt32Callback;
+		private static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayInt32Callback;
 		private static int[] ___NoParamReturnArrayInt32Callback()
 		{
 			int[] __retVal;
@@ -554,8 +554,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnArrayInt64Callback
-		internal static delegate*<long[]> _NoParamReturnArrayInt64Callback = &___NoParamReturnArrayInt64Callback;
-		internal static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayInt64Callback;
+		private static delegate*<long[]> _NoParamReturnArrayInt64Callback = &___NoParamReturnArrayInt64Callback;
+		private static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayInt64Callback;
 		private static long[] ___NoParamReturnArrayInt64Callback()
 		{
 			long[] __retVal;
@@ -583,8 +583,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnArrayUInt8Callback
-		internal static delegate*<byte[]> _NoParamReturnArrayUInt8Callback = &___NoParamReturnArrayUInt8Callback;
-		internal static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayUInt8Callback;
+		private static delegate*<byte[]> _NoParamReturnArrayUInt8Callback = &___NoParamReturnArrayUInt8Callback;
+		private static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayUInt8Callback;
 		private static byte[] ___NoParamReturnArrayUInt8Callback()
 		{
 			byte[] __retVal;
@@ -612,8 +612,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnArrayUInt16Callback
-		internal static delegate*<ushort[]> _NoParamReturnArrayUInt16Callback = &___NoParamReturnArrayUInt16Callback;
-		internal static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayUInt16Callback;
+		private static delegate*<ushort[]> _NoParamReturnArrayUInt16Callback = &___NoParamReturnArrayUInt16Callback;
+		private static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayUInt16Callback;
 		private static ushort[] ___NoParamReturnArrayUInt16Callback()
 		{
 			ushort[] __retVal;
@@ -641,8 +641,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnArrayUInt32Callback
-		internal static delegate*<uint[]> _NoParamReturnArrayUInt32Callback = &___NoParamReturnArrayUInt32Callback;
-		internal static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayUInt32Callback;
+		private static delegate*<uint[]> _NoParamReturnArrayUInt32Callback = &___NoParamReturnArrayUInt32Callback;
+		private static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayUInt32Callback;
 		private static uint[] ___NoParamReturnArrayUInt32Callback()
 		{
 			uint[] __retVal;
@@ -670,8 +670,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnArrayUInt64Callback
-		internal static delegate*<ulong[]> _NoParamReturnArrayUInt64Callback = &___NoParamReturnArrayUInt64Callback;
-		internal static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayUInt64Callback;
+		private static delegate*<ulong[]> _NoParamReturnArrayUInt64Callback = &___NoParamReturnArrayUInt64Callback;
+		private static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayUInt64Callback;
 		private static ulong[] ___NoParamReturnArrayUInt64Callback()
 		{
 			ulong[] __retVal;
@@ -699,8 +699,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnArrayPointerCallback
-		internal static delegate*<nint[]> _NoParamReturnArrayPointerCallback = &___NoParamReturnArrayPointerCallback;
-		internal static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayPointerCallback;
+		private static delegate*<nint[]> _NoParamReturnArrayPointerCallback = &___NoParamReturnArrayPointerCallback;
+		private static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayPointerCallback;
 		private static nint[] ___NoParamReturnArrayPointerCallback()
 		{
 			nint[] __retVal;
@@ -728,8 +728,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnArrayFloatCallback
-		internal static delegate*<float[]> _NoParamReturnArrayFloatCallback = &___NoParamReturnArrayFloatCallback;
-		internal static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayFloatCallback;
+		private static delegate*<float[]> _NoParamReturnArrayFloatCallback = &___NoParamReturnArrayFloatCallback;
+		private static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayFloatCallback;
 		private static float[] ___NoParamReturnArrayFloatCallback()
 		{
 			float[] __retVal;
@@ -757,8 +757,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnArrayDoubleCallback
-		internal static delegate*<double[]> _NoParamReturnArrayDoubleCallback = &___NoParamReturnArrayDoubleCallback;
-		internal static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayDoubleCallback;
+		private static delegate*<double[]> _NoParamReturnArrayDoubleCallback = &___NoParamReturnArrayDoubleCallback;
+		private static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayDoubleCallback;
 		private static double[] ___NoParamReturnArrayDoubleCallback()
 		{
 			double[] __retVal;
@@ -786,8 +786,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnArrayStringCallback
-		internal static delegate*<string[]> _NoParamReturnArrayStringCallback = &___NoParamReturnArrayStringCallback;
-		internal static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayStringCallback;
+		private static delegate*<string[]> _NoParamReturnArrayStringCallback = &___NoParamReturnArrayStringCallback;
+		private static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayStringCallback;
 		private static string[] ___NoParamReturnArrayStringCallback()
 		{
 			string[] __retVal;
@@ -815,8 +815,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnArrayAnyCallback
-		internal static delegate*<object[]> _NoParamReturnArrayAnyCallback = &___NoParamReturnArrayAnyCallback;
-		internal static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayAnyCallback;
+		private static delegate*<object[]> _NoParamReturnArrayAnyCallback = &___NoParamReturnArrayAnyCallback;
+		private static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayAnyCallback;
 		private static object[] ___NoParamReturnArrayAnyCallback()
 		{
 			object[] __retVal;
@@ -844,8 +844,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnArrayVector2Callback
-		internal static delegate*<Vector2[]> _NoParamReturnArrayVector2Callback = &___NoParamReturnArrayVector2Callback;
-		internal static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayVector2Callback;
+		private static delegate*<Vector2[]> _NoParamReturnArrayVector2Callback = &___NoParamReturnArrayVector2Callback;
+		private static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayVector2Callback;
 		private static Vector2[] ___NoParamReturnArrayVector2Callback()
 		{
 			Vector2[] __retVal;
@@ -873,8 +873,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnArrayVector3Callback
-		internal static delegate*<Vector3[]> _NoParamReturnArrayVector3Callback = &___NoParamReturnArrayVector3Callback;
-		internal static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayVector3Callback;
+		private static delegate*<Vector3[]> _NoParamReturnArrayVector3Callback = &___NoParamReturnArrayVector3Callback;
+		private static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayVector3Callback;
 		private static Vector3[] ___NoParamReturnArrayVector3Callback()
 		{
 			Vector3[] __retVal;
@@ -902,8 +902,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnArrayVector4Callback
-		internal static delegate*<Vector4[]> _NoParamReturnArrayVector4Callback = &___NoParamReturnArrayVector4Callback;
-		internal static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayVector4Callback;
+		private static delegate*<Vector4[]> _NoParamReturnArrayVector4Callback = &___NoParamReturnArrayVector4Callback;
+		private static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayVector4Callback;
 		private static Vector4[] ___NoParamReturnArrayVector4Callback()
 		{
 			Vector4[] __retVal;
@@ -931,8 +931,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnArrayMatrix4x4Callback
-		internal static delegate*<Matrix4x4[]> _NoParamReturnArrayMatrix4x4Callback = &___NoParamReturnArrayMatrix4x4Callback;
-		internal static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayMatrix4x4Callback;
+		private static delegate*<Matrix4x4[]> _NoParamReturnArrayMatrix4x4Callback = &___NoParamReturnArrayMatrix4x4Callback;
+		private static delegate* unmanaged[Cdecl]<Vector192> __NoParamReturnArrayMatrix4x4Callback;
 		private static Matrix4x4[] ___NoParamReturnArrayMatrix4x4Callback()
 		{
 			Matrix4x4[] __retVal;
@@ -960,8 +960,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnVector2Callback
-		internal static delegate*<Vector2> _NoParamReturnVector2Callback = &___NoParamReturnVector2Callback;
-		internal static delegate* unmanaged[Cdecl]<Vector2> __NoParamReturnVector2Callback;
+		private static delegate*<Vector2> _NoParamReturnVector2Callback = &___NoParamReturnVector2Callback;
+		private static delegate* unmanaged[Cdecl]<Vector2> __NoParamReturnVector2Callback;
 		private static Vector2 ___NoParamReturnVector2Callback()
 		{
 			Vector2 __retVal = __NoParamReturnVector2Callback();
@@ -978,8 +978,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnVector3Callback
-		internal static delegate*<Vector3> _NoParamReturnVector3Callback = &___NoParamReturnVector3Callback;
-		internal static delegate* unmanaged[Cdecl]<Vector3> __NoParamReturnVector3Callback;
+		private static delegate*<Vector3> _NoParamReturnVector3Callback = &___NoParamReturnVector3Callback;
+		private static delegate* unmanaged[Cdecl]<Vector3> __NoParamReturnVector3Callback;
 		private static Vector3 ___NoParamReturnVector3Callback()
 		{
 			Vector3 __retVal = __NoParamReturnVector3Callback();
@@ -996,8 +996,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnVector4Callback
-		internal static delegate*<Vector4> _NoParamReturnVector4Callback = &___NoParamReturnVector4Callback;
-		internal static delegate* unmanaged[Cdecl]<Vector4> __NoParamReturnVector4Callback;
+		private static delegate*<Vector4> _NoParamReturnVector4Callback = &___NoParamReturnVector4Callback;
+		private static delegate* unmanaged[Cdecl]<Vector4> __NoParamReturnVector4Callback;
 		private static Vector4 ___NoParamReturnVector4Callback()
 		{
 			Vector4 __retVal = __NoParamReturnVector4Callback();
@@ -1014,8 +1014,8 @@ namespace cross_call_master {
 		}
 
 #region NoParamReturnMatrix4x4Callback
-		internal static delegate*<Matrix4x4> _NoParamReturnMatrix4x4Callback = &___NoParamReturnMatrix4x4Callback;
-		internal static delegate* unmanaged[Cdecl]<Matrix4x4> __NoParamReturnMatrix4x4Callback;
+		private static delegate*<Matrix4x4> _NoParamReturnMatrix4x4Callback = &___NoParamReturnMatrix4x4Callback;
+		private static delegate* unmanaged[Cdecl]<Matrix4x4> __NoParamReturnMatrix4x4Callback;
 		private static Matrix4x4 ___NoParamReturnMatrix4x4Callback()
 		{
 			Matrix4x4 __retVal = __NoParamReturnMatrix4x4Callback();
@@ -1032,8 +1032,8 @@ namespace cross_call_master {
 		}
 
 #region Param1Callback
-		internal static delegate*<int, void> _Param1Callback = &___Param1Callback;
-		internal static delegate* unmanaged[Cdecl]<int, void> __Param1Callback;
+		private static delegate*<int, void> _Param1Callback = &___Param1Callback;
+		private static delegate* unmanaged[Cdecl]<int, void> __Param1Callback;
 		private static void ___Param1Callback(int a)
 		{
 			__Param1Callback(a);
@@ -1050,8 +1050,8 @@ namespace cross_call_master {
 		}
 
 #region Param2Callback
-		internal static delegate*<int, float, void> _Param2Callback = &___Param2Callback;
-		internal static delegate* unmanaged[Cdecl]<int, float, void> __Param2Callback;
+		private static delegate*<int, float, void> _Param2Callback = &___Param2Callback;
+		private static delegate* unmanaged[Cdecl]<int, float, void> __Param2Callback;
 		private static void ___Param2Callback(int a, float b)
 		{
 			__Param2Callback(a, b);
@@ -1069,8 +1069,8 @@ namespace cross_call_master {
 		}
 
 #region Param3Callback
-		internal static delegate*<int, float, double, void> _Param3Callback = &___Param3Callback;
-		internal static delegate* unmanaged[Cdecl]<int, float, double, void> __Param3Callback;
+		private static delegate*<int, float, double, void> _Param3Callback = &___Param3Callback;
+		private static delegate* unmanaged[Cdecl]<int, float, double, void> __Param3Callback;
 		private static void ___Param3Callback(int a, float b, double c)
 		{
 			__Param3Callback(a, b, c);
@@ -1089,8 +1089,8 @@ namespace cross_call_master {
 		}
 
 #region Param4Callback
-		internal static delegate*<int, float, double, Vector4, void> _Param4Callback = &___Param4Callback;
-		internal static delegate* unmanaged[Cdecl]<int, float, double, Vector4*, void> __Param4Callback;
+		private static delegate*<int, float, double, Vector4, void> _Param4Callback = &___Param4Callback;
+		private static delegate* unmanaged[Cdecl]<int, float, double, Vector4*, void> __Param4Callback;
 		private static void ___Param4Callback(int a, float b, double c, Vector4 d)
 		{
 			__Param4Callback(a, b, c, &d);
@@ -1110,8 +1110,8 @@ namespace cross_call_master {
 		}
 
 #region Param5Callback
-		internal static delegate*<int, float, double, Vector4, long[], void> _Param5Callback = &___Param5Callback;
-		internal static delegate* unmanaged[Cdecl]<int, float, double, Vector4*, Vector192*, void> __Param5Callback;
+		private static delegate*<int, float, double, Vector4, long[], void> _Param5Callback = &___Param5Callback;
+		private static delegate* unmanaged[Cdecl]<int, float, double, Vector4*, Vector192*, void> __Param5Callback;
 		private static void ___Param5Callback(int a, float b, double c, Vector4 d, long[] e)
 		{
 			var __e = NativeMethods.ConstructVectorInt64(e, e.Length);
@@ -1139,8 +1139,8 @@ namespace cross_call_master {
 		}
 
 #region Param6Callback
-		internal static delegate*<int, float, double, Vector4, long[], Char8, void> _Param6Callback = &___Param6Callback;
-		internal static delegate* unmanaged[Cdecl]<int, float, double, Vector4*, Vector192*, Char8, void> __Param6Callback;
+		private static delegate*<int, float, double, Vector4, long[], Char8, void> _Param6Callback = &___Param6Callback;
+		private static delegate* unmanaged[Cdecl]<int, float, double, Vector4*, Vector192*, Char8, void> __Param6Callback;
 		private static void ___Param6Callback(int a, float b, double c, Vector4 d, long[] e, Char8 f)
 		{
 			var __e = NativeMethods.ConstructVectorInt64(e, e.Length);
@@ -1169,8 +1169,8 @@ namespace cross_call_master {
 		}
 
 #region Param7Callback
-		internal static delegate*<int, float, double, Vector4, long[], Char8, string, void> _Param7Callback = &___Param7Callback;
-		internal static delegate* unmanaged[Cdecl]<int, float, double, Vector4*, Vector192*, Char8, String192*, void> __Param7Callback;
+		private static delegate*<int, float, double, Vector4, long[], Char8, string, void> _Param7Callback = &___Param7Callback;
+		private static delegate* unmanaged[Cdecl]<int, float, double, Vector4*, Vector192*, Char8, String192*, void> __Param7Callback;
 		private static void ___Param7Callback(int a, float b, double c, Vector4 d, long[] e, Char8 f, string g)
 		{
 			var __e = NativeMethods.ConstructVectorInt64(e, e.Length);
@@ -1202,8 +1202,8 @@ namespace cross_call_master {
 		}
 
 #region Param8Callback
-		internal static delegate*<int, float, double, Vector4, long[], Char8, string, Char16, void> _Param8Callback = &___Param8Callback;
-		internal static delegate* unmanaged[Cdecl]<int, float, double, Vector4*, Vector192*, Char8, String192*, Char16, void> __Param8Callback;
+		private static delegate*<int, float, double, Vector4, long[], Char8, string, Char16, void> _Param8Callback = &___Param8Callback;
+		private static delegate* unmanaged[Cdecl]<int, float, double, Vector4*, Vector192*, Char8, String192*, Char16, void> __Param8Callback;
 		private static void ___Param8Callback(int a, float b, double c, Vector4 d, long[] e, Char8 f, string g, Char16 h)
 		{
 			var __e = NativeMethods.ConstructVectorInt64(e, e.Length);
@@ -1236,8 +1236,8 @@ namespace cross_call_master {
 		}
 
 #region Param9Callback
-		internal static delegate*<int, float, double, Vector4, long[], Char8, string, Char16, short, void> _Param9Callback = &___Param9Callback;
-		internal static delegate* unmanaged[Cdecl]<int, float, double, Vector4*, Vector192*, Char8, String192*, Char16, short, void> __Param9Callback;
+		private static delegate*<int, float, double, Vector4, long[], Char8, string, Char16, short, void> _Param9Callback = &___Param9Callback;
+		private static delegate* unmanaged[Cdecl]<int, float, double, Vector4*, Vector192*, Char8, String192*, Char16, short, void> __Param9Callback;
 		private static void ___Param9Callback(int a, float b, double c, Vector4 d, long[] e, Char8 f, string g, Char16 h, short k)
 		{
 			var __e = NativeMethods.ConstructVectorInt64(e, e.Length);
@@ -1271,8 +1271,8 @@ namespace cross_call_master {
 		}
 
 #region Param10Callback
-		internal static delegate*<int, float, double, Vector4, long[], Char8, string, Char16, short, nint, void> _Param10Callback = &___Param10Callback;
-		internal static delegate* unmanaged[Cdecl]<int, float, double, Vector4*, Vector192*, Char8, String192*, Char16, short, nint, void> __Param10Callback;
+		private static delegate*<int, float, double, Vector4, long[], Char8, string, Char16, short, nint, void> _Param10Callback = &___Param10Callback;
+		private static delegate* unmanaged[Cdecl]<int, float, double, Vector4*, Vector192*, Char8, String192*, Char16, short, nint, void> __Param10Callback;
 		private static void ___Param10Callback(int a, float b, double c, Vector4 d, long[] e, Char8 f, string g, Char16 h, short k, nint l)
 		{
 			var __e = NativeMethods.ConstructVectorInt64(e, e.Length);
@@ -1307,8 +1307,8 @@ namespace cross_call_master {
 		}
 
 #region ParamRef1Callback
-		internal static delegate*<ref int, void> _ParamRef1Callback = &___ParamRef1Callback;
-		internal static delegate* unmanaged[Cdecl]<int*, void> __ParamRef1Callback;
+		private static delegate*<ref int, void> _ParamRef1Callback = &___ParamRef1Callback;
+		private static delegate* unmanaged[Cdecl]<int*, void> __ParamRef1Callback;
 		private static void ___ParamRef1Callback(ref int a)
 		{
 			fixed(int* __a = &a) {
@@ -1327,8 +1327,8 @@ namespace cross_call_master {
 		}
 
 #region ParamRef2Callback
-		internal static delegate*<ref int, ref float, void> _ParamRef2Callback = &___ParamRef2Callback;
-		internal static delegate* unmanaged[Cdecl]<int*, float*, void> __ParamRef2Callback;
+		private static delegate*<ref int, ref float, void> _ParamRef2Callback = &___ParamRef2Callback;
+		private static delegate* unmanaged[Cdecl]<int*, float*, void> __ParamRef2Callback;
 		private static void ___ParamRef2Callback(ref int a, ref float b)
 		{
 			fixed(int* __a = &a) {
@@ -1350,8 +1350,8 @@ namespace cross_call_master {
 		}
 
 #region ParamRef3Callback
-		internal static delegate*<ref int, ref float, ref double, void> _ParamRef3Callback = &___ParamRef3Callback;
-		internal static delegate* unmanaged[Cdecl]<int*, float*, double*, void> __ParamRef3Callback;
+		private static delegate*<ref int, ref float, ref double, void> _ParamRef3Callback = &___ParamRef3Callback;
+		private static delegate* unmanaged[Cdecl]<int*, float*, double*, void> __ParamRef3Callback;
 		private static void ___ParamRef3Callback(ref int a, ref float b, ref double c)
 		{
 			fixed(int* __a = &a) {
@@ -1376,8 +1376,8 @@ namespace cross_call_master {
 		}
 
 #region ParamRef4Callback
-		internal static delegate*<ref int, ref float, ref double, ref Vector4, void> _ParamRef4Callback = &___ParamRef4Callback;
-		internal static delegate* unmanaged[Cdecl]<int*, float*, double*, Vector4*, void> __ParamRef4Callback;
+		private static delegate*<ref int, ref float, ref double, ref Vector4, void> _ParamRef4Callback = &___ParamRef4Callback;
+		private static delegate* unmanaged[Cdecl]<int*, float*, double*, Vector4*, void> __ParamRef4Callback;
 		private static void ___ParamRef4Callback(ref int a, ref float b, ref double c, ref Vector4 d)
 		{
 			fixed(int* __a = &a) {
@@ -1405,8 +1405,8 @@ namespace cross_call_master {
 		}
 
 #region ParamRef5Callback
-		internal static delegate*<ref int, ref float, ref double, ref Vector4, ref long[], void> _ParamRef5Callback = &___ParamRef5Callback;
-		internal static delegate* unmanaged[Cdecl]<int*, float*, double*, Vector4*, Vector192*, void> __ParamRef5Callback;
+		private static delegate*<ref int, ref float, ref double, ref Vector4, ref long[], void> _ParamRef5Callback = &___ParamRef5Callback;
+		private static delegate* unmanaged[Cdecl]<int*, float*, double*, Vector4*, Vector192*, void> __ParamRef5Callback;
 		private static void ___ParamRef5Callback(ref int a, ref float b, ref double c, ref Vector4 d, ref long[] e)
 		{
 			fixed(int* __a = &a) {
@@ -1445,8 +1445,8 @@ namespace cross_call_master {
 		}
 
 #region ParamRef6Callback
-		internal static delegate*<ref int, ref float, ref double, ref Vector4, ref long[], ref Char8, void> _ParamRef6Callback = &___ParamRef6Callback;
-		internal static delegate* unmanaged[Cdecl]<int*, float*, double*, Vector4*, Vector192*, Char8*, void> __ParamRef6Callback;
+		private static delegate*<ref int, ref float, ref double, ref Vector4, ref long[], ref Char8, void> _ParamRef6Callback = &___ParamRef6Callback;
+		private static delegate* unmanaged[Cdecl]<int*, float*, double*, Vector4*, Vector192*, Char8*, void> __ParamRef6Callback;
 		private static void ___ParamRef6Callback(ref int a, ref float b, ref double c, ref Vector4 d, ref long[] e, ref Char8 f)
 		{
 			fixed(int* __a = &a) {
@@ -1488,8 +1488,8 @@ namespace cross_call_master {
 		}
 
 #region ParamRef7Callback
-		internal static delegate*<ref int, ref float, ref double, ref Vector4, ref long[], ref Char8, ref string, void> _ParamRef7Callback = &___ParamRef7Callback;
-		internal static delegate* unmanaged[Cdecl]<int*, float*, double*, Vector4*, Vector192*, Char8*, String192*, void> __ParamRef7Callback;
+		private static delegate*<ref int, ref float, ref double, ref Vector4, ref long[], ref Char8, ref string, void> _ParamRef7Callback = &___ParamRef7Callback;
+		private static delegate* unmanaged[Cdecl]<int*, float*, double*, Vector4*, Vector192*, Char8*, String192*, void> __ParamRef7Callback;
 		private static void ___ParamRef7Callback(ref int a, ref float b, ref double c, ref Vector4 d, ref long[] e, ref Char8 f, ref string g)
 		{
 			fixed(int* __a = &a) {
@@ -1535,8 +1535,8 @@ namespace cross_call_master {
 		}
 
 #region ParamRef8Callback
-		internal static delegate*<ref int, ref float, ref double, ref Vector4, ref long[], ref Char8, ref string, ref Char16, void> _ParamRef8Callback = &___ParamRef8Callback;
-		internal static delegate* unmanaged[Cdecl]<int*, float*, double*, Vector4*, Vector192*, Char8*, String192*, Char16*, void> __ParamRef8Callback;
+		private static delegate*<ref int, ref float, ref double, ref Vector4, ref long[], ref Char8, ref string, ref Char16, void> _ParamRef8Callback = &___ParamRef8Callback;
+		private static delegate* unmanaged[Cdecl]<int*, float*, double*, Vector4*, Vector192*, Char8*, String192*, Char16*, void> __ParamRef8Callback;
 		private static void ___ParamRef8Callback(ref int a, ref float b, ref double c, ref Vector4 d, ref long[] e, ref Char8 f, ref string g, ref Char16 h)
 		{
 			fixed(int* __a = &a) {
@@ -1585,8 +1585,8 @@ namespace cross_call_master {
 		}
 
 #region ParamRef9Callback
-		internal static delegate*<ref int, ref float, ref double, ref Vector4, ref long[], ref Char8, ref string, ref Char16, ref short, void> _ParamRef9Callback = &___ParamRef9Callback;
-		internal static delegate* unmanaged[Cdecl]<int*, float*, double*, Vector4*, Vector192*, Char8*, String192*, Char16*, short*, void> __ParamRef9Callback;
+		private static delegate*<ref int, ref float, ref double, ref Vector4, ref long[], ref Char8, ref string, ref Char16, ref short, void> _ParamRef9Callback = &___ParamRef9Callback;
+		private static delegate* unmanaged[Cdecl]<int*, float*, double*, Vector4*, Vector192*, Char8*, String192*, Char16*, short*, void> __ParamRef9Callback;
 		private static void ___ParamRef9Callback(ref int a, ref float b, ref double c, ref Vector4 d, ref long[] e, ref Char8 f, ref string g, ref Char16 h, ref short k)
 		{
 			fixed(int* __a = &a) {
@@ -1638,8 +1638,8 @@ namespace cross_call_master {
 		}
 
 #region ParamRef10Callback
-		internal static delegate*<ref int, ref float, ref double, ref Vector4, ref long[], ref Char8, ref string, ref Char16, ref short, ref nint, void> _ParamRef10Callback = &___ParamRef10Callback;
-		internal static delegate* unmanaged[Cdecl]<int*, float*, double*, Vector4*, Vector192*, Char8*, String192*, Char16*, short*, nint*, void> __ParamRef10Callback;
+		private static delegate*<ref int, ref float, ref double, ref Vector4, ref long[], ref Char8, ref string, ref Char16, ref short, ref nint, void> _ParamRef10Callback = &___ParamRef10Callback;
+		private static delegate* unmanaged[Cdecl]<int*, float*, double*, Vector4*, Vector192*, Char8*, String192*, Char16*, short*, nint*, void> __ParamRef10Callback;
 		private static void ___ParamRef10Callback(ref int a, ref float b, ref double c, ref Vector4 d, ref long[] e, ref Char8 f, ref string g, ref Char16 h, ref short k, ref nint l)
 		{
 			fixed(int* __a = &a) {
@@ -1694,8 +1694,8 @@ namespace cross_call_master {
 		}
 
 #region ParamRefVectorsCallback
-		internal static delegate*<ref Bool8[], ref Char8[], ref Char16[], ref sbyte[], ref short[], ref int[], ref long[], ref byte[], ref ushort[], ref uint[], ref ulong[], ref nint[], ref float[], ref double[], ref string[], void> _ParamRefVectorsCallback = &___ParamRefVectorsCallback;
-		internal static delegate* unmanaged[Cdecl]<Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, void> __ParamRefVectorsCallback;
+		private static delegate*<ref Bool8[], ref Char8[], ref Char16[], ref sbyte[], ref short[], ref int[], ref long[], ref byte[], ref ushort[], ref uint[], ref ulong[], ref nint[], ref float[], ref double[], ref string[], void> _ParamRefVectorsCallback = &___ParamRefVectorsCallback;
+		private static delegate* unmanaged[Cdecl]<Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, void> __ParamRefVectorsCallback;
 		private static void ___ParamRefVectorsCallback(ref Bool8[] p1, ref Char8[] p2, ref Char16[] p3, ref sbyte[] p4, ref short[] p5, ref int[] p6, ref long[] p7, ref byte[] p8, ref ushort[] p9, ref uint[] p10, ref ulong[] p11, ref nint[] p12, ref float[] p13, ref double[] p14, ref string[] p15)
 		{
 			var __p1 = NativeMethods.ConstructVectorBool(p1, p1.Length);
@@ -1792,8 +1792,8 @@ namespace cross_call_master {
 		}
 
 #region ParamAllPrimitivesCallback
-		internal static delegate*<Bool8, Char8, Char16, sbyte, short, int, long, byte, ushort, uint, ulong, nint, float, double, long> _ParamAllPrimitivesCallback = &___ParamAllPrimitivesCallback;
-		internal static delegate* unmanaged[Cdecl]<Bool8, Char8, Char16, sbyte, short, int, long, byte, ushort, uint, ulong, nint, float, double, long> __ParamAllPrimitivesCallback;
+		private static delegate*<Bool8, Char8, Char16, sbyte, short, int, long, byte, ushort, uint, ulong, nint, float, double, long> _ParamAllPrimitivesCallback = &___ParamAllPrimitivesCallback;
+		private static delegate* unmanaged[Cdecl]<Bool8, Char8, Char16, sbyte, short, int, long, byte, ushort, uint, ulong, nint, float, double, long> __ParamAllPrimitivesCallback;
 		private static long ___ParamAllPrimitivesCallback(Bool8 p1, Char8 p2, Char16 p3, sbyte p4, short p5, int p6, long p7, byte p8, ushort p9, uint p10, ulong p11, nint p12, float p13, double p14)
 		{
 			long __retVal = __ParamAllPrimitivesCallback(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14);
@@ -1824,8 +1824,8 @@ namespace cross_call_master {
 		}
 
 #region ParamAllAliasesCallback
-		internal static delegate*<AliasBool, AliasChar8, AliasChar16, AliasInt8, AliasInt16, AliasInt32, AliasInt64, AliasPtr, AliasFloat, AliasDouble, AliasString, AliasAny, AliasVec2, AliasVec3, AliasVec4, AliasMat4x4, AliasBoolVector, AliasChar8Vector, AliasChar16Vector, AliasInt8Vector, AliasInt16Vector, AliasInt32Vector, AliasInt64Vector, AliasPtrVector, AliasFloatVector, AliasDoubleVector, AliasStringVector, AliasAnyVector, AliasVec2Vector, AliasVec3Vector, AliasVec4Vector, int> _ParamAllAliasesCallback = &___ParamAllAliasesCallback;
-		internal static delegate* unmanaged[Cdecl]<Bool8, Char8, Char16, sbyte, short, int, long, nint, float, double, String192*, Variant256*, Vector2*, Vector3*, Vector4*, Matrix4x4*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, int> __ParamAllAliasesCallback;
+		private static delegate*<AliasBool, AliasChar8, AliasChar16, AliasInt8, AliasInt16, AliasInt32, AliasInt64, AliasPtr, AliasFloat, AliasDouble, AliasString, AliasAny, AliasVec2, AliasVec3, AliasVec4, AliasMat4x4, AliasBoolVector, AliasChar8Vector, AliasChar16Vector, AliasInt8Vector, AliasInt16Vector, AliasInt32Vector, AliasInt64Vector, AliasPtrVector, AliasFloatVector, AliasDoubleVector, AliasStringVector, AliasAnyVector, AliasVec2Vector, AliasVec3Vector, AliasVec4Vector, int> _ParamAllAliasesCallback = &___ParamAllAliasesCallback;
+		private static delegate* unmanaged[Cdecl]<Bool8, Char8, Char16, sbyte, short, int, long, nint, float, double, String192*, Variant256*, Vector2*, Vector3*, Vector4*, Matrix4x4*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, int> __ParamAllAliasesCallback;
 		private static int ___ParamAllAliasesCallback(AliasBool aBool, AliasChar8 aChar8, AliasChar16 aChar16, AliasInt8 aInt8, AliasInt16 aInt16, AliasInt32 aInt32, AliasInt64 aInt64, AliasPtr aPtr, AliasFloat aFloat, AliasDouble aDouble, AliasString aString, AliasAny aAny, AliasVec2 aVec2, AliasVec3 aVec3, AliasVec4 aVec4, AliasMat4x4 aMat4x4, AliasBoolVector aBoolVec, AliasChar8Vector aChar8Vec, AliasChar16Vector aChar16Vec, AliasInt8Vector aInt8Vec, AliasInt16Vector aInt16Vec, AliasInt32Vector aInt32Vec, AliasInt64Vector aInt64Vec, AliasPtrVector aPtrVec, AliasFloatVector aFloatVec, AliasDoubleVector aDoubleVec, AliasStringVector aStringVec, AliasAnyVector aAnyVec, AliasVec2Vector aVec2Vec, AliasVec3Vector aVec3Vec, AliasVec4Vector aVec4Vec)
 		{
 			int __retVal;
@@ -1913,8 +1913,8 @@ namespace cross_call_master {
 		}
 
 #region ParamAllRefAliasesCallback
-		internal static delegate*<ref AliasBool, ref AliasChar8, ref AliasChar16, ref AliasInt8, ref AliasInt16, ref AliasInt32, ref AliasInt64, ref AliasPtr, ref AliasFloat, ref AliasDouble, ref AliasString, ref AliasAny, ref AliasVec2, ref AliasVec3, ref AliasVec4, ref AliasMat4x4, ref AliasBoolVector, ref AliasChar8Vector, ref AliasChar16Vector, ref AliasInt8Vector, ref AliasInt16Vector, ref AliasInt32Vector, ref AliasInt64Vector, ref AliasPtrVector, ref AliasFloatVector, ref AliasDoubleVector, ref AliasStringVector, ref AliasAnyVector, ref AliasVec2Vector, ref AliasVec3Vector, ref AliasVec4Vector, long> _ParamAllRefAliasesCallback = &___ParamAllRefAliasesCallback;
-		internal static delegate* unmanaged[Cdecl]<Bool8*, Char8*, Char16*, sbyte*, short*, int*, long*, nint*, float*, double*, String192*, Variant256*, Vector2*, Vector3*, Vector4*, Matrix4x4*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, long> __ParamAllRefAliasesCallback;
+		private static delegate*<ref AliasBool, ref AliasChar8, ref AliasChar16, ref AliasInt8, ref AliasInt16, ref AliasInt32, ref AliasInt64, ref AliasPtr, ref AliasFloat, ref AliasDouble, ref AliasString, ref AliasAny, ref AliasVec2, ref AliasVec3, ref AliasVec4, ref AliasMat4x4, ref AliasBoolVector, ref AliasChar8Vector, ref AliasChar16Vector, ref AliasInt8Vector, ref AliasInt16Vector, ref AliasInt32Vector, ref AliasInt64Vector, ref AliasPtrVector, ref AliasFloatVector, ref AliasDoubleVector, ref AliasStringVector, ref AliasAnyVector, ref AliasVec2Vector, ref AliasVec3Vector, ref AliasVec4Vector, long> _ParamAllRefAliasesCallback = &___ParamAllRefAliasesCallback;
+		private static delegate* unmanaged[Cdecl]<Bool8*, Char8*, Char16*, sbyte*, short*, int*, long*, nint*, float*, double*, String192*, Variant256*, Vector2*, Vector3*, Vector4*, Matrix4x4*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, Vector192*, long> __ParamAllRefAliasesCallback;
 		private static long ___ParamAllRefAliasesCallback(ref AliasBool aBool, ref AliasChar8 aChar8, ref AliasChar16 aChar16, ref AliasInt8 aInt8, ref AliasInt16 aInt16, ref AliasInt32 aInt32, ref AliasInt64 aInt64, ref AliasPtr aPtr, ref AliasFloat aFloat, ref AliasDouble aDouble, ref AliasString aString, ref AliasAny aAny, ref AliasVec2 aVec2, ref AliasVec3 aVec3, ref AliasVec4 aVec4, ref AliasMat4x4 aMat4x4, ref AliasBoolVector aBoolVec, ref AliasChar8Vector aChar8Vec, ref AliasChar16Vector aChar16Vec, ref AliasInt8Vector aInt8Vec, ref AliasInt16Vector aInt16Vec, ref AliasInt32Vector aInt32Vec, ref AliasInt64Vector aInt64Vec, ref AliasPtrVector aPtrVec, ref AliasFloatVector aFloatVec, ref AliasDoubleVector aDoubleVec, ref AliasStringVector aStringVec, ref AliasAnyVector aAnyVec, ref AliasVec2Vector aVec2Vec, ref AliasVec3Vector aVec3Vec, ref AliasVec4Vector aVec4Vec)
 		{
 			long __retVal;
@@ -2063,8 +2063,8 @@ namespace cross_call_master {
 		}
 
 #region ParamEnumCallback
-		internal static delegate*<Example, Example[], int> _ParamEnumCallback = &___ParamEnumCallback;
-		internal static delegate* unmanaged[Cdecl]<Example, Vector192*, int> __ParamEnumCallback;
+		private static delegate*<Example, Example[], int> _ParamEnumCallback = &___ParamEnumCallback;
+		private static delegate* unmanaged[Cdecl]<Example, Vector192*, int> __ParamEnumCallback;
 		private static int ___ParamEnumCallback(Example p1, Example[] p2)
 		{
 			int __retVal;
@@ -2091,8 +2091,8 @@ namespace cross_call_master {
 		}
 
 #region ParamEnumRefCallback
-		internal static delegate*<ref Example, ref Example[], int> _ParamEnumRefCallback = &___ParamEnumRefCallback;
-		internal static delegate* unmanaged[Cdecl]<Example*, Vector192*, int> __ParamEnumRefCallback;
+		private static delegate*<ref Example, ref Example[], int> _ParamEnumRefCallback = &___ParamEnumRefCallback;
+		private static delegate* unmanaged[Cdecl]<Example*, Vector192*, int> __ParamEnumRefCallback;
 		private static int ___ParamEnumRefCallback(ref Example p1, ref Example[] p2)
 		{
 			int __retVal;
@@ -2124,8 +2124,8 @@ namespace cross_call_master {
 		}
 
 #region ParamVariantCallback
-		internal static delegate*<object, object[], void> _ParamVariantCallback = &___ParamVariantCallback;
-		internal static delegate* unmanaged[Cdecl]<Variant256*, Vector192*, void> __ParamVariantCallback;
+		private static delegate*<object, object[], void> _ParamVariantCallback = &___ParamVariantCallback;
+		private static delegate* unmanaged[Cdecl]<Variant256*, Vector192*, void> __ParamVariantCallback;
 		private static void ___ParamVariantCallback(object p1, object[] p2)
 		{
 			var __p1 = NativeMethods.ConstructVariant(p1);
@@ -2152,8 +2152,8 @@ namespace cross_call_master {
 		}
 
 #region ParamVariantRefCallback
-		internal static delegate*<ref object, ref object[], void> _ParamVariantRefCallback = &___ParamVariantRefCallback;
-		internal static delegate* unmanaged[Cdecl]<Variant256*, Vector192*, void> __ParamVariantRefCallback;
+		private static delegate*<ref object, ref object[], void> _ParamVariantRefCallback = &___ParamVariantRefCallback;
+		private static delegate* unmanaged[Cdecl]<Variant256*, Vector192*, void> __ParamVariantRefCallback;
 		private static void ___ParamVariantRefCallback(ref object p1, ref object[] p2)
 		{
 			var __p1 = NativeMethods.ConstructVariant(p1);
@@ -2184,8 +2184,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncVoidCallback
-		internal static delegate*<FuncVoid, void> _CallFuncVoidCallback = &___CallFuncVoidCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, void> __CallFuncVoidCallback;
+		private static delegate*<FuncVoid, void> _CallFuncVoidCallback = &___CallFuncVoidCallback;
+		private static delegate* unmanaged[Cdecl]<nint, void> __CallFuncVoidCallback;
 		private static void ___CallFuncVoidCallback(FuncVoid func)
 		{
 			__CallFuncVoidCallback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -2202,8 +2202,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncBoolCallback
-		internal static delegate*<FuncBool, Bool8> _CallFuncBoolCallback = &___CallFuncBoolCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Bool8> __CallFuncBoolCallback;
+		private static delegate*<FuncBool, Bool8> _CallFuncBoolCallback = &___CallFuncBoolCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Bool8> __CallFuncBoolCallback;
 		private static Bool8 ___CallFuncBoolCallback(FuncBool func)
 		{
 			Bool8 __retVal = __CallFuncBoolCallback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -2221,8 +2221,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncChar8Callback
-		internal static delegate*<FuncChar8, Char8> _CallFuncChar8Callback = &___CallFuncChar8Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, Char8> __CallFuncChar8Callback;
+		private static delegate*<FuncChar8, Char8> _CallFuncChar8Callback = &___CallFuncChar8Callback;
+		private static delegate* unmanaged[Cdecl]<nint, Char8> __CallFuncChar8Callback;
 		private static Char8 ___CallFuncChar8Callback(FuncChar8 func)
 		{
 			Char8 __retVal = __CallFuncChar8Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -2240,8 +2240,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncChar16Callback
-		internal static delegate*<FuncChar16, Char16> _CallFuncChar16Callback = &___CallFuncChar16Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, Char16> __CallFuncChar16Callback;
+		private static delegate*<FuncChar16, Char16> _CallFuncChar16Callback = &___CallFuncChar16Callback;
+		private static delegate* unmanaged[Cdecl]<nint, Char16> __CallFuncChar16Callback;
 		private static Char16 ___CallFuncChar16Callback(FuncChar16 func)
 		{
 			Char16 __retVal = __CallFuncChar16Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -2259,8 +2259,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncInt8Callback
-		internal static delegate*<FuncInt8, sbyte> _CallFuncInt8Callback = &___CallFuncInt8Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, sbyte> __CallFuncInt8Callback;
+		private static delegate*<FuncInt8, sbyte> _CallFuncInt8Callback = &___CallFuncInt8Callback;
+		private static delegate* unmanaged[Cdecl]<nint, sbyte> __CallFuncInt8Callback;
 		private static sbyte ___CallFuncInt8Callback(FuncInt8 func)
 		{
 			sbyte __retVal = __CallFuncInt8Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -2278,8 +2278,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncInt16Callback
-		internal static delegate*<FuncInt16, short> _CallFuncInt16Callback = &___CallFuncInt16Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, short> __CallFuncInt16Callback;
+		private static delegate*<FuncInt16, short> _CallFuncInt16Callback = &___CallFuncInt16Callback;
+		private static delegate* unmanaged[Cdecl]<nint, short> __CallFuncInt16Callback;
 		private static short ___CallFuncInt16Callback(FuncInt16 func)
 		{
 			short __retVal = __CallFuncInt16Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -2297,8 +2297,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncInt32Callback
-		internal static delegate*<FuncInt32, int> _CallFuncInt32Callback = &___CallFuncInt32Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, int> __CallFuncInt32Callback;
+		private static delegate*<FuncInt32, int> _CallFuncInt32Callback = &___CallFuncInt32Callback;
+		private static delegate* unmanaged[Cdecl]<nint, int> __CallFuncInt32Callback;
 		private static int ___CallFuncInt32Callback(FuncInt32 func)
 		{
 			int __retVal = __CallFuncInt32Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -2316,8 +2316,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncInt64Callback
-		internal static delegate*<FuncInt64, long> _CallFuncInt64Callback = &___CallFuncInt64Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, long> __CallFuncInt64Callback;
+		private static delegate*<FuncInt64, long> _CallFuncInt64Callback = &___CallFuncInt64Callback;
+		private static delegate* unmanaged[Cdecl]<nint, long> __CallFuncInt64Callback;
 		private static long ___CallFuncInt64Callback(FuncInt64 func)
 		{
 			long __retVal = __CallFuncInt64Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -2335,8 +2335,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncUInt8Callback
-		internal static delegate*<FuncUInt8, byte> _CallFuncUInt8Callback = &___CallFuncUInt8Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, byte> __CallFuncUInt8Callback;
+		private static delegate*<FuncUInt8, byte> _CallFuncUInt8Callback = &___CallFuncUInt8Callback;
+		private static delegate* unmanaged[Cdecl]<nint, byte> __CallFuncUInt8Callback;
 		private static byte ___CallFuncUInt8Callback(FuncUInt8 func)
 		{
 			byte __retVal = __CallFuncUInt8Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -2354,8 +2354,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncUInt16Callback
-		internal static delegate*<FuncUInt16, ushort> _CallFuncUInt16Callback = &___CallFuncUInt16Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, ushort> __CallFuncUInt16Callback;
+		private static delegate*<FuncUInt16, ushort> _CallFuncUInt16Callback = &___CallFuncUInt16Callback;
+		private static delegate* unmanaged[Cdecl]<nint, ushort> __CallFuncUInt16Callback;
 		private static ushort ___CallFuncUInt16Callback(FuncUInt16 func)
 		{
 			ushort __retVal = __CallFuncUInt16Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -2373,8 +2373,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncUInt32Callback
-		internal static delegate*<FuncUInt32, uint> _CallFuncUInt32Callback = &___CallFuncUInt32Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, uint> __CallFuncUInt32Callback;
+		private static delegate*<FuncUInt32, uint> _CallFuncUInt32Callback = &___CallFuncUInt32Callback;
+		private static delegate* unmanaged[Cdecl]<nint, uint> __CallFuncUInt32Callback;
 		private static uint ___CallFuncUInt32Callback(FuncUInt32 func)
 		{
 			uint __retVal = __CallFuncUInt32Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -2392,8 +2392,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncUInt64Callback
-		internal static delegate*<FuncUInt64, ulong> _CallFuncUInt64Callback = &___CallFuncUInt64Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, ulong> __CallFuncUInt64Callback;
+		private static delegate*<FuncUInt64, ulong> _CallFuncUInt64Callback = &___CallFuncUInt64Callback;
+		private static delegate* unmanaged[Cdecl]<nint, ulong> __CallFuncUInt64Callback;
 		private static ulong ___CallFuncUInt64Callback(FuncUInt64 func)
 		{
 			ulong __retVal = __CallFuncUInt64Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -2411,8 +2411,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncPtrCallback
-		internal static delegate*<FuncPtr, nint> _CallFuncPtrCallback = &___CallFuncPtrCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, nint> __CallFuncPtrCallback;
+		private static delegate*<FuncPtr, nint> _CallFuncPtrCallback = &___CallFuncPtrCallback;
+		private static delegate* unmanaged[Cdecl]<nint, nint> __CallFuncPtrCallback;
 		private static nint ___CallFuncPtrCallback(FuncPtr func)
 		{
 			nint __retVal = __CallFuncPtrCallback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -2430,8 +2430,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncFloatCallback
-		internal static delegate*<FuncFloat, float> _CallFuncFloatCallback = &___CallFuncFloatCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, float> __CallFuncFloatCallback;
+		private static delegate*<FuncFloat, float> _CallFuncFloatCallback = &___CallFuncFloatCallback;
+		private static delegate* unmanaged[Cdecl]<nint, float> __CallFuncFloatCallback;
 		private static float ___CallFuncFloatCallback(FuncFloat func)
 		{
 			float __retVal = __CallFuncFloatCallback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -2449,8 +2449,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncDoubleCallback
-		internal static delegate*<FuncDouble, double> _CallFuncDoubleCallback = &___CallFuncDoubleCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, double> __CallFuncDoubleCallback;
+		private static delegate*<FuncDouble, double> _CallFuncDoubleCallback = &___CallFuncDoubleCallback;
+		private static delegate* unmanaged[Cdecl]<nint, double> __CallFuncDoubleCallback;
 		private static double ___CallFuncDoubleCallback(FuncDouble func)
 		{
 			double __retVal = __CallFuncDoubleCallback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -2468,8 +2468,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncStringCallback
-		internal static delegate*<FuncString, string> _CallFuncStringCallback = &___CallFuncStringCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, String192> __CallFuncStringCallback;
+		private static delegate*<FuncString, string> _CallFuncStringCallback = &___CallFuncStringCallback;
+		private static delegate* unmanaged[Cdecl]<nint, String192> __CallFuncStringCallback;
 		private static string ___CallFuncStringCallback(FuncString func)
 		{
 			string __retVal;
@@ -2497,8 +2497,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAnyCallback
-		internal static delegate*<FuncAny, object> _CallFuncAnyCallback = &___CallFuncAnyCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Variant256> __CallFuncAnyCallback;
+		private static delegate*<FuncAny, object> _CallFuncAnyCallback = &___CallFuncAnyCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Variant256> __CallFuncAnyCallback;
 		private static object ___CallFuncAnyCallback(FuncAny func)
 		{
 			object __retVal;
@@ -2526,27 +2526,27 @@ namespace cross_call_master {
 		}
 
 #region CallFuncFunctionCallback
-		internal static delegate*<FuncFunction, nint> _CallFuncFunctionCallback = &___CallFuncFunctionCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, nint> __CallFuncFunctionCallback;
-		private static nint ___CallFuncFunctionCallback(FuncFunction func)
+		private static delegate*<FuncFunction, FuncFunctionInner> _CallFuncFunctionCallback = &___CallFuncFunctionCallback;
+		private static delegate* unmanaged[Cdecl]<nint, nint> __CallFuncFunctionCallback;
+		private static FuncFunctionInner ___CallFuncFunctionCallback(FuncFunction func)
 		{
 			nint __retVal = __CallFuncFunctionCallback(Marshalling.GetFunctionPointerForDelegate(func));
-			return __retVal;
+			return Marshalling.GetDelegateForFunctionPointer<FuncFunctionInner>(__retVal);
 		}
 #endregion CallFuncFunctionCallback
 		/// <summary>
 		/// CallFuncFunctionCallback
 		/// </summary>
 		/// <param name="func">func</param>
-		internal static nint CallFuncFunctionCallback(FuncFunction func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
+		internal static FuncFunctionInner CallFuncFunctionCallback(FuncFunction func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
 			using var scope = new Scope("cross_call_master::CallFuncFunctionCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncFunctionCallback(func);
 		}
 
 #region CallFuncBoolVectorCallback
-		internal static delegate*<FuncBoolVector, Bool8[]> _CallFuncBoolVectorCallback = &___CallFuncBoolVectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncBoolVectorCallback;
+		private static delegate*<FuncBoolVector, Bool8[]> _CallFuncBoolVectorCallback = &___CallFuncBoolVectorCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncBoolVectorCallback;
 		private static Bool8[] ___CallFuncBoolVectorCallback(FuncBoolVector func)
 		{
 			Bool8[] __retVal;
@@ -2575,8 +2575,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncChar8VectorCallback
-		internal static delegate*<FuncChar8Vector, Char8[]> _CallFuncChar8VectorCallback = &___CallFuncChar8VectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncChar8VectorCallback;
+		private static delegate*<FuncChar8Vector, Char8[]> _CallFuncChar8VectorCallback = &___CallFuncChar8VectorCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncChar8VectorCallback;
 		private static Char8[] ___CallFuncChar8VectorCallback(FuncChar8Vector func)
 		{
 			Char8[] __retVal;
@@ -2605,8 +2605,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncChar16VectorCallback
-		internal static delegate*<FuncChar16Vector, Char16[]> _CallFuncChar16VectorCallback = &___CallFuncChar16VectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncChar16VectorCallback;
+		private static delegate*<FuncChar16Vector, Char16[]> _CallFuncChar16VectorCallback = &___CallFuncChar16VectorCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncChar16VectorCallback;
 		private static Char16[] ___CallFuncChar16VectorCallback(FuncChar16Vector func)
 		{
 			Char16[] __retVal;
@@ -2635,8 +2635,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncInt8VectorCallback
-		internal static delegate*<FuncInt8Vector, sbyte[]> _CallFuncInt8VectorCallback = &___CallFuncInt8VectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncInt8VectorCallback;
+		private static delegate*<FuncInt8Vector, sbyte[]> _CallFuncInt8VectorCallback = &___CallFuncInt8VectorCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncInt8VectorCallback;
 		private static sbyte[] ___CallFuncInt8VectorCallback(FuncInt8Vector func)
 		{
 			sbyte[] __retVal;
@@ -2665,8 +2665,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncInt16VectorCallback
-		internal static delegate*<FuncInt16Vector, short[]> _CallFuncInt16VectorCallback = &___CallFuncInt16VectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncInt16VectorCallback;
+		private static delegate*<FuncInt16Vector, short[]> _CallFuncInt16VectorCallback = &___CallFuncInt16VectorCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncInt16VectorCallback;
 		private static short[] ___CallFuncInt16VectorCallback(FuncInt16Vector func)
 		{
 			short[] __retVal;
@@ -2695,8 +2695,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncInt32VectorCallback
-		internal static delegate*<FuncInt32Vector, int[]> _CallFuncInt32VectorCallback = &___CallFuncInt32VectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncInt32VectorCallback;
+		private static delegate*<FuncInt32Vector, int[]> _CallFuncInt32VectorCallback = &___CallFuncInt32VectorCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncInt32VectorCallback;
 		private static int[] ___CallFuncInt32VectorCallback(FuncInt32Vector func)
 		{
 			int[] __retVal;
@@ -2725,8 +2725,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncInt64VectorCallback
-		internal static delegate*<FuncInt64Vector, long[]> _CallFuncInt64VectorCallback = &___CallFuncInt64VectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncInt64VectorCallback;
+		private static delegate*<FuncInt64Vector, long[]> _CallFuncInt64VectorCallback = &___CallFuncInt64VectorCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncInt64VectorCallback;
 		private static long[] ___CallFuncInt64VectorCallback(FuncInt64Vector func)
 		{
 			long[] __retVal;
@@ -2755,8 +2755,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncUInt8VectorCallback
-		internal static delegate*<FuncUInt8Vector, byte[]> _CallFuncUInt8VectorCallback = &___CallFuncUInt8VectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncUInt8VectorCallback;
+		private static delegate*<FuncUInt8Vector, byte[]> _CallFuncUInt8VectorCallback = &___CallFuncUInt8VectorCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncUInt8VectorCallback;
 		private static byte[] ___CallFuncUInt8VectorCallback(FuncUInt8Vector func)
 		{
 			byte[] __retVal;
@@ -2785,8 +2785,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncUInt16VectorCallback
-		internal static delegate*<FuncUInt16Vector, ushort[]> _CallFuncUInt16VectorCallback = &___CallFuncUInt16VectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncUInt16VectorCallback;
+		private static delegate*<FuncUInt16Vector, ushort[]> _CallFuncUInt16VectorCallback = &___CallFuncUInt16VectorCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncUInt16VectorCallback;
 		private static ushort[] ___CallFuncUInt16VectorCallback(FuncUInt16Vector func)
 		{
 			ushort[] __retVal;
@@ -2815,8 +2815,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncUInt32VectorCallback
-		internal static delegate*<FuncUInt32Vector, uint[]> _CallFuncUInt32VectorCallback = &___CallFuncUInt32VectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncUInt32VectorCallback;
+		private static delegate*<FuncUInt32Vector, uint[]> _CallFuncUInt32VectorCallback = &___CallFuncUInt32VectorCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncUInt32VectorCallback;
 		private static uint[] ___CallFuncUInt32VectorCallback(FuncUInt32Vector func)
 		{
 			uint[] __retVal;
@@ -2845,8 +2845,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncUInt64VectorCallback
-		internal static delegate*<FuncUInt64Vector, ulong[]> _CallFuncUInt64VectorCallback = &___CallFuncUInt64VectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncUInt64VectorCallback;
+		private static delegate*<FuncUInt64Vector, ulong[]> _CallFuncUInt64VectorCallback = &___CallFuncUInt64VectorCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncUInt64VectorCallback;
 		private static ulong[] ___CallFuncUInt64VectorCallback(FuncUInt64Vector func)
 		{
 			ulong[] __retVal;
@@ -2875,8 +2875,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncPtrVectorCallback
-		internal static delegate*<FuncPtrVector, nint[]> _CallFuncPtrVectorCallback = &___CallFuncPtrVectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncPtrVectorCallback;
+		private static delegate*<FuncPtrVector, nint[]> _CallFuncPtrVectorCallback = &___CallFuncPtrVectorCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncPtrVectorCallback;
 		private static nint[] ___CallFuncPtrVectorCallback(FuncPtrVector func)
 		{
 			nint[] __retVal;
@@ -2905,8 +2905,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncFloatVectorCallback
-		internal static delegate*<FuncFloatVector, float[]> _CallFuncFloatVectorCallback = &___CallFuncFloatVectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncFloatVectorCallback;
+		private static delegate*<FuncFloatVector, float[]> _CallFuncFloatVectorCallback = &___CallFuncFloatVectorCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncFloatVectorCallback;
 		private static float[] ___CallFuncFloatVectorCallback(FuncFloatVector func)
 		{
 			float[] __retVal;
@@ -2935,8 +2935,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncDoubleVectorCallback
-		internal static delegate*<FuncDoubleVector, double[]> _CallFuncDoubleVectorCallback = &___CallFuncDoubleVectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncDoubleVectorCallback;
+		private static delegate*<FuncDoubleVector, double[]> _CallFuncDoubleVectorCallback = &___CallFuncDoubleVectorCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncDoubleVectorCallback;
 		private static double[] ___CallFuncDoubleVectorCallback(FuncDoubleVector func)
 		{
 			double[] __retVal;
@@ -2965,8 +2965,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncStringVectorCallback
-		internal static delegate*<FuncStringVector, string[]> _CallFuncStringVectorCallback = &___CallFuncStringVectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncStringVectorCallback;
+		private static delegate*<FuncStringVector, string[]> _CallFuncStringVectorCallback = &___CallFuncStringVectorCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncStringVectorCallback;
 		private static string[] ___CallFuncStringVectorCallback(FuncStringVector func)
 		{
 			string[] __retVal;
@@ -2995,8 +2995,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAnyVectorCallback
-		internal static delegate*<FuncAnyVector, object[]> _CallFuncAnyVectorCallback = &___CallFuncAnyVectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAnyVectorCallback;
+		private static delegate*<FuncAnyVector, object[]> _CallFuncAnyVectorCallback = &___CallFuncAnyVectorCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAnyVectorCallback;
 		private static object[] ___CallFuncAnyVectorCallback(FuncAnyVector func)
 		{
 			object[] __retVal;
@@ -3025,8 +3025,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncVec2VectorCallback
-		internal static delegate*<FuncVec2Vector, Vector2[]> _CallFuncVec2VectorCallback = &___CallFuncVec2VectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncVec2VectorCallback;
+		private static delegate*<FuncVec2Vector, Vector2[]> _CallFuncVec2VectorCallback = &___CallFuncVec2VectorCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncVec2VectorCallback;
 		private static Vector2[] ___CallFuncVec2VectorCallback(FuncVec2Vector func)
 		{
 			Vector2[] __retVal;
@@ -3055,8 +3055,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncVec3VectorCallback
-		internal static delegate*<FuncVec3Vector, Vector3[]> _CallFuncVec3VectorCallback = &___CallFuncVec3VectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncVec3VectorCallback;
+		private static delegate*<FuncVec3Vector, Vector3[]> _CallFuncVec3VectorCallback = &___CallFuncVec3VectorCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncVec3VectorCallback;
 		private static Vector3[] ___CallFuncVec3VectorCallback(FuncVec3Vector func)
 		{
 			Vector3[] __retVal;
@@ -3085,8 +3085,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncVec4VectorCallback
-		internal static delegate*<FuncVec4Vector, Vector4[]> _CallFuncVec4VectorCallback = &___CallFuncVec4VectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncVec4VectorCallback;
+		private static delegate*<FuncVec4Vector, Vector4[]> _CallFuncVec4VectorCallback = &___CallFuncVec4VectorCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncVec4VectorCallback;
 		private static Vector4[] ___CallFuncVec4VectorCallback(FuncVec4Vector func)
 		{
 			Vector4[] __retVal;
@@ -3115,8 +3115,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncMat4x4VectorCallback
-		internal static delegate*<FuncMat4x4Vector, Matrix4x4[]> _CallFuncMat4x4VectorCallback = &___CallFuncMat4x4VectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncMat4x4VectorCallback;
+		private static delegate*<FuncMat4x4Vector, Matrix4x4[]> _CallFuncMat4x4VectorCallback = &___CallFuncMat4x4VectorCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncMat4x4VectorCallback;
 		private static Matrix4x4[] ___CallFuncMat4x4VectorCallback(FuncMat4x4Vector func)
 		{
 			Matrix4x4[] __retVal;
@@ -3145,8 +3145,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncVec2Callback
-		internal static delegate*<FuncVec2, Vector2> _CallFuncVec2Callback = &___CallFuncVec2Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector2> __CallFuncVec2Callback;
+		private static delegate*<FuncVec2, Vector2> _CallFuncVec2Callback = &___CallFuncVec2Callback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector2> __CallFuncVec2Callback;
 		private static Vector2 ___CallFuncVec2Callback(FuncVec2 func)
 		{
 			Vector2 __retVal = __CallFuncVec2Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -3164,8 +3164,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncVec3Callback
-		internal static delegate*<FuncVec3, Vector3> _CallFuncVec3Callback = &___CallFuncVec3Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector3> __CallFuncVec3Callback;
+		private static delegate*<FuncVec3, Vector3> _CallFuncVec3Callback = &___CallFuncVec3Callback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector3> __CallFuncVec3Callback;
 		private static Vector3 ___CallFuncVec3Callback(FuncVec3 func)
 		{
 			Vector3 __retVal = __CallFuncVec3Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -3183,8 +3183,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncVec4Callback
-		internal static delegate*<FuncVec4, Vector4> _CallFuncVec4Callback = &___CallFuncVec4Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector4> __CallFuncVec4Callback;
+		private static delegate*<FuncVec4, Vector4> _CallFuncVec4Callback = &___CallFuncVec4Callback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector4> __CallFuncVec4Callback;
 		private static Vector4 ___CallFuncVec4Callback(FuncVec4 func)
 		{
 			Vector4 __retVal = __CallFuncVec4Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -3202,8 +3202,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncMat4x4Callback
-		internal static delegate*<FuncMat4x4, Matrix4x4> _CallFuncMat4x4Callback = &___CallFuncMat4x4Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, Matrix4x4> __CallFuncMat4x4Callback;
+		private static delegate*<FuncMat4x4, Matrix4x4> _CallFuncMat4x4Callback = &___CallFuncMat4x4Callback;
+		private static delegate* unmanaged[Cdecl]<nint, Matrix4x4> __CallFuncMat4x4Callback;
 		private static Matrix4x4 ___CallFuncMat4x4Callback(FuncMat4x4 func)
 		{
 			Matrix4x4 __retVal = __CallFuncMat4x4Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -3221,8 +3221,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasBoolCallback
-		internal static delegate*<FuncAliasBool, AliasBool> _CallFuncAliasBoolCallback = &___CallFuncAliasBoolCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Bool8> __CallFuncAliasBoolCallback;
+		private static delegate*<FuncAliasBool, AliasBool> _CallFuncAliasBoolCallback = &___CallFuncAliasBoolCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Bool8> __CallFuncAliasBoolCallback;
 		private static AliasBool ___CallFuncAliasBoolCallback(FuncAliasBool func)
 		{
 			AliasBool __retVal = __CallFuncAliasBoolCallback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -3240,8 +3240,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasChar8Callback
-		internal static delegate*<FuncAliasChar8, AliasChar8> _CallFuncAliasChar8Callback = &___CallFuncAliasChar8Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, Char8> __CallFuncAliasChar8Callback;
+		private static delegate*<FuncAliasChar8, AliasChar8> _CallFuncAliasChar8Callback = &___CallFuncAliasChar8Callback;
+		private static delegate* unmanaged[Cdecl]<nint, Char8> __CallFuncAliasChar8Callback;
 		private static AliasChar8 ___CallFuncAliasChar8Callback(FuncAliasChar8 func)
 		{
 			AliasChar8 __retVal = __CallFuncAliasChar8Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -3259,8 +3259,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasChar16Callback
-		internal static delegate*<FuncAliasChar16, AliasChar16> _CallFuncAliasChar16Callback = &___CallFuncAliasChar16Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, Char16> __CallFuncAliasChar16Callback;
+		private static delegate*<FuncAliasChar16, AliasChar16> _CallFuncAliasChar16Callback = &___CallFuncAliasChar16Callback;
+		private static delegate* unmanaged[Cdecl]<nint, Char16> __CallFuncAliasChar16Callback;
 		private static AliasChar16 ___CallFuncAliasChar16Callback(FuncAliasChar16 func)
 		{
 			AliasChar16 __retVal = __CallFuncAliasChar16Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -3278,8 +3278,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasInt8Callback
-		internal static delegate*<FuncAliasInt8, AliasInt8> _CallFuncAliasInt8Callback = &___CallFuncAliasInt8Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, sbyte> __CallFuncAliasInt8Callback;
+		private static delegate*<FuncAliasInt8, AliasInt8> _CallFuncAliasInt8Callback = &___CallFuncAliasInt8Callback;
+		private static delegate* unmanaged[Cdecl]<nint, sbyte> __CallFuncAliasInt8Callback;
 		private static AliasInt8 ___CallFuncAliasInt8Callback(FuncAliasInt8 func)
 		{
 			AliasInt8 __retVal = __CallFuncAliasInt8Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -3297,8 +3297,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasInt16Callback
-		internal static delegate*<FuncAliasInt16, AliasInt16> _CallFuncAliasInt16Callback = &___CallFuncAliasInt16Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, short> __CallFuncAliasInt16Callback;
+		private static delegate*<FuncAliasInt16, AliasInt16> _CallFuncAliasInt16Callback = &___CallFuncAliasInt16Callback;
+		private static delegate* unmanaged[Cdecl]<nint, short> __CallFuncAliasInt16Callback;
 		private static AliasInt16 ___CallFuncAliasInt16Callback(FuncAliasInt16 func)
 		{
 			AliasInt16 __retVal = __CallFuncAliasInt16Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -3316,8 +3316,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasInt32Callback
-		internal static delegate*<FuncAliasInt32, AliasInt32> _CallFuncAliasInt32Callback = &___CallFuncAliasInt32Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, int> __CallFuncAliasInt32Callback;
+		private static delegate*<FuncAliasInt32, AliasInt32> _CallFuncAliasInt32Callback = &___CallFuncAliasInt32Callback;
+		private static delegate* unmanaged[Cdecl]<nint, int> __CallFuncAliasInt32Callback;
 		private static AliasInt32 ___CallFuncAliasInt32Callback(FuncAliasInt32 func)
 		{
 			AliasInt32 __retVal = __CallFuncAliasInt32Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -3335,8 +3335,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasInt64Callback
-		internal static delegate*<FuncAliasInt64, AliasInt64> _CallFuncAliasInt64Callback = &___CallFuncAliasInt64Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, long> __CallFuncAliasInt64Callback;
+		private static delegate*<FuncAliasInt64, AliasInt64> _CallFuncAliasInt64Callback = &___CallFuncAliasInt64Callback;
+		private static delegate* unmanaged[Cdecl]<nint, long> __CallFuncAliasInt64Callback;
 		private static AliasInt64 ___CallFuncAliasInt64Callback(FuncAliasInt64 func)
 		{
 			AliasInt64 __retVal = __CallFuncAliasInt64Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -3354,8 +3354,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasUInt8Callback
-		internal static delegate*<FuncAliasUInt8, AliasUInt8> _CallFuncAliasUInt8Callback = &___CallFuncAliasUInt8Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, byte> __CallFuncAliasUInt8Callback;
+		private static delegate*<FuncAliasUInt8, AliasUInt8> _CallFuncAliasUInt8Callback = &___CallFuncAliasUInt8Callback;
+		private static delegate* unmanaged[Cdecl]<nint, byte> __CallFuncAliasUInt8Callback;
 		private static AliasUInt8 ___CallFuncAliasUInt8Callback(FuncAliasUInt8 func)
 		{
 			AliasUInt8 __retVal = __CallFuncAliasUInt8Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -3373,8 +3373,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasUInt16Callback
-		internal static delegate*<FuncAliasUInt16, AliasUInt16> _CallFuncAliasUInt16Callback = &___CallFuncAliasUInt16Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, ushort> __CallFuncAliasUInt16Callback;
+		private static delegate*<FuncAliasUInt16, AliasUInt16> _CallFuncAliasUInt16Callback = &___CallFuncAliasUInt16Callback;
+		private static delegate* unmanaged[Cdecl]<nint, ushort> __CallFuncAliasUInt16Callback;
 		private static AliasUInt16 ___CallFuncAliasUInt16Callback(FuncAliasUInt16 func)
 		{
 			AliasUInt16 __retVal = __CallFuncAliasUInt16Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -3392,8 +3392,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasUInt32Callback
-		internal static delegate*<FuncAliasUInt32, AliasUInt32> _CallFuncAliasUInt32Callback = &___CallFuncAliasUInt32Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, uint> __CallFuncAliasUInt32Callback;
+		private static delegate*<FuncAliasUInt32, AliasUInt32> _CallFuncAliasUInt32Callback = &___CallFuncAliasUInt32Callback;
+		private static delegate* unmanaged[Cdecl]<nint, uint> __CallFuncAliasUInt32Callback;
 		private static AliasUInt32 ___CallFuncAliasUInt32Callback(FuncAliasUInt32 func)
 		{
 			AliasUInt32 __retVal = __CallFuncAliasUInt32Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -3411,8 +3411,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasUInt64Callback
-		internal static delegate*<FuncAliasUInt64, AliasUInt64> _CallFuncAliasUInt64Callback = &___CallFuncAliasUInt64Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, ulong> __CallFuncAliasUInt64Callback;
+		private static delegate*<FuncAliasUInt64, AliasUInt64> _CallFuncAliasUInt64Callback = &___CallFuncAliasUInt64Callback;
+		private static delegate* unmanaged[Cdecl]<nint, ulong> __CallFuncAliasUInt64Callback;
 		private static AliasUInt64 ___CallFuncAliasUInt64Callback(FuncAliasUInt64 func)
 		{
 			AliasUInt64 __retVal = __CallFuncAliasUInt64Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -3430,8 +3430,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasPtrCallback
-		internal static delegate*<FuncAliasPtr, AliasPtr> _CallFuncAliasPtrCallback = &___CallFuncAliasPtrCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, nint> __CallFuncAliasPtrCallback;
+		private static delegate*<FuncAliasPtr, AliasPtr> _CallFuncAliasPtrCallback = &___CallFuncAliasPtrCallback;
+		private static delegate* unmanaged[Cdecl]<nint, nint> __CallFuncAliasPtrCallback;
 		private static AliasPtr ___CallFuncAliasPtrCallback(FuncAliasPtr func)
 		{
 			AliasPtr __retVal = __CallFuncAliasPtrCallback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -3449,8 +3449,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasFloatCallback
-		internal static delegate*<FuncAliasFloat, AliasFloat> _CallFuncAliasFloatCallback = &___CallFuncAliasFloatCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, float> __CallFuncAliasFloatCallback;
+		private static delegate*<FuncAliasFloat, AliasFloat> _CallFuncAliasFloatCallback = &___CallFuncAliasFloatCallback;
+		private static delegate* unmanaged[Cdecl]<nint, float> __CallFuncAliasFloatCallback;
 		private static AliasFloat ___CallFuncAliasFloatCallback(FuncAliasFloat func)
 		{
 			AliasFloat __retVal = __CallFuncAliasFloatCallback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -3468,8 +3468,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasDoubleCallback
-		internal static delegate*<FuncAliasDouble, AliasDouble> _CallFuncAliasDoubleCallback = &___CallFuncAliasDoubleCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, double> __CallFuncAliasDoubleCallback;
+		private static delegate*<FuncAliasDouble, AliasDouble> _CallFuncAliasDoubleCallback = &___CallFuncAliasDoubleCallback;
+		private static delegate* unmanaged[Cdecl]<nint, double> __CallFuncAliasDoubleCallback;
 		private static AliasDouble ___CallFuncAliasDoubleCallback(FuncAliasDouble func)
 		{
 			AliasDouble __retVal = __CallFuncAliasDoubleCallback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -3487,8 +3487,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasStringCallback
-		internal static delegate*<FuncAliasString, AliasString> _CallFuncAliasStringCallback = &___CallFuncAliasStringCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, String192> __CallFuncAliasStringCallback;
+		private static delegate*<FuncAliasString, AliasString> _CallFuncAliasStringCallback = &___CallFuncAliasStringCallback;
+		private static delegate* unmanaged[Cdecl]<nint, String192> __CallFuncAliasStringCallback;
 		private static AliasString ___CallFuncAliasStringCallback(FuncAliasString func)
 		{
 			AliasString __retVal;
@@ -3516,8 +3516,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasAnyCallback
-		internal static delegate*<FuncAliasAny, AliasAny> _CallFuncAliasAnyCallback = &___CallFuncAliasAnyCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Variant256> __CallFuncAliasAnyCallback;
+		private static delegate*<FuncAliasAny, AliasAny> _CallFuncAliasAnyCallback = &___CallFuncAliasAnyCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Variant256> __CallFuncAliasAnyCallback;
 		private static AliasAny ___CallFuncAliasAnyCallback(FuncAliasAny func)
 		{
 			AliasAny __retVal;
@@ -3545,12 +3545,12 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasFunctionCallback
-		internal static delegate*<FuncAliasFunction, AliasFunction> _CallFuncAliasFunctionCallback = &___CallFuncAliasFunctionCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, nint> __CallFuncAliasFunctionCallback;
+		private static delegate*<FuncAliasFunction, AliasFunction> _CallFuncAliasFunctionCallback = &___CallFuncAliasFunctionCallback;
+		private static delegate* unmanaged[Cdecl]<nint, nint> __CallFuncAliasFunctionCallback;
 		private static AliasFunction ___CallFuncAliasFunctionCallback(FuncAliasFunction func)
 		{
-			AliasFunction __retVal = __CallFuncAliasFunctionCallback(Marshalling.GetFunctionPointerForDelegate(func));
-			return __retVal;
+			nint __retVal = __CallFuncAliasFunctionCallback(Marshalling.GetFunctionPointerForDelegate(func));
+			return Marshalling.GetDelegateForFunctionPointer<AliasFunction>(__retVal);
 		}
 #endregion CallFuncAliasFunctionCallback
 		/// <summary>
@@ -3564,8 +3564,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasBoolVectorCallback
-		internal static delegate*<FuncAliasBoolVector, AliasBoolVector> _CallFuncAliasBoolVectorCallback = &___CallFuncAliasBoolVectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAliasBoolVectorCallback;
+		private static delegate*<FuncAliasBoolVector, AliasBoolVector> _CallFuncAliasBoolVectorCallback = &___CallFuncAliasBoolVectorCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAliasBoolVectorCallback;
 		private static AliasBoolVector ___CallFuncAliasBoolVectorCallback(FuncAliasBoolVector func)
 		{
 			AliasBoolVector __retVal;
@@ -3594,8 +3594,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasChar8VectorCallback
-		internal static delegate*<FuncAliasChar8Vector, AliasChar8Vector> _CallFuncAliasChar8VectorCallback = &___CallFuncAliasChar8VectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAliasChar8VectorCallback;
+		private static delegate*<FuncAliasChar8Vector, AliasChar8Vector> _CallFuncAliasChar8VectorCallback = &___CallFuncAliasChar8VectorCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAliasChar8VectorCallback;
 		private static AliasChar8Vector ___CallFuncAliasChar8VectorCallback(FuncAliasChar8Vector func)
 		{
 			AliasChar8Vector __retVal;
@@ -3624,8 +3624,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasChar16VectorCallback
-		internal static delegate*<FuncAliasChar16Vector, AliasChar16Vector> _CallFuncAliasChar16VectorCallback = &___CallFuncAliasChar16VectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAliasChar16VectorCallback;
+		private static delegate*<FuncAliasChar16Vector, AliasChar16Vector> _CallFuncAliasChar16VectorCallback = &___CallFuncAliasChar16VectorCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAliasChar16VectorCallback;
 		private static AliasChar16Vector ___CallFuncAliasChar16VectorCallback(FuncAliasChar16Vector func)
 		{
 			AliasChar16Vector __retVal;
@@ -3654,8 +3654,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasInt8VectorCallback
-		internal static delegate*<FuncAliasInt8Vector, AliasInt8Vector> _CallFuncAliasInt8VectorCallback = &___CallFuncAliasInt8VectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAliasInt8VectorCallback;
+		private static delegate*<FuncAliasInt8Vector, AliasInt8Vector> _CallFuncAliasInt8VectorCallback = &___CallFuncAliasInt8VectorCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAliasInt8VectorCallback;
 		private static AliasInt8Vector ___CallFuncAliasInt8VectorCallback(FuncAliasInt8Vector func)
 		{
 			AliasInt8Vector __retVal;
@@ -3684,8 +3684,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasInt16VectorCallback
-		internal static delegate*<FuncAliasInt16Vector, AliasInt16Vector> _CallFuncAliasInt16VectorCallback = &___CallFuncAliasInt16VectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAliasInt16VectorCallback;
+		private static delegate*<FuncAliasInt16Vector, AliasInt16Vector> _CallFuncAliasInt16VectorCallback = &___CallFuncAliasInt16VectorCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAliasInt16VectorCallback;
 		private static AliasInt16Vector ___CallFuncAliasInt16VectorCallback(FuncAliasInt16Vector func)
 		{
 			AliasInt16Vector __retVal;
@@ -3714,8 +3714,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasInt32VectorCallback
-		internal static delegate*<FuncAliasInt32Vector, AliasInt32Vector> _CallFuncAliasInt32VectorCallback = &___CallFuncAliasInt32VectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAliasInt32VectorCallback;
+		private static delegate*<FuncAliasInt32Vector, AliasInt32Vector> _CallFuncAliasInt32VectorCallback = &___CallFuncAliasInt32VectorCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAliasInt32VectorCallback;
 		private static AliasInt32Vector ___CallFuncAliasInt32VectorCallback(FuncAliasInt32Vector func)
 		{
 			AliasInt32Vector __retVal;
@@ -3744,8 +3744,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasInt64VectorCallback
-		internal static delegate*<FuncAliasInt64Vector, AliasInt64Vector> _CallFuncAliasInt64VectorCallback = &___CallFuncAliasInt64VectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAliasInt64VectorCallback;
+		private static delegate*<FuncAliasInt64Vector, AliasInt64Vector> _CallFuncAliasInt64VectorCallback = &___CallFuncAliasInt64VectorCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAliasInt64VectorCallback;
 		private static AliasInt64Vector ___CallFuncAliasInt64VectorCallback(FuncAliasInt64Vector func)
 		{
 			AliasInt64Vector __retVal;
@@ -3774,8 +3774,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasUInt8VectorCallback
-		internal static delegate*<FuncAliasUInt8Vector, AliasUInt8Vector> _CallFuncAliasUInt8VectorCallback = &___CallFuncAliasUInt8VectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAliasUInt8VectorCallback;
+		private static delegate*<FuncAliasUInt8Vector, AliasUInt8Vector> _CallFuncAliasUInt8VectorCallback = &___CallFuncAliasUInt8VectorCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAliasUInt8VectorCallback;
 		private static AliasUInt8Vector ___CallFuncAliasUInt8VectorCallback(FuncAliasUInt8Vector func)
 		{
 			AliasUInt8Vector __retVal;
@@ -3804,8 +3804,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasUInt16VectorCallback
-		internal static delegate*<FuncAliasUInt16Vector, AliasUInt16Vector> _CallFuncAliasUInt16VectorCallback = &___CallFuncAliasUInt16VectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAliasUInt16VectorCallback;
+		private static delegate*<FuncAliasUInt16Vector, AliasUInt16Vector> _CallFuncAliasUInt16VectorCallback = &___CallFuncAliasUInt16VectorCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAliasUInt16VectorCallback;
 		private static AliasUInt16Vector ___CallFuncAliasUInt16VectorCallback(FuncAliasUInt16Vector func)
 		{
 			AliasUInt16Vector __retVal;
@@ -3834,8 +3834,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasUInt32VectorCallback
-		internal static delegate*<FuncAliasUInt32Vector, AliasUInt32Vector> _CallFuncAliasUInt32VectorCallback = &___CallFuncAliasUInt32VectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAliasUInt32VectorCallback;
+		private static delegate*<FuncAliasUInt32Vector, AliasUInt32Vector> _CallFuncAliasUInt32VectorCallback = &___CallFuncAliasUInt32VectorCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAliasUInt32VectorCallback;
 		private static AliasUInt32Vector ___CallFuncAliasUInt32VectorCallback(FuncAliasUInt32Vector func)
 		{
 			AliasUInt32Vector __retVal;
@@ -3864,8 +3864,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasUInt64VectorCallback
-		internal static delegate*<FuncAliasUInt64Vector, AliasUInt64Vector> _CallFuncAliasUInt64VectorCallback = &___CallFuncAliasUInt64VectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAliasUInt64VectorCallback;
+		private static delegate*<FuncAliasUInt64Vector, AliasUInt64Vector> _CallFuncAliasUInt64VectorCallback = &___CallFuncAliasUInt64VectorCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAliasUInt64VectorCallback;
 		private static AliasUInt64Vector ___CallFuncAliasUInt64VectorCallback(FuncAliasUInt64Vector func)
 		{
 			AliasUInt64Vector __retVal;
@@ -3894,8 +3894,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasPtrVectorCallback
-		internal static delegate*<FuncAliasPtrVector, AliasPtrVector> _CallFuncAliasPtrVectorCallback = &___CallFuncAliasPtrVectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAliasPtrVectorCallback;
+		private static delegate*<FuncAliasPtrVector, AliasPtrVector> _CallFuncAliasPtrVectorCallback = &___CallFuncAliasPtrVectorCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAliasPtrVectorCallback;
 		private static AliasPtrVector ___CallFuncAliasPtrVectorCallback(FuncAliasPtrVector func)
 		{
 			AliasPtrVector __retVal;
@@ -3924,8 +3924,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasFloatVectorCallback
-		internal static delegate*<FuncAliasFloatVector, AliasFloatVector> _CallFuncAliasFloatVectorCallback = &___CallFuncAliasFloatVectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAliasFloatVectorCallback;
+		private static delegate*<FuncAliasFloatVector, AliasFloatVector> _CallFuncAliasFloatVectorCallback = &___CallFuncAliasFloatVectorCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAliasFloatVectorCallback;
 		private static AliasFloatVector ___CallFuncAliasFloatVectorCallback(FuncAliasFloatVector func)
 		{
 			AliasFloatVector __retVal;
@@ -3954,8 +3954,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasDoubleVectorCallback
-		internal static delegate*<FuncAliasDoubleVector, AliasDoubleVector> _CallFuncAliasDoubleVectorCallback = &___CallFuncAliasDoubleVectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAliasDoubleVectorCallback;
+		private static delegate*<FuncAliasDoubleVector, AliasDoubleVector> _CallFuncAliasDoubleVectorCallback = &___CallFuncAliasDoubleVectorCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAliasDoubleVectorCallback;
 		private static AliasDoubleVector ___CallFuncAliasDoubleVectorCallback(FuncAliasDoubleVector func)
 		{
 			AliasDoubleVector __retVal;
@@ -3984,8 +3984,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasStringVectorCallback
-		internal static delegate*<FuncAliasStringVector, AliasStringVector> _CallFuncAliasStringVectorCallback = &___CallFuncAliasStringVectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAliasStringVectorCallback;
+		private static delegate*<FuncAliasStringVector, AliasStringVector> _CallFuncAliasStringVectorCallback = &___CallFuncAliasStringVectorCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAliasStringVectorCallback;
 		private static AliasStringVector ___CallFuncAliasStringVectorCallback(FuncAliasStringVector func)
 		{
 			AliasStringVector __retVal;
@@ -4014,8 +4014,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasAnyVectorCallback
-		internal static delegate*<FuncAliasAnyVector, AliasAnyVector> _CallFuncAliasAnyVectorCallback = &___CallFuncAliasAnyVectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAliasAnyVectorCallback;
+		private static delegate*<FuncAliasAnyVector, AliasAnyVector> _CallFuncAliasAnyVectorCallback = &___CallFuncAliasAnyVectorCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAliasAnyVectorCallback;
 		private static AliasAnyVector ___CallFuncAliasAnyVectorCallback(FuncAliasAnyVector func)
 		{
 			AliasAnyVector __retVal;
@@ -4044,8 +4044,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasVec2VectorCallback
-		internal static delegate*<FuncAliasVec2Vector, AliasVec2Vector> _CallFuncAliasVec2VectorCallback = &___CallFuncAliasVec2VectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAliasVec2VectorCallback;
+		private static delegate*<FuncAliasVec2Vector, AliasVec2Vector> _CallFuncAliasVec2VectorCallback = &___CallFuncAliasVec2VectorCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAliasVec2VectorCallback;
 		private static AliasVec2Vector ___CallFuncAliasVec2VectorCallback(FuncAliasVec2Vector func)
 		{
 			AliasVec2Vector __retVal;
@@ -4074,8 +4074,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasVec3VectorCallback
-		internal static delegate*<FuncAliasVec3Vector, AliasVec3Vector> _CallFuncAliasVec3VectorCallback = &___CallFuncAliasVec3VectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAliasVec3VectorCallback;
+		private static delegate*<FuncAliasVec3Vector, AliasVec3Vector> _CallFuncAliasVec3VectorCallback = &___CallFuncAliasVec3VectorCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAliasVec3VectorCallback;
 		private static AliasVec3Vector ___CallFuncAliasVec3VectorCallback(FuncAliasVec3Vector func)
 		{
 			AliasVec3Vector __retVal;
@@ -4104,8 +4104,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasVec4VectorCallback
-		internal static delegate*<FuncAliasVec4Vector, AliasVec4Vector> _CallFuncAliasVec4VectorCallback = &___CallFuncAliasVec4VectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAliasVec4VectorCallback;
+		private static delegate*<FuncAliasVec4Vector, AliasVec4Vector> _CallFuncAliasVec4VectorCallback = &___CallFuncAliasVec4VectorCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAliasVec4VectorCallback;
 		private static AliasVec4Vector ___CallFuncAliasVec4VectorCallback(FuncAliasVec4Vector func)
 		{
 			AliasVec4Vector __retVal;
@@ -4134,8 +4134,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasMat4x4VectorCallback
-		internal static delegate*<FuncAliasMat4x4Vector, AliasMat4x4Vector> _CallFuncAliasMat4x4VectorCallback = &___CallFuncAliasMat4x4VectorCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAliasMat4x4VectorCallback;
+		private static delegate*<FuncAliasMat4x4Vector, AliasMat4x4Vector> _CallFuncAliasMat4x4VectorCallback = &___CallFuncAliasMat4x4VectorCallback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFuncAliasMat4x4VectorCallback;
 		private static AliasMat4x4Vector ___CallFuncAliasMat4x4VectorCallback(FuncAliasMat4x4Vector func)
 		{
 			AliasMat4x4Vector __retVal;
@@ -4164,8 +4164,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasVec2Callback
-		internal static delegate*<FuncAliasVec2, AliasVec2> _CallFuncAliasVec2Callback = &___CallFuncAliasVec2Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector2> __CallFuncAliasVec2Callback;
+		private static delegate*<FuncAliasVec2, AliasVec2> _CallFuncAliasVec2Callback = &___CallFuncAliasVec2Callback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector2> __CallFuncAliasVec2Callback;
 		private static AliasVec2 ___CallFuncAliasVec2Callback(FuncAliasVec2 func)
 		{
 			AliasVec2 __retVal = __CallFuncAliasVec2Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -4183,8 +4183,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasVec3Callback
-		internal static delegate*<FuncAliasVec3, AliasVec3> _CallFuncAliasVec3Callback = &___CallFuncAliasVec3Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector3> __CallFuncAliasVec3Callback;
+		private static delegate*<FuncAliasVec3, AliasVec3> _CallFuncAliasVec3Callback = &___CallFuncAliasVec3Callback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector3> __CallFuncAliasVec3Callback;
 		private static AliasVec3 ___CallFuncAliasVec3Callback(FuncAliasVec3 func)
 		{
 			AliasVec3 __retVal = __CallFuncAliasVec3Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -4202,8 +4202,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasVec4Callback
-		internal static delegate*<FuncAliasVec4, AliasVec4> _CallFuncAliasVec4Callback = &___CallFuncAliasVec4Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector4> __CallFuncAliasVec4Callback;
+		private static delegate*<FuncAliasVec4, AliasVec4> _CallFuncAliasVec4Callback = &___CallFuncAliasVec4Callback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector4> __CallFuncAliasVec4Callback;
 		private static AliasVec4 ___CallFuncAliasVec4Callback(FuncAliasVec4 func)
 		{
 			AliasVec4 __retVal = __CallFuncAliasVec4Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -4221,8 +4221,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasMat4x4Callback
-		internal static delegate*<FuncAliasMat4x4, AliasMat4x4> _CallFuncAliasMat4x4Callback = &___CallFuncAliasMat4x4Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, Matrix4x4> __CallFuncAliasMat4x4Callback;
+		private static delegate*<FuncAliasMat4x4, AliasMat4x4> _CallFuncAliasMat4x4Callback = &___CallFuncAliasMat4x4Callback;
+		private static delegate* unmanaged[Cdecl]<nint, Matrix4x4> __CallFuncAliasMat4x4Callback;
 		private static AliasMat4x4 ___CallFuncAliasMat4x4Callback(FuncAliasMat4x4 func)
 		{
 			AliasMat4x4 __retVal = __CallFuncAliasMat4x4Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -4240,11 +4240,11 @@ namespace cross_call_master {
 		}
 
 #region CallFuncAliasAllCallback
-		internal static delegate*<FuncAliasAll, string> _CallFuncAliasAllCallback = &___CallFuncAliasAllCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, String192> __CallFuncAliasAllCallback;
-		private static string ___CallFuncAliasAllCallback(FuncAliasAll func)
+		private static delegate*<FuncAliasAll, AliasString> _CallFuncAliasAllCallback = &___CallFuncAliasAllCallback;
+		private static delegate* unmanaged[Cdecl]<nint, String192> __CallFuncAliasAllCallback;
+		private static AliasString ___CallFuncAliasAllCallback(FuncAliasAll func)
 		{
-			string __retVal;
+			AliasString __retVal;
 			String192 __retVal_native;
 			try {
 				__retVal_native = __CallFuncAliasAllCallback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -4262,15 +4262,15 @@ namespace cross_call_master {
 		/// CallFuncAliasAllCallback
 		/// </summary>
 		/// <param name="func">func</param>
-		internal static string CallFuncAliasAllCallback(FuncAliasAll func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
+		internal static AliasString CallFuncAliasAllCallback(FuncAliasAll func, [CallerMemberName] string callerFunction = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
 		{
 			using var scope = new Scope("cross_call_master::CallFuncAliasAllCallback", callerLine, callerFile, callerFunction, callerModule);
 			return _CallFuncAliasAllCallback(func);
 		}
 
 #region CallFunc1Callback
-		internal static delegate*<Func1, int> _CallFunc1Callback = &___CallFunc1Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, int> __CallFunc1Callback;
+		private static delegate*<Func1, int> _CallFunc1Callback = &___CallFunc1Callback;
+		private static delegate* unmanaged[Cdecl]<nint, int> __CallFunc1Callback;
 		private static int ___CallFunc1Callback(Func1 func)
 		{
 			int __retVal = __CallFunc1Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -4288,8 +4288,8 @@ namespace cross_call_master {
 		}
 
 #region CallFunc2Callback
-		internal static delegate*<Func2, Char8> _CallFunc2Callback = &___CallFunc2Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, Char8> __CallFunc2Callback;
+		private static delegate*<Func2, Char8> _CallFunc2Callback = &___CallFunc2Callback;
+		private static delegate* unmanaged[Cdecl]<nint, Char8> __CallFunc2Callback;
 		private static Char8 ___CallFunc2Callback(Func2 func)
 		{
 			Char8 __retVal = __CallFunc2Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -4307,8 +4307,8 @@ namespace cross_call_master {
 		}
 
 #region CallFunc3Callback
-		internal static delegate*<Func3, void> _CallFunc3Callback = &___CallFunc3Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, void> __CallFunc3Callback;
+		private static delegate*<Func3, void> _CallFunc3Callback = &___CallFunc3Callback;
+		private static delegate* unmanaged[Cdecl]<nint, void> __CallFunc3Callback;
 		private static void ___CallFunc3Callback(Func3 func)
 		{
 			__CallFunc3Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -4325,8 +4325,8 @@ namespace cross_call_master {
 		}
 
 #region CallFunc4Callback
-		internal static delegate*<Func4, Vector4> _CallFunc4Callback = &___CallFunc4Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector4> __CallFunc4Callback;
+		private static delegate*<Func4, Vector4> _CallFunc4Callback = &___CallFunc4Callback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector4> __CallFunc4Callback;
 		private static Vector4 ___CallFunc4Callback(Func4 func)
 		{
 			Vector4 __retVal = __CallFunc4Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -4344,8 +4344,8 @@ namespace cross_call_master {
 		}
 
 #region CallFunc5Callback
-		internal static delegate*<Func5, Bool8> _CallFunc5Callback = &___CallFunc5Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, Bool8> __CallFunc5Callback;
+		private static delegate*<Func5, Bool8> _CallFunc5Callback = &___CallFunc5Callback;
+		private static delegate* unmanaged[Cdecl]<nint, Bool8> __CallFunc5Callback;
 		private static Bool8 ___CallFunc5Callback(Func5 func)
 		{
 			Bool8 __retVal = __CallFunc5Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -4363,8 +4363,8 @@ namespace cross_call_master {
 		}
 
 #region CallFunc6Callback
-		internal static delegate*<Func6, long> _CallFunc6Callback = &___CallFunc6Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, long> __CallFunc6Callback;
+		private static delegate*<Func6, long> _CallFunc6Callback = &___CallFunc6Callback;
+		private static delegate* unmanaged[Cdecl]<nint, long> __CallFunc6Callback;
 		private static long ___CallFunc6Callback(Func6 func)
 		{
 			long __retVal = __CallFunc6Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -4382,8 +4382,8 @@ namespace cross_call_master {
 		}
 
 #region CallFunc7Callback
-		internal static delegate*<Func7, double> _CallFunc7Callback = &___CallFunc7Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, double> __CallFunc7Callback;
+		private static delegate*<Func7, double> _CallFunc7Callback = &___CallFunc7Callback;
+		private static delegate* unmanaged[Cdecl]<nint, double> __CallFunc7Callback;
 		private static double ___CallFunc7Callback(Func7 func)
 		{
 			double __retVal = __CallFunc7Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -4401,8 +4401,8 @@ namespace cross_call_master {
 		}
 
 #region CallFunc8Callback
-		internal static delegate*<Func8, Matrix4x4> _CallFunc8Callback = &___CallFunc8Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, Matrix4x4> __CallFunc8Callback;
+		private static delegate*<Func8, Matrix4x4> _CallFunc8Callback = &___CallFunc8Callback;
+		private static delegate* unmanaged[Cdecl]<nint, Matrix4x4> __CallFunc8Callback;
 		private static Matrix4x4 ___CallFunc8Callback(Func8 func)
 		{
 			Matrix4x4 __retVal = __CallFunc8Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -4420,8 +4420,8 @@ namespace cross_call_master {
 		}
 
 #region CallFunc9Callback
-		internal static delegate*<Func9, void> _CallFunc9Callback = &___CallFunc9Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, void> __CallFunc9Callback;
+		private static delegate*<Func9, void> _CallFunc9Callback = &___CallFunc9Callback;
+		private static delegate* unmanaged[Cdecl]<nint, void> __CallFunc9Callback;
 		private static void ___CallFunc9Callback(Func9 func)
 		{
 			__CallFunc9Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -4438,8 +4438,8 @@ namespace cross_call_master {
 		}
 
 #region CallFunc10Callback
-		internal static delegate*<Func10, uint> _CallFunc10Callback = &___CallFunc10Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, uint> __CallFunc10Callback;
+		private static delegate*<Func10, uint> _CallFunc10Callback = &___CallFunc10Callback;
+		private static delegate* unmanaged[Cdecl]<nint, uint> __CallFunc10Callback;
 		private static uint ___CallFunc10Callback(Func10 func)
 		{
 			uint __retVal = __CallFunc10Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -4457,8 +4457,8 @@ namespace cross_call_master {
 		}
 
 #region CallFunc11Callback
-		internal static delegate*<Func11, nint> _CallFunc11Callback = &___CallFunc11Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, nint> __CallFunc11Callback;
+		private static delegate*<Func11, nint> _CallFunc11Callback = &___CallFunc11Callback;
+		private static delegate* unmanaged[Cdecl]<nint, nint> __CallFunc11Callback;
 		private static nint ___CallFunc11Callback(Func11 func)
 		{
 			nint __retVal = __CallFunc11Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -4476,8 +4476,8 @@ namespace cross_call_master {
 		}
 
 #region CallFunc12Callback
-		internal static delegate*<Func12, Bool8> _CallFunc12Callback = &___CallFunc12Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, Bool8> __CallFunc12Callback;
+		private static delegate*<Func12, Bool8> _CallFunc12Callback = &___CallFunc12Callback;
+		private static delegate* unmanaged[Cdecl]<nint, Bool8> __CallFunc12Callback;
 		private static Bool8 ___CallFunc12Callback(Func12 func)
 		{
 			Bool8 __retVal = __CallFunc12Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -4495,8 +4495,8 @@ namespace cross_call_master {
 		}
 
 #region CallFunc13Callback
-		internal static delegate*<Func13, string> _CallFunc13Callback = &___CallFunc13Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc13Callback;
+		private static delegate*<Func13, string> _CallFunc13Callback = &___CallFunc13Callback;
+		private static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc13Callback;
 		private static string ___CallFunc13Callback(Func13 func)
 		{
 			string __retVal;
@@ -4524,8 +4524,8 @@ namespace cross_call_master {
 		}
 
 #region CallFunc14Callback
-		internal static delegate*<Func14, string[]> _CallFunc14Callback = &___CallFunc14Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFunc14Callback;
+		private static delegate*<Func14, string[]> _CallFunc14Callback = &___CallFunc14Callback;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __CallFunc14Callback;
 		private static string[] ___CallFunc14Callback(Func14 func)
 		{
 			string[] __retVal;
@@ -4554,8 +4554,8 @@ namespace cross_call_master {
 		}
 
 #region CallFunc15Callback
-		internal static delegate*<Func15, short> _CallFunc15Callback = &___CallFunc15Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, short> __CallFunc15Callback;
+		private static delegate*<Func15, short> _CallFunc15Callback = &___CallFunc15Callback;
+		private static delegate* unmanaged[Cdecl]<nint, short> __CallFunc15Callback;
 		private static short ___CallFunc15Callback(Func15 func)
 		{
 			short __retVal = __CallFunc15Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -4573,8 +4573,8 @@ namespace cross_call_master {
 		}
 
 #region CallFunc16Callback
-		internal static delegate*<Func16, nint> _CallFunc16Callback = &___CallFunc16Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, nint> __CallFunc16Callback;
+		private static delegate*<Func16, nint> _CallFunc16Callback = &___CallFunc16Callback;
+		private static delegate* unmanaged[Cdecl]<nint, nint> __CallFunc16Callback;
 		private static nint ___CallFunc16Callback(Func16 func)
 		{
 			nint __retVal = __CallFunc16Callback(Marshalling.GetFunctionPointerForDelegate(func));
@@ -4592,8 +4592,8 @@ namespace cross_call_master {
 		}
 
 #region CallFunc17Callback
-		internal static delegate*<Func17, string> _CallFunc17Callback = &___CallFunc17Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc17Callback;
+		private static delegate*<Func17, string> _CallFunc17Callback = &___CallFunc17Callback;
+		private static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc17Callback;
 		private static string ___CallFunc17Callback(Func17 func)
 		{
 			string __retVal;
@@ -4621,8 +4621,8 @@ namespace cross_call_master {
 		}
 
 #region CallFunc18Callback
-		internal static delegate*<Func18, string> _CallFunc18Callback = &___CallFunc18Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc18Callback;
+		private static delegate*<Func18, string> _CallFunc18Callback = &___CallFunc18Callback;
+		private static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc18Callback;
 		private static string ___CallFunc18Callback(Func18 func)
 		{
 			string __retVal;
@@ -4650,8 +4650,8 @@ namespace cross_call_master {
 		}
 
 #region CallFunc19Callback
-		internal static delegate*<Func19, string> _CallFunc19Callback = &___CallFunc19Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc19Callback;
+		private static delegate*<Func19, string> _CallFunc19Callback = &___CallFunc19Callback;
+		private static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc19Callback;
 		private static string ___CallFunc19Callback(Func19 func)
 		{
 			string __retVal;
@@ -4679,8 +4679,8 @@ namespace cross_call_master {
 		}
 
 #region CallFunc20Callback
-		internal static delegate*<Func20, string> _CallFunc20Callback = &___CallFunc20Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc20Callback;
+		private static delegate*<Func20, string> _CallFunc20Callback = &___CallFunc20Callback;
+		private static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc20Callback;
 		private static string ___CallFunc20Callback(Func20 func)
 		{
 			string __retVal;
@@ -4708,8 +4708,8 @@ namespace cross_call_master {
 		}
 
 #region CallFunc21Callback
-		internal static delegate*<Func21, string> _CallFunc21Callback = &___CallFunc21Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc21Callback;
+		private static delegate*<Func21, string> _CallFunc21Callback = &___CallFunc21Callback;
+		private static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc21Callback;
 		private static string ___CallFunc21Callback(Func21 func)
 		{
 			string __retVal;
@@ -4737,8 +4737,8 @@ namespace cross_call_master {
 		}
 
 #region CallFunc22Callback
-		internal static delegate*<Func22, string> _CallFunc22Callback = &___CallFunc22Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc22Callback;
+		private static delegate*<Func22, string> _CallFunc22Callback = &___CallFunc22Callback;
+		private static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc22Callback;
 		private static string ___CallFunc22Callback(Func22 func)
 		{
 			string __retVal;
@@ -4766,8 +4766,8 @@ namespace cross_call_master {
 		}
 
 #region CallFunc23Callback
-		internal static delegate*<Func23, string> _CallFunc23Callback = &___CallFunc23Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc23Callback;
+		private static delegate*<Func23, string> _CallFunc23Callback = &___CallFunc23Callback;
+		private static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc23Callback;
 		private static string ___CallFunc23Callback(Func23 func)
 		{
 			string __retVal;
@@ -4795,8 +4795,8 @@ namespace cross_call_master {
 		}
 
 #region CallFunc24Callback
-		internal static delegate*<Func24, string> _CallFunc24Callback = &___CallFunc24Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc24Callback;
+		private static delegate*<Func24, string> _CallFunc24Callback = &___CallFunc24Callback;
+		private static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc24Callback;
 		private static string ___CallFunc24Callback(Func24 func)
 		{
 			string __retVal;
@@ -4824,8 +4824,8 @@ namespace cross_call_master {
 		}
 
 #region CallFunc25Callback
-		internal static delegate*<Func25, string> _CallFunc25Callback = &___CallFunc25Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc25Callback;
+		private static delegate*<Func25, string> _CallFunc25Callback = &___CallFunc25Callback;
+		private static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc25Callback;
 		private static string ___CallFunc25Callback(Func25 func)
 		{
 			string __retVal;
@@ -4853,8 +4853,8 @@ namespace cross_call_master {
 		}
 
 #region CallFunc26Callback
-		internal static delegate*<Func26, string> _CallFunc26Callback = &___CallFunc26Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc26Callback;
+		private static delegate*<Func26, string> _CallFunc26Callback = &___CallFunc26Callback;
+		private static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc26Callback;
 		private static string ___CallFunc26Callback(Func26 func)
 		{
 			string __retVal;
@@ -4882,8 +4882,8 @@ namespace cross_call_master {
 		}
 
 #region CallFunc27Callback
-		internal static delegate*<Func27, string> _CallFunc27Callback = &___CallFunc27Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc27Callback;
+		private static delegate*<Func27, string> _CallFunc27Callback = &___CallFunc27Callback;
+		private static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc27Callback;
 		private static string ___CallFunc27Callback(Func27 func)
 		{
 			string __retVal;
@@ -4911,8 +4911,8 @@ namespace cross_call_master {
 		}
 
 #region CallFunc28Callback
-		internal static delegate*<Func28, string> _CallFunc28Callback = &___CallFunc28Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc28Callback;
+		private static delegate*<Func28, string> _CallFunc28Callback = &___CallFunc28Callback;
+		private static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc28Callback;
 		private static string ___CallFunc28Callback(Func28 func)
 		{
 			string __retVal;
@@ -4940,8 +4940,8 @@ namespace cross_call_master {
 		}
 
 #region CallFunc29Callback
-		internal static delegate*<Func29, string> _CallFunc29Callback = &___CallFunc29Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc29Callback;
+		private static delegate*<Func29, string> _CallFunc29Callback = &___CallFunc29Callback;
+		private static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc29Callback;
 		private static string ___CallFunc29Callback(Func29 func)
 		{
 			string __retVal;
@@ -4969,8 +4969,8 @@ namespace cross_call_master {
 		}
 
 #region CallFunc30Callback
-		internal static delegate*<Func30, string> _CallFunc30Callback = &___CallFunc30Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc30Callback;
+		private static delegate*<Func30, string> _CallFunc30Callback = &___CallFunc30Callback;
+		private static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc30Callback;
 		private static string ___CallFunc30Callback(Func30 func)
 		{
 			string __retVal;
@@ -4998,8 +4998,8 @@ namespace cross_call_master {
 		}
 
 #region CallFunc31Callback
-		internal static delegate*<Func31, string> _CallFunc31Callback = &___CallFunc31Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc31Callback;
+		private static delegate*<Func31, string> _CallFunc31Callback = &___CallFunc31Callback;
+		private static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc31Callback;
 		private static string ___CallFunc31Callback(Func31 func)
 		{
 			string __retVal;
@@ -5027,8 +5027,8 @@ namespace cross_call_master {
 		}
 
 #region CallFunc32Callback
-		internal static delegate*<Func32, string> _CallFunc32Callback = &___CallFunc32Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc32Callback;
+		private static delegate*<Func32, string> _CallFunc32Callback = &___CallFunc32Callback;
+		private static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc32Callback;
 		private static string ___CallFunc32Callback(Func32 func)
 		{
 			string __retVal;
@@ -5056,8 +5056,8 @@ namespace cross_call_master {
 		}
 
 #region CallFunc33Callback
-		internal static delegate*<Func33, string> _CallFunc33Callback = &___CallFunc33Callback;
-		internal static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc33Callback;
+		private static delegate*<Func33, string> _CallFunc33Callback = &___CallFunc33Callback;
+		private static delegate* unmanaged[Cdecl]<nint, String192> __CallFunc33Callback;
 		private static string ___CallFunc33Callback(Func33 func)
 		{
 			string __retVal;
@@ -5085,8 +5085,8 @@ namespace cross_call_master {
 		}
 
 #region CallFuncEnumCallback
-		internal static delegate*<FuncEnum, string> _CallFuncEnumCallback = &___CallFuncEnumCallback;
-		internal static delegate* unmanaged[Cdecl]<nint, String192> __CallFuncEnumCallback;
+		private static delegate*<FuncEnum, string> _CallFuncEnumCallback = &___CallFuncEnumCallback;
+		private static delegate* unmanaged[Cdecl]<nint, String192> __CallFuncEnumCallback;
 		private static string ___CallFuncEnumCallback(FuncEnum func)
 		{
 			string __retVal;

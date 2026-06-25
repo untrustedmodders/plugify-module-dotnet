@@ -1,4 +1,4 @@
-// Generated from cross_call_master.pplugin
+// Generated from cross_call_worker.pplugin
 
 global using AliasBool = Plugify.Bool8;
 
@@ -70,7 +70,7 @@ global using AliasUInt32 = uint;
 
 global using AliasUInt64 = ulong;
 
-global using AliasFunction = cross_call_master.FuncAliasFunctionInner;
+global using AliasFunction = cross_call_worker.FuncAliasFunctionInner;
 
 global using AliasUInt8Vector = byte[];
 

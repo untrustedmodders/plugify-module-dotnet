@@ -12,8 +12,8 @@ namespace cross_call_master {
 	internal static unsafe partial class cross_call_master {
 
 #region ResourceHandleCreate
-		internal static delegate*<int, string, nint> _ResourceHandleCreate = &___ResourceHandleCreate;
-		internal static delegate* unmanaged[Cdecl]<int, String192*, nint> __ResourceHandleCreate;
+		private static delegate*<int, string, nint> _ResourceHandleCreate = &___ResourceHandleCreate;
+		private static delegate* unmanaged[Cdecl]<int, String192*, nint> __ResourceHandleCreate;
 		private static nint ___ResourceHandleCreate(int id, string name)
 		{
 			nint __retVal;
@@ -40,8 +40,8 @@ namespace cross_call_master {
 		}
 
 #region ResourceHandleCreateDefault
-		internal static delegate*<nint> _ResourceHandleCreateDefault = &___ResourceHandleCreateDefault;
-		internal static delegate* unmanaged[Cdecl]<nint> __ResourceHandleCreateDefault;
+		private static delegate*<nint> _ResourceHandleCreateDefault = &___ResourceHandleCreateDefault;
+		private static delegate* unmanaged[Cdecl]<nint> __ResourceHandleCreateDefault;
 		private static nint ___ResourceHandleCreateDefault()
 		{
 			nint __retVal = __ResourceHandleCreateDefault();
@@ -58,8 +58,8 @@ namespace cross_call_master {
 		}
 
 #region ResourceHandleDestroy
-		internal static delegate*<nint, void> _ResourceHandleDestroy = &___ResourceHandleDestroy;
-		internal static delegate* unmanaged[Cdecl]<nint, void> __ResourceHandleDestroy;
+		private static delegate*<nint, void> _ResourceHandleDestroy = &___ResourceHandleDestroy;
+		private static delegate* unmanaged[Cdecl]<nint, void> __ResourceHandleDestroy;
 		private static void ___ResourceHandleDestroy(nint handle)
 		{
 			__ResourceHandleDestroy(handle);
@@ -76,8 +76,8 @@ namespace cross_call_master {
 		}
 
 #region ResourceHandleGetId
-		internal static delegate*<nint, int> _ResourceHandleGetId = &___ResourceHandleGetId;
-		internal static delegate* unmanaged[Cdecl]<nint, int> __ResourceHandleGetId;
+		private static delegate*<nint, int> _ResourceHandleGetId = &___ResourceHandleGetId;
+		private static delegate* unmanaged[Cdecl]<nint, int> __ResourceHandleGetId;
 		private static int ___ResourceHandleGetId(nint handle)
 		{
 			int __retVal = __ResourceHandleGetId(handle);
@@ -95,8 +95,8 @@ namespace cross_call_master {
 		}
 
 #region ResourceHandleGetName
-		internal static delegate*<nint, string> _ResourceHandleGetName = &___ResourceHandleGetName;
-		internal static delegate* unmanaged[Cdecl]<nint, String192> __ResourceHandleGetName;
+		private static delegate*<nint, string> _ResourceHandleGetName = &___ResourceHandleGetName;
+		private static delegate* unmanaged[Cdecl]<nint, String192> __ResourceHandleGetName;
 		private static string ___ResourceHandleGetName(nint handle)
 		{
 			string __retVal;
@@ -124,8 +124,8 @@ namespace cross_call_master {
 		}
 
 #region ResourceHandleSetName
-		internal static delegate*<nint, string, void> _ResourceHandleSetName = &___ResourceHandleSetName;
-		internal static delegate* unmanaged[Cdecl]<nint, String192*, void> __ResourceHandleSetName;
+		private static delegate*<nint, string, void> _ResourceHandleSetName = &___ResourceHandleSetName;
+		private static delegate* unmanaged[Cdecl]<nint, String192*, void> __ResourceHandleSetName;
 		private static void ___ResourceHandleSetName(nint handle, string name)
 		{
 			var __name = NativeMethods.ConstructString(name);
@@ -150,8 +150,8 @@ namespace cross_call_master {
 		}
 
 #region ResourceHandleIncrementCounter
-		internal static delegate*<nint, void> _ResourceHandleIncrementCounter = &___ResourceHandleIncrementCounter;
-		internal static delegate* unmanaged[Cdecl]<nint, void> __ResourceHandleIncrementCounter;
+		private static delegate*<nint, void> _ResourceHandleIncrementCounter = &___ResourceHandleIncrementCounter;
+		private static delegate* unmanaged[Cdecl]<nint, void> __ResourceHandleIncrementCounter;
 		private static void ___ResourceHandleIncrementCounter(nint handle)
 		{
 			__ResourceHandleIncrementCounter(handle);
@@ -168,8 +168,8 @@ namespace cross_call_master {
 		}
 
 #region ResourceHandleGetCounter
-		internal static delegate*<nint, int> _ResourceHandleGetCounter = &___ResourceHandleGetCounter;
-		internal static delegate* unmanaged[Cdecl]<nint, int> __ResourceHandleGetCounter;
+		private static delegate*<nint, int> _ResourceHandleGetCounter = &___ResourceHandleGetCounter;
+		private static delegate* unmanaged[Cdecl]<nint, int> __ResourceHandleGetCounter;
 		private static int ___ResourceHandleGetCounter(nint handle)
 		{
 			int __retVal = __ResourceHandleGetCounter(handle);
@@ -187,8 +187,8 @@ namespace cross_call_master {
 		}
 
 #region ResourceHandleAddData
-		internal static delegate*<nint, float, void> _ResourceHandleAddData = &___ResourceHandleAddData;
-		internal static delegate* unmanaged[Cdecl]<nint, float, void> __ResourceHandleAddData;
+		private static delegate*<nint, float, void> _ResourceHandleAddData = &___ResourceHandleAddData;
+		private static delegate* unmanaged[Cdecl]<nint, float, void> __ResourceHandleAddData;
 		private static void ___ResourceHandleAddData(nint handle, float value)
 		{
 			__ResourceHandleAddData(handle, value);
@@ -206,8 +206,8 @@ namespace cross_call_master {
 		}
 
 #region ResourceHandleGetData
-		internal static delegate*<nint, float[]> _ResourceHandleGetData = &___ResourceHandleGetData;
-		internal static delegate* unmanaged[Cdecl]<nint, Vector192> __ResourceHandleGetData;
+		private static delegate*<nint, float[]> _ResourceHandleGetData = &___ResourceHandleGetData;
+		private static delegate* unmanaged[Cdecl]<nint, Vector192> __ResourceHandleGetData;
 		private static float[] ___ResourceHandleGetData(nint handle)
 		{
 			float[] __retVal;
@@ -236,8 +236,8 @@ namespace cross_call_master {
 		}
 
 #region ResourceHandleGetAliveCount
-		internal static delegate*<int> _ResourceHandleGetAliveCount = &___ResourceHandleGetAliveCount;
-		internal static delegate* unmanaged[Cdecl]<int> __ResourceHandleGetAliveCount;
+		private static delegate*<int> _ResourceHandleGetAliveCount = &___ResourceHandleGetAliveCount;
+		private static delegate* unmanaged[Cdecl]<int> __ResourceHandleGetAliveCount;
 		private static int ___ResourceHandleGetAliveCount()
 		{
 			int __retVal = __ResourceHandleGetAliveCount();
@@ -254,8 +254,8 @@ namespace cross_call_master {
 		}
 
 #region ResourceHandleGetTotalCreated
-		internal static delegate*<int> _ResourceHandleGetTotalCreated = &___ResourceHandleGetTotalCreated;
-		internal static delegate* unmanaged[Cdecl]<int> __ResourceHandleGetTotalCreated;
+		private static delegate*<int> _ResourceHandleGetTotalCreated = &___ResourceHandleGetTotalCreated;
+		private static delegate* unmanaged[Cdecl]<int> __ResourceHandleGetTotalCreated;
 		private static int ___ResourceHandleGetTotalCreated()
 		{
 			int __retVal = __ResourceHandleGetTotalCreated();
@@ -272,8 +272,8 @@ namespace cross_call_master {
 		}
 
 #region ResourceHandleGetTotalDestroyed
-		internal static delegate*<int> _ResourceHandleGetTotalDestroyed = &___ResourceHandleGetTotalDestroyed;
-		internal static delegate* unmanaged[Cdecl]<int> __ResourceHandleGetTotalDestroyed;
+		private static delegate*<int> _ResourceHandleGetTotalDestroyed = &___ResourceHandleGetTotalDestroyed;
+		private static delegate* unmanaged[Cdecl]<int> __ResourceHandleGetTotalDestroyed;
 		private static int ___ResourceHandleGetTotalDestroyed()
 		{
 			int __retVal = __ResourceHandleGetTotalDestroyed();

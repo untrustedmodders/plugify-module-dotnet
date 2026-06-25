@@ -3,12 +3,12 @@ using System.Numerics;
 
 using Plugify;
 
-// Generated from cross_call_master.pplugin
+// Generated from cross_call_worker.pplugin
 
-namespace cross_call_master {
+namespace cross_call_worker {
 #pragma warning disable CS0649
 
-	public delegate int NoParamReturnFunctionCallbackFunc();
+	public delegate void NoParamReturnFunctionFunc();
 
 	public delegate void FuncVoid();
 
@@ -228,7 +228,7 @@ namespace cross_call_master {
 
 	public delegate void Func23(ref ulong uint64Ref, ref Vector2 plgVector2Ref, ref short[] vectorInt16Ref, ref Char16 char16Ref, ref float floatRef, ref sbyte int8Ref, ref byte[] vectorUInt8Ref);
 
-	public delegate Matrix4x4 Func24(ref Char8[] vectorCharRef, ref long int64Ref, ref byte[] vectorUInt8Ref, ref Vector4 plgVector4Ref, ref ulong uint64Ref, ref nint[] vectorptr64Ref, ref double doubleRef, ref nint[] vectorptr64Ref2);
+	public delegate Matrix4x4 Func24(ref Char8[] vectorCharRef, ref long int64Ref, ref byte[] vectorUInt8Ref, ref Vector4 plgVector4Ref, ref ulong uint64Ref, ref nint[] vectorptr64Ref, ref double doubleRef, ref nint[] vectorptr64RefV2);
 
 	public delegate double Func25(ref int int32Ref, ref nint[] vectorptr64Ref, ref Bool8 boolRef, ref byte uint8Ref, ref string plgStringRef, ref Vector3 plgVector3Ref, ref long int64Ref, ref Vector4 plgVector4Ref, ref ushort uint16Ref);
 

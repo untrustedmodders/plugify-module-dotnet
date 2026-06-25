@@ -720,9 +720,9 @@ public class ExportClass
         return result;
     }
 
-    public static nint CallFuncFunction(cross_call_master.FuncFunction func) {
+    public static FuncFunctionInner CallFuncFunction(cross_call_master.FuncFunction func) {
         FuncFunctionInner result = func();
-        return 0;
+        return result;
     }
 
     public static string CallFuncString(cross_call_master.FuncString func) {

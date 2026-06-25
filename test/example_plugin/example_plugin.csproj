@@ -5,7 +5,7 @@
         <TargetFramework>net10.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <AssemblyName>cross_call_worker</AssemblyName>
+        <AssemblyName>example_plugin</AssemblyName>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<EnableDynamicLoading>true</EnableDynamicLoading>
         <GenerateRuntimeConfigurationFiles>false</GenerateRuntimeConfigurationFiles>
@@ -17,10 +17,6 @@
       <PackageReference Include="Plugify.Generators" Version="2.1.8" 
                         OutputItemType="Analyzer"
                         ReferenceOutputAssembly="false" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="imported\" />
     </ItemGroup>
 
 </Project>

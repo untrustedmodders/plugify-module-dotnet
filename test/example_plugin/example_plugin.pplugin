@@ -1,0 +1,19 @@
+{
+	"$schema": "https://raw.githubusercontent.com/untrustedmodders/plugify/refs/heads/main/schemas/plugin.schema.json",
+	"version": "0.1.0",
+	"name": "example_plugin",
+	"description": "An example of a plugin. This can be used as a starting point when creating your own plugin.",
+	"author": "untrustedmodders",
+	"website": "https://github.com/untrustedmodders/",
+	"license": "https://github.com/orgs/untrustedmodders/README.md",
+	"entry": "example_plugin.dll",
+	"platforms": [],
+	"language": "dotnet",
+	"dependencies": [
+		{
+			"name": "cross_call_worker"
+		}
+	],
+	"methods": [
+	]
+}
