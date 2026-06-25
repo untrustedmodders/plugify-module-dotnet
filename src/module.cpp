@@ -201,6 +201,7 @@ Result<void> DotnetLanguageModule::OnMethodExport(const Extension& plugin) {
 		assert(ownerAssembly);
 
 		for (const auto& [method, _] : plugin.GetMethodsData()) {
+			auto variableName = std::format("_{}", method.GetName());
 			auto separated= Utils::Split(method.GetFuncName(), ".");
 			size_t size = separated.size();
 
@@ -218,7 +219,7 @@ Result<void> DotnetLanguageModule::OnMethodExport(const Extension& plugin) {
 				if (assembly.GetAssemblyID() == assemblyId)
 					continue;
 
-				assembly.AddInternalCall(className, method.GetName(), addr);
+				assembly.AddInternalCall(className, variableName, addr);
 			}
 		}
 	} else {
