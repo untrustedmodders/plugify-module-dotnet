@@ -18,6 +18,9 @@ public static class Marshalling
     internal static readonly ConcurrentDictionary<Delegate, Callback> CachedDelegates = new();
     internal static readonly ConcurrentDictionary<nint, Delegate> CachedFunctions = new();
     internal static readonly ConcurrentDictionary<MethodInfo, bool> CachedMethods = new();
+    
+    internal static readonly ConcurrentDictionary<Type, Func<object, object>> CachedGetters = new();
+    internal static readonly ConcurrentDictionary<Type, Action<object, object>> CachedSetters = new();
 
     internal static unsafe object?[]? MarshalParameterArray(nint paramsPtr, int parameterCount, MethodBase methodInfo)
     {
@@ -122,28 +125,28 @@ public static class Marshalling
 					*(ulong*)outValue = (ulong?)Convert.ChangeType(paramValue, Enum.GetUnderlyingType(enumType)) ?? default;
 					return;
 				case ValueType.ArrayInt8:
-					if (paramValue is Array arrayInt8) NativeMethods.AssignVectorInt8((Vector192*)outValue, TypeUtils.ConvertFromEnumArray<sbyte>(enumType, arrayInt8));
+					if (paramValue is Array arrayInt8) CachedSetters.GetOrAdd(enumType, static type => GetMarshalNative(nameof(NativeMethodsT.AssignVectorInt8), type).CreateDelegate<Action<object, object>>())(outValue, arrayInt8);
 					return;
 				case ValueType.ArrayInt16:
-					if (paramValue is Array arrayInt16) NativeMethods.AssignVectorInt16((Vector192*)outValue, TypeUtils.ConvertFromEnumArray<short>(enumType, arrayInt16));
+					if (paramValue is Array arrayInt16) CachedSetters.GetOrAdd(enumType, static type => GetMarshalNative(nameof(NativeMethodsT.AssignVectorInt16), type).CreateDelegate<Action<object, object>>())(outValue, arrayInt16);
 					return;
 				case ValueType.ArrayInt32:
-					if (paramValue is Array arrayInt32) NativeMethods.AssignVectorInt32((Vector192*)outValue, TypeUtils.ConvertFromEnumArray<int>(enumType, arrayInt32));
+					if (paramValue is Array arrayInt32) CachedSetters.GetOrAdd(enumType, static type => GetMarshalNative(nameof(NativeMethodsT.AssignVectorInt32), type).CreateDelegate<Action<object, object>>())(outValue, arrayInt32);
 					return;
 				case ValueType.ArrayInt64:
-					if (paramValue is Array arrayInt64) NativeMethods.AssignVectorInt64((Vector192*)outValue, TypeUtils.ConvertFromEnumArray<long>(enumType, arrayInt64));
+					if (paramValue is Array arrayInt64) CachedSetters.GetOrAdd(enumType, static type => GetMarshalNative(nameof(NativeMethodsT.AssignVectorInt64), type).CreateDelegate<Action<object, object>>())(outValue, arrayInt64);
 					return;
 				case ValueType.ArrayUInt8:
-					if (paramValue is Array arrayUInt8) NativeMethods.AssignVectorUInt8((Vector192*)outValue, TypeUtils.ConvertFromEnumArray<byte>(enumType, arrayUInt8));
+					if (paramValue is Array arrayUInt8) CachedSetters.GetOrAdd(enumType, static type => GetMarshalNative(nameof(NativeMethodsT.AssignVectorUInt8), type).CreateDelegate<Action<object, object>>())(outValue, arrayUInt8);
 					return;
 				case ValueType.ArrayUInt16:
-					if (paramValue is Array arrayUInt16) NativeMethods.AssignVectorUInt16((Vector192*)outValue, TypeUtils.ConvertFromEnumArray<ushort>(enumType, arrayUInt16));
+					if (paramValue is Array arrayUInt16) CachedSetters.GetOrAdd(enumType, static type => GetMarshalNative(nameof(NativeMethodsT.AssignVectorUInt16), type).CreateDelegate<Action<object, object>>())(outValue, arrayUInt16);
 					return;
 				case ValueType.ArrayUInt32:
-					if (paramValue is Array arrayUInt32) NativeMethods.AssignVectorUInt32((Vector192*)outValue, TypeUtils.ConvertFromEnumArray<uint>(enumType, arrayUInt32));
+					if (paramValue is Array arrayUInt32) CachedSetters.GetOrAdd(enumType, static type => GetMarshalNative(nameof(NativeMethodsT.AssignVectorUInt32), type).CreateDelegate<Action<object, object>>())(outValue, arrayUInt32);
 					return;
 				case ValueType.ArrayUInt64:
-					if (paramValue is Array arrayUInt64) NativeMethods.AssignVectorUInt64((Vector192*)outValue, TypeUtils.ConvertFromEnumArray<ulong>(enumType, arrayUInt64));
+					if (paramValue is Array arrayUInt64) CachedSetters.GetOrAdd(enumType, static type => GetMarshalNative(nameof(NativeMethodsT.AssignVectorUInt64), type).CreateDelegate<Action<object, object>>())(outValue, arrayUInt64);
 					return;
 			}
 		}
@@ -312,21 +315,21 @@ public static class Marshalling
 				case ValueType.UInt64:
 					return Enum.ToObject(enumType, *(ulong*)inValue);
 				case ValueType.ArrayInt8:
-					return TypeUtils.ConvertToEnumArray(enumType,  NativeMethods.GetVectorDataInt8((Vector192*)inValue));
+					return CachedGetters.GetOrAdd(enumType, static type => GetMarshalNative(nameof(NativeMethodsT.GetVectorDataInt8), type).CreateDelegate<Func<object, object>>())(inValue);
 				case ValueType.ArrayInt16:
-					return TypeUtils.ConvertToEnumArray(enumType, NativeMethods.GetVectorDataInt16((Vector192*)inValue));
+					return CachedGetters.GetOrAdd(enumType, static type => GetMarshalNative(nameof(NativeMethodsT.GetVectorDataInt16), type).CreateDelegate<Func<object, object>>())(inValue);
 				case ValueType.ArrayInt32:
-					return TypeUtils.ConvertToEnumArray(enumType, NativeMethods.GetVectorDataInt32((Vector192*)inValue));
+					return CachedGetters.GetOrAdd(enumType, static type => GetMarshalNative(nameof(NativeMethodsT.GetVectorDataInt32), type).CreateDelegate<Func<object, object>>())(inValue);
 				case ValueType.ArrayInt64:
-					return TypeUtils.ConvertToEnumArray(enumType, NativeMethods.GetVectorDataInt64((Vector192*)inValue));
+					return CachedGetters.GetOrAdd(enumType, static type => GetMarshalNative(nameof(NativeMethodsT.GetVectorDataInt64), type).CreateDelegate<Func<object, object>>())(inValue);
 				case ValueType.ArrayUInt8:
-					return TypeUtils.ConvertToEnumArray(enumType, NativeMethods.GetVectorDataUInt8((Vector192*)inValue));
+					return CachedGetters.GetOrAdd(enumType, static type => GetMarshalNative(nameof(NativeMethodsT.GetVectorDataUInt8), type).CreateDelegate<Func<object, object>>())(inValue);
 				case ValueType.ArrayUInt16:
-					return TypeUtils.ConvertToEnumArray(enumType, NativeMethods.GetVectorDataUInt16((Vector192*)inValue));
+					return CachedGetters.GetOrAdd(enumType, static type => GetMarshalNative(nameof(NativeMethodsT.GetVectorDataUInt16), type).CreateDelegate<Func<object, object>>())(inValue);
 				case ValueType.ArrayUInt32:
-					return TypeUtils.ConvertToEnumArray(enumType, NativeMethods.GetVectorDataUInt32((Vector192*)inValue));
+					return CachedGetters.GetOrAdd(enumType, static type => GetMarshalNative(nameof(NativeMethodsT.GetVectorDataUInt32), type).CreateDelegate<Func<object, object>>())(inValue);
 				case ValueType.ArrayUInt64:
-					return TypeUtils.ConvertToEnumArray(enumType, NativeMethods.GetVectorDataUInt64((Vector192*)inValue));
+					return CachedGetters.GetOrAdd(enumType, static type => GetMarshalNative(nameof(NativeMethodsT.GetVectorDataUInt64), type).CreateDelegate<Func<object, object>>())(inValue);
 			}
 		}
 		else
@@ -424,6 +427,16 @@ public static class Marshalling
 		}*/
 		
 		throw new NotImplementedException($"Parameter type {paramType.Name} not implemented");
+	}
+	
+	private static MethodInfo GetMarshalNative(string name, Type type)
+	{
+		return typeof(NativeMethodsT)
+			.GetMethods(BindingFlags.Public | BindingFlags.Static)
+			.Where(m => m.Name == name)
+			.OrderBy(m => m.GetParameters().Length)
+			.First()
+			.MakeGenericMethod(type);
 	}
 
 	internal static void MarshalFieldAddress(object obj, FieldInfo fieldInfo, nint outValue)
