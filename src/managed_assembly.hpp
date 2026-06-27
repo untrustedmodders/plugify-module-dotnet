@@ -44,7 +44,7 @@ namespace netlm {
 		friend class AssemblyLoader;
 	};
 
-	using AssemblyList = std::vector<ManagedAssembly>;
+	using AssemblyList = std::deque<ManagedAssembly>;
 
 	class AssemblyLoader {
 	public:

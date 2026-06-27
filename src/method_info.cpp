@@ -5,11 +5,6 @@
 
 using namespace netlm;
 
-MethodInfo::~MethodInfo() {
-	delete _parameterTypes;
-	delete _returnType;
-}
-
 std::string MethodInfo::GetName() const {
 	auto name = Managed.GetMethodInfoNameFptr(_handle);
 	std::string str(name);
@@ -23,7 +18,7 @@ void* MethodInfo::GetFunctionAddress() const {
 
 Type& MethodInfo::GetReturnType() {
 	if (!_returnType) {
-		_returnType = new Type();
+		_returnType = std::make_unique<Type>();
 		Managed.GetMethodInfoReturnTypeFptr(_handle, &_returnType->_handle);
 	}
 
@@ -37,7 +32,7 @@ const std::vector<Type>& MethodInfo::GetParameterTypes() {
 		std::vector<ManagedHandle> parameterTypes(static_cast<size_t>(parameterCount));
 		Managed.GetMethodInfoParameterTypesFptr(_handle, parameterTypes.data(), &parameterCount);
 
-		_parameterTypes = new std::vector<Type>();
+		_parameterTypes = std::make_unique<std::vector<Type>>();
 		_parameterTypes->reserve(parameterTypes.size());
 		for (size_t i = 0; i < parameterTypes.size(); i++)
 			_parameterTypes->emplace_back(parameterTypes[i]);

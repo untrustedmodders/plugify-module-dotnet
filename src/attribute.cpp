@@ -4,13 +4,9 @@
 
 using namespace netlm;
 
-Attribute::~Attribute() {
-	delete _type;
-}
-
 Type& Attribute::GetType() {
 	if (!_type) {
-		_type = new Type();
+		_type = std::make_unique<Type>();
 		Managed.GetAttributeTypeFptr(_handle, &_type->_handle);
 	}
 

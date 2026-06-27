@@ -11,8 +11,6 @@ namespace netlm {
 
 	class MethodInfo {
 	public:
-		~MethodInfo();
-
 		std::string GetName() const;
 		void* GetFunctionAddress() const;
 
@@ -31,8 +29,8 @@ namespace netlm {
 
 	private:
 		ManagedHandle _handle{};
-		Type* _returnType = nullptr;
-		std::vector<Type>* _parameterTypes = nullptr;
+		std::unique_ptr<Type> _returnType;
+		std::unique_ptr<std::vector<Type>> _parameterTypes;
 
 		friend class Type;
 		friend class ManagedObject;
