@@ -1045,7 +1045,7 @@ internal static class TypeInterface
 	}
 		
 	[UnmanagedCallersOnly]
-	private static unsafe void GetEnumValues(nint typeHandle, int* outValueArrayPtr, int* outCount)
+	private static unsafe void GetEnumValues(nint typeHandle, long* outValueArrayPtr, int* outCount)
 	{
 		try
 		{
@@ -1060,7 +1060,7 @@ internal static class TypeInterface
 				return;
 
 			for (int i = 0; i < *outCount; i++)
-				outValueArrayPtr[i] = (int) (values.GetValue(i) ?? 0);
+				outValueArrayPtr[i] = (long) (values.GetValue(i) ?? 0);
 		}
 		catch (Exception e)
 		{

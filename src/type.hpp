@@ -11,9 +11,8 @@
 namespace netlm {
 	class Type {
 	public:
-		Type() = default;
-		explicit Type(ManagedHandle handle) : _handle{handle} {}
-		//Type(const Type& type) : _handle{type._handle {}
+		Type() = delete;
+		Type(ManagedHandle handle) : _handle{handle} {}
 
 		std::string GetFullName() const;
 		std::string GetAssemblyQualifiedName() const;
@@ -44,14 +43,14 @@ namespace netlm {
 		bool IsValueType() const;
 
 		std::vector<std::string> GetEnumNames() const;
-		std::vector<int> GetEnumValues() const;
+		std::vector<int64_t> GetEnumValues() const;
 
 		bool IsSZArray() const;
 		bool IsByRef() const;
 		Type& GetElementType();
 
 		bool operator==(const Type& other) const { return _handle == other._handle; }
-		explicit operator bool() const { return _handle; }
+		explicit operator bool() const { return _handle != nullptr; }
 		ManagedHandle GetHandle() const { return _handle; }
 
 	public:
@@ -59,16 +58,12 @@ namespace netlm {
 		ManagedObject CreateInstance(TArgs&&... arguments) {
 			constexpr size_t argumentCount = sizeof...(arguments);
 
-			ManagedObject result;
-
 			if constexpr (argumentCount > 0) {
 				const void* argumentsValues[] = { &arguments ... };
-				result = CreateInstanceInternal(argumentsValues, argumentCount);
+				return CreateInstanceInternal(argumentsValues, argumentCount);
 			} else {
-				result = CreateInstanceInternal(nullptr, 0);
+				return CreateInstanceInternal(nullptr, 0);
 			}
-
-			return result;
 		}
 
 		template<typename TReturn, typename... TArgs>
@@ -91,9 +86,9 @@ namespace netlm {
 
 			if constexpr (parameterCount > 0) {
 				const void* parameterValues[] = { &parameters ... };
-				InvokeStaticMethodRetInternal(methodInfo._handle, parameterValues, parameterCount, &result);
+				InvokeStaticMethodRetInternal(methodInfo.GetHandle(), parameterValues, parameterCount, &result);
 			} else {
-				InvokeStaticMethodRetInternal(methodInfo._handle, nullptr, 0, &result);
+				InvokeStaticMethodRetInternal(methodInfo.GetHandle(), nullptr, 0, &result);
 			}
 
 			return result;
@@ -105,9 +100,9 @@ namespace netlm {
 
 			if constexpr (parameterCount > 0) {
 				const void* parameterValues[] = { &parameters ... };
-				InvokeStaticMethodInternal(methodInfo._handle, parameterValues, parameterCount);
+				InvokeStaticMethodInternal(methodInfo.GetHandle(), parameterValues, parameterCount);
 			} else {
-				InvokeStaticMethodInternal(methodInfo._handle, nullptr, 0);
+				InvokeStaticMethodInternal(methodInfo.GetHandle(), nullptr, 0);
 			}
 		}
 
@@ -118,13 +113,7 @@ namespace netlm {
 
 	private:
 		ManagedHandle _handle{};
-		std::unique_ptr<Type> _baseType;
-		std::unique_ptr<Type> _elementType;
-
-		friend class ManagedAssembly;
-		friend class MethodInfo;
-		friend class FieldInfo;
-		friend class PropertyInfo;
-		friend class Attribute;
+		Type* _baseType{};
+		Type* _elementType{};
 	};
 }

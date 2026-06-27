@@ -16,6 +16,8 @@
 #include <exception>
 #include <module_export.h>
 
+#include "type_cache.hpp"
+
 #define LOG_PREFIX "[NETLM] "
 
 using namespace plugify;
@@ -52,6 +54,8 @@ Result<void> DotnetLanguageModule::Shutdown() {
 	_logger.reset();
 	_provider.reset();
 
+	TypeCache::Get().Clear();
+
 	return {};
 }
 
@@ -59,7 +63,7 @@ Result<void> DotnetLanguageModule::OnUpdate([[maybe_unused]] std::chrono::millis
 	return {};
 }
 
-Result<SharpMethodData> DotnetLanguageModule::GenerateMethodExport(const Method &method, ManagedAssembly &assembly) {
+Result<SharpMethodData> DotnetLanguageModule::GenerateMethodExport(const Method& method, ManagedAssembly& assembly) {
 	auto separated = Utils::Split(method.GetFuncName(), ".");
 	size_t size = separated.size();
 	bool noNamespace = (size == 2);
@@ -94,7 +98,7 @@ Result<SharpMethodData> DotnetLanguageModule::GenerateMethodExport(const Method 
 	}
 
 	for (size_t i = 0; i < paramCount; ++i) {
-		ValueType paramType = parameterTypes[i].GetManagedType().type;
+		ValueType paramType = parameterTypes[i]->GetManagedType().type;
 		ValueType methodParamType = paramTypes[i].GetType();
 		if (paramType != methodParamType) {
 			return MakeError("invalid param type '{}' at index {} when it should have '{}'", plg::enum_to_string(methodParamType), i, plg::enum_to_string(paramType));
@@ -151,7 +155,7 @@ Result<LoadData> DotnetLanguageModule::OnPluginLoad(const Extension& plugin) {
 		return MakeError("Invalid methods:\n{}", plg::join(exportErrors, "\n"));
 	}
 
-	const auto [it, result] = _scripts.try_emplace(plugin.GetId(), plugin, assembly.GetAssemblyID(), pluginClassType);
+	const auto [it, result] = _scripts.try_emplace(plugin.GetId(), plugin, assembly.GetID(), pluginClassType);
 	if (!result) {
 		return MakeError("Save plugin data to map unsuccessful");
 	}
@@ -216,7 +220,7 @@ Result<void> DotnetLanguageModule::OnMethodExport(const Extension& plugin) {
 
 			for (auto& assembly : _loader.GetLoadedAssemblies()) {
 				// No self export
-				if (assembly.GetAssemblyID() == assemblyId)
+				if (assembly.GetID() == assemblyId)
 					continue;
 
 				assembly.AddInternalCall(className, variableName, addr);

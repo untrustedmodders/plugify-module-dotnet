@@ -30,16 +30,12 @@ namespace netlm {
 		PrivateProtected
 	};
 
-	using ManagedHandle = int64_t;
+	using ManagedHandle = void*;
 
 	struct InternalCall {
 		const char_t* name;
 		void* nativeFunctionPtr;
 	};
-
-	using type_index = uint32_t;
-	inline type_index type_id_seq = 0;
-	template<typename T> inline const type_index type_id = type_id_seq++;
 }
 
 #define NETLM_STR_HELPER(x) #x

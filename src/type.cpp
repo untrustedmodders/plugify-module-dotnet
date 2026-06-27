@@ -1,6 +1,7 @@
 #include "type.hpp"
 #include "attribute.hpp"
 #include "managed_functions.hpp"
+#include "type_cache.hpp"
 
 using namespace netlm;
 
@@ -20,8 +21,9 @@ std::string Type::GetAssemblyQualifiedName() const {
 
 Type& Type::GetBaseType() {
 	if (!_baseType) {
-		_baseType = std::make_unique<Type>();
-		Managed.GetBaseTypeFptr(_handle, &_baseType->_handle);
+		ManagedHandle handle{};
+		Managed.GetBaseTypeFptr(_handle, &handle);
+		_baseType = TypeCache::Get().CacheType(handle);
 	}
 
 	return *_baseType;
@@ -49,11 +51,12 @@ std::vector<MethodInfo> Type::GetMethods() const {
 	std::vector<ManagedHandle> methodHandles(static_cast<size_t>(methodCount));
 	Managed.GetTypeMethodsFptr(_handle, methodHandles.data(), &methodCount);
 
-	std::vector<MethodInfo> methods(methodHandles.size());
-	for (size_t i = 0; i < methodHandles.size(); i++)
-		methods[i]._handle = methodHandles[i];
+	std::vector<MethodInfo> result;
+	result.reserve(methodHandles.size());
+	for (const auto& methodHandle : methodHandles)
+		result.emplace_back(methodHandle);
 
-	return methods;
+	return result;
 }
 
 std::vector<FieldInfo> Type::GetFields() const {
@@ -62,11 +65,12 @@ std::vector<FieldInfo> Type::GetFields() const {
 	std::vector<ManagedHandle> fieldHandles(static_cast<size_t>(fieldCount));
 	Managed.GetTypeFieldsFptr(_handle, fieldHandles.data(), &fieldCount);
 
-	std::vector<FieldInfo> fields(fieldHandles.size());
-	for (size_t i = 0; i < fieldHandles.size(); i++)
-		fields[i]._handle = fieldHandles[i];
+	std::vector<FieldInfo> result;
+	result.reserve(fieldHandles.size());
+	for (const auto& fieldHandle : fieldHandles)
+		result.emplace_back(fieldHandle);
 
-	return fields;
+	return result;
 }
 
 std::vector<PropertyInfo> Type::GetProperties() const {
@@ -75,11 +79,12 @@ std::vector<PropertyInfo> Type::GetProperties() const {
 	std::vector<ManagedHandle> propertyHandles(static_cast<size_t>(propertyCount));
 	Managed.GetTypePropertiesFptr(_handle, propertyHandles.data(), &propertyCount);
 
-	std::vector<PropertyInfo> properties(propertyHandles.size());
-	for (size_t i = 0; i < propertyHandles.size(); i++)
-		properties[i]._handle = propertyHandles[i];
+	std::vector<PropertyInfo> result;
+	result.reserve(propertyHandles.size());
+	for (const auto& propertyHandle : propertyHandles)
+		result.emplace_back(propertyHandle);
 
-	return properties;
+	return result;
 }
 
 MethodInfo Type::GetMethod(std::string_view methodName) const {
@@ -88,10 +93,7 @@ MethodInfo Type::GetMethod(std::string_view methodName) const {
 	Managed.GetTypeMethodFptr(_handle, name, &handle);
 	String::Free(name);
 
-	MethodInfo result;
-	result._handle = handle;
-
-	return result;
+	return handle;
 }
 
 FieldInfo Type::GetField(std::string_view fieldName) const {
@@ -100,10 +102,7 @@ FieldInfo Type::GetField(std::string_view fieldName) const {
 	Managed.GetTypeFieldFptr(_handle, name, &handle);
 	String::Free(name);
 
-	FieldInfo result;
-	result._handle = handle;
-
-	return result;
+	return handle;
 }
 
 PropertyInfo Type::GetProperty(std::string_view propertyName) const {
@@ -112,10 +111,7 @@ PropertyInfo Type::GetProperty(std::string_view propertyName) const {
 	Managed.GetTypePropertyFptr(_handle, name, &handle);
 	String::Free(name);
 
-	PropertyInfo result;
-	result._handle = handle;
-
-	return result;
+	return handle;
 }
 
 bool Type::HasAttribute(const Type& attributeType) const {
@@ -128,9 +124,10 @@ std::vector<Attribute> Type::GetAttributes() const {
 	std::vector<ManagedHandle> attributeHandles(static_cast<size_t>(attributeCount));
 	Managed.GetTypeAttributesFptr(_handle, attributeHandles.data(), &attributeCount);
 
-	std::vector<Attribute> result(attributeHandles.size());
-	for (size_t i = 0; i < attributeHandles.size(); i++)
-		result[i]._handle = attributeHandles[i];
+	std::vector<Attribute> result;
+	result.reserve(attributeHandles.size());
+	for (const auto& attributeHandle : attributeHandles)
+		result.emplace_back(attributeHandle);
 
 	return result;
 }
@@ -173,18 +170,19 @@ std::vector<std::string> Type::GetEnumNames() const {
 	return namesStr;
 }
 
-std::vector<int> Type::GetEnumValues() const {
+std::vector<int64_t> Type::GetEnumValues() const {
 	int size;
 	Managed.GetEnumValuesFptr(_handle, nullptr, &size);
-	std::vector<int> values(static_cast<size_t>(size));
+	std::vector<int64_t> values(static_cast<size_t>(size));
 	Managed.GetEnumValuesFptr(_handle, values.data(), &size);
 	return values;
 }
 
 Type& Type::GetElementType() {
 	if (!_elementType) {
-		_elementType = std::make_unique<Type>();
-		Managed.GetElementTypeFptr(_handle, &_elementType->_handle);
+		ManagedHandle handle{};
+		Managed.GetElementTypeFptr(_handle, &handle);
+		_elementType = TypeCache::Get().CacheType(handle);
 	}
 
 	return *_elementType;
@@ -193,10 +191,8 @@ Type& Type::GetElementType() {
 // TODO: Cache methods
 
 ManagedObject Type::CreateInstanceInternal(const void** parameters, size_t length) const {
-	ManagedObject result;
-	result._handle = Managed.CreateObjectFptr(_handle, false, parameters, static_cast<int32_t>(length));
-	result._type = const_cast<Type*>(this);
-	return result;
+	ManagedHandle handle = Managed.CreateObjectFptr(_handle, false, parameters, static_cast<int32_t>(length));
+	return ManagedObject{ handle, const_cast<Type*>(this) };
 }
 
 void Type::InvokeStaticMethodInternal(ManagedHandle methodHandle, const void** parameters, size_t length) const {

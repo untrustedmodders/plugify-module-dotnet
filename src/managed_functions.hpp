@@ -22,23 +22,23 @@ namespace netlm {
 	using CollectGarbageFn = void(*)(int32_t, GCCollectionMode, Bool32, Bool32);
 	using WaitForPendingFinalizersFn = void(*)();
 
-	using CreateObjectFn = void*(*)(ManagedHandle, Bool32, const void**, int32_t);
-	using InvokeMethodFn = void(*)(void*, ManagedHandle, const void**, int32_t);
-	using InvokeMethodRetFn = void(*)(void*, ManagedHandle, const void**, int32_t, void*);
-	using InvokeStaticMethodFn = void (*)(ManagedHandle, ManagedHandle, const void**, int32_t);
-	using InvokeStaticMethodRetFn = void (*)(ManagedHandle, ManagedHandle, const void**, int32_t, void*);
-	using InvokeDelegateFn = void (*)(ManagedHandle, const void**, int32_t);
-	using InvokeDelegateRetFn = void (*)(ManagedHandle, const void**, int32_t, void*);
-	using SetFieldValueFn = void(*)(void*, String, void*);
-	using GetFieldValueFn = void(*)(void*, String, void*);
-	using GetFieldPointerFn = void(*)(void*, String, void**);
-	using SetPropertyValueFn = void(*)(void*, String, void*);
-	using GetPropertyValueFn = void(*)(void*, String, void*);
-	using DestroyObjectFn = void(*)(void*);
+	using CreateObjectFn = ManagedHandle(*)(ManagedHandle, Bool32, const void**, int32_t);
+	using InvokeMethodFn = void(*)(ManagedHandle, ManagedHandle, const void**, int32_t);
+	using InvokeMethodRetFn = void(*)(ManagedHandle, ManagedHandle, const void**, int32_t, void*);
+	using InvokeStaticMethodFn = void(*)(ManagedHandle, ManagedHandle, const void**, int32_t);
+	using InvokeStaticMethodRetFn = void(*)(ManagedHandle, ManagedHandle, const void**, int32_t, void*);
+	using InvokeDelegateFn = void(*)(ManagedHandle, const void**, int32_t);
+	using InvokeDelegateRetFn = void(*)(ManagedHandle, const void**, int32_t, void*);
+	using SetFieldValueFn = void(*)(ManagedHandle, String, void*);
+	using GetFieldValueFn = void(*)(ManagedHandle, String, void*);
+	using GetFieldPointerFn = void(*)(ManagedHandle, String, void**);
+	using SetPropertyValueFn = void(*)(ManagedHandle, String, void*);
+	using GetPropertyValueFn = void(*)(ManagedHandle, String, void*);
+	using DestroyObjectFn = void(*)(ManagedHandle);
 
 #pragma region TypeInterface
 	using GetAssemblyTypesFn = void(*)(ManagedGuid, ManagedHandle*, int32_t*);
-	using GetTypeFn = void (*)(String, ManagedHandle*);
+	using GetTypeFn = void(*)(String, ManagedHandle*);
 	using GetFullTypeNameFn = String(*)(ManagedHandle);
 	using GetAssemblyQualifiedNameFn = String(*)(ManagedHandle);
 	using GetBaseTypeFn = void(*)(ManagedHandle, ManagedHandle*);
@@ -56,7 +56,7 @@ namespace netlm {
 	using GetTypeFieldFn = void(*)(ManagedHandle, String, ManagedHandle*);
 	using GetTypePropertyFn = void(*)(ManagedHandle, String, ManagedHandle*);
 	using HasTypeAttributeFn = Bool32(*)(ManagedHandle, ManagedHandle);
-	using GetTypeAttributesFn = void (*)(ManagedHandle, ManagedHandle*, int32_t*);
+	using GetTypeAttributesFn = void(*)(ManagedHandle, ManagedHandle*, int32_t*);
 	using GetTypeManagedTypeFn = ManagedType(*)(ManagedHandle);
 #pragma endregion
 
@@ -94,7 +94,7 @@ namespace netlm {
 	using IsEnumFn = bool(*)(ManagedHandle);
 	using IsValueTypeFn = bool(*)(ManagedHandle);
 	using GetEnumNamesFn = void(*)(ManagedHandle, String*, int32_t*);
-	using GetEnumValuesFn = void(*)(ManagedHandle, int32_t*, int32_t*);
+	using GetEnumValuesFn = void(*)(ManagedHandle, int64_t*, int32_t*);
 #pragma endregion
 	
 	struct ManagedFunctions {

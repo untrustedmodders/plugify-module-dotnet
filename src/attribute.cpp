@@ -1,13 +1,15 @@
 #include "attribute.hpp"
 #include "managed_functions.hpp"
+#include "type_cache.hpp"
 #include "type.hpp"
 
 using namespace netlm;
 
 Type& Attribute::GetType() {
 	if (!_type) {
-		_type = std::make_unique<Type>();
-		Managed.GetAttributeTypeFptr(_handle, &_type->_handle);
+		ManagedHandle handle{};
+		Managed.GetAttributeTypeFptr(_handle, &handle);
+		_type = TypeCache::Get().CacheType(handle);
 	}
 
 	return *_type;

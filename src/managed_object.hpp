@@ -9,6 +9,9 @@ namespace netlm {
 
 	class ManagedObject {
 	public:
+		ManagedObject() = delete;
+		ManagedObject(ManagedHandle handle, Type* type) : _handle{handle}, _type{type} {}
+
 		template<typename TReturn, typename... TArgs>
 		TReturn InvokeMethod(std::string_view methodName, TArgs&&... parameters) const {
 			MethodInfo methodInfo = GetMethod(methodName);
@@ -29,9 +32,9 @@ namespace netlm {
 
 			if constexpr (parameterCount > 0) {
 				const void* parameterValues[] = { &parameters ... };
-				InvokeMethodRetInternal(methodInfo._handle, parameterValues, parameterCount, &result);
+				InvokeMethodRetInternal(methodInfo.GetHandle(), parameterValues, parameterCount, &result);
 			} else {
-				InvokeMethodRetInternal(methodInfo._handle, nullptr, 0, &result);
+				InvokeMethodRetInternal(methodInfo.GetHandle(), nullptr, 0, &result);
 			}
 
 			return result;
@@ -43,9 +46,9 @@ namespace netlm {
 
 			if constexpr (parameterCount > 0) {
 				const void* parameterValues[] = { &parameters ... };
-				InvokeMethodInternal(methodInfo._handle, parameterValues, parameterCount);
+				InvokeMethodInternal(methodInfo.GetHandle(), parameterValues, parameterCount);
 			} else {
-				InvokeMethodInternal(methodInfo._handle, nullptr, 0);
+				InvokeMethodInternal(methodInfo.GetHandle(), nullptr, 0);
 			}
 		}
 
@@ -95,7 +98,7 @@ namespace netlm {
 
 		bool operator==(const ManagedObject& other) const { return _handle == other._handle; }
 		explicit operator bool() const { return _handle != nullptr; }
-		//void* GetHandle() const { return _handle; }
+		ManagedHandle GetHandle() const { return _handle; }
 
 	//private:
 		void InvokeMethodInternal(ManagedHandle methodHandle, const void** parameters, size_t length) const;
@@ -104,11 +107,7 @@ namespace netlm {
 		static void InvokeDelegateRetInternal(ManagedHandle delegateHandle, const void** parameters, size_t length, void* resultStorage);
 
 	private:
-		void* _handle = nullptr;
-		Type* _type = nullptr;
-
-	private:
-		friend class ManagedAssembly;
-		friend class Type;
+		ManagedHandle _handle{};
+		Type* _type{};
 	};
 }

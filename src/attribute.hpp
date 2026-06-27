@@ -7,6 +7,9 @@ namespace netlm {
 
 	class Attribute {
 	public:
+		Attribute() = delete;
+		Attribute(ManagedHandle handle) : _handle{handle} {}
+
 		Type& GetType();
 
 		template<typename TReturn>
@@ -17,7 +20,7 @@ namespace netlm {
 		}
 
 		bool operator==(const Attribute& other) const { return _handle == other._handle; }
-		explicit operator bool() const { return _handle; }
+		explicit operator bool() const { return _handle != nullptr; }
 		ManagedHandle GetHandle() const { return _handle; }
 
 	private:
@@ -25,12 +28,6 @@ namespace netlm {
 
 	private:
 		ManagedHandle _handle{};
-		std::unique_ptr<Type> _type;
-
-		friend class Type;
-		friend class MethodInfo;
-		friend class FieldInfo;
-		friend class PropertyInfo;
-		friend class ManagedObject;
+		Type* _type{};
 	};
 }

@@ -11,11 +11,14 @@ namespace netlm {
 
 	class MethodInfo {
 	public:
+		MethodInfo() = delete;
+		MethodInfo(ManagedHandle handle) : _handle{handle} {}
+
 		std::string GetName() const;
 		void* GetFunctionAddress() const;
 
 		Type& GetReturnType();
-		const std::vector<Type>& GetParameterTypes();
+		const std::vector<Type*>& GetParameterTypes();
 
 		TypeAccessibility GetAccessibility() const;
 
@@ -24,15 +27,12 @@ namespace netlm {
 		std::vector<Attribute> GetReturnAttributes() const;
 
 		bool operator==(const MethodInfo& other) const { return _handle == other._handle; }
-		explicit operator bool() const { return _handle; }
+		explicit operator bool() const { return _handle != nullptr; }
 		ManagedHandle GetHandle() const { return _handle; }
 
 	private:
 		ManagedHandle _handle{};
-		std::unique_ptr<Type> _returnType;
-		std::unique_ptr<std::vector<Type>> _parameterTypes;
-
-		friend class Type;
-		friend class ManagedObject;
+		Type* _returnType{};
+		std::optional<std::vector<Type*>> _parameterTypes;
 	};
 }

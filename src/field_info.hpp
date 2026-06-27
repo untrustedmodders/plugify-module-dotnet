@@ -9,6 +9,9 @@ namespace netlm {
 
 	class FieldInfo {
 	public:
+		FieldInfo() = delete;
+		FieldInfo(ManagedHandle handle) : _handle{handle} {}
+
 		std::string GetName() const;
 		Type& GetType();
 
@@ -17,14 +20,11 @@ namespace netlm {
 		std::vector<Attribute> GetAttributes() const;
 
 		bool operator==(const FieldInfo& other) const { return _handle == other._handle; }
-		explicit operator bool() const { return _handle; }
+		explicit operator bool() const { return _handle != nullptr; }
 		ManagedHandle GetHandle() const { return _handle; }
 
 	private:
 		ManagedHandle _handle{};
-		std::unique_ptr<Type> _type;
-
-		friend class Type;
-		friend class ManagedObject;
+		Type* _type{};
 	};
 }

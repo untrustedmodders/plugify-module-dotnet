@@ -9,7 +9,7 @@ using namespace netlm;
 void ManagedObject::InvokeMethodInternal(ManagedHandle methodHandle, const void** parameters, size_t length) const {
 	// NOTE: If you get an exception in this function it's most likely because you're using a Native only debugger type in Visual Studio
 	//		 and it's catching a C# exception even though it shouldn't. I recommend switching the debugger type to Mixed (.NET Core)
-	//		 which should be the default for Hazelnut, or simply press "Continue" until it works.
+	//		 which should be the default for Plugify, or simply press "Continue" until it works.
 	//		 This is a problem with the Visual Studio debugger and nothing we can change.
 	Managed.InvokeMethodFptr(_handle, methodHandle, parameters, static_cast<int32_t>(length));
 }

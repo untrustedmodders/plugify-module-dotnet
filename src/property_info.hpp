@@ -9,20 +9,20 @@ namespace netlm {
 
 	class PropertyInfo {
 	public:
+		PropertyInfo() = delete;
+		PropertyInfo(ManagedHandle handle) : _handle{handle} {}
+
 		std::string GetName() const;
 		Type& GetType();
 
 		std::vector<Attribute> GetAttributes() const;
 
 		bool operator==(const PropertyInfo& other) const { return _handle == other._handle; }
-		explicit operator bool() const { return _handle; }
+		explicit operator bool() const { return _handle != nullptr; }
 		ManagedHandle GetHandle() const { return _handle; }
 
 	private:
 		ManagedHandle _handle{};
-		std::unique_ptr<Type> _type;
-
-		friend class Type;
-		friend class ManagedObject;
+		Type* _type{};
 	};
 }

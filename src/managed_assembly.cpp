@@ -1,12 +1,18 @@
 #include "managed_assembly.hpp"
 #include "managed_functions.hpp"
+#include "type_cache.hpp"
 #include "utils.hpp"
 
 using namespace netlm;
 
+static ManagedGuid InvalidId{};
+static ManagedHandle InvalidHandle{};
+static ManagedAssembly InvalidAssembly{InvalidId};
+static Type InvalidType{InvalidHandle};
+
 void AssemblyLoader::Unload() {
 	for (auto it = _assemblies.rbegin(); it != _assemblies.rend(); ++it) {
-		[[maybe_unused]] Bool32 result = Managed.UnloadManagedAssemblyFptr(it->_assemblyId);
+		[[maybe_unused]] Bool32 result = Managed.UnloadManagedAssemblyFptr(it->GetID());
 	}
 
 	_assemblies.clear();
@@ -15,18 +21,17 @@ void AssemblyLoader::Unload() {
 
 ManagedAssembly& AssemblyLoader::LoadAssembly(const fs::path& assemblyPath) {
 	std::error_code ec;
-	auto absolutePath= fs::absolute(assemblyPath, ec);
+	auto absolutePath = fs::absolute(assemblyPath, ec);
 	if (ec) {
 		_error = std::format("Invalid file path: {}", assemblyPath.string());
 		return InvalidAssembly;
 	}
 
 	auto path = String::New(absolutePath.c_str());
-	auto assemblyId = Managed.LoadManagedAssemblyFptr(path, true, true);
-	auto loadStatus = Managed.GetLastLoadStatusFptr();
+	auto id = Managed.LoadManagedAssemblyFptr(path, true, true);
 	String::Free(path);
 
-	switch (loadStatus) {
+	switch (Managed.GetLastLoadStatusFptr()) {
 		case AssemblyLoadStatus::FileNotFound:
 			_error = "File not found";
 			return InvalidAssembly;
@@ -46,30 +51,12 @@ ManagedAssembly& AssemblyLoader::LoadAssembly(const fs::path& assemblyPath) {
 			break;
 	}
 
-	auto& assembly = _assemblies.emplace_back();
-
-	assembly._assemblyId = assemblyId;
-	assembly._loadStatus = loadStatus;
-
-	auto name = Managed.GetAssemblyNameFptr(assembly._assemblyId);
-	assembly._name = name;
-	String::Free(name);
-
-	int32_t typeCount = 0;
-	Managed.GetAssemblyTypesFptr(assembly._assemblyId, nullptr, &typeCount);
-	std::vector<ManagedHandle> typeHandles(static_cast<size_t>(typeCount));
-	Managed.GetAssemblyTypesFptr(assembly._assemblyId, typeHandles.data(), &typeCount);
-
-	for (auto type : typeHandles) {
-		assembly._types.emplace_back(type);
-	}
-
-	return assembly;
+	return _assemblies.emplace_back(id);
 }
 
 ManagedAssembly& AssemblyLoader::FindAssembly(ManagedGuid assemblyId) {
-	auto it = std::find_if(_assemblies.begin(), _assemblies.end(), [assemblyId](const ManagedAssembly& assembly) {
-		return assembly._assemblyId == assemblyId;
+	auto it = std::find_if(_assemblies.begin(), _assemblies.end(), [&assemblyId](const ManagedAssembly& assembly) {
+		return assembly.GetID() == assemblyId;
 	});
 
 	if (it != _assemblies.end()) {
@@ -79,10 +66,34 @@ ManagedAssembly& AssemblyLoader::FindAssembly(ManagedGuid assemblyId) {
 	return InvalidAssembly;
 }
 
+std::string ManagedAssembly::GetFullName() const {
+	auto name = Managed.GetAssemblyNameFptr(_id);
+	std::string str(name);
+	String::Free(name);
+	return str;
+}
+
+const std::vector<Type*>& ManagedAssembly::GetTypes() {
+	if (!_types) {
+		_types.emplace();
+
+		int32_t typeCount = 0;
+		Managed.GetAssemblyTypesFptr(_id, nullptr, &typeCount);
+		std::vector<ManagedHandle> typeHandles(static_cast<size_t>(typeCount));
+		Managed.GetAssemblyTypesFptr(_id, typeHandles.data(), &typeCount);
+
+		_types->reserve(typeHandles.size());
+		for (auto typeHandle : typeHandles) {
+			_types->emplace_back(TypeCache::Get().CacheType(typeHandle));
+		}
+	}
+	return *_types;
+}
+
 void ManagedAssembly::AddInternalCall(std::string_view className, std::string_view variableName, void* functionPtr) {
 	assert(functionPtr != nullptr);
 
-	std::string assemblyQualifiedName(std::format("{}@{}, {}", className, variableName, _name));
+	std::string assemblyQualifiedName(std::format("{}@{}, {}", className, variableName, GetFullName()));
 
 #if NETLM_PLATFORM_WINDOWS
 	const auto& name = _internalCallNameStorage.emplace_back(Utils::ConvertUtf8ToWide(assemblyQualifiedName));
@@ -102,18 +113,18 @@ void ManagedAssembly::UploadInternalCalls(bool warnOnMissing) {
 }
 
 Type& ManagedAssembly::GetType(std::string_view className) {
-	for (auto& type : _types) {
-		if (type.GetFullName() == className) {
-			return type;
+	for (auto& type : GetTypes()) {
+		if (type->GetFullName() == className) {
+			return *type;
 		}
 	}
 	return InvalidType;
 }
 
 Type& ManagedAssembly::GetTypeByBaseType(std::string_view baseName) {
-	for (auto& type : _types) {
-		if (type.GetBaseType().GetFullName() == baseName) {
-			return type;
+	for (auto& type : GetTypes()) {
+		if (type->GetBaseType().GetFullName() == baseName) {
+			return *type;
 		}
 	}
 	return InvalidType;

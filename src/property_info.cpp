@@ -1,6 +1,7 @@
 #include "property_info.hpp"
 #include "attribute.hpp"
 #include "managed_functions.hpp"
+#include "type_cache.hpp"
 #include "type.hpp"
 
 using namespace netlm;
@@ -14,8 +15,9 @@ std::string PropertyInfo::GetName() const {
 
 Type& PropertyInfo::GetType() {
 	if (!_type) {
-		_type = std::make_unique<Type>();
-		Managed.GetPropertyInfoTypeFptr(_handle, &_type->_handle);
+		ManagedHandle handle{};
+		Managed.GetPropertyInfoTypeFptr(_handle, &handle);
+		_type = TypeCache::Get().CacheType(handle);
 	}
 
 	return *_type;
@@ -27,9 +29,10 @@ std::vector<Attribute> PropertyInfo::GetAttributes() const {
 	std::vector<ManagedHandle> attributeHandles(static_cast<size_t>(attributeCount));
 	Managed.GetPropertyInfoAttributesFptr(_handle, attributeHandles.data(), &attributeCount);
 
-	std::vector<Attribute> result(attributeHandles.size());
-	for (size_t i = 0; i < attributeHandles.size(); i++)
-		result[i]._handle = attributeHandles[i];
+	std::vector<Attribute> result;
+	result.reserve(attributeHandles.size());
+	for (const auto& attributeHandle : attributeHandles)
+		result.emplace_back(attributeHandle);
 
 	return result;
 }
