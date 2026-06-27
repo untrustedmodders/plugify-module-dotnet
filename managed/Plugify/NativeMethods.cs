@@ -1387,6 +1387,30 @@ public static unsafe partial class NativeMethodsT
 		GetVectorDataUInt64(vec, arr);
 		return arr;
 	}
+	
+	internal static Array _GetVectorDataInt8<T>(nint ptr) where T : unmanaged =>
+		GetVectorDataInt8<T>((Vector192*)ptr);
+
+	internal static Array _GetVectorDataInt16<T>(nint ptr) where T : unmanaged =>
+		GetVectorDataInt16<T>((Vector192*)ptr);
+
+	internal static Array _GetVectorDataInt32<T>(nint ptr) where T : unmanaged =>
+		GetVectorDataInt32<T>((Vector192*)ptr);
+
+	internal static Array _GetVectorDataInt64<T>(nint ptr) where T : unmanaged =>
+		GetVectorDataInt64<T>((Vector192*)ptr);
+
+	internal static Array _GetVectorDataUInt8<T>(nint ptr) where T : unmanaged =>
+		GetVectorDataUInt8<T>((Vector192*)ptr);
+
+	internal static Array _GetVectorDataUInt16<T>(nint ptr) where T : unmanaged =>
+		GetVectorDataUInt16<T>((Vector192*)ptr);
+
+	internal static Array _GetVectorDataUInt32<T>(nint ptr) where T : unmanaged =>
+		GetVectorDataUInt32<T>((Vector192*)ptr);
+
+	internal static Array _GetVectorDataUInt64<T>(nint ptr) where T : unmanaged =>
+		GetVectorDataUInt64<T>((Vector192*)ptr);
 
 	public static void AssignVectorInt8<T>(Vector192* vec, [In] T[] arr) where T : unmanaged
 	{
@@ -1451,4 +1475,28 @@ public static unsafe partial class NativeMethodsT
 			__AssignVectorUInt64(vec, arrNative, arr.Length);
 		}
 	}
+	
+	internal static void _AssignVectorInt8<T>(nint ptr, Array arr) where T : unmanaged =>
+		AssignVectorInt8((Vector192*)ptr, (T[])arr);
+
+	internal static void _AssignVectorInt16<T>(nint ptr, Array arr) where T : unmanaged =>
+		AssignVectorInt16((Vector192*)ptr, (T[])arr);
+
+	internal static void _AssignVectorInt32<T>(nint ptr, Array arr) where T : unmanaged =>
+		AssignVectorInt32((Vector192*)ptr, (T[])arr);
+
+	internal static void _AssignVectorInt64<T>(nint ptr, Array arr) where T : unmanaged =>
+		AssignVectorInt64((Vector192*)ptr, (T[])arr);
+
+	internal static void _AssignVectorUInt8<T>(nint ptr, Array arr) where T : unmanaged =>
+		AssignVectorUInt8((Vector192*)ptr, (T[])arr);
+
+	internal static void _AssignVectorUInt16<T>(nint ptr, Array arr) where T : unmanaged =>
+		AssignVectorUInt16((Vector192*)ptr, (T[])arr);
+
+	internal static void _AssignVectorUInt32<T>(nint ptr, Array arr) where T : unmanaged =>
+		AssignVectorUInt32((Vector192*)ptr, (T[])arr);
+
+	internal static void _AssignVectorUInt64<T>(nint ptr, Array arr) where T : unmanaged =>
+		AssignVectorUInt64((Vector192*)ptr, (T[])arr);
 }
