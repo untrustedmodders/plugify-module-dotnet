@@ -1,5 +1,25 @@
 # Changelog
 
+## [2.4.2](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.4.1...v2.4.2) (2026-06-27)
+
+
+### Bug Fixes
+
+* add missing path for mac ([f6742b3](https://github.com/untrustedmodders/plugify-module-dotnet/commit/f6742b32b9f6d0713f95797a295747c0f9806039))
+* add some internal tests and fix test returning delegates ([50a0a04](https://github.com/untrustedmodders/plugify-module-dotnet/commit/50a0a0484e6b3bad037f81ab75dccc900c1f30af))
+* apple build ([22fc9e4](https://github.com/untrustedmodders/plugify-module-dotnet/commit/22fc9e48a1a2eef03045576c954924c17ef4d3e8))
+* improve enum array marshal ([a425a2f](https://github.com/untrustedmodders/plugify-module-dotnet/commit/a425a2fe4fed169b79ba7f0e4b4774a8ac023958))
+* improve enum marshalling (2) ([6deefc3](https://github.com/untrustedmodders/plugify-module-dotnet/commit/6deefc3f1eef401026bf7dd14c712509d3395705))
+* internal calls between dotnet plugins ([9add73d](https://github.com/untrustedmodders/plugify-module-dotnet/commit/9add73dd0c8f7993b86fe1f7b3c45e247d4ef8ca))
+* sso invalidation on array resize ([9f1d63a](https://github.com/untrustedmodders/plugify-module-dotnet/commit/9f1d63a14364ef6597a51e7fb4a7754380b7b1ac))
+* type leak on unload ([fe0b050](https://github.com/untrustedmodders/plugify-module-dotnet/commit/fe0b050d69464f5ba86a2008abf234bcd0e8ccce))
+* type leak on unload (2) for apple clang ([06b64bd](https://github.com/untrustedmodders/plugify-module-dotnet/commit/06b64bdf3edb3d8d258fb22f075d913128023b7e))
+* update plugify ([5b17b58](https://github.com/untrustedmodders/plugify-module-dotnet/commit/5b17b58c34e7790d3b524e1aa65e191061bc41a9))
+* update plugify ([9da8543](https://github.com/untrustedmodders/plugify-module-dotnet/commit/9da85435fe87d2d073594a85144f63faee8558a9))
+* update plugify ([ee12dc2](https://github.com/untrustedmodders/plugify-module-dotnet/commit/ee12dc222fe880848a45d48bed3a5b4423a1fa6c))
+* update tests ([79ba462](https://github.com/untrustedmodders/plugify-module-dotnet/commit/79ba46238f7922c743138ed000a6cb59add2a72c))
+* update tests ([7bf33ff](https://github.com/untrustedmodders/plugify-module-dotnet/commit/7bf33ff0391b10f6de2d7bf95a5832b53347531b))
+
 ## [2.4.1](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.4.0...v2.4.1) (2026-05-24)
 
 
