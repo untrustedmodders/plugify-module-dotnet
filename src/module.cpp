@@ -108,7 +108,7 @@ Result<SharpMethodData> DotnetLanguageModule::GenerateMethodExport(const Method&
 	auto data = std::make_unique<HandleData>(type.GetHandle(), methodInfo.GetHandle());
 
 	JitCallback callback{};
-	MemAddr methodAddr = callback.GetJitFunc(method, &InternalCall, data.get());
+	Address methodAddr = callback.GetJitFunc(method, &InternalCall, data.get());
 	if (!methodAddr) {
 		return MakeError("jit error: {}", callback.GetError());
 	}
@@ -165,7 +165,7 @@ Result<LoadData> DotnetLanguageModule::OnPluginLoad(const Extension& plugin) {
 }
 
 Result<void> DotnetLanguageModule::OnPluginStart(const Extension& plugin) {
-	auto result = plugin.GetUserData().RCast<ScriptInstance*>()->InvokeOnStart();
+	auto result = plugin.GetUserData().As<ScriptInstance*>()->InvokeOnStart();
 	if (!result.empty()) {
 		_logger->Log(std::format(LOG_PREFIX "{}: call of 'OnPluginStart' failed\n{}", plugin.GetName(), result), Severity::Error);
 		return MakeError(std::string(result));
@@ -174,7 +174,7 @@ Result<void> DotnetLanguageModule::OnPluginStart(const Extension& plugin) {
 }
 
 Result<void> DotnetLanguageModule::OnPluginUpdate(const Extension& plugin, std::chrono::milliseconds dt) {
-	auto result = plugin.GetUserData().RCast<ScriptInstance*>()->InvokeOnUpdate(std::chrono::duration<float>(dt).count());
+	auto result = plugin.GetUserData().As<ScriptInstance*>()->InvokeOnUpdate(std::chrono::duration<float>(dt).count());
 	if (!result.empty()) {
 		_logger->Log(std::format(LOG_PREFIX "{}: call of 'OnPluginUpdate' failed\n{}", plugin.GetName(), result), Severity::Error);
 		return MakeError(std::string(result));
@@ -183,7 +183,7 @@ Result<void> DotnetLanguageModule::OnPluginUpdate(const Extension& plugin, std::
 }
 
 Result<void> DotnetLanguageModule::OnPluginEnd(const Extension& plugin) {
-	auto result = plugin.GetUserData().RCast<ScriptInstance*>()->InvokeOnEnd();
+	auto result = plugin.GetUserData().As<ScriptInstance*>()->InvokeOnEnd();
 	if (!result.empty()) {
 		_logger->Log(std::format(LOG_PREFIX "{}: call of 'OnPluginEnd' failed\n{}", plugin.GetName(), result), Severity::Error);
 		return MakeError(std::string(result));
@@ -267,7 +267,7 @@ std::shared_ptr<Method> DotnetLanguageModule::FindMethod(std::string_view name) 
 }
 
 template<typename TFunc>
-static void ManagedCall(const Method& method, MemAddr data, uint64_t* p, size_t count, void* r, TFunc&& func) {
+static void ManagedCall(const Method& method, Address data, uint64_t* p, size_t count, void* r, TFunc&& func) {
 	ValueType retType = method.GetRetType().GetType();
 	const std::inplace_vector<Property, Signature::kMaxFuncArgs>& paramProps = method.GetParamTypes();
 
@@ -417,9 +417,9 @@ static void ManagedCall(const Method& method, MemAddr data, uint64_t* p, size_t 
 }
 
 // C++ to C#
-void DotnetLanguageModule::InternalCall(const Method* method, MemAddr data, uint64_t* p, size_t count, void* ret) {
-	ManagedCall(*method, data, p, count, ret, [](MemAddr dt, ArgumentList& args, std::optional<void*> retPtr) {
-		const auto& [typeHandle, methodHandle] = *dt.RCast<HandleData*>();
+void DotnetLanguageModule::InternalCall(const Method* method, Address data, uint64_t* p, size_t count, void* ret) {
+	ManagedCall(*method, data, p, count, ret, [](Address dt, ArgumentList& args, std::optional<void*> retPtr) {
+		const auto& [typeHandle, methodHandle] = *dt.As<HandleData*>();
 		Type type(typeHandle);
 		if (retPtr.has_value()) {
 			type.InvokeStaticMethodRetInternal(methodHandle, args.data(), args.size(), *retPtr);
@@ -430,9 +430,9 @@ void DotnetLanguageModule::InternalCall(const Method* method, MemAddr data, uint
 }
 
 // C++ to C#
-void DotnetLanguageModule::DelegateCall(const Method* method, MemAddr data, uint64_t* p, size_t count, void* ret) {
-	ManagedCall(*method, data, p, count, ret, [](MemAddr dt, ArgumentList& args, std::optional<void*> retPtr) {
-		auto delegateHandle = dt.CCast<ManagedHandle>();
+void DotnetLanguageModule::DelegateCall(const Method* method, Address data, uint64_t* p, size_t count, void* ret) {
+	ManagedCall(*method, data, p, count, ret, [](Address dt, ArgumentList& args, std::optional<void*> retPtr) {
+		auto delegateHandle = dt.As<ManagedHandle>();
 		if (retPtr.has_value()) {
 			ManagedObject::InvokeDelegateRetInternal(delegateHandle, args.data(), args.size(), *retPtr);
 		} else {

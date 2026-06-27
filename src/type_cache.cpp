@@ -2,8 +2,9 @@
 
 using namespace netlm;
 
+static TypeCache cache;
+
 TypeCache& TypeCache::Get() {
-    static TypeCache cache;
     return cache;
 }
 

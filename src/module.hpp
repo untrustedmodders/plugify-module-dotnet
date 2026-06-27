@@ -94,8 +94,8 @@ namespace netlm {
 
 		static Result<SharpMethodData> GenerateMethodExport(const Method& method, ManagedAssembly &assembly);
 
-		static void InternalCall(const Method* method, MemAddr data, uint64_t* p, size_t count, void* ret);
-		static void DelegateCall(const Method* method, MemAddr data, uint64_t* p, size_t count, void* ret);
+		static void InternalCall(const Method* method, Address data, uint64_t* p, size_t count, void* ret);
+		static void DelegateCall(const Method* method, Address data, uint64_t* p, size_t count, void* ret);
 
 	private:
 		static void ExceptionCallback(std::string_view message);
