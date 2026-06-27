@@ -21,7 +21,7 @@ Type& MethodInfo::GetReturnType() {
 	if (!_returnType) {
 		ManagedHandle handle{};
 		Managed.GetMethodInfoReturnTypeFptr(_handle, &handle);
-		_returnType = TypeCache::Get().CacheType(handle);
+		_returnType = TypeCache::Get().Add(handle);
 	}
 
 	return *_returnType;
@@ -38,7 +38,7 @@ const std::vector<Type*>& MethodInfo::GetParameterTypes() {
 
 		_parameterTypes->reserve(typeHandles.size());
 		for (const auto& typeHandle : typeHandles) {
-			_parameterTypes->emplace_back(TypeCache::Get().CacheType(typeHandle));
+			_parameterTypes->emplace_back(TypeCache::Get().Add(typeHandle));
 		}
 	}
 

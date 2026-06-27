@@ -23,7 +23,7 @@ Type& Type::GetBaseType() {
 	if (!_baseType) {
 		ManagedHandle handle{};
 		Managed.GetBaseTypeFptr(_handle, &handle);
-		_baseType = TypeCache::Get().CacheType(handle);
+		_baseType = TypeCache::Get().Add(handle);
 	}
 
 	return *_baseType;
@@ -182,7 +182,7 @@ Type& Type::GetElementType() {
 	if (!_elementType) {
 		ManagedHandle handle{};
 		Managed.GetElementTypeFptr(_handle, &handle);
-		_elementType = TypeCache::Get().CacheType(handle);
+		_elementType = TypeCache::Get().Add(handle);
 	}
 
 	return *_elementType;

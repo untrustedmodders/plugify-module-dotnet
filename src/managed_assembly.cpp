@@ -84,7 +84,7 @@ const std::vector<Type*>& ManagedAssembly::GetTypes() {
 
 		_types->reserve(typeHandles.size());
 		for (auto typeHandle : typeHandles) {
-			_types->emplace_back(TypeCache::Get().CacheType(typeHandle));
+			_types->emplace_back(TypeCache::Get().Add(typeHandle));
 		}
 	}
 	return *_types;

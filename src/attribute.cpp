@@ -9,7 +9,7 @@ Type& Attribute::GetType() {
 	if (!_type) {
 		ManagedHandle handle{};
 		Managed.GetAttributeTypeFptr(_handle, &handle);
-		_type = TypeCache::Get().CacheType(handle);
+		_type = TypeCache::Get().Add(handle);
 	}
 
 	return *_type;

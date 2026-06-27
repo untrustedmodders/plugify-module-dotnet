@@ -7,7 +7,7 @@ namespace netlm {
     public:
         static TypeCache& Get();
 
-        Type* CacheType(ManagedHandle handle);
+        Type* Add(ManagedHandle handle);
 
         void Clear();
 

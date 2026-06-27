@@ -8,7 +8,7 @@ TypeCache& TypeCache::Get() {
     return cache;
 }
 
-Type* TypeCache::CacheType(ManagedHandle handle) {
+Type* TypeCache::Add(ManagedHandle handle) {
     return &m_types.emplace_back(handle);
 }
 

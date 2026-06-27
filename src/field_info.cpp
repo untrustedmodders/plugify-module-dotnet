@@ -17,7 +17,7 @@ Type& FieldInfo::GetType() {
 	if (!_type) {
 		ManagedHandle handle{};
 		Managed.GetFieldInfoTypeFptr(_handle, &handle);
-		_type = TypeCache::Get().CacheType(handle);
+		_type = TypeCache::Get().Add(handle);
 	}
 
 	return *_type;

@@ -17,7 +17,7 @@ Type& PropertyInfo::GetType() {
 	if (!_type) {
 		ManagedHandle handle{};
 		Managed.GetPropertyInfoTypeFptr(_handle, &handle);
-		_type = TypeCache::Get().CacheType(handle);
+		_type = TypeCache::Get().Add(handle);
 	}
 
 	return *_type;
