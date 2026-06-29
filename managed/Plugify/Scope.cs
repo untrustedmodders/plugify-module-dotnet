@@ -12,7 +12,7 @@ public sealed class Scope : IDisposable
     public Scope(string name, [CallerLineNumber] int line = 0, [CallerFilePath] string file = "", [CallerMemberName] string function = "", string module = "")
     {
         if (IsProfiling)
-            _handle = NativeMethods.BeginZone(name, line, file, function);
+            _handle = NativeMethods.BeginZone(name, line, file, function, module);
         if (IsLogging)
             NativeMethods.Log(name, Severity.Trace, line, file, function, module);
     }

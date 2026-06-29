@@ -5,7 +5,7 @@
 #include <plugify/method.hpp>
 #include <plugify/logger.hpp>
 #include <plugify/profiler.hpp>
-#include <plugify/mem_addr.hpp>
+#include <plugify/address.hpp>
 #include <plugify/provider.hpp>
 #include <plugify/extension.hpp>
 #include <plugify/call.hpp>

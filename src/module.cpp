@@ -581,9 +581,9 @@ extern "C" {
 		return false;
 	}
 
-	NETLM_EXPORT ZoneHandle BeginZone(const char* name, int line, const char* file, const char* function) {
+	NETLM_EXPORT ZoneHandle BeginZone(const char* name, int line, const char* file, const char* function, const char* module) {
 		if (const auto& profiler = g_netlm.GetProfiler()) {
-			return profiler->BeginZone(ZoneInfo{name, function, file, static_cast<size_t>(line), 0});
+			return profiler->BeginZone(name, plg::source_location(static_cast<size_t>(line), 0, file, function, module));
 		}
 		return {};
 	}
@@ -595,10 +595,7 @@ extern "C" {
 	}
 
 	NETLM_EXPORT bool IsProfiling() {
-		if (const auto& profiler = g_netlm.GetProfiler()) {
-			return profiler->IsActive();
-		}
-		return false;
+		return g_netlm.GetProfiler() != nullptr;
 	}
 
 	NETLM_EXPORT ILanguageModule* GetLanguageModule() {

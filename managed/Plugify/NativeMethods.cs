@@ -38,7 +38,7 @@ public static unsafe partial class NativeMethods
 
     [LibraryImport(DllName, StringMarshalling = StringMarshalling.Utf8)]
     [SuppressGCTransition]
-    public static partial ulong BeginZone(string name, [CallerLineNumber] int line = 0, [CallerFilePath] string file = "", [CallerMemberName] string function = "");
+    public static partial ulong BeginZone(string name, [CallerLineNumber] int line = 0, [CallerFilePath] string file = "", [CallerMemberName] string function = "", string module = "");
     
     [LibraryImport(DllName)]
     [SuppressGCTransition]
