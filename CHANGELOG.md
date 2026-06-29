@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.3](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.4.2...v2.4.3) (2026-06-29)
+
+
+### Bug Fixes
+
+* update profiler ([c15afd0](https://github.com/untrustedmodders/plugify-module-dotnet/commit/c15afd0fb831b7d16f4a6dbab49d65a9b26bfe76))
+
 ## [2.4.2](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.4.1...v2.4.2) (2026-06-27)
 
 
