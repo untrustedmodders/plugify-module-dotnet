@@ -15,6 +15,14 @@ namespace Plugify.Generators;
 [Generator(LanguageNames.CSharp)]
 public class ManifestFileGenerator : IIncrementalGenerator
 {
+    private static readonly DiagnosticDescriptor AmbiguousTypeName = new(
+        id: "PLG001",
+        title: "Ambiguous exported type name",
+        messageFormat: "Plugify manifest not written: {0}",
+        category: "Plugify",
+        defaultSeverity: DiagnosticSeverity.Error,
+        isEnabledByDefault: true);
+
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
         const string nativeExportAttributeName = "Plugify.NativeExportAttribute";
@@ -44,9 +52,7 @@ public class ManifestFileGenerator : IIncrementalGenerator
             return null;
 
         if (!methodSymbol.IsStatic)
-        {
             return null; // Only static methods can be exported
-        }
 
         // Get the export name from the attribute
         var attribute = context.Attributes.FirstOrDefault();
@@ -241,6 +247,30 @@ public class ManifestFileGenerator : IIncrementalGenerator
         var copyright = copyrightAttr?.ConstructorArguments.FirstOrDefault().Value?.ToString() ?? "";
         var product = productAttr?.ConstructorArguments.FirstOrDefault().Value?.ToString() ?? "";
         
+        // Each prototype and enum is filed into the shared tables, leaving a
+        // reference by name at every use site.
+        var tables = new TypeTables();
+
+        var manifestMethods = validMethods
+            .Select(m => new ManifestMethod
+            {
+                Name = m.ExportName,
+                FuncName = m.MethodName,
+                ParamTypes = m.Parameters.Select(param => ConvertParameter(param, tables)).ToList(),
+                RetType = ConvertReturnType(m.ReturnType, tables)
+            })
+            // Sorted by name so the manifest reads the same however the C# source
+            // is arranged. A language module resolves each method by symbol name
+            // while walking this list, so nothing depends on the order.
+            .OrderBy(m => m.Name, StringComparer.Ordinal)
+            .ToList();
+
+        if (tables.ClashMessage is { } clash)
+        {
+            context.ReportDiagnostic(Diagnostic.Create(AmbiguousTypeName, Location.None, clash));
+            return;
+        }
+
         // Build the manifest
         var manifest = new PluginManifest
         {
@@ -252,13 +282,9 @@ public class ManifestFileGenerator : IIncrementalGenerator
             License = copyright,
             Entry = $"{assemblyName}.dll",
             Language = "dotnet",
-            Methods = validMethods.Select(m => new ManifestMethod
-            {
-                Name = m.ExportName,
-                FuncName = m.MethodName,
-                ParamTypes = m.Parameters.Select(ConvertParameter).ToList(),
-                RetType = ConvertReturnType(m.ReturnType)
-            }).ToList()
+            Methods = manifestMethods,
+            Prototypes = tables.Prototypes,
+            Enums = tables.Enums
         };
 
         // Generate JSON
@@ -341,7 +367,7 @@ public class ManifestFileGenerator : IIncrementalGenerator
         context.AddSource($"PlugifyManifest.g.cs", source);
     }
 
-    private static object ConvertParameter(MethodParameter param)
+    private static object ConvertParameter(MethodParameter param, TypeTables tables)
     {
         if (param.Type.IsDelegate)
         {
@@ -349,44 +375,20 @@ public class ManifestFileGenerator : IIncrementalGenerator
             {
                 type = "function",
                 name = param.Name,
-                @ref = param.IsRef ? "t" : null,
-                prototype = new
-                {
-                    name = param.Type.DelegateName,
-                    funcName = "_",
-                    paramTypes = param.Type.DelegateParameters?.Select(p => new
-                    {
-                        type = p.Type.TypeName,
-                        name = p.Name,
-                        @ref = p.IsRef
-                    }).ToList(),
-                    retType = new
-                    {
-                        type = param.Type.DelegateReturnType?.TypeName ?? "void"
-                    }
-                }
+                @ref = param.IsRef,
+                prototype = FilePrototype(param.Type, tables)
             };
         }
 
         // Handle enum or enum array
         if (param.Type.IsEnum || (param.Type.IsArray && param.Type.ElementType?.IsEnum == true))
         {
-            var enumType = param.Type.IsEnum ? param.Type : param.Type.ElementType;
-
             return new
             {
                 type = param.Type.TypeName,
                 name = param.Name,
                 @ref = param.IsRef,
-                @enum = new
-                {
-                    name = enumType?.EnumName,
-                    values = enumType?.EnumValues?.Select(v => new
-                    {
-                        value = v.Value,
-                        name = v.Name
-                    }).ToList()
-                }
+                @enum = FileEnum(param.Type, tables)
             };
         }
 
@@ -398,25 +400,26 @@ public class ManifestFileGenerator : IIncrementalGenerator
         };
     }
 
-    private static object ConvertReturnType(PlugifyType returnType)
+    private static object ConvertReturnType(PlugifyType returnType, TypeTables tables)
     {
+        // A returned delegate needs its signature described just as a parameter
+        // does, otherwise the manifest claims a function type with no prototype.
+        if (returnType.IsDelegate)
+        {
+            return new
+            {
+                type = "function",
+                prototype = FilePrototype(returnType, tables)
+            };
+        }
+
         // Handle enum or enum array
         if (returnType.IsEnum || (returnType.IsArray && returnType.ElementType?.IsEnum == true))
         {
-            var enumType = returnType.IsEnum ? returnType : returnType.ElementType;
-
             return new
             {
                 type = returnType.TypeName,
-                @enum = new
-                {
-                    name = enumType?.EnumName,
-                    values = enumType?.EnumValues?.Select(v => new
-                    {
-                        value = v.Value,
-                        name = v.Name
-                    }).ToList()
-                }
+                @enum = FileEnum(returnType, tables)
             };
         }
 
@@ -424,6 +427,110 @@ public class ManifestFileGenerator : IIncrementalGenerator
         {
             type = returnType.TypeName
         };
+    }
+
+    /// <summary>
+    /// Files a delegate's signature in the shared table and returns its name. Its
+    /// own parameters go through the normal conversion, so an enum or delegate
+    /// nested inside a callback is described too.
+    /// </summary>
+    private static string FilePrototype(PlugifyType type, TypeTables tables)
+    {
+        var definition = new
+        {
+            name = type.DelegateName,
+            funcName = "_",
+            paramTypes = type.DelegateParameters?.Select(p => ConvertParameter(p, tables)).ToList() ?? [],
+            retType = type.DelegateReturnType is null
+                ? new { type = "void" }
+                : ConvertReturnType(type.DelegateReturnType, tables)
+        };
+
+        return tables.AddPrototype(type.DelegateName ?? "", definition);
+    }
+
+    /// <summary>Files an enumeration in the shared table and returns its name.</summary>
+    private static string FileEnum(PlugifyType type, TypeTables tables)
+    {
+        var enumType = type.IsEnum ? type : type.ElementType;
+
+        var definition = new
+        {
+            name = enumType?.EnumName,
+            values = enumType?.EnumValues?.Select(v => new
+            {
+                name = v.Name,
+                value = v.Value
+            }).ToList()
+        };
+
+        return tables.AddEnum(enumType?.EnumName ?? "", definition);
+    }
+
+    /// <summary>
+    /// Collects the prototypes and enums met while converting methods, so each is
+    /// written once and named from every use site.
+    ///
+    /// Two types in different namespaces can share a short name, and a name is
+    /// what a reference resolves on, so a clash is recorded rather than letting
+    /// one definition silently stand in for the other.
+    /// </summary>
+    private sealed class TypeTables
+    {
+        private readonly Dictionary<string, (object Definition, string Shape)> _prototypes = new();
+        private readonly Dictionary<string, (object Definition, string Shape)> _enums = new();
+        private readonly SortedSet<string> _clashes = new(StringComparer.Ordinal);
+
+        private static readonly JsonSerializerOptions ShapeOptions = new()
+        {
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+        };
+
+        public string AddPrototype(string name, object definition)
+            => Add(_prototypes, "prototype", name, definition);
+
+        public string AddEnum(string name, object definition)
+            => Add(_enums, "enum", name, definition);
+
+        private string Add(
+            Dictionary<string, (object Definition, string Shape)> table,
+            string kind,
+            string name,
+            object definition)
+        {
+            // Definitions are compared by their serialized form, which is exactly
+            // the text that would otherwise land in the manifest.
+            var shape = JsonSerializer.Serialize(definition, ShapeOptions);
+
+            if (table.TryGetValue(name, out var existing))
+            {
+                if (!string.Equals(existing.Shape, shape, StringComparison.Ordinal))
+                {
+                    _clashes.Add($"{kind} '{name}'");
+                }
+            }
+            else
+            {
+                table[name] = (definition, shape);
+            }
+
+            return name;
+        }
+
+        public List<object>? Prototypes => Sorted(_prototypes);
+
+        public List<object>? Enums => Sorted(_enums);
+
+        private static List<object>? Sorted(Dictionary<string, (object Definition, string Shape)> table)
+            => table.Count == 0
+                ? null
+                : table.OrderBy(e => e.Key, StringComparer.Ordinal).Select(e => e.Value.Definition).ToList();
+
+        /// <summary>Null unless two definitions were filed under one name.</summary>
+        public string? ClashMessage => _clashes.Count == 0
+            ? null
+            : "conflicting definitions share a name, so a reference to one would be ambiguous: "
+              + string.Join(", ", _clashes);
     }
 
     private class ExportedMethod
@@ -474,6 +581,12 @@ public class ManifestFileGenerator : IIncrementalGenerator
         public string Entry { get; set; } = "";
         public string Language { get; set; } = "";
         public List<ManifestMethod> Methods { get; set; } = [];
+
+        // Shared type tables. Each prototype and enum is described here once and
+        // referred to by name from every paramTypes/retType entry that uses it.
+        // Null when empty so the key is left out of the JSON entirely.
+        public List<object>? Prototypes { get; set; }
+        public List<object>? Enums { get; set; }
     }
 
     private class ManifestMethod
