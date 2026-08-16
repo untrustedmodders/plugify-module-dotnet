@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.4.4](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.4.3...v2.4.4) (2026-08-16)
+
+
+### Bug Fixes
+
+* change schema path ([0dc2387](https://github.com/untrustedmodders/plugify-module-dotnet/commit/0dc2387224716eeafb8b2ea83264ca5a46fa149d))
+* improve dublicate validation ([69ed6cf](https://github.com/untrustedmodders/plugify-module-dotnet/commit/69ed6cf2a7c64634b70f8f24f8201b047ebb5521))
+* rework manifest generation ([028b43a](https://github.com/untrustedmodders/plugify-module-dotnet/commit/028b43aab3cc18401efc0ed0994b250e8244b364))
+* update plugify and manifests ([4edb09d](https://github.com/untrustedmodders/plugify-module-dotnet/commit/4edb09da6e191413fa7bf670903ad06434397ae7))
+
 ## [2.4.3](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.4.2...v2.4.3) (2026-06-29)
 
 
