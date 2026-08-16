@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.5](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.4.4...v2.4.5) (2026-08-16)
+
+
+### Bug Fixes
+
+* update plugify ([300960d](https://github.com/untrustedmodders/plugify-module-dotnet/commit/300960d4bea9a6f1c733ddf0fff60e6fa3297308))
+
 ## [2.4.4](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.4.3...v2.4.4) (2026-08-16)
 
 
