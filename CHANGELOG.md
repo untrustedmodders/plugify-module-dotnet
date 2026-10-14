@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.6](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.4.5...v2.4.6) (2026-10-14)
+
+
+### Bug Fixes
+
+* migrate conda packaging to rattler-build ([a2d182c](https://github.com/untrustedmodders/plugify-module-dotnet/commit/a2d182c05fce66f0a15e1032e29e84b559b4dc1a))
+
 ## [2.4.5](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.4.4...v2.4.5) (2026-08-16)
 
 
