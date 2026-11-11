@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.7](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.4.6...v2.4.7) (2026-11-11)
+
+
+### Bug Fixes
+
+* update invalid id ([4153259](https://github.com/untrustedmodders/plugify-module-dotnet/commit/4153259ae6d3ef33bd36987094a07e6d5038b5e4))
+
 ## [2.4.6](https://github.com/untrustedmodders/plugify-module-dotnet/compare/v2.4.5...v2.4.6) (2026-10-14)
 
 
