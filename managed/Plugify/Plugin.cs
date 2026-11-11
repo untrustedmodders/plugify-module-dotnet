@@ -2,7 +2,7 @@
 
 public class Plugin : IEquatable<Plugin>, IComparable<Plugin>
 {
-    public long Id { get; set; } = -1;
+    public long Id { get; set; } = 0;
     public string Name { get; set; } = "";
     public string Description { get; set; } = "";
     public string Version { get; set; } = "";
@@ -50,7 +50,7 @@ public class Plugin : IEquatable<Plugin>, IComparable<Plugin>
         
     public bool IsNull()
     {
-        return Id == -1;
+        return Id == 0;
     }
 
     public override int GetHashCode()
