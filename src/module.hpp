@@ -31,7 +31,7 @@ namespace netlm {
 		ScriptInstance(const Extension& plugin, ManagedGuid assembly, Type& type);
 		~ScriptInstance();
 
-		const Extension& GetPlugin() const { return _plugin; }
+		//const Extension& GetPlugin() const { return _plugin; }
 		const ManagedObject& GetManagedObject() const { return _instance; }
 		const ManagedGuid& GetAssemblyId() const { return _assembly; }
 
@@ -47,7 +47,7 @@ namespace netlm {
 		bool HasEnd() const;
 
 	private:
-		const Extension& _plugin;
+		//const Extension& _plugin;
 		ManagedGuid _assembly;
 		ManagedObject _instance;
 		ScriptMethod _update;
@@ -58,7 +58,7 @@ namespace netlm {
 	struct SharpMethodData;
 
 	using HandleData = std::pair<ManagedHandle, ManagedHandle>;
-	using ScriptMap = std::map<UniqueId, ScriptInstance>;
+	using ScriptMap = std::flat_map<UniqueId, ScriptInstance>;
 	using FunctionList = std::vector<SharpMethodData>;
 	using ArgumentList = std::inplace_vector<const void*, Signature::kMaxFuncArgs>;
 

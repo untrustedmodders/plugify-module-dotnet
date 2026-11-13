@@ -478,8 +478,7 @@ ScriptMethod::ScriptMethod(ManagedObject instance, std::string_view methodName)
 {}
 
 ScriptInstance::ScriptInstance(const Extension& plugin, ManagedGuid assembly, Type& type)
-	: _plugin{plugin}
-	, _assembly{assembly}
+	: _assembly{assembly}
 	, _instance{type.CreateInstance()}
 	, _update{_instance, "OnPluginUpdate"}
 	, _start{_instance, "OnPluginStart"}
